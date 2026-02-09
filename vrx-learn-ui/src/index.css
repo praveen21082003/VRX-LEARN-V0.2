@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+
+:root {
+  --font-sans: 'Poppins', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* ---------- Utilities ---------- */
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ---------- Design Tokens ---------- */
+@theme {
+
+  /* 2. Overwrite the default sans font or create a new family */
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  /* If you want a specific class like font-poppins */
+  --font-poppins: "Poppins", sans-serif;
+
+
+
+  /* Brand colors */
+  --color-primary: #840227;
+  --color-primary-dark: #1d4ed8;
+
+  --color-secondary: #3f3f3f;
+  --color-secondary-light: #6ee7b7;
+
+  --color-active:#84022729;
+  --color-hover-active:#84022714;
+
+
+  /* Surfaces & borders */
+  --color-surface: #F3E1E4;
+  --color-border: #2A2A2A;
+  --color-dark-gray: #4D4D4D;
+
+  /* Typography tokens (HSL values) */
+  --foreground: 222 47% 11%;
+  --muted-foreground: 215 16% 47%;
+}
+
+/* body {
+  font-family: 'Poppins', sans-serif;
+} */
+
+
+.menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.menu.open {
+  max-height: 200px; /* Must be larger than the content */
+  opacity: 1;
+}

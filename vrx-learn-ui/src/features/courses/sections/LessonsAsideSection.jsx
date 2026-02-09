@@ -1,0 +1,116 @@
+import React, { useEffect, useState } from "react";
+import clsx from "clsx";
+import { CirclePlay, ChevronDown, FileText } from "lucide-react";
+import CheckboxIcon from "@/components/icons/CheckboxIcon";
+import { motion, AnimatePresence } from "motion/react";
+import BackButton from "@/components/navigation/BackButton";
+
+
+
+
+function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
+    const [openModuleId, setOpenModuleId] = useState(null);
+
+    useEffect(()=>{
+        if (modules?.length && openModuleId === null){
+            setOpenModuleId(modules[0].id)
+        }
+    },[modules, openModuleId])
+    
+
+    const toggleModule = (id) => {
+        setOpenModuleId((prev) => (prev === id ? null : id));
+    };
+
+
+
+    return (
+        <aside className="hidden w-90 2xl:w-120 border-r-2 border-[#D9D9D9] bg-muted/40 py-1 md:block">
+            <div className="p-1"><BackButton to=".." /></div>
+            {modules.map((module, moduleIndex) => {
+                const isOpen = openModuleId === module.id;
+
+                return (
+                    <div key={module.id}>
+                        <button
+                            onClick={() => toggleModule(module.id)}
+                            className={clsx(
+                                "flex h-16 w-full border-primary items-center justify-between font-semibold",
+                                isOpen ? "bg-[#D9D9D9] border-x-8 p-2" : "hover:bg-primary/5 p-4"
+                            )}
+                        >
+                            <span>{module.title}</span>
+                            <ChevronDown
+                                className={clsx(
+                                    "h-5 w-5 transition-transform duration-200",
+                                    isOpen && "rotate-180"
+                                )}
+                            />
+                        </button>
+
+                        <AnimatePresence>
+                            {isOpen && (
+                                <motion.ul
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                                    className='space-y-1 overflow-hidden'
+                                >
+                                    {module.lessons.map((lesson, lessonIndex) => {
+                                        const isActive = activeLesson?.lessonId === lesson.id;
+
+                                        const lessonId = lesson.id
+
+                                        return (
+                                            <li key={lesson.id}>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setActiveLesson({ moduleIndex, lessonIndex, lessonId })}
+                                                    className={clsx(
+                                                        "flex w-full items-center justify-between p-4 text-left font-semibold transition",
+                                                        isActive
+                                                            ? "bg-[#D9D9D9] text-primary"
+                                                            : "hover:bg-primary/5"
+                                                    )}
+                                                >
+                                                    <div className="flex items-center gap-4 min-w-0">
+                                                        {lesson.type === "video" ?
+                                                            <CirclePlay
+                                                                size={21}
+                                                                strokeWidth={1.5}
+                                                                className="shrink-0"
+                                                            />
+                                                            :
+                                                            <FileText
+                                                                size={21}
+                                                                strokeWidth={1.5}
+                                                                className="shrink-0"
+                                                            />
+                                                        }
+
+                                                        <p className="text-sm truncate">
+                                                            {moduleIndex + 1}.{lessonIndex + 1} {lesson.title}
+                                                        </p>
+                                                    </div>
+
+                                                    <CheckboxIcon
+                                                        checked={lesson.status === "completed"}
+                                                        className="h-5 w-5 shrink-0"
+                                                    />
+                                                </button>
+                                            </li>
+                                        );
+                                    })}
+                                </motion.ul>
+                            )}
+                        </AnimatePresence>
+
+                    </div>
+                );
+            })}
+        </aside>
+    );
+}
+
+export default LessonsAsideSection;

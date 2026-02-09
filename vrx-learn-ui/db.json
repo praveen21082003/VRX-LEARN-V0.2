@@ -1,0 +1,374 @@
+{
+  "my_courses": [
+    {
+      "id": 3,
+      "name": "Python",
+      "author": "Nagarjun R",
+      "thumbnail": "https://i.pinimg.com/1200x/c1/9b/2f/c19b2f857a1aaf54d4ae8a8eccee1cfc.jpg"
+    },
+    {
+      "id": 32,
+      "name": "ZOS System Programming",
+      "author": "Vijayalakshmie",
+      "thumbnail": ""
+    },
+    {
+      "id": 33,
+      "name": "MF Modernization 5 days for Freshers",
+      "author": "Vijayalakshmie",
+      "thumbnail": ""
+    }
+  ],
+  "all_courses": [
+    {
+      "id": 3,
+      "name": "Python",
+      "author": "Nagarjun R",
+      "thumbnail": "https://i.pinimg.com/1200x/c1/9b/2f/c19b2f857a1aaf54d4ae8a8eccee1cfc.jpg"
+    },
+    {
+      "id": 32,
+      "name": "ZOS System Programming",
+      "author": "Vijayalakshmie",
+      "thumbnail": ""
+    },
+    {
+      "id": 33,
+      "name": "MF Modernization 5 days for Freshers",
+      "author": "Vijayalakshmie",
+      "thumbnail": ""
+    },
+    {
+      "id": 34,
+      "name": "Advanced Web Development",
+      "author": "Jhon Doe",
+      "thumbnail": ""
+    },
+    {
+      "id": 35,
+      "name": "Mainframe Modernization",
+      "author": "Vijayalakshmie",
+      "thumbnail": ""
+    },
+    {
+      "id": 36,
+      "name": "Mainframe Application Programming",
+      "author": "Vijayalakshmie",
+      "thumbnail": ""
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "title": "Quiz: React Hooks",
+      "date": "2026-01-19",
+      "time": "09:00 PM",
+      "color": "bg-primary"
+    },
+    {
+      "id": 2,
+      "title": "Redux Workshop",
+      "date": "2026-01-29",
+      "time": "07:30 PM",
+      "color": "bg-blue-600"
+    }
+  ],
+  "course_details": [
+    {
+      "id": 34,
+      "name": "Advanced Fullstack Web Development",
+      "author": "Jhon Doe",
+      "description": "This course is dedicated to equipping you with the knowledge and tools needed to uncover the unique challenges faced by MLOps teams when deploying and managing Generative AI models, and exploring how Vertex AI empowers AI teams to streamline MLOps processes and achieve success in Generative AI projects.",
+      "progess_status": "in progess",
+      "module_count": 4,
+      "module_duration": 230,
+      "assignment_duration": 120,
+      "lab_duration": 60,
+      "quiz_duration": 90,
+      "feedback_duration": 2
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "course_id": 34,
+      "title": "Introduction & Architecture",
+      "lessons": [
+        {
+          "id": 101,
+          "title": "Course Overview",
+          "type": "video",
+          "status": "completed"
+        },
+        {
+          "id": 102,
+          "title": "Fullstack Architecture Overview",
+          "type": "video",
+          "status": "yet_to_complete"
+        },
+        {
+          "id": 103,
+          "title": "Client-Server Communication",
+          "type": "video",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "course_id": 34,
+      "title": "Frontend Advanced Concepts",
+      "lessons": [
+        {
+          "id": 201,
+          "title": "Advanced React Patterns",
+          "type": "file",
+          "status": "completed"
+        },
+        {
+          "id": 202,
+          "title": "State Management with Redux",
+          "type": "file",
+          "status": "yet_to_complete"
+        },
+        {
+          "id": 203,
+          "title": "Performance Optimization",
+          "type": "video",
+          "status": "yet_to_complete"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "course_id": 34,
+      "title": "Backend & API Development",
+      "lessons": [
+        {
+          "id": 301,
+          "title": "REST API Design Principles",
+          "type": "video",
+          "status": "completed"
+        },
+        {
+          "id": 302,
+          "title": "Authentication & Authorization",
+          "type": "video",
+          "status": "yet_to_complete"
+        },
+        {
+          "id": 303,
+          "title": "Error Handling & Logging",
+          "type": "video",
+          "status": "yet_to_complete"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "course_id": 34,
+      "title": "Deployment, DevOps & Best Practices",
+      "lessons": [
+        {
+          "id": 401,
+          "title": "CI/CD Pipeline Basics",
+          "type": "video",
+          "status": "completed"
+        },
+        {
+          "id": 402,
+          "title": "Docker & Containerization",
+          "type": "video",
+          "status": "yet_to_complete"
+        },
+        {
+          "id": 403,
+          "title": "Production Monitoring & Scaling",
+          "type": "video",
+          "status": "yet_to_complete"
+        }
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": 101,
+      "module_id": 1,
+      "course_id": 34,
+      "title": "Course Overview",
+      "type": "video",
+      "duration_minutes": 15,
+      "status": "completed",
+      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      "overview": "## Course Overview\n\nIn this video, we will explore the fundamentals of web development in a simple and clear way.\n\nYou will learn:\n- What web development really means\n- How frontend and backend systems work together\n- The role of HTML, CSS, and JavaScript in modern applications\n\n### What you’ll gain\nBy the end of this lesson, you will have a clear mental model of how websites and web applications are designed, built, and delivered to users.\n\nThis lesson sets the foundation for everything you will learn in the rest of the course.",
+      "resources": [
+        {
+          "title": "React Official Docs",
+          "url": "https://react.dev"
+        }
+      ],
+      "qa_enabled": true,
+      "notes_enabled": true
+    },
+    {
+      "id": 102,
+      "module_id": 1,
+      "course_id": 34,
+      "title": "Fullstack Architecture Overview",
+      "type": "video",
+      "duration_minutes": 20,
+      "status": "yet_to_complete",
+      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      "overview": "## Development Environment Setup\n\nThis lesson walks you through setting up a professional development environment for fullstack web development.\n\n### Topics covered\n- Installing Node.js and npm\n- Setting up VS Code with essential extensions\n- Understanding project folder structure\n- Running your first development server\n\n### Why this matters\nA correctly configured environment helps you avoid common setup issues, improve productivity, and follow industry best practices from day one.\n\nMake sure you complete this step before moving on to advanced topics.",
+      "resources": [],
+      "qa_enabled": true,
+      "notes_enabled": true
+    },
+    {
+      "id": 103,
+      "module_id": 1,
+      "course_id": 34,
+      "title": "Client-Server Communication",
+      "type": "video",
+      "duration_minutes": 15,
+      "status": "completed",
+      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+      "overview": "## Lesson Overview\n\nClient–server communication is the backbone of every web application.\n\nIn this lesson, you will learn:\n- What happens when a user clicks a button in the browser\n- How requests travel from client to server\n- How servers process requests and send responses\n\n---\n\n## Key Concepts\n- HTTP and HTTPS protocols\n- Request methods (GET, POST, PUT, DELETE)\n- Status codes and their meanings\n- JSON as a data exchange format\n\n---\n\n## Why it’s important\nUnderstanding client–server communication will help you debug API issues confidently, build scalable applications, and design clean and maintainable backend services.",
+      "qa_enabled": true,
+      "notes_enabled": true
+    }
+  ],
+  "assignments": [
+    {
+      "id": 1,
+      "course_id": 34,
+      "title": "React Hook",
+      "description": "## Assignment Overview\n\nIn this assignment, you will build a React application that demonstrates effective usage of React Hooks.\n\n### Objectives\n- Use `useState` to manage component state\n- Use `useEffect` to handle side effects such as API calls\n- Create at least one custom hook for reusable logic\n\n### Guidelines\n- Follow React Hooks rules\n- Write clean and readable code\n- Ensure proper component structure\n\nThis assignment helps reinforce core React concepts used in modern applications.",
+      "due_date": "2026-02-05",
+      "due_time": "23:59",
+      "marks": 100,
+      "attachments": [
+        {
+          "name": "Instructions-1.pdf",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Example.jpg/800px-Example.jpg"
+        },
+        {
+          "name": "Instructions-2.pdf",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Example.jpg/800px-Example.jpg"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "course_id": 34,
+      "title": "Components Life Cycle",
+      "description": "## Assignment Overview\n\nThis assignment focuses on understanding the React component lifecycle.\n\n### What you need to do\n- Explain lifecycle phases in class components\n- Convert lifecycle methods into Hooks\n- Demonstrate mounting, updating, and unmounting behavior\n\n### Deliverables\n- Source code\n- Short explanation document\n\nCompleting this assignment will strengthen your understanding of component behavior.",
+      "due_date": "2026-02-10",
+      "due_time": "23:59",
+      "marks": 100,
+      "attachments": [
+        {
+          "name": "Instructions-1.pdf",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Example.jpg/800px-Example.jpg"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "course_id": 34,
+      "title": "Use State",
+      "description": "## Assignment Overview\n\nThis assignment is designed to help you master the `useState` hook.\n\n### Tasks\n- Build a form using controlled components\n- Manage multiple state values\n- Handle user input validation\n\n### Expected Outcome\nBy completing this assignment, you will be confident in managing state in functional components.",
+      "due_date": "2026-02-15",
+      "due_time": "23:59",
+      "marks": 100,
+      "attachments": [
+        {
+          "name": "Instructions-1.pdf",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Example.jpg/800px-Example.jpg"
+        },
+        {
+          "name": "Instructions-2.pdf",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Example.jpg/800px-Example.jpg"
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin User",
+      "email": "admin@test.com",
+      "password": "admin123",
+      "role": "ADMIN"
+    },
+    {
+      "id": "2",
+      "name": "Sub Admin User",
+      "email": "subadmin@test.com",
+      "password": "subadmin123",
+      "role": "SUBADMIN"
+    },
+    {
+      "id": "3",
+      "name": "Trainer User",
+      "email": "trainer@test.com",
+      "password": "trainer123",
+      "role": "TRAINER"
+    },
+    {
+      "id": "4",
+      "name": "Trainee User",
+      "email": "trainee@test.com",
+      "password": "trainee123",
+      "role": "TRAINEE",
+      "avatar": "https://i.pinimg.com/736x/b2/da/f9/b2daf9019c4b08fa3a90c7d28a08a059.jpg",
+      "status_percent": 10,
+      "theme": "light"
+    },
+    {
+      "id": "5",
+      "name": "Trainee 2",
+      "email": "trainee2@test.com",
+      "password": "trainee123",
+      "role": "TRAINEE",
+      "avatar": "",
+      "current_learing_course":"Advanced Fullstack Web Development",
+      "status_percent": 90,
+      "theme": "light"
+    }
+  ],
+
+  "graph": {
+    "totalHours": 12.5,
+    "weeklyStats": [
+      {
+        "day": "Sun",
+        "hours": 1.5
+      },
+      {
+        "day": "Mon",
+        "hours": 2
+      },
+      {
+        "day": "Tue",
+        "hours": 1
+      },
+      {
+        "day": "Wed",
+        "hours": 1.5
+      },
+      {
+        "day": "Thu",
+        "hours": 2
+      },
+      {
+        "day": "Fri",
+        "hours": 2.5
+      },
+      {
+        "day": "Sat",
+        "hours": 2
+      }
+    ]
+  }
+}
