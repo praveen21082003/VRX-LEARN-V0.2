@@ -4,12 +4,13 @@ import { Icon } from "@/components/ui";
 export default function BackButton({
   label = "Back to Course",
   to = -1,
+  replace = true,
 }) {
   const navigate = useNavigate();
 
   return (
     <button
-      onClick={() => navigate(to)}
+      onClick={() => navigate(to, replace)}
       className="flex items-center gap-2 text-sm font-medium text-primary hover:underline cursor-pointer"
     >
       <Icon

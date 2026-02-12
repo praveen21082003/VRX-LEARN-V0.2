@@ -15,6 +15,11 @@ export const getCourseContent = (courseId) => {
   return axiosInstance.get(`/course_details/${courseId}`);
 };
 
+export const updateCourseContent = (courseId,payload) => {
+  return axiosInstance.patch(`/course_details/${courseId}`,payload);
+}
+
+
 /* Modules + Lesson List (SIDEBAR) */
 export const getCourseModules = (courseId) => {
   return axiosInstance.get(`/modules?course_id=${courseId}`);

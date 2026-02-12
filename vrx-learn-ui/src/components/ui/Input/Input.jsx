@@ -3,6 +3,7 @@ import { Eye, EyeClosed } from 'lucide-react';
 import InputWarnMessage from "../Warning";
 
 function Input({
+    name,
     label,
     placeholder,
     icon,
@@ -11,13 +12,14 @@ function Input({
     onChange,
     inputWarning,
     disabled = false,
-    
+    bgClass = "bg-white"
+
 
 }) {
 
     const [showPassword, setShowPassword] = useState(false);
     const isPassword = type === "password";
-    console.log(inputWarning);
+
 
 
 
@@ -41,6 +43,7 @@ function Input({
 
                 {/* Input */}
                 <input
+                    name={name}
                     type={isPassword && showPassword ? "text" : type}
                     value={value}
                     onChange={onChange}
@@ -52,7 +55,8 @@ function Input({
                         text-sm
                         outline-none
                         transition
-                        border-border-color
+                        border-border
+                        ${bgClass}
                         focus:ring-1 focus:ring-primary
                         focus:border-primary
                         disabled:bg-gray-100 disabled:cursor-not-allowed

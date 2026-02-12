@@ -25,7 +25,7 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
 
 
     return (
-        <aside className="hidden w-90 2xl:w-120 border-r-2 border-[#D9D9D9] bg-muted/40 py-1 md:block">
+        <aside className="hidden w-90 2xl:w-120 border-r-2 border-primary-border bg-muted/40 py-1 md:block">
             <div className="p-1"><BackButton to=".." /></div>
             {modules.map((module, moduleIndex) => {
                 const isOpen = openModuleId === module.id;
@@ -36,7 +36,7 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
                             onClick={() => toggleModule(module.id)}
                             className={clsx(
                                 "flex h-16 w-full border-primary items-center justify-between font-semibold",
-                                isOpen ? "bg-[#D9D9D9] border-x-8 p-2" : "hover:bg-primary/5 p-4"
+                                isOpen ? "bg-primary-border border-x-8 p-2" : "hover:bg-primary/5 p-4"
                             )}
                         >
                             <span>{module.title}</span>
@@ -70,7 +70,7 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
                                                     className={clsx(
                                                         "flex w-full items-center justify-between p-4 text-left font-semibold transition",
                                                         isActive
-                                                            ? "bg-[#D9D9D9] text-primary"
+                                                            ? "bg-primary-border text-primary"
                                                             : "hover:bg-primary/5"
                                                     )}
                                                 >

@@ -1,11 +1,11 @@
 import { defaultCourse } from "@/assets";
 
 
-export default function CourseThumbnail({ name, image }) {
+export default function CourseThumbnail({ name, image, classRounded }) {
     const hasCustomImage = image?.trim();
 
     return (
-        <div className="relative overflow-hidden rounded-lg lg:h-25 xl:h-45 2xl:h-60 bg-gray-200 group">
+        <div className={`relative overflow-hidden ${classRounded} lg:h-25 xl:h-45 2xl:h-60 bg-primary group`}>
             <img
                 src={hasCustomImage ? image : defaultCourse}
                 alt={`${name} thumbnail`}

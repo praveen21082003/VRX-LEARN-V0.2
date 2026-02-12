@@ -10,7 +10,10 @@ function WelcomeSection({ user }) {
   const navigate = useNavigate();
   const courseId = 34;
 
+
+
   if (!user) return null;
+
 
   return (
     <div className="w-full bg-primary rounded-xl p-6 md:p-8">
@@ -33,14 +36,15 @@ function WelcomeSection({ user }) {
             <ProgressBar percent={user.status_percent} />
           </div>
 
-          <div className='max-w-50 2xl:max-w-70'>
-            <Button
-              buttonName="Resume"
-              bgClass="bg-white"
-              textClass="text-primary"
-              onClick={() => navigate(`/learn/${courseId}`)}
-            />
-          </div>
+
+          <Button
+            buttonName="Resume"
+            className="max-w-50 2xl:max-w-70 p-3 rounded-lg font-semibold text-sm"
+            bgClass="bg-white"
+            textClass="text-primary"
+            onClick={() => navigate(`/admin/learn/${courseId}`)}
+          />
+
         </div>
 
         <div className="hidden lg:flex items-center justify-end">

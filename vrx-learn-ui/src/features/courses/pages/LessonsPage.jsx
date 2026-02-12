@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import LessonsAsideSection from '../sections/LessonsAsideSection'
 import LessonsMainSection from "../sections/LessonsMainSection";
 import { useOutletContext } from "react-router-dom";
-import useModules from "../hooks/useModules"
+import useModules from "../hooks/useModules";
 import useLessons from "../hooks/useLessons";
 
 function LessonsPage() {

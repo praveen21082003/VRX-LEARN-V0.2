@@ -3,11 +3,14 @@ import { useParams, useOutletContext } from "react-router-dom";
 import useCourseContent from "@/features/courses/hooks/useCourseContent";
 import CourseOverviewSection from "../sections/CourseOverviewSection";
 import CourseTabsSection from "../sections/CourseTabsSection";
+import {usePermission} from "@/hooks/usePermission"
 
 export default function CourseOverviewPage() {
     const { courseSlug } = useParams();
     const { courseContent, loading, error } = useCourseContent(courseSlug);
     const { setCourseBreadcrumb } = useOutletContext();
+
+    const {can} = usePermission();
 
     useEffect(() => {
         if (!courseContent?.name) return;
@@ -24,7 +27,7 @@ export default function CourseOverviewPage() {
 
     return (
         <>
-            <CourseOverviewSection course={courseContent} />
+            <CourseOverviewSection course={courseContent} can={can}/>
             <CourseTabsSection course={courseContent} error={error} />
         </>
     );

@@ -1,6 +1,6 @@
 import axiosInstance from "./apiClient";
 
 
-export const getUserProfile = ()=>{
-    return axiosInstance.get('/users/1')
+export const getUserProfile = (email, password)=>{
+    return axiosInstance.get(`/users?email=${email}&password=${password}`)
 }

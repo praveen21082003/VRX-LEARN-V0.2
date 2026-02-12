@@ -1,9 +1,19 @@
+import {Icon} from "@/components/ui"
+
 function Button({
   buttonName,
   bgClass = 'bg-[var(--color-primary)]',
   textClass = 'text-white',
   onClick,
   disabled = false,
+  type = 'button',
+  className,
+  frontIconName,
+  backIconName,
+  frontIconWidth,
+  frontIconHeight,
+  backIconWidth,
+  backIconHeight,
 }) {
   const isWhiteBg =
     bgClass.includes('bg-white') ||
@@ -12,12 +22,12 @@ function Button({
 
   return (
     <button
-      type="button"
+      type={type}
       disabled={disabled}
       onClick={onClick}
       className={`
-        flex items-center justify-center gap-2.5
-        w-full rounded-lg p-3 font-semibold text-sm
+        flex items-center justify-center gap-3
+        ${className}
         transition-all duration-200
         ${bgClass} ${textClass}
         ${isWhiteBg ? 'border border-primary' : 'border-none'}
@@ -28,7 +38,7 @@ function Button({
         }
       `}
     >
-      {buttonName}
+      <Icon height={frontIconHeight} width={frontIconWidth} name={frontIconName}/>{buttonName}<Icon width={backIconWidth} height={backIconHeight} name={backIconName}/>
     </button>
   );
 }

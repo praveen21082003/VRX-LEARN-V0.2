@@ -47,6 +47,7 @@ body {
   --color-surface: #F3E1E4;
   --color-border: #2A2A2A;
   --color-dark-gray: #4D4D4D;
+  --color-primary-border: #D9D9D9;
 
   /* Typography tokens (HSL values) */
   --foreground: 222 47% 11%;

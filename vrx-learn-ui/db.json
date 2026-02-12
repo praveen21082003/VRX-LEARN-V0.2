@@ -1,19 +1,19 @@
 {
   "my_courses": [
     {
-      "id": 3,
+      "id": "3",
       "name": "Python",
       "author": "Nagarjun R",
       "thumbnail": "https://i.pinimg.com/1200x/c1/9b/2f/c19b2f857a1aaf54d4ae8a8eccee1cfc.jpg"
     },
     {
-      "id": 32,
+      "id": "32",
       "name": "ZOS System Programming",
       "author": "Vijayalakshmie",
       "thumbnail": ""
     },
     {
-      "id": 33,
+      "id": "33",
       "name": "MF Modernization 5 days for Freshers",
       "author": "Vijayalakshmie",
       "thumbnail": ""
@@ -21,37 +21,37 @@
   ],
   "all_courses": [
     {
-      "id": 3,
+      "id": "3",
       "name": "Python",
       "author": "Nagarjun R",
       "thumbnail": "https://i.pinimg.com/1200x/c1/9b/2f/c19b2f857a1aaf54d4ae8a8eccee1cfc.jpg"
     },
     {
-      "id": 32,
+      "id": "32",
       "name": "ZOS System Programming",
       "author": "Vijayalakshmie",
       "thumbnail": ""
     },
     {
-      "id": 33,
+      "id": "33",
       "name": "MF Modernization 5 days for Freshers",
       "author": "Vijayalakshmie",
       "thumbnail": ""
     },
     {
-      "id": 34,
+      "id": "34",
       "name": "Advanced Web Development",
       "author": "Jhon Doe",
       "thumbnail": ""
     },
     {
-      "id": 35,
+      "id": "35",
       "name": "Mainframe Modernization",
       "author": "Vijayalakshmie",
       "thumbnail": ""
     },
     {
-      "id": 36,
+      "id": "36",
       "name": "Mainframe Application Programming",
       "author": "Vijayalakshmie",
       "thumbnail": ""
@@ -59,14 +59,14 @@
   ],
   "events": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Quiz: React Hooks",
       "date": "2026-01-19",
       "time": "09:00 PM",
       "color": "bg-primary"
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Redux Workshop",
       "date": "2026-01-29",
       "time": "07:30 PM",
@@ -75,22 +75,23 @@
   ],
   "course_details": [
     {
-      "id": 34,
-      "name": "Advanced Fullstack Web Development",
-      "author": "Jhon Doe",
-      "description": "This course is dedicated to equipping you with the knowledge and tools needed to uncover the unique challenges faced by MLOps teams when deploying and managing Generative AI models, and exploring how Vertex AI empowers AI teams to streamline MLOps processes and achieve success in Generative AI projects.",
+      "id": "34",
+      "name": "Advance Full stack web development",
+      "author": "Jhon doe",
+      "description": "Web development involves the creation, building, and maintenance of websites and web applications. It encompasses a broad range of tasks, including coding, technical design, and performance optimization. Web development can be classified into two main categories: front-end development and back-end development.",
       "progess_status": "in progess",
       "module_count": 4,
       "module_duration": 230,
       "assignment_duration": 120,
       "lab_duration": 60,
       "quiz_duration": 90,
-      "feedback_duration": 2
+      "feedback_duration": 2,
+      "thumbnail": ""
     }
   ],
   "modules": [
     {
-      "id": 1,
+      "id": "1",
       "course_id": 34,
       "title": "Introduction & Architecture",
       "lessons": [
@@ -115,7 +116,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "course_id": 34,
       "title": "Frontend Advanced Concepts",
       "lessons": [
@@ -140,7 +141,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "course_id": 34,
       "title": "Backend & API Development",
       "lessons": [
@@ -165,7 +166,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": "4",
       "course_id": 34,
       "title": "Deployment, DevOps & Best Practices",
       "lessons": [
@@ -192,7 +193,7 @@
   ],
   "lessons": [
     {
-      "id": 101,
+      "id": "101",
       "module_id": 1,
       "course_id": 34,
       "title": "Course Overview",
@@ -211,7 +212,7 @@
       "notes_enabled": true
     },
     {
-      "id": 102,
+      "id": "102",
       "module_id": 1,
       "course_id": 34,
       "title": "Fullstack Architecture Overview",
@@ -225,7 +226,7 @@
       "notes_enabled": true
     },
     {
-      "id": 103,
+      "id": "103",
       "module_id": 1,
       "course_id": 34,
       "title": "Client-Server Communication",
@@ -240,7 +241,7 @@
   ],
   "assignments": [
     {
-      "id": 1,
+      "id": "1",
       "course_id": 34,
       "title": "React Hook",
       "description": "## Assignment Overview\n\nIn this assignment, you will build a React application that demonstrates effective usage of React Hooks.\n\n### Objectives\n- Use `useState` to manage component state\n- Use `useEffect` to handle side effects such as API calls\n- Create at least one custom hook for reusable logic\n\n### Guidelines\n- Follow React Hooks rules\n- Write clean and readable code\n- Ensure proper component structure\n\nThis assignment helps reinforce core React concepts used in modern applications.",
@@ -259,7 +260,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "course_id": 34,
       "title": "Components Life Cycle",
       "description": "## Assignment Overview\n\nThis assignment focuses on understanding the React component lifecycle.\n\n### What you need to do\n- Explain lifecycle phases in class components\n- Convert lifecycle methods into Hooks\n- Demonstrate mounting, updating, and unmounting behavior\n\n### Deliverables\n- Source code\n- Short explanation document\n\nCompleting this assignment will strengthen your understanding of component behavior.",
@@ -274,7 +275,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "course_id": 34,
       "title": "Use State",
       "description": "## Assignment Overview\n\nThis assignment is designed to help you master the `useState` hook.\n\n### Tasks\n- Build a form using controlled components\n- Manage multiple state values\n- Handle user input validation\n\n### Expected Outcome\nBy completing this assignment, you will be confident in managing state in functional components.",
@@ -332,12 +333,11 @@
       "password": "trainee123",
       "role": "TRAINEE",
       "avatar": "",
-      "current_learing_course":"Advanced Fullstack Web Development",
+      "current_learing_course": "Advanced Fullstack Web Development",
       "status_percent": 90,
       "theme": "light"
     }
   ],
-
   "graph": {
     "totalHours": 12.5,
     "weeklyStats": [

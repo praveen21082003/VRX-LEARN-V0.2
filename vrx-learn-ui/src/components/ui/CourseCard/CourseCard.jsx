@@ -46,6 +46,7 @@ function CourseCard({ name, author, image, buttonName, bgClass,textClass }) {
         buttonName= {buttonName}
         bgClass= {bgClass}
         textClass = {textClass}
+        className="p-3 rounded-lg font-semibold text-sm"
       />
     </div>
   );
