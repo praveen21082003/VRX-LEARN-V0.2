@@ -24,7 +24,8 @@ function EditCoursePage() {
   const courseEditData = {
     modules,
     moduleLoading,
-    moduleError
+    moduleError,
+    courseSlug
 
   }
   

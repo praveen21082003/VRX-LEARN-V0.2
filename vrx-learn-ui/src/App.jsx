@@ -19,6 +19,7 @@ import CourseInfoPage from "@/features/admin/layout/CourseInfoPage";
 import EditCoursePage from "@/features/admin/layout/EditCoursePage";
 import CourseInfo from "@/features/admin/pages/CourseInfo";
 import ModulesEditor from "@/features/admin/pages/ModulesEditor";
+import CreateModule from "@/features/admin/pages/CreateModule";
 
 function App() {
   return (
@@ -61,7 +62,8 @@ function App() {
               <Route path="lab" element={<LabEditor />} />
               <Route path="feedback" element={<FeedbackEditor />} /> */}
             </Route>
-
+            <Route path="courses/:courseSlug/create" element={<CreateModule/>}>
+            </Route>
           </Route>
 
           <Route path="/admin/learn/:courseSlug" element={<LearningLayout />}>

@@ -104,6 +104,7 @@ export default function DropZone({ files, onFilesChange }) {
           <Button
             buttonName="Submit"
             bgClass="bg-primary"
+            className="p-2 px-10 rounded"
           // onClick={handleSubmit}
           />
         </div>

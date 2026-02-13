@@ -109,7 +109,7 @@ function CourseInfo() {
               frontIconName="material-symbols:upload"
               frontIconHeight="28px"
               frontIconWidth="28px"
-              classStyle="w-full p-1 bg-active rounded-b"
+              className="w-full p-1 bg-active rounded-b"
               textClass="text-primary font-semibold"
               onClick={() => fileInputRef.current.click()}
             />
@@ -134,7 +134,7 @@ function CourseInfo() {
           <Button
             type="submit"
             buttonName={loading ? "Saving..." : "Save Changes"}
-            classStyle="p-3 rounded"
+            className="p-3 rounded"
             disabled={loading}
           />
         </div>

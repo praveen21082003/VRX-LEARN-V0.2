@@ -11,5 +11,6 @@ export { default as Graph } from './graph'
 export { default as Icon } from './Icon'
 export { default as MarkdownContent } from './MarkdownContent'
 export { default as FileDropZone } from './FilesDropZone'
+export { default as TextEditor } from './TextEditor'
 
 

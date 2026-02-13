@@ -51,12 +51,14 @@ function LessonsMainSection({ lesson,error, activeLesson, setButtonAction }) {
                         buttonName="Previous"
                         bgClass="bg-white"
                         textClass="text-black"
+                        className="p-2 rounded px-5 font-semibold"
                         onClick={() => setButtonAction("previous")}
                     />
                     <Button
                         buttonName="Next"
                         bgClass="bg-primary"
                         textClass="text-white"
+                        className="p-2 rounded px-5 font-semibold"
                         onClick={() => setButtonAction("next")}
                     />
                 </div>
@@ -65,6 +67,7 @@ function LessonsMainSection({ lesson,error, activeLesson, setButtonAction }) {
                         buttonName="Mark as Completed"
                         bgClass="bg-white"
                         textClass="text-black"
+                        className="p-2 rounded px-5 font-semibold"
                     />
                 </div>
             </div>
