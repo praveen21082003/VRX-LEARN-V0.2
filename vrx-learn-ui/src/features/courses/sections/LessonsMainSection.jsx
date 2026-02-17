@@ -1,14 +1,19 @@
 import React, { useState } from 'react'
 import { Dot } from 'lucide-react'
 import { formatMinutes } from "@/utils/duration";
-import { Button } from '@/components/ui'
+import { Button,Tabs } from '@/components/ui'
 import Overview from './Overview';
 import QuestionAnswers from './QuestionAnswers';
 // import { Video } from '../../../components/content';
 
 
-function LessonsMainSection({ lesson,error, activeLesson, setButtonAction }) {
+function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
     const [activeTab, setActiveTab] = useState("overview");
+
+    const tabs = [
+        { label: "Overview", value: "overview" },
+        { label: "Q&A", value: "qa" },
+    ];
 
     if (error) return <p>Failed to load course</p>;
 
@@ -72,27 +77,11 @@ function LessonsMainSection({ lesson,error, activeLesson, setButtonAction }) {
                 </div>
             </div>
             <div className="mt-6">
-                <div className="flex gap-6 border-b">
-                    <button
-                        onClick={() => setActiveTab("overview")}
-                        className={`pb-2 font-semibold ${activeTab === "overview"
-                            ? "border-b-2 border-primary text-primary"
-                            : "text-muted-foreground"
-                            }`}
-                    >
-                        Overview
-                    </button>
-
-                    <button
-                        onClick={() => setActiveTab("qa")}
-                        className={`pb-2 font-semibold ${activeTab === "qa"
-                            ? "border-b-2 border-primary text-primary"
-                            : "text-muted-foreground"
-                            }`}
-                    >
-                        Q&amp;A
-                    </button>
-                </div>
+                <Tabs
+                    tabs={tabs}
+                    activeTab={activeTab}
+                    onChange={setActiveTab}
+                />
 
                 <div className="py-5">
                     {activeTab === "overview" && <Overview lesson={lesson} />}

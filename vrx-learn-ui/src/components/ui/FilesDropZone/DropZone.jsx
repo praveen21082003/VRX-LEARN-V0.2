@@ -1,9 +1,9 @@
 import { useDropzone } from "react-dropzone";
-import { Icon,Button } from "@/components/ui";
+import { Icon, Button } from "@/components/ui";
 
 
 
-export default function DropZone({ files, onFilesChange }) {
+export default function DropZone({ label, files, multipleFiles, onFilesChange, heightClass }) {
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -11,7 +11,7 @@ export default function DropZone({ files, onFilesChange }) {
       "application/zip": [],
     },
     maxSize: 50 * 1024 * 1024,
-    multiple: false,
+    multiple: multipleFiles,
     onDrop: (acceptedFiles) => {
       onFilesChange(acceptedFiles);
     },
@@ -24,11 +24,17 @@ export default function DropZone({ files, onFilesChange }) {
 
 
   return (
-    <>
+    <div className={`flex flex-col gap-2 ${heightClass} w-full`}>
+      {label && (
+        <label className="text-base font-bold">
+          {label}
+        </label>
+      )}
+
       {files.length === 0 && (
         <div
           {...getRootProps()}
-          className="w-full h-full flex flex-col items-center border border-dashed bg-surface justify-center"
+          className="flex h-full w-full flex-col items-center border border-dashed bg-surface justify-center"
         >
           <input {...getInputProps()} className="hidden" />
 
@@ -50,7 +56,7 @@ export default function DropZone({ files, onFilesChange }) {
       )}
 
       {files.length > 0 && (
-        <div className="h-10 w-80 space-y-3">
+        <div className="h-10 w-full space-y-3">
           <div className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wider">
             <Icon name="ri:file-list-3-line" height="18px" width="18px" />
             <span>Selected File </span>
@@ -66,7 +72,7 @@ export default function DropZone({ files, onFilesChange }) {
               return (
                 <div
                   key={`${file.name}-${index}`}
-                  className="group flex items-center justify-between p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-primary/40 transition-colors"
+                  className="group flex items-center justify-between p-3  bg-white border border-gray-200 rounded-xl shadow-sm hover:border-primary/40 transition-colors"
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="shrink-0 w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
@@ -89,12 +95,12 @@ export default function DropZone({ files, onFilesChange }) {
 
                   <button
                     onClick={() => handleRemoveFile(index)}
-                    className="p-2 bg-primary/10 hover:bg-primary hover:text-white rounded-full text-primary transition-colors"
+                    className=" hover:bg-primary/10 p-1 rounded-full text-primary transition-colors"
                   >
                     <Icon
                       name="material-symbols:close-rounded"
-                      height="20px"
-                      width="20px"
+                      height="30"
+                      width="30"
                     />
                   </button>
                 </div>
@@ -109,6 +115,6 @@ export default function DropZone({ files, onFilesChange }) {
           />
         </div>
       )}
-    </>
+    </div>
   );
 }

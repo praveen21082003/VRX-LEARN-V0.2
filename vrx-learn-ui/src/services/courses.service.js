@@ -15,15 +15,22 @@ export const getCourseContent = (courseId) => {
   return axiosInstance.get(`/course_details/${courseId}`);
 };
 
-export const updateCourseContent = (courseId,payload) => {
-  return axiosInstance.patch(`/course_details/${courseId}`,payload);
+export const updateCourseContent = (courseId, payload) => {
+  return axiosInstance.patch(`/course_details/${courseId}`, payload);
 }
-
 
 /* Modules + Lesson List (SIDEBAR) */
 export const getCourseModules = (courseId) => {
   return axiosInstance.get(`/modules?course_id=${courseId}`);
 };
+
+export const getModuleById = (moduleId) => {
+  return axiosInstance.get(`/modules/${moduleId}`)
+}
+
+export const createModule = (playload) => {
+  return axiosInstance.post('/modules', playload);
+}
 
 /* Single Lesson Content */
 export const getLessonById = (lessonId) => {
@@ -35,9 +42,15 @@ export const getAssignments = (courseId) => {
   return axiosInstance.get(`/assignments?course_id=${courseId}`);
 };
 
+export const createAssignment = (playload)=>{
+  return axiosInstance.post('/assignments',playload)
+}
+
 
 /* Single Assignment */
 export const getAssignmentId = (assignmentId) => {
   return axiosInstance.get(`/assignments/${assignmentId}`);
 };
+
+
 

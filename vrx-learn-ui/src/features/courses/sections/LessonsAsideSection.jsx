@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import { CirclePlay, ChevronDown, FileText } from "lucide-react";
-import CheckboxIcon from "@/components/icons/CheckboxIcon";
+import { Icon } from '@/components/ui'
 import { motion, AnimatePresence } from "motion/react";
 import BackButton from "@/components/navigation/BackButton";
 
@@ -11,12 +10,12 @@ import BackButton from "@/components/navigation/BackButton";
 function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
     const [openModuleId, setOpenModuleId] = useState(null);
 
-    useEffect(()=>{
-        if (modules?.length && openModuleId === null){
+    useEffect(() => {
+        if (modules?.length && openModuleId === null) {
             setOpenModuleId(modules[0].id)
         }
-    },[modules, openModuleId])
-    
+    }, [modules, openModuleId])
+
 
     const toggleModule = (id) => {
         setOpenModuleId((prev) => (prev === id ? null : id));
@@ -40,9 +39,12 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
                             )}
                         >
                             <span>{module.title}</span>
-                            <ChevronDown
+                            <Icon
+                                name="iconamoon:arrow-down-2"
+                                height="20"
+                                width="20"
                                 className={clsx(
-                                    "h-5 w-5 transition-transform duration-200",
+                                    "transition-transform duration-200",
                                     isOpen && "rotate-180"
                                 )}
                             />
@@ -76,16 +78,16 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
                                                 >
                                                     <div className="flex items-center gap-4 min-w-0">
                                                         {lesson.type === "video" ?
-                                                            <CirclePlay
-                                                                size={21}
-                                                                strokeWidth={1.5}
-                                                                className="shrink-0"
+                                                            <Icon
+                                                                name="ep:video-play"
+                                                                height="26"
+                                                                width="26"
                                                             />
                                                             :
-                                                            <FileText
-                                                                size={21}
-                                                                strokeWidth={1.5}
-                                                                className="shrink-0"
+                                                            <Icon
+                                                                name="basil:document-outline"
+                                                                height="26"
+                                                                width="26"
                                                             />
                                                         }
 
@@ -94,9 +96,10 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
                                                         </p>
                                                     </div>
 
-                                                    <CheckboxIcon
-                                                        checked={lesson.status === "completed"}
-                                                        className="h-5 w-5 shrink-0"
+                                                    <Icon
+                                                        name={lesson.status === "completed" ? "mdi:checkbox-marked-circle" : "mdi:checkbox-blank-circle-outline"}
+                                                        height="26px"
+                                                        width="26px"
                                                     />
                                                 </button>
                                             </li>

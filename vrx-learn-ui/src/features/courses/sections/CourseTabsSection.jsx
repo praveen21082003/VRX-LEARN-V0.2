@@ -1,7 +1,7 @@
 import { NavLink, useParams } from "react-router-dom";
-import { Dot, Clock } from "lucide-react";
 import { formatMinutes } from "@/utils/duration";
-import sideArrow from "@/assets/icons/side_arrow.svg";
+import sideArrow from "@/assets/images/side_arrow.svg";
+import {Icon} from '@/components/ui'
 
 export default function CourseTabsSection({ course }) {
     const { courseSlug } = useParams();
@@ -39,10 +39,10 @@ export default function CourseTabsSection({ course }) {
                         {(section.duration || section.meta) && (
                             <div className="flex items-center gap-2 text-sm text-dark-gray">
                                 {section.meta && <span>{section.meta}</span>}
-                                {section.meta && section.duration && <Dot />}
+                                {section.meta && section.duration && <Icon name="ph:dot-bold" />}
                                 {section.duration && (
                                     <>
-                                        <Clock size={15} />
+                                        <Icon name="mdi:clock-outline" height="18" width="18"/>
                                         <span>{section.duration}</span>
                                         
                                     </>

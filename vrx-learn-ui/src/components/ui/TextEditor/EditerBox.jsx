@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import Starterkit from '@tiptap/starter-kit'
 import Link from "@tiptap/extension-link"
@@ -12,7 +12,7 @@ import './tiptap.css'
 
 
 
-function EditerBox({ value, onChange }) {
+function EditerBox({ label, value, onChange }) {
 
     const editor = useEditor({
         extensions: [
@@ -37,15 +37,29 @@ function EditerBox({ value, onChange }) {
         }
     })
 
+    useEffect(() => {
+        if (editor && value !== editor.storage.markdown.getMarkdown()) {
+            editor.commands.setContent(value || "", false);
+        }
+    }, [value, editor]);
+
 
     if (!editor) return null;
 
 
     return (
-        <div className="w-full border text-sm border-border rounded overflow-hidden">
-            <EditorMenu editor={editor} />
-            <div className="min-h-50 p-2 focus:ring-1 focus:ring-primary focus:border-primary">
-                <EditorContent editor={editor} className="tiptap"/>
+        <div className='flex flex-col gap-2'>
+            {label && (
+                <label className="text-sm font-bold">
+                    {label}
+                </label>
+            )}
+
+            <div className="w-full border text-sm border-border rounded overflow-hidden">
+                <EditorMenu editor={editor} />
+                <div className="min-h-50 p-2 focus:ring-1 focus:ring-primary focus:border-primary">
+                    <EditorContent editor={editor} className="tiptap" />
+                </div>
             </div>
         </div>
     )

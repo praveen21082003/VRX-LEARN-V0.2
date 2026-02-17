@@ -78,7 +78,7 @@
       "id": "34",
       "name": "Advance Full stack web development",
       "author": "Jhon doe",
-      "description": "Web development involves the creation, building, and maintenance of websites and web applications. It encompasses a broad range of tasks, including coding, technical design, and performance optimization. Web development can be classified into two main categories: front-end development and back-end development.",
+      "description": "### Full Stack\n\n**Web development** involves the creation, building, and maintenance of websites and web applications. It encompasses a broad range of tasks, including coding, technical design, and performance optimization. Web development can be classified into two main categories: front-end development and back-end development.",
       "progess_status": "in progess",
       "module_count": 4,
       "module_duration": 230,
@@ -86,7 +86,9 @@
       "lab_duration": 60,
       "quiz_duration": 90,
       "feedback_duration": 2,
-      "thumbnail": ""
+      "thumbnail": "",
+      "short_description": "Web development involves the creation, building, and maintenance of websites and web applications. It encompasses a broad range of tasks, including coding, technical design, and performance optimization. Web development can be classified into two main categories: front-end development and back-end development.",
+      "shortDescription": "Web development involves the creation, building, and maintenance of websites and web applications. It encompasses a broad range of tasks, including coding, technical design, and performance optimization. Web development can be classified into two main categories: front-end development and back-end development."
     }
   ],
   "modules": [
@@ -94,6 +96,7 @@
       "id": "1",
       "course_id": 34,
       "title": "Introduction & Architecture",
+      "description": "## Introduction & Architecture - Overview of system design, project structure, and end-to-end application architecture.",
       "lessons": [
         {
           "id": 101,
@@ -119,6 +122,7 @@
       "id": "2",
       "course_id": 34,
       "title": "Frontend Advanced Concepts",
+      "description": "## Frontend Advanced Concepts - Deep dive into state management, performance optimization, and scalable UI patterns.",
       "lessons": [
         {
           "id": 201,
@@ -144,6 +148,7 @@
       "id": "3",
       "course_id": 34,
       "title": "Backend & API Development",
+      "description": "## Deployment - Preparing, configuring, and deploying applications to production environments.",
       "lessons": [
         {
           "id": 301,
@@ -169,6 +174,7 @@
       "id": "4",
       "course_id": 34,
       "title": "Deployment, DevOps & Best Practices",
+      "description": "## DevOps & Best Practices - Implementing CI/CD, monitoring, version control strategies, and industry-standard practices.",
       "lessons": [
         {
           "id": 401,
@@ -189,6 +195,12 @@
           "status": "yet_to_complete"
         }
       ]
+    },
+    {
+      "id": "726a",
+      "course_id": 34,
+      "title": "React Redux",
+      "description": "- Redux is one of the most important topic in react. This manages complex useState hook to easy way.\n- Redux is very helpful to handle the useState and api requestes"
     }
   ],
   "lessons": [
@@ -202,12 +214,6 @@
       "status": "completed",
       "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
       "overview": "## Course Overview\n\nIn this video, we will explore the fundamentals of web development in a simple and clear way.\n\nYou will learn:\n- What web development really means\n- How frontend and backend systems work together\n- The role of HTML, CSS, and JavaScript in modern applications\n\n### What you’ll gain\nBy the end of this lesson, you will have a clear mental model of how websites and web applications are designed, built, and delivered to users.\n\nThis lesson sets the foundation for everything you will learn in the rest of the course.",
-      "resources": [
-        {
-          "title": "React Official Docs",
-          "url": "https://react.dev"
-        }
-      ],
       "qa_enabled": true,
       "notes_enabled": true
     },
@@ -284,14 +290,62 @@
       "marks": 100,
       "attachments": [
         {
+          "id": 1,
           "name": "Instructions-1.pdf",
           "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Example.jpg/800px-Example.jpg"
         },
         {
+          "id": 2,
           "name": "Instructions-2.pdf",
           "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Example.jpg/800px-Example.jpg"
         }
       ]
+    },
+    {
+      "id": "0925",
+      "course_id": 34,
+      "title": "Build a React CRUD Application",
+      "description": "## Assignment Overview\n\nIn this assignment, you will build a complete CRUD (Create, Read, Update, Delete) application using React.\n\n### Objectives\n\n- Manage state using `useState` \n-  Fetch data using `useEffect`\n- Implement form handling\n- Handle list rendering with unique keys\n- Use controlled components\n\n### Requirements\n\n1. Create a form to add new items\n2. Display items in a list\n3. Allow editing existing items\n4. Allow deleting items\n5.  Maintain clean component structure\n\n### Submission Guidelines\n\n- Submit working source code\n- Follow clean coding practices\n- Use meaningful variable names\n- Handle edge cases properly\n\nThis assignment will help you understand real-world React application structure.",
+      "due_date": "2026-02-18",
+      "due_time": "19:00",
+      "marks": 50,
+      "attachments": [
+        
+      ]
+    }
+  ],
+  "assignment_submissions": [
+    {
+      "id": "1",
+      "assignment_id": 1,
+      "student_id": 101,
+      "submitted_at": "2026-02-13T10:45:00",
+      "status": "SUBMITTED",
+      "points": 70
+    },
+    {
+      "id": "2",
+      "assignment_id": 1,
+      "student_id": 102,
+      "submitted_at": null,
+      "status": "MISSING",
+      "points": null
+    },
+    {
+      "id": "3",
+      "assignment_id": 1,
+      "student_id": 103,
+      "submitted_at": "2026-02-14T09:15:00",
+      "status": "SUBMITTED",
+      "points": 75
+    },
+    {
+      "id": "4",
+      "assignment_id": 1,
+      "student_id": 104,
+      "submitted_at": "2026-02-16T15:30:00",
+      "status": "DONE_LATE",
+      "points": 65
     }
   ],
   "users": [

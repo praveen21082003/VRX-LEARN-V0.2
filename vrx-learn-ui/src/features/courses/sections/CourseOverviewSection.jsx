@@ -1,6 +1,6 @@
 
 import { Dot } from "lucide-react";
-import CourseThumbnail from "@/components/ui/CourseTumbnail";
+import {CourseTumbnail, Icon} from "@/components/ui";
 import { formatMinutes } from "@/utils/duration";
 import { Button } from "@/components/ui";
 import { NavLink } from "react-router-dom";
@@ -18,7 +18,7 @@ export default function CourseOverviewSection({ course, can }) {
 
   return (
     <div className="flex gap-6 items-start px-10 pt-7">
-      <CourseThumbnail name={course.name} image={course.thumbnail} classRounded="rounded-lg" />
+      <CourseTumbnail name={course.name} image={course.thumbnail} classRounded="rounded-lg" />
 
       <div className="space-y-3 flex-1">
         <div className="flex justify-between">
@@ -40,16 +40,16 @@ export default function CourseOverviewSection({ course, can }) {
           </p>
           <div className="flex items-center text-sm text-muted-foreground text-dark-gray">
             <span>Course</span>
-            <Dot />
+            <Icon name="ph:dot-bold" />
             <span>{formatMinutes(totalLessonMinutes)}</span>
-            <Dot />
+            <Icon name="ph:dot-bold" />
             <span>{course.progess_status}</span>
           </div>
         </div>
 
 
         <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3">
-          {course.description}
+          {course.short_description}
         </p>
       </div>
     </div>

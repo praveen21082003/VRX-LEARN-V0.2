@@ -16,10 +16,19 @@ import QuizPage from "@/features/courses/pages/QuizPage";
 import FeedbackPage from "@/features/courses/pages/FeedbackPage";
 
 import CourseInfoPage from "@/features/admin/layout/CourseInfoPage";
-import EditCoursePage from "@/features/admin/layout/EditCoursePage";
+import EditCourseLayout from "./features/admin/layout/EditCourseLaout";
 import CourseInfo from "@/features/admin/pages/CourseInfo";
 import ModulesEditor from "@/features/admin/pages/ModulesEditor";
-import CreateModule from "@/features/admin/pages/CreateModule";
+import LessonsEditor from "@/features/admin/pages/subPages/LessonsEditor";
+import QuizEditor from '@/features/admin/pages/QuizEditor';
+import AssignmentsEditor from "./features/admin/pages/AssignmentsEditor";
+
+import CreateModule from "@/features/admin/pages/subPages/CreateModule";
+import CreateAssignment from "@/features/admin/pages/subPages/CreateAssignment";
+import CreateLesson from "@/features/admin/pages/subPages/CreateLesson";
+
+
+import Assignment from "@/features/admin/pages/subPages/Assignment";
 
 function App() {
   return (
@@ -53,16 +62,37 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="courses" element={<CourseInfoPage />} />
-            <Route path="courses/:courseSlug/edit" element={<EditCoursePage />}>
+
+
+            <Route path="courses/:courseSlug/create">
+              <Route path="module" element={<CreateModule />} />
+              <Route path="assignment" element={<CreateAssignment />} />
+              <Route path="lesson" element={<CreateLesson/>}/>
+            </Route>
+
+            
+
+
+
+            <Route path="courses/:courseSlug/edit" element={<EditCourseLayout />}>
               <Route index element={<Navigate to="info" replace />} />
               <Route path="info" element={<CourseInfo />} />
-              <Route path="modules" element={<ModulesEditor />} />
-              {/* <Route path="quiz" element={<QuizEditor />} />
-              <Route path="assignment" element={<AssignmentEditor />} />
-              <Route path="lab" element={<LabEditor />} />
+
+              <Route path="modules">
+                <Route index element={<ModulesEditor />} />
+                <Route path=":moduleId" element={<LessonsEditor />} />
+              </Route>
+
+              <Route path="assignments">
+                <Route index element={<AssignmentsEditor />} />
+                <Route path=":assignmentId" element={<Assignment />} />
+              </Route>
+
+
+              <Route path="quiz" element={<QuizEditor />} />
+
+              {/*<Route path="lab" element={<LabEditor />} />
               <Route path="feedback" element={<FeedbackEditor />} /> */}
-            </Route>
-            <Route path="courses/:courseSlug/create" element={<CreateModule/>}>
             </Route>
           </Route>
 

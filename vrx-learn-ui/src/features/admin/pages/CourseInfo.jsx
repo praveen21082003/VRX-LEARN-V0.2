@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import useCourseContent from '@/features/courses/hooks/useCourseContent';
-import { Icon, Input, CourseTumbnail, Button } from "@/components/ui";
+import { Icon, Input, CourseTumbnail, Button, TextEditor } from "@/components/ui";
 import useUpdateCourseDetails from "../hooks/useUpdateCourseDetails";
 import { useParams } from "react-router-dom";
 
@@ -15,6 +15,7 @@ function CourseInfo() {
   const [formData, setFormData] = useState({
     name: "",
     author: "",
+    shortDescription: "",
     description: "",
     thumbnail: "",
   });
@@ -23,6 +24,7 @@ function CourseInfo() {
     setFormData({
       name: courseContent?.name || "",
       author: courseContent?.author || "",
+      shortDescription: courseContent?.short_description || "",
       description: courseContent?.description || "",
       thumbnail: courseContent?.thumbnail || "",
     })
@@ -118,15 +120,25 @@ function CourseInfo() {
 
 
         <div className="space-y-2">
-          <label className="text-sm font-bold">Description</label>
+          <label className="text-sm font-bold">Short description</label>
           <textarea
             rows="6"
-            value={formData.description}
+            value={formData.shortDescription}
             onChange={(e) =>
-              handleChange("description", e.target.value)
+              handleChange("shortDescription", e.target.value)
             }
             className="w-full border text-sm border-border rounded-lg p-3 focus:outline-none focus:ring-2 bg-active focus:ring-primary"
           />
+        </div>
+        <div>
+          <label className="text-sm font-bold">Description</label>
+          <TextEditor
+            value={formData.description}
+            onChange={(value) =>
+              handleChange("description", value)
+            }
+          />
+
         </div>
 
         {/* Submit Button */}

@@ -2,15 +2,36 @@
 import { useAuth } from "@/context/AuthContext"
 import { ChevronDown, Bell } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import ProfileDropdown from "../ProfileDropdown";
+import Dropdown from "../Dropdown";
 import { Icon } from '@/components/ui';
+import { useNavigate } from "react-router-dom";
+
 
 
 
 export default function HeaderProfile() {
     const { user, loading } = useAuth();
     const [open, setOpen] = useState(false);
+    const [mode, setMode] = useState(true)
     const ref = useRef(null);
+    const navigate = useNavigate();
+
+
+    const handleMode = () => {
+        setMode((prev) => !prev)
+    }
+
+    const buttons = [
+        { key: "profile", title: "Profile", icon: "mingcute:user-4-fill" },
+        {
+            key: "theme", title: mode ? "Dark Mode" : "Light Mode", icon:
+                mode 
+                    ? "line-md:sunny-filled-loop-to-moon-filled-loop-transition"
+                    : "line-md:moon-filled-alt-to-sunny-filled-loop-transition",
+            onClick: () => handleMode()
+        },
+        { key: "logout", title: "Log out", icon: "line-md:logout", onClick: () => navigate('/') },
+    ];
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -23,6 +44,8 @@ export default function HeaderProfile() {
         return () =>
             document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+
 
     if (loading) return null;
 
@@ -41,7 +64,7 @@ export default function HeaderProfile() {
                         alt="User profile"
                         className="h-10 w-10 rounded-full object-cover"
                     /> :
-                    <Icon name="mingcute:user-4-fill" height="36" width="36"/>
+                    <Icon name="mingcute:user-4-fill" height="36" width="36" />
                 }
 
                 <span>Profile</span>
@@ -49,7 +72,7 @@ export default function HeaderProfile() {
             </div>
 
             {/* DROPDOWN (POSITIONED FROM WRAPPER) */}
-            {open && <ProfileDropdown />}
+            {open && <Dropdown buttons={buttons} />}
         </div>
     );
 }

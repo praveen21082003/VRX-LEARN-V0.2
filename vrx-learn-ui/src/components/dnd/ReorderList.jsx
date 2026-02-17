@@ -8,6 +8,8 @@ import SortableItem from './SortableItem'
 
 function ReorderList({ items }) {
     const [data, setData] = useState(items);
+    console.log(data)
+    console.log(items)
 
     useEffect(() => {
         setData(items);
