@@ -23,11 +23,6 @@ export default function CourseOverviewSection({ course, can }) {
       <div className="space-y-3 flex-1">
         <div className="flex justify-between">
           <h2 className="text-[26px] font-semibold">{course.name}</h2>
-          {can("UPDATE_COURSE") &&
-            <NavLink to={`/admin/courses/${courseSlug}/edit`} >
-              <Button   className="w-40 p-2 rounded font-semibold text-sm" frontIconName="mdi:book-edit" frontIconHeight="24px" frontIconWidth="24px" buttonName="Edit Course" bgClass="bg-white" textClass="text-[#4D4D4D]" />
-            </NavLink>
-          }
         </div>
 
 

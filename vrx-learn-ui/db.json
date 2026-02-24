@@ -78,7 +78,7 @@
       "id": "34",
       "name": "Advance Full stack web development",
       "author": "Jhon doe",
-      "description": "### Full Stack\n\n**Web development** involves the creation, building, and maintenance of websites and web applications. It encompasses a broad range of tasks, including coding, technical design, and performance optimization. Web development can be classified into two main categories: front-end development and back-end development.",
+      "description": "### Full Stack\n\n**Web development** involves the creation, building, and maintenance of websites and web applications. It encompasses a broad range of tasks, including coding, technical design, and performance optimization. Web development can be classified into two main categories: front-end development and back-end development.\n\n[google](google.com)",
       "progess_status": "in progess",
       "module_count": 4,
       "module_duration": 230,
@@ -115,32 +115,6 @@
           "title": "Client-Server Communication",
           "type": "video",
           "status": "completed"
-        }
-      ]
-    },
-    {
-      "id": "2",
-      "course_id": 34,
-      "title": "Frontend Advanced Concepts",
-      "description": "## Frontend Advanced Concepts - Deep dive into state management, performance optimization, and scalable UI patterns.",
-      "lessons": [
-        {
-          "id": 201,
-          "title": "Advanced React Patterns",
-          "type": "file",
-          "status": "completed"
-        },
-        {
-          "id": 202,
-          "title": "State Management with Redux",
-          "type": "file",
-          "status": "yet_to_complete"
-        },
-        {
-          "id": 203,
-          "title": "Performance Optimization",
-          "type": "video",
-          "status": "yet_to_complete"
         }
       ]
     },
@@ -200,7 +174,27 @@
       "id": "726a",
       "course_id": 34,
       "title": "React Redux",
-      "description": "- Redux is one of the most important topic in react. This manages complex useState hook to easy way.\n- Redux is very helpful to handle the useState and api requestes"
+      "description": "- Redux is one of the most important topic in react. This manages complex useState hook to easy way.\n- Redux is very helpful to handle the useState and api requestes",
+      "lessons": []
+    },
+    {
+      "id": "9091",
+      "course_id": 34,
+      "title": "new sample module",
+      "description": "",
+      "lessons": []
+    },
+    {
+      "id": "f674",
+      "course_id": 34,
+      "title": "dummy2",
+      "description": "dummy2"
+    },
+    {
+      "id": "201e",
+      "course_id": 34,
+      "title": "dummy2",
+      "description": "dummy2"
     }
   ],
   "lessons": [
@@ -306,12 +300,21 @@
       "course_id": 34,
       "title": "Build a React CRUD Application",
       "description": "## Assignment Overview\n\nIn this assignment, you will build a complete CRUD (Create, Read, Update, Delete) application using React.\n\n### Objectives\n\n- Manage state using `useState` \n-  Fetch data using `useEffect`\n- Implement form handling\n- Handle list rendering with unique keys\n- Use controlled components\n\n### Requirements\n\n1. Create a form to add new items\n2. Display items in a list\n3. Allow editing existing items\n4. Allow deleting items\n5.  Maintain clean component structure\n\n### Submission Guidelines\n\n- Submit working source code\n- Follow clean coding practices\n- Use meaningful variable names\n- Handle edge cases properly\n\nThis assignment will help you understand real-world React application structure.",
-      "due_date": "2026-02-18",
+      "due_date": "2026-02-19",
       "due_time": "19:00",
       "marks": 50,
-      "attachments": [
-        
-      ]
+      "attachments": []
+    },
+    {
+      "id": "1312",
+      "course_id": 34,
+      "title": "",
+      "instructions": "",
+      "due_date": "",
+      "due_time": "",
+      "marks": 0,
+      "attempts": 4,
+      "attachments": []
     }
   ],
   "assignment_submissions": [

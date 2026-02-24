@@ -12,7 +12,7 @@ function AssignmentsEditor() {
         <div className="space-y-6">
             <div className='flex justify-between'>
                 <h2 className="text-2xl font-semibold flex items-center gap-3">Assignments</h2>
-                <NavLink to={`/admin/courses/${courseSlug}/create/assignment`}>
+                <NavLink to={`/courses/${courseSlug}/edit/assignments/create`}>
                     <Button buttonName="Add New Assignment" frontIconName="ic:baseline-plus" frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="bg-white" textClass="hover:text-primary" />
                 </NavLink>
             </div>
@@ -20,7 +20,7 @@ function AssignmentsEditor() {
                 {assignments.map((assignment) => (
 
                     <li key={assignment.id} >
-                        <NavLink to={`/admin/courses/${courseSlug}/edit/assignments/${assignment.id}`} className="flex items-center justify-between px-5 py-3 rounded-md hover:bg-surface transition-colors cursor-pointer">
+                        <NavLink to={`/courses/${courseSlug}/edit/assignments/${assignment.id}`} className="flex items-center justify-between px-5 py-3 rounded-md hover:bg-surface transition-colors cursor-pointer">
                             {/* Left side */}
                             <div className="flex items-center gap-3">
                                 <Icon

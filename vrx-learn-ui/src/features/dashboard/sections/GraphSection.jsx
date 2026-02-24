@@ -6,7 +6,7 @@ function GraphSection() {
     const { data, error, loading } = useGraphData();
 
     return (
-        <div className="bg-surface rounded-lg min-h-55 h-56 2xl:h-62 p-4">
+        <div className="bg-surface rounded-lg min-h-55 h-60 2xl:h-79 p-4">
             <div className="flex justify-between items-center">
                 <div>
                     <h3 className="font-semibold text-xs lg:text-xl">
@@ -21,7 +21,9 @@ function GraphSection() {
                 </p>
             </div>
 
-            <Graph data={data} />
+            <div className="flex-1 min-h-0">
+                <Graph data={data} />
+            </div>
         </div>
 
     )

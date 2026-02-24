@@ -1,14 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
-import useCourseContent from '@/features/courses/hooks/useCourseContent';
 import { Icon, Input, CourseTumbnail, Button, TextEditor } from "@/components/ui";
 import useUpdateCourseDetails from "../hooks/useUpdateCourseDetails";
-import { useParams } from "react-router-dom";
+import { useParams,useOutletContext } from "react-router-dom";
 
 
 function CourseInfo() {
   const { courseSlug } = useParams();
-  const { courseContent } = useCourseContent(courseSlug);
+
+  const {courseContent} = useOutletContext();
+  
   const { updateCourse, loading } = useUpdateCourseDetails();
+
 
   const fileInputRef = useRef(null);
 
@@ -79,13 +81,13 @@ function CourseInfo() {
               label="Title"
               value={formData.name}
               onChange={(e) => handleChange("name", e.target.value)}
-              bgClass="bg-active"
+              bgClass="bg-primary-border"
             />
             <Input
               label="Author"
               value={formData.author}
               onChange={(e) => handleChange("author", e.target.value)}
-              bgClass="bg-active"
+              bgClass="bg-primary-border"
             />
           </div>
 

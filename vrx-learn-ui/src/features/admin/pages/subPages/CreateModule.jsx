@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useOutletContext } from 'react-router-dom';
 import { Input, Button, TextEditor } from '@/components/ui'
 import useCreateModule from '../../hooks/useCreateModule';
+import { useToast } from '@/context/ToastProvider';
+import BackButton from '@/components/navigation/BackButton';
+
 
 function CreateModule() {
     const { courseSlug } = useParams();
     const { createModule, loading, error } = useCreateModule();
+    const { addToast } = useToast();
+    const {courseContent} = useOutletContext();
 
     const [formData, setFormData] = useState({
         course_id: Number(courseSlug),
@@ -26,20 +31,21 @@ function CreateModule() {
         e.preventDefault();
         try {
             await createModule(formData);
-            alert("Module created successfully");
+            addToast("Module created successfully", "success");
+
         } catch (err) {
-            alert("Something went wrong");
+            addToast("Module created successfully", "success");
         }
     }
 
 
     return (
-        <main className="flex-1 min-h-0 overflow-y-auto py-4 px-6">
-            <h2 className="text-2xl font-semibold flex items-center gap-3">New Module</h2>
-
-
+        <>
+            <BackButton to={`/admin/courses/${courseSlug}/edit`} label={`Course - ${courseContent?.name || "Loading..."}`} />
+            <h2 className="text-2xl py-5 font-semibold flex items-center gap-3">New Module</h2>
             <Input
                 label="Title"
+                placeholder="Module name"
                 value={formData.title}
                 onChange={(e) => handleChange("title", e.target.value)}
             />
@@ -54,7 +60,7 @@ function CreateModule() {
             <div className='flex justify-center'>
                 <Button buttonName="Save" onClick={handleSubmit} className="mt-5 px-5 py-2 rounded" />
             </div>
-        </main>
+        </>
     )
 }
 

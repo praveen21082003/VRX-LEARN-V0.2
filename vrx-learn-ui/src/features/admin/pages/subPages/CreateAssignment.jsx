@@ -12,18 +12,29 @@ function CreateAssignment() {
     const [formData, setFormData] = useState({
         course_id: Number(courseSlug),
         title: "",
-        description: "",
+        instructions: "",
         due_date: "",
         due_time: "",
         marks: 0,
+        max_attempts: 1,
         attachments: []
     });
+
+    const [formDataErrors, setFormDataErrors] = useState({});
+
 
     const handleChange = (field, value) => {
         setFormData((prev) => ({
             ...prev,
             [field]: value,
         }));
+
+        if (formDataErrors[field]) {
+            setFormDataErrors((prev) => ({
+                ...prev,
+                [field]: ""
+            }))
+        }
     };
 
     useEffect(() => {
@@ -38,8 +49,36 @@ function CreateAssignment() {
         }));
     }, [files]);
 
+
+    const validate = () => {
+        const newErrors = {};
+
+        if (!formData.title.trim()) {
+            newErrors.title = "Title is required"
+        }
+        if (!formData.instructions.trim()) {
+            newErrors.instructions = "Instructions is required";
+        }
+        if (formData.max_attempts > 3) {
+            newErrors.max_attempts = "You cannot set more than 3 attempts";
+        } else if (formData.max_attempts <= 0) {
+            newErrors.max_attempts = "Max attempts must be at least 1";
+        }
+
+        return newErrors;
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const validationErrors = validate();
+
+        if (Object.keys(validationErrors).length > 0) {
+            setFormDataErrors(validationErrors);
+            return;
+        }
+
+
         try {
             await createAssignment(formData);
             alert("Module created successfully");
@@ -49,20 +88,20 @@ function CreateAssignment() {
     };
 
     return (
-        <main className="flex-1 min-h-0 overflow-y-auto py-4 px-6">
-            <div className='flex justify-between'>
-                <h2 className="text-2xl font-semibold flex items-center gap-3">New Assignment</h2>
-            </div>
-            <div className='space-y-3 mt-10'>
+        <>
+            <h2 className="text-2xl font-semibold flex items-center">New Assignment</h2>
+            <div className='space-y-3'>
                 <Input
                     label="Title"
+                    placeholder="Assignment name"
                     value={formData.title}
+                    inputWarning={formDataErrors.title}
                     onChange={(e) => handleChange("title", e.target.value)}
                 />
                 <TextEditor
-                    label="Description"
+                    label="Instructions"
                     value={formData.description}
-                    onChange={(value) => handleChange("description", value)}
+                    onChange={(value) => handleChange("instructions", value)}
                 />
                 <div className='flex space-x-2'>
                     <Input
@@ -82,8 +121,19 @@ function CreateAssignment() {
                     <Input
                         label="Max Points"
                         type="number"
+                        min='0'
                         value={formData.marks}
+                        inputWarning={formDataErrors.marks}
                         onChange={(e) => handleChange("marks", Number(e.target.value))}
+                    />
+                    <Input
+                        label="Max Attempts"
+                        type="number"
+                        min="1"
+                        max="3"
+                        inputWarning={formDataErrors.max_attempts}
+                        value={formData.max_attempts}
+                        onChange={(e) => handleChange("max_attempts", Number(e.target.value))}
                     />
                 </div>
                 <div className="h-80 w-full mt-4" >
@@ -95,7 +145,7 @@ function CreateAssignment() {
                 <Button buttonName="Save" onClick={handleSubmit} className="mt-5 px-5 py-2 rounded" />
             </div>
 
-        </main>
+        </>
     )
 }
 

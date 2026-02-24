@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Dropdown from "../Dropdown";
 import { Icon } from '@/components/ui';
 import { useNavigate } from "react-router-dom";
+import { getProfileDropdown } from "@/config/DropdownButtons";
 
 
 
@@ -12,26 +13,23 @@ import { useNavigate } from "react-router-dom";
 export default function HeaderProfile() {
     const { user, loading } = useAuth();
     const [open, setOpen] = useState(false);
-    const [mode, setMode] = useState(true)
+    const [mode, setMode] = useState(true);
     const ref = useRef(null);
     const navigate = useNavigate();
+
 
 
     const handleMode = () => {
         setMode((prev) => !prev)
     }
 
-    const buttons = [
-        { key: "profile", title: "Profile", icon: "mingcute:user-4-fill" },
-        {
-            key: "theme", title: mode ? "Dark Mode" : "Light Mode", icon:
-                mode 
-                    ? "line-md:sunny-filled-loop-to-moon-filled-loop-transition"
-                    : "line-md:moon-filled-alt-to-sunny-filled-loop-transition",
-            onClick: () => handleMode()
-        },
-        { key: "logout", title: "Log out", icon: "line-md:logout", onClick: () => navigate('/') },
-    ];
+    const buttons = getProfileDropdown({
+        mode,
+        handleMode,
+        navigate,
+    });
+
+
 
     useEffect(() => {
         function handleClickOutside(event) {

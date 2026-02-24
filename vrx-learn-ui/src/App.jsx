@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./layouts/ProtectedRoute";
+import { ToastProvider } from "./context/ToastProvider";
 
 import AppLayout from "@/layouts/AppLayout";
 import LearningLayout from "@/layouts/LearningLayout";
@@ -32,85 +33,72 @@ import Assignment from "@/features/admin/pages/subPages/Assignment";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <ToastProvider>
 
 
-        <Route path="/" element={<Layout />} />
-
-        {/* STUDENT */}
-        <Route element={<ProtectedRoute allowedRoles={["STUDENT"]} />}>
-          <Route element={<AppLayout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/courses" element={<CoursesPage />} />
-          </Route>
-
-          <Route path="/learn/:courseSlug" element={<LearningLayout />}>
-            <Route index element={<Navigate to="overview" replace />} />
-            <Route path="overview" element={<CourseOverviewPage />} />
-            <Route path="lessons" element={<LessonsPage />} />
-            <Route path="lessons/:lessonId" element={<LessonsPage />} />
-            <Route path="assignments" element={<AssignmentPage />} />
-            <Route path="labs" element={<LabPage />} />
-            <Route path="quizzes" element={<QuizPage />} />
-            <Route path="feedback" element={<FeedbackPage />} />
-          </Route>
-        </Route>
-
-        {/* ADMIN / TRAINER / SUBADMIN */}
-        <Route element={<ProtectedRoute allowedRoles={["ADMIN", "SUBADMIN", "TRAINER"]} />}>
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<DashboardPage />} />
-            <Route path="courses" element={<CourseInfoPage />} />
+      <BrowserRouter>
+        <Routes>
 
 
-            <Route path="courses/:courseSlug/create">
-              <Route path="module" element={<CreateModule />} />
-              <Route path="assignment" element={<CreateAssignment />} />
-              <Route path="lesson" element={<CreateLesson/>}/>
+          <Route path="/" element={<Layout />} />
+
+          {/* Trainee */}
+          <Route element={<ProtectedRoute allowedRoles={["TRAINEE"]} />}>
+            <Route element={<AppLayout />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/courses" element={<CoursesPage />} />
             </Route>
 
-            
-
-
-
-            <Route path="courses/:courseSlug/edit" element={<EditCourseLayout />}>
-              <Route index element={<Navigate to="info" replace />} />
-              <Route path="info" element={<CourseInfo />} />
-
-              <Route path="modules">
-                <Route index element={<ModulesEditor />} />
-                <Route path=":moduleId" element={<LessonsEditor />} />
-              </Route>
-
-              <Route path="assignments">
-                <Route index element={<AssignmentsEditor />} />
-                <Route path=":assignmentId" element={<Assignment />} />
-              </Route>
-
-
-              <Route path="quiz" element={<QuizEditor />} />
-
-              {/*<Route path="lab" element={<LabEditor />} />
-              <Route path="feedback" element={<FeedbackEditor />} /> */}
+            <Route path="/learn/:courseSlug" element={<LearningLayout />}>
+              <Route index element={<Navigate to="overview" replace />} />
+              <Route path="overview" element={<CourseOverviewPage />} />
+              <Route path="lessons" element={<LessonsPage />} />
+              <Route path="lessons/:lessonId" element={<LessonsPage />} />
+              <Route path="assignments" element={<AssignmentPage />} />
+              <Route path="labs" element={<LabPage />} />
+              <Route path="quizzes" element={<QuizPage />} />
+              <Route path="feedback" element={<FeedbackPage />} />
             </Route>
           </Route>
 
-          <Route path="/admin/learn/:courseSlug" element={<LearningLayout />}>
-            <Route index element={<Navigate to="overview" replace />} />
-            <Route path="overview" element={<CourseOverviewPage />} />
-            <Route path="lessons" element={<LessonsPage />} />
-            <Route path="lessons/:lessonId" element={<LessonsPage />} />
-            <Route path="assignments" element={<AssignmentPage />} />
-            <Route path="labs" element={<LabPage />} />
-            <Route path="quizzes" element={<QuizPage />} />
-            <Route path="feedback" element={<FeedbackPage />} />
+          {/* ADMIN / TRAINER / SUBADMIN */}
+          <Route element={<ProtectedRoute allowedRoles={["ADMIN", "SUBADMIN", "TRAINER"]} />}>
+            <Route element={<AppLayout />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+            </Route>
+
+            <Route path="/courses/:courseSlug" element={<AdminLayout />}>
+              <Route path="edit" element={<EditCourseLayout />}>
+
+                <Route index element={<Navigate to="info" replace />} />
+
+                <Route path="info" element={<CourseInfo />} />
+
+                <Route path="modules">
+                  <Route index element={<ModulesEditor />} />
+                  <Route path=":moduleId" element={<LessonsEditor />} />
+                  <Route path="create" element={<CreateModule />} />
+                  <Route path=":moduleId/lesson/create" element={<CreateLesson />} />
+                </Route>
+
+                <Route path="assignments">
+                  <Route index element={<AssignmentsEditor />} />
+                  <Route path=":assignmentId" element={<Assignment />} />
+                  <Route path="create" element={<CreateAssignment />} />
+                </Route>
+
+                <Route path="quiz" element={<QuizEditor />} />
+
+              </Route>
+
+            </Route>
+
+
+
           </Route>
-        </Route>
-
-
-      </Routes>
-    </BrowserRouter >
+        </Routes>
+      </BrowserRouter >
+    </ToastProvider>
   );
 }
 

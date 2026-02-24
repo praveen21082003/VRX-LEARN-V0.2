@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Icon } from "@/components/ui";
 
 export default function BackButton({
-  label = "Back to Course",
+  label = "",
+  iconName = "",
   to = -1,
   replace = true,
 }) {
@@ -13,12 +14,14 @@ export default function BackButton({
       onClick={() => navigate(to, replace)}
       className="flex items-center gap-2 text-sm font-medium text-primary hover:underline cursor-pointer"
     >
-      <Icon
-        name="material-symbols:arrow-back-rounded"
-        width="18px"
-        height="18px"
-      />
-      {label}
+      {iconName &&
+        <Icon
+          name={iconName}
+          width="18px"
+          height="18px"
+        />
+      }
+      {label && <>{label}</>}
     </button>
   );
 }

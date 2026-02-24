@@ -3,6 +3,7 @@ import { Eye, EyeClosed } from 'lucide-react';
 import InputWarnMessage from "../Warning";
 
 function Input({
+    ref,
     name,
     label,
     placeholder,
@@ -10,9 +11,13 @@ function Input({
     type = "text",
     value,
     onChange,
+    maxLength,
+    min,
+    max,
     inputWarning,
     disabled = false,
-    bgClass = "bg-white"
+    bgClass = "bg-white",
+    onKeyDown,
 
 
 }) {
@@ -31,7 +36,7 @@ function Input({
                     {label}
                 </label>
             )}
-            
+
 
             {/* Input wrapper */}
             <div className="relative flex items-center">
@@ -44,10 +49,15 @@ function Input({
 
                 {/* Input */}
                 <input
+                    ref={ref}
                     name={name}
                     type={isPassword && showPassword ? "text" : type}
                     value={value}
                     onChange={onChange}
+                    onKeyDown={onKeyDown}
+                    min={min}
+                    max={max}
+                    maxLength={maxLength}
                     disabled={disabled}
                     placeholder={placeholder}
                     className={`
@@ -64,6 +74,7 @@ function Input({
                         [&::-ms-reveal]:hidden
                         [&::-ms-clear]:hidden
                     `}
+
                 />
                 {isPassword && (
                     <button

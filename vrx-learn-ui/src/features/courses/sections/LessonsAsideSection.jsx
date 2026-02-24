@@ -56,7 +56,7 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                                    transition={{ duration: 0.4, ease: "easeInOut" }}
                                     className='space-y-1 overflow-hidden'
                                 >
                                     {module.lessons.map((lesson, lessonIndex) => {

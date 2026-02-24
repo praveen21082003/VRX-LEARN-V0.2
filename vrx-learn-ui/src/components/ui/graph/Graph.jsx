@@ -14,7 +14,7 @@ function Graph({ data }) {
   if (!data) return <p>Loading...</p>;
 
   return (
-    <div className="w-full min-w-0 min-h-35 h-32 sm:h-36 md:h-40 lg:h-50">
+    <div className="w-full h-full">
       <ResponsiveContainer
         width="100%"
         height="100%"

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Dot } from 'lucide-react'
 import { formatMinutes } from "@/utils/duration";
-import { Button,Tabs } from '@/components/ui'
+import { Button, Tabs } from '@/components/ui'
 import Overview from './Overview';
 import QuestionAnswers from './QuestionAnswers';
 // import { Video } from '../../../components/content';
@@ -54,13 +54,18 @@ function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
                 <div className='flex gap-4 w-[30%]'>
                     <Button
                         buttonName="Previous"
+                        frontIconName="stash:arrow-left-large-duotone"
+                        frontIconHeight="16"
+                        frontIconWidth="16"
                         bgClass="bg-white"
                         textClass="text-black"
-                        className="p-2 rounded px-5 font-semibold"
+                        className="p-1 rounded font-semibold"
                         onClick={() => setButtonAction("previous")}
                     />
                     <Button
                         buttonName="Next"
+                        backIconName="stash:arrow-right-large-duotone"
+                        backIconHeight="16"
                         bgClass="bg-primary"
                         textClass="text-white"
                         className="p-2 rounded px-5 font-semibold"

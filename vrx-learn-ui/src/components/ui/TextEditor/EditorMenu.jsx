@@ -1,9 +1,11 @@
-import React from "react"
+import React, { useState } from "react"
 import { Button } from "@/components/ui"
 import { EDITOR_TOOLBAR_MENU } from "@/config/editorToolBar"
 import { useEditorState } from "@tiptap/react"
+import LinkModal from "./LinkModal"
 
 function EditorMenu({ editor }) {
+    const [isLinkOpen, setIsLinkOpen] = useState(false)
 
     const editorState = useEditorState({
         editor,
@@ -31,6 +33,12 @@ function EditorMenu({ editor }) {
                     className={`flex px-2 ${groupIndex !== 0 ? "border-l border-primary-border" : ""
                         }`}
                 >
+                    {isLinkOpen && (
+                        <LinkModal
+                            editor={editor}
+                            onClose={() => setIsLinkOpen(false)}
+                        />
+                    )}
                     {group.map((item, index) => (
                         <Button
                             key={index}
@@ -38,8 +46,14 @@ function EditorMenu({ editor }) {
                             frontIconWidth="24px"
                             bgClass="bg-none"
                             frontIconName={item.icon}
-                            onClick={() => item.action(editor)}
-                            textClass={editorState[item.key]? "text-blue-600" : "text-border"}
+                            onClick={() => {
+                                if (item.type === "link") {
+                                    setIsLinkOpen(true)
+                                } else {
+                                    item.action(editor)
+                                }
+                            }}
+                            textClass={editorState[item.key] ? "text-blue-600" : "text-border"}
                         />
                     ))}
                 </div>

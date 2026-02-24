@@ -1,26 +1,37 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { useParams, NavLink, useNavigate } from 'react-router-dom';
 import clsx from 'clsx'
-import { Button, Icon, Dropdown, MarkdownContent } from '@/components/ui'
+
+
+import { Button, Icon, Dropdown, MarkdownContent, Input } from '@/components/ui'
 import ReorderList from '@/components/dnd/ReorderList';
-import { NavLink } from 'react-router-dom';
+import { useToast } from '@/context/ToastProvider';
 
 
 
-import { useParams } from 'react-router-dom';
 import useModule from '../../hooks/useModule';
+import useUpdateLesson from '../../hooks/useUpdateLesson';
+import { editButtons, buttons } from '@/config/DropdownButtons.js'
+
 
 function LessonsEditor() {
+    // const navigate = useNavigate();
+    const inputRef = useRef();
+    const rowRefs = useRef({});
+    const { updateLesson } = useUpdateLesson();
+    const { addToast } = useToast();
+
+
     const { moduleId, courseSlug } = useParams();
     const { module, loading, error } = useModule(moduleId);
     const [isReorderMode, setIsReorderMode] = useState(false);
     const [orderedLessons, setOrderedLessons] = useState([]);
     const [openDropDown, setOpenDropDown] = useState(false);
+    const [isOpenDropdown, setIsOpenDropdown] = useState(null);
+    const [renameLessonId, setRenameLessonId] = useState(null);
+    const [renameValue, setRenameValue] = useState("");
 
-    const buttons = [
-        { key: "rename", title: "Rename", icon: "ix:rename", onClick: () => alert("rename clicked") },
-        { key: "reorder", title: "Reorder", icon: "ix:reorder", onClick: () => setIsReorderMode(true) },
-        { key: "delete", title: "Delete", icon: "ic:baseline-delete", onClick: () => alert("delete clicked") },
-    ];
+
 
     useEffect(() => {
         if (module?.lessons) {
@@ -28,7 +39,52 @@ function LessonsEditor() {
         }
     }, [module]);
 
+    useEffect(() => {
+        if (renameLessonId && inputRef.current) {
+            inputRef.current.focus();
+            inputRef.current.select(); // optional → selects text
+        }
+    }, [renameLessonId]);
+
+
+
+    const handleReorder = () => {
+        setIsReorderMode(true);
+    }
+
     if (loading) return <p>Loading...</p>
+
+    const handleRename = (lessonId) => {
+        const lesson = orderedLessons.find(l => l.id === lessonId);
+        setRenameLessonId(lessonId);
+        setRenameValue(lesson?.title || "");
+        setIsOpenDropdown(null);
+
+    }
+
+
+    async function renameLessonHandler(lessonId) {
+        const newTitle = renameValue.trim();
+
+        if (!newTitle) return;
+
+        try {
+            await updateLesson(lessonId, { title: newTitle });
+
+            setOrderedLessons(prev =>
+                prev.map(l =>
+                    l.id === lessonId ? { ...l, title: newTitle } : l
+                )
+            );
+            addToast("Lesson Renamed", "success")
+
+            setRenameLessonId(null);
+        } catch (error) {
+            console.error(error);
+            addToast("Error Occured", "error")
+        }
+    }
+
 
     return (
         <div className="space-y-6">
@@ -36,17 +92,18 @@ function LessonsEditor() {
                 <h2 className="text-2xl font-semibold flex items-center gap-3">{module?.title}</h2>
                 <div className='flex gap-px'>
                     <span className=' flex gap-3'>
-                        <NavLink to={`/admin/courses/${courseSlug}/create/lesson`}>
-                            <Button buttonName="Add New Lesson" frontIconName='ic:baseline-plus' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="bg-white" textClass="text-primary" />
-                        </NavLink>
+
                         {isReorderMode
                             ? <Button buttonName='Done' frontIconWidth="24px" frontIconHeght="24px" frontIconName='material-symbols:done-rounded' className="p-1 px-4 rounded" onClick={() => setIsReorderMode(false)} />
                             : <div className='relative flex gap-px'>
                                 <Button buttonName="Edit Details" frontIconName='mingcute:pencil-line' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="bg-white" textClass="text-primary" />
                                 <Button frontIconName="subway:down-2" frontIconWidth="16px" frontIconHeght="16px" className="p-2 px-2 rounded" onClick={() => setOpenDropDown((prve) => !prve)} />
-                                {openDropDown && <Dropdown buttons={buttons} closeDropdown={() => setOpenDropDown(false)} />}
+                                {openDropDown && <Dropdown buttons={editButtons(handleReorder)} closeDropdown={() => setOpenDropDown(false)} />}
                             </div>
                         }
+                        <NavLink to={`/admin/courses/${courseSlug}/edit/modules/${moduleId}/lesson/new`}>
+                            <Button buttonName="Add New Lesson" frontIconName='ic:baseline-plus' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="bg-white" textClass="text-primary" />
+                        </NavLink>
                     </span>
                 </div>
             </div>
@@ -54,17 +111,72 @@ function LessonsEditor() {
             {isReorderMode
                 ? <ReorderList items={orderedLessons} />
                 : <div>
-                    {orderedLessons.map((lesson, index) => (
-                        <div key={lesson.id} className='flex gap-2 items-center px-3 py-3 rounded font-semibold hover:text-primary  hover:bg-active'>
-                            <Icon name={`${lesson.type === 'video' ? "ep:video-play" : "basil:document-outline"}`} height="25px" width="25px" />
-                            <div className='flex justify-between w-full items-center'>
-                                <span className="py-1">
-                                    {index + 1}.{lesson.title}
-                                </span>
-                                <Icon name="pepicons-pencil:dots-x" height="25px" width="25px" />
+                    {orderedLessons.map((lesson, index) => {
+                        const isOpen = isOpenDropdown === lesson.id;
+                        return (
+                            <div key={lesson.id}
+                                ref={(el) => (rowRefs.current[lesson.id] = el)}
+                                className={clsx(
+                                    'flex justify-between gap-3 items-center px-5 py-3 rounded font-semibold hover:bg-active cursor-pointer',
+                                    isOpenDropdown === lesson.id || renameLessonId === lesson.id && 'bg-active'
+                                )}
+                            >
+                                <Icon name={`${lesson.type === 'video' ? "ep:video-play" : "basil:document-outline"}`} height="25px" width="25px" />
+                                <div className='flex justify-between w-full items-center'>
+                                    <span className="py-1 mr-2">
+                                        {index + 1}.
+                                    </span>
+                                    {renameLessonId === lesson.id ? (
+                                        <Input
+                                            ref={inputRef}
+                                            value={renameValue}
+                                            onChange={(e) => setRenameValue(e.target.value)}
+                                            autoFocus
+                                            className="text-sm"
+                                            bgClass="bg-primary-border"
+                                            onBlur={() => setRenameLessonId(null)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                    e.preventDefault();
+                                                    renameLessonHandler(module.id);
+                                                }
+
+                                                if (e.key === "Escape") {
+                                                    setRenameLessonId(null);
+                                                }
+                                            }}
+                                        />
+                                    )
+                                        : (
+                                            <span className="truncate flex-1">
+                                                {lesson.title}
+                                            </span>
+                                        )}
+                                    <div
+                                        className='relative w-20 flex justify-center'
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            setIsOpenDropdown(prev =>
+                                                prev === lesson.id ? null : lesson.id
+                                            );
+                                        }}
+                                    >
+                                        <Icon name="iconamoon:menu-kebab-horizontal" height="32px" width="32px" className="cursor-help" />
+                                        {isOpen && (
+                                            <Dropdown
+                                                buttons={buttons(handleRename, lesson.id)}
+                                                closeDropdown={() => {
+                                                    console.log("Closing...");
+                                                    setIsOpenDropdown(null);
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
             }
         </div>

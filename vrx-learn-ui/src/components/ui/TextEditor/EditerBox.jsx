@@ -20,6 +20,7 @@ function EditerBox({ label, value, onChange }) {
                 heading: {
                     levels: [1, 2, 3],
                 },
+                link: false,
             }),
             Link.configure({
                 openOnClick: false,
@@ -39,7 +40,7 @@ function EditerBox({ label, value, onChange }) {
 
     useEffect(() => {
         if (editor && value !== editor.storage.markdown.getMarkdown()) {
-            editor.commands.setContent(value || "", false);
+            editor.commands.setContent(value ?? "", false);
         }
     }, [value, editor]);
 

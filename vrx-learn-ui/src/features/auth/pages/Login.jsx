@@ -40,7 +40,7 @@ function Login() {
                 navigate("/dashboard", { replace: true });
             }
             else {
-                navigate("/admin", { replace: true })
+                navigate("/dashboard", { replace: true })
             }
 
         } catch (err) {

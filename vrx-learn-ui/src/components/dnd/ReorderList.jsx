@@ -47,7 +47,7 @@ function ReorderList({ items }) {
             <DndContext collisionDetection={closestCorners} sensors={sensors} onDragEnd={handleDragEnd}>
                 <SortableContext items={items} strategy={verticalListSortingStrategy}>
                     <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-800">
-                        <Icon name="hugeicons:drag-02" height="22px" width="22px" />
+                        <Icon name="streamline:one-finger-drag-vertical-remix" height="22px" width="22px" />
                         Drag to Reorder
                     </h3>
 

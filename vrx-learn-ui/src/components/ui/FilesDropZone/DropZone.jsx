@@ -1,5 +1,5 @@
 import { useDropzone } from "react-dropzone";
-import { Icon, Button } from "@/components/ui";
+import { Icon } from "@/components/ui";
 
 
 
@@ -107,12 +107,6 @@ export default function DropZone({ label, files, multipleFiles, onFilesChange, h
               );
             })}
           </div>
-          <Button
-            buttonName="Submit"
-            bgClass="bg-primary"
-            className="p-2 px-10 rounded"
-          // onClick={handleSubmit}
-          />
         </div>
       )}
     </div>

@@ -58,18 +58,13 @@ export const EDITOR_TOOLBAR_MENU = [
         {
             icon: "si:link-fill",
             key: "link",
-            action: (editor) => {
-                const url = prompt("Enter URL")
-                if (url) {
-                    editor.chain().focus().setLink({ href: url }).run()
-                }
-            },
+            type: "link",
         },
         {
             icon: "mdi:code",
             key: "codeBlock",
             action: (editor) =>
-                editor.chain().focus().toggleCodeBlock().run(),
+                editor.chain().focus().toggleCode().run(),
 
         },
     ],

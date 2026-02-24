@@ -3,7 +3,7 @@ import { Children } from "react";
 export const COURSE_EDIT_SECTIONS = [
     {
         key: "info",
-        label: "CourseInformation",
+        label: "Course Information",
         path: "info",
 
     },
