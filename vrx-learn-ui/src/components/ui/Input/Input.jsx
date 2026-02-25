@@ -18,6 +18,7 @@ function Input({
     disabled = false,
     bgClass = "bg-white",
     onKeyDown,
+    paddingClass,
 
 
 }) {
@@ -43,7 +44,7 @@ function Input({
                 {/* Icon */}
                 {icon && (
                     <span className="absolute left-3">
-                        {icon}
+                        <Icon name={icon} width="18px" height="18px" />
                     </span>
                 )}
 
@@ -62,7 +63,7 @@ function Input({
                     placeholder={placeholder}
                     className={`
                         w-full rounded-lg border
-                        p-3 ${icon ? "pl-10" : ""}
+                        ${paddingClass? paddingClass : "p-3" } ${icon ? "pl-10" : ""}
                         text-sm
                         outline-none
                         transition

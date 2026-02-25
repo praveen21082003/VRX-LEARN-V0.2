@@ -5,7 +5,7 @@ import { ToastProvider } from "./context/ToastProvider";
 import AppLayout from "@/layouts/AppLayout";
 import LearningLayout from "@/layouts/LearningLayout";
 import AdminLayout from "@/layouts/AdminLayout";
-import Layout from "./features/auth/pages/Layout";
+import Layout from "./features/auth/layout/Layout";
 
 import DashboardPage from "@/features/dashboard/pages/DashboardPage";
 import CoursesPage from "@/features/courses/pages/CoursesPage";
