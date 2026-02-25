@@ -1,100 +1,78 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import { formatMinutes } from "@/utils/duration";
-import { Button, Tabs, Icon } from '@/components/ui'
-import Overview from './Overview';
-import QuestionAnswers from './QuestionAnswers';
+import { Button, Tabs, Icon } from "@/components/ui";
+import Overview from "./Overview";
+import QuestionAnswers from "./QuestionAnswers";
 // import { Video } from '../../../components/content';
-
+import Viewer from "@/components/content/DocViewer/Viewer";
 
 function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
-    const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("overview");
 
-    const tabs = [
-        { label: "Overview", value: "overview" },
-        { label: "Q&A", value: "qa" },
-    ];
+  const tabs = [
+    { label: "Overview", value: "overview" },
+    { label: "Q&A", value: "qa" },
+  ];
 
-    if (error) return <p>Failed to load course</p>;
+  if (error) return <p>Failed to load course</p>;
 
-
-    if (!activeLesson || !lesson) {
-        return (
-            <main className="flex-1 flex items-center justify-center">
-                <p className="text-muted-foreground">Loading lesson...</p>
-            </main>
-        );
-    }
-
-
+  if (!activeLesson || !lesson) {
     return (
-        <main className="flex-1 overflow-y-auto p-3">
-            <h1 className="text-xl font-semibold">
-                {activeLesson.moduleIndex + 1}.{activeLesson.lessonIndex + 1}{" "}
-                {lesson?.title}
-            </h1>
-            <div className="flex items-center text-sm text-muted-foreground text-dark-gray">
-                <span>{lesson?.type}</span>
-                <Icon name="ph:dot-bold" />
-                <span>{formatMinutes(lesson?.duration_minutes)}</span>
-                <Icon name="ph:dot-bold" />
-                <span>{lesson?.status}</span>
-            </div>
-            <div className='flex justify-center'>
-                {lesson?.type === "video" && (
-                    // <Video url={lesson.video_url}/>
-                    <video
-                        className="h-110 w-full min-h-100 rounded-lg"
-                        src={lesson.video_url}
-                        controls
-                    />
-                )}
-            </div>
-            <div className="flex justify-between items-center pt-4">
-                <div className='flex gap-4 w-[30%]'>
-                    <Button
-                        buttonName="Previous"
-                        frontIconName="stash:arrow-left-large-duotone"
-                        frontIconHeight="16"
-                        frontIconWidth="16"
-                        bgClass="bg-white"
-                        textClass="text-black"
-                        className="p-1 rounded font-semibold"
-                        onClick={() => setButtonAction("previous")}
-                    />
-                    <Button
-                        buttonName="Next"
-                        backIconName="stash:arrow-right-large-duotone"
-                        backIconHeight="16"
-                        bgClass="bg-primary"
-                        textClass="text-white"
-                        className="p-2 rounded px-5 font-semibold"
-                        onClick={() => setButtonAction("next")}
-                    />
-                </div>
-                <div>
-                    <Button
-                        buttonName="Mark as Completed"
-                        bgClass="bg-white"
-                        textClass="text-black"
-                        className="p-2 rounded px-5 font-semibold"
-                    />
-                </div>
-            </div>
-            <div className="mt-6">
-                <Tabs
-                    tabs={tabs}
-                    activeTab={activeTab}
-                    onChange={setActiveTab}
-                />
+      <main className="flex-1 flex items-center justify-center">
+        <p className="text-muted-foreground">Loading lesson...</p>
+      </main>
+    );
+  }
 
-                <div className="py-5">
-                    {activeTab === "overview" && <Overview lesson={lesson} />}
-                    {activeTab === "qa" && <QuestionAnswers />}
-                </div>
-            </div>
+  return (
+    <main className="flex-1 overflow-y-auto p-3">
+      <h1 className="text-xl font-semibold">
+        {activeLesson.moduleIndex + 1}.{activeLesson.lessonIndex + 1}{" "}
+        {lesson?.title} 
+      </h1>
+      <Viewer lesson={lesson} error={error} activeLesson={activeLesson} setButtonAction={setButtonAction}/>
+      
+      <div className="flex justify-between items-center pt-4">
+        <div className="flex gap-4 w-[30%]">
+          <Button
+            buttonName="Previous"
+            frontIconName="stash:arrow-left-large-duotone"
+            frontIconHeight="16"
+            frontIconWidth="16"
+            bgClass="bg-white"
+            textClass="text-black"
+            className="p-1 rounded font-semibold"
+            onClick={() => setButtonAction("previous")}
+          />
+          <Button
+            buttonName="Next"
+            backIconName="stash:arrow-right-large-duotone"
+            backIconHeight="16"
+            bgClass="bg-primary"
+            textClass="text-white"
+            className="p-2 rounded px-5 font-semibold"
+            onClick={() => setButtonAction("next")}
+          />
+        </div>
+        <div>
+          <Button
+            buttonName="Mark as Completed"
+            bgClass="bg-white"
+            textClass="text-black"
+            className="p-2 rounded px-5 font-semibold"
+          />
+        </div>
+      </div>
+      <div className="mt-6">
+        <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
-        </main>
-    )
+        <div className="py-5">
+          {activeTab === "overview" && <Overview lesson={lesson} />}
+          {activeTab === "qa" && <QuestionAnswers />}
+        </div>
+      </div>
+    </main>
+  );
 }
 
-export default LessonsMainSection
+export default LessonsMainSection;

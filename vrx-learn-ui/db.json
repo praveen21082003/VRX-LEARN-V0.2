@@ -117,6 +117,30 @@
           "status": "completed"
         }
       ]
+    },{
+      "id": "2",
+      "course_id": 34,
+      "title": "Frontend Advanced Concepts",
+      "lessons": [
+        {
+          "id": 201,
+          "title": "Advanced React Patterns",
+          "type": "file",
+          "status": "completed"
+        },
+        {
+          "id": 202,
+          "title": "State Management with Redux",
+          "type": "file",
+          "status": "yet_to_complete"
+        },
+        {
+          "id": 203,
+          "title": "Performance Optimization",
+          "type": "video",
+          "status": "yet_to_complete"
+        }
+      ]
     },
     {
       "id": "3",
@@ -216,6 +240,129 @@
       "status": "completed",
       "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
       "overview": "## Lesson Overview\n\nClient–server communication is the backbone of every web application.\n\nIn this lesson, you will learn:\n- What happens when a user clicks a button in the browser\n- How requests travel from client to server\n- How servers process requests and send responses\n\n---\n\n## Key Concepts\n- HTTP and HTTPS protocols\n- Request methods (GET, POST, PUT, DELETE)\n- Status codes and their meanings\n- JSON as a data exchange format\n\n---\n\n## Why it’s important\nUnderstanding client–server communication will help you debug API issues confidently, build scalable applications, and design clean and maintainable backend services.",
+      "qa_enabled": true,
+      "notes_enabled": true
+    },{
+      "id": "201",
+      "module_id": 2,
+      "course_id": 34,
+      "title": "Advanced React Patterns",
+      "type": "file",
+      "file_type": "pdf",
+      "file_url": "https://vrx-learn.s3.amazonaws.com/Creating%20N%20user%20and%20sessions%20in%20ZIE%20Web%20admin%20console..pdf?response-content-disposition=inline&AWSAccessKeyId=AKIA4CGDKROJB4KSVGNZ&Signature=oR8LRtjAKC%2FTqLk4LBe9G48qDhY%3D&Expires=1787392235",
+    
+      "file_size_mb": 2.5,
+      "status": "completed",
+      "overview": "## Advanced React Patterns\n\nA comprehensive guide to Higher-Order Components, Render Props, and Compound Components.",
+      "resources": [],
+      "qa_enabled": true,
+      "notes_enabled": true
+    },
+     {
+      "id": "202",
+      "module_id": 2,
+      "course_id": 34,
+      "title": "State Management with Redux",
+      "type": "file",
+      "file_type": "word",
+      "file_url": "https://vrx-learn.s3.amazonaws.com/setn_project_overview.docx?response-content-disposition=inline&AWSAccessKeyId=AKIA4CGDKROJB4KSVGNZ&Signature=JgGfJ4NEefskF9yN9zmqp5iYw38%3D&Expires=1787392436",
+      "file_size_mb": 4.1,
+      "status": "yet_to_complete",
+      "overview": "## Redux State Management\n\nDocumentation on actions, reducers, and the global store architecture.",
+      "resources": [{ "title": "Redux Toolkit Docs", "url": "https://redux-toolkit.js.org/" }],
+      "qa_enabled": true,
+      "notes_enabled": true
+    },
+    {
+      "id": "203",
+      "module_id": 2,
+      "course_id": 34,
+      "title": "SAMPLE PDF LESSON",
+      "type": "file",
+      "file_type": "pdf",
+      "file_url": "https://vrx-learn.s3.amazonaws.com/Creating%20N%20user%20and%20sessions%20in%20ZIE%20Web%20admin%20console..pdf?response-content-disposition=inline&AWSAccessKeyId=AKIA4CGDKROJB4KSVGNZ&Signature=oR8LRtjAKC%2FTqLk4LBe9G48qDhY%3D&Expires=1787392235",
+      "file_size_mb": 4.1,
+      "status": "yet_to_complete",
+      "overview": "## Redux State Management\n\nDocumentation on actions, reducers, and the global store architecture.",
+      "resources": [{ "title": "Redux Toolkit Docs", "url": "https://redux-toolkit.js.org/" }],
+      "qa_enabled": true,
+      "notes_enabled": true
+    },
+    {
+      "id": "301",
+      "module_id": 3,
+      "course_id": 34,
+      "title": "REST API Design Principles",
+      "type": "video",
+      "duration_minutes": 18,
+      "status": "completed",
+      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+      "overview": "## REST API Design\n\nBest practices for naming endpoints, using HTTP methods, and structuring JSON responses.",
+      "qa_enabled": true,
+      "notes_enabled": true
+    },
+    {
+      "id": "302",
+      "module_id": 3,
+      "course_id": 34,
+      "title": "Authentication & Authorization",
+      "type": "video",
+      "duration_minutes": 30,
+      "status": "yet_to_complete",
+      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+      "overview": "## Auth Implementation\n\nImplementing JWT authentication and Role-Based Access Control (RBAC) in your backend.",
+      "qa_enabled": true,
+      "notes_enabled": true
+    },
+    {
+      "id": "303",
+      "module_id": 3,
+      "course_id": 34,
+      "title": "Error Handling & Logging",
+      "type": "video",
+      "duration_minutes": 12,
+      "status": "yet_to_complete",
+      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+      "overview": "## Error Handling\n\nHow to build robust error middleware and implement centralized logging for production apps.",
+      "qa_enabled": true,
+      "notes_enabled": true
+    },
+    {
+      "id": "401",
+      "module_id": 4,
+      "course_id": 34,
+      "title": "CI/CD Pipeline Basics",
+      "type": "video",
+      "duration_minutes": 22,
+      "status": "completed",
+      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+      "overview": "## CI/CD Basics\n\nAutomating your workflow with GitHub Actions to test and deploy code automatically.",
+      "qa_enabled": true,
+      "notes_enabled": true
+    },
+    {
+      "id": "402",
+      "module_id": 4,
+      "course_id": 34,
+      "title": "Docker & Containerization",
+      "type": "video",
+      "duration_minutes": 35,
+      "status": "yet_to_complete",
+      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackAds.mp4",
+      "overview": "## Docker Essentials\n\nPackaging your application into containers for consistent environments across development and production.",
+      "qa_enabled": true,
+      "notes_enabled": true
+    },
+    {
+      "id": "403",
+      "module_id": 4,
+      "course_id": 34,
+      "title": "Production Monitoring & Scaling",
+      "type": "video",
+      "duration_minutes": 20,
+      "status": "yet_to_complete",
+      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4",
+      "overview": "## Scaling for Growth\n\nStrategies for horizontal scaling, load balancing, and monitoring application health.",
       "qa_enabled": true,
       "notes_enabled": true
     }
