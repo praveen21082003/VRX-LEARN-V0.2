@@ -23,17 +23,14 @@ function Login({ onForgot }) {
         { key: "github", name: "mdi:github", navlink: "", hover: "hover:text-black" },
     ]
 
-      if (data[0].role === "TRAINEE") {
-        navigate("/dashboard", { replace: true });
-      } else {
-        navigate("/dashboard", { replace: true });
-      }
-    } catch (err) {
-      console.error("Profile fetch failed", err);
-    } finally {
-      setLoading(false);
-    }
-  }
+    async function fetchProfile() {
+        try {
+            setLoading(true);
+            const data = await getUserProfile(
+                credentials.email,
+                credentials.password,
+            );
+            setUser(data[0]);
 
             if (data[0].role === "TRAINEE") {
                 navigate("/dashboard", { replace: true });
