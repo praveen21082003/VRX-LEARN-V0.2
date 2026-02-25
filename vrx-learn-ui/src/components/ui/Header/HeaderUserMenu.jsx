@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Compass, GraduationCap } from "lucide-react";
+
 
 function HeaderUserMenu() {
     const location = useLocation();
@@ -8,17 +8,17 @@ function HeaderUserMenu() {
     const navigationLinks = [
         {
             name: "Dashboard",
-            icon: LayoutDashboard,
+            icon: "material-symbols:dashboard-rounded",
             path: "/dashboard",
         },
         {
             name: "My Learning",
-            icon: Compass,
+            icon: "mdi:compass",
             path: "/learning",
         },
         {
             name: "Courses",
-            icon: GraduationCap,
+            icon: "flowbite:graduation-cap-solid",
             path: "/courses",
         },
     ];
@@ -40,8 +40,8 @@ function HeaderUserMenu() {
                             }
             `}
                     >
-                        <Icon size={16} />
-                        <span>{link.name}</span>
+                        <Icon name={navigationLinks.icon} width="16px" height="16px" />
+                        <span>{navigationLinks.name}</span>
                     </Link>
                 );
             })}

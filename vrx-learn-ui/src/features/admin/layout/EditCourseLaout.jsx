@@ -1,4 +1,4 @@
-import { Outlet, NavLink, useNavigate, useParams, useOutletContext } from "react-router-dom";
+import { Outlet, NavLink, useNavigate, useLocation, useParams, useOutletContext } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { Button, Icon, Dropdown } from "@/components/ui";
 import BackButton from "@/components/navigation/BackButton";
@@ -16,8 +16,10 @@ import { useRef } from "react";
 
 function EditCourseLayout() {
   const { courseSlug } = useParams();
+  const location = useLocation();
+
   const { courseContent } = useCourseContent(courseSlug);
-  // const { setCourseBreadcrumb } = useOutletContext();
+  const { setCourseBreadcrumb } = useOutletContext();
 
 
   const navigate = useNavigate();
@@ -62,12 +64,34 @@ function EditCourseLayout() {
   };
 
 
-  // useEffect(() => {
-  //   if (!courseContent?.name) return;
+  useEffect(() => {
+    if (!courseContent?.name) return;
 
-  //   setCourseBreadcrumb(courseContent.name);
-  // }, [courseContent?.name]);
+    const pathParts = location.pathname.split("/");
+    const editIndex = pathParts.indexOf("edit");
 
+    let currentSection = null;
+
+    if (editIndex !== -1 && pathParts.length > editIndex + 1) {
+      currentSection = pathParts[editIndex + 1];
+    }
+
+    const SECTION_LABELS = {
+      info: "Info",
+      modules: "Modules",
+      assignments: "Assignments",
+      quiz: "Quiz",
+    };
+
+    const sectionLabel = SECTION_LABELS[currentSection];
+
+    setCourseBreadcrumb([
+      { label: "Dashboard", to: "/dashboard" },
+      { label: courseContent.name, to: `/courses/${courseSlug}/edit/info` },
+      ...(sectionLabel ? [{ label: sectionLabel }] : []),
+    ]);
+
+  }, [courseContent?.name, location.pathname]);
 
 
   useEffect(() => {
@@ -103,7 +127,7 @@ function EditCourseLayout() {
 
   return (
     <div className="flex h-[calc(100vh-56px)] bg-background">
-      
+
       <aside style={{ width: asideWidth }} className=" relative hidden border-r-2 border-primary-border bg-muted/40 py-1 md:block overflow-y-auto scrollbar-hide">
 
         <div className="p-4 border-b-2 border-primary-border w-full">

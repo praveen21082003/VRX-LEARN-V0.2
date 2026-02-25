@@ -1,17 +1,23 @@
 import { useDropzone } from "react-dropzone";
 import { Icon } from "@/components/ui";
+import { useToast } from "@/context/ToastProvider";
 
 
 
-export default function DropZone({ label, files, multipleFiles, onFilesChange, heightClass }) {
+export default function DropZone({ label, files, multipleFiles, maxFilesAllowed, onFilesChange, heightClass }) {
 
-  const { getRootProps, getInputProps } = useDropzone({
+   const { addToast } = useToast();
+
+
+
+  const { getRootProps, getInputProps,fileRejections } = useDropzone({
     accept: {
       "application/pdf": [],
       "application/zip": [],
     },
     maxSize: 50 * 1024 * 1024,
     multiple: multipleFiles,
+    maxFiles: maxFilesAllowed,
     onDrop: (acceptedFiles) => {
       onFilesChange(acceptedFiles);
     },
@@ -23,8 +29,9 @@ export default function DropZone({ label, files, multipleFiles, onFilesChange, h
   };
 
 
+
   return (
-    <div className={`flex flex-col gap-2 ${heightClass} w-full`}>
+    <div className={`flex flex-col gap-2 h-full w-full`}>
       {label && (
         <label className="text-base font-bold">
           {label}
@@ -34,7 +41,7 @@ export default function DropZone({ label, files, multipleFiles, onFilesChange, h
       {files.length === 0 && (
         <div
           {...getRootProps()}
-          className="flex h-full w-full flex-col items-center border border-dashed bg-surface justify-center"
+          className={`flex ${heightClass} w-full flex-col items-center border border-dashed bg-surface justify-center`}
         >
           <input {...getInputProps()} className="hidden" />
 
@@ -56,7 +63,7 @@ export default function DropZone({ label, files, multipleFiles, onFilesChange, h
       )}
 
       {files.length > 0 && (
-        <div className="h-10 w-full space-y-3">
+        <div className="w-full space-y-3">
           <div className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wider">
             <Icon name="ri:file-list-3-line" height="18px" width="18px" />
             <span>Selected File </span>
@@ -107,6 +114,20 @@ export default function DropZone({ label, files, multipleFiles, onFilesChange, h
               );
             })}
           </div>
+        </div>
+      )}
+      {fileRejections.length > 0 && (
+        <div className="text-red-500 mt-2">
+          {fileRejections.map(({ file, errors }) => (
+            <div key={file.name}>
+              {errors.map((e) => (
+                <p key={e.code}>
+                  {e.code === "file-too-large" && "File exceeds 5MB"}
+                  {e.code === "file-invalid-type" && "Invalid file type"}
+                </p>
+              ))}
+            </div>
+          ))}
         </div>
       )}
     </div>

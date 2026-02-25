@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Eye, EyeClosed } from 'lucide-react';
 import InputWarnMessage from "../Warning";
+import Icon from "../Icon";
 
 function Input({
     ref,
@@ -82,7 +82,7 @@ function Input({
                         onClick={() => setShowPassword((prev) => !prev)}
                         className="absolute right-3 top-1/2 -translate-y-1/2"
                     >
-                        {showPassword ? <Eye size={18} /> : <EyeClosed size={18} />}
+                        {showPassword ? <Icon name="solar:eye-bold" width="18" height="18" /> : <Icon name="humbleicons:eye-close" width="18" height="18" />}
                     </button>
                 )}
             </div>

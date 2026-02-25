@@ -23,6 +23,8 @@ import ModulesEditor from "@/features/admin/pages/ModulesEditor";
 import LessonsEditor from "@/features/admin/pages/subPages/LessonsEditor";
 import QuizEditor from '@/features/admin/pages/QuizEditor';
 import AssignmentsEditor from "./features/admin/pages/AssignmentsEditor";
+import LabEditor from "@/features/admin/pages/LabEditor";
+import FeedbackEditor from "@/features/admin/pages/FeedbackEditor";
 
 import CreateModule from "@/features/admin/pages/subPages/CreateModule";
 import CreateAssignment from "@/features/admin/pages/subPages/CreateAssignment";
@@ -88,6 +90,9 @@ function App() {
                 </Route>
 
                 <Route path="quiz" element={<QuizEditor />} />
+                <Route path="lab" element={<LabEditor />} />
+                <Route path="feedback" element={<FeedbackEditor />} />
+                
 
               </Route>
 

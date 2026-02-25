@@ -74,7 +74,7 @@ function CreateAssignment() {
         const validationErrors = validate();
 
         if (Object.keys(validationErrors).length > 0) {
-            setFormDataErrors(validationErrors);
+            setFormDataErrors(validationErrors);    
             return;
         }
 
@@ -136,13 +136,13 @@ function CreateAssignment() {
                         onChange={(e) => handleChange("max_attempts", Number(e.target.value))}
                     />
                 </div>
-                <div className="h-80 w-full mt-4" >
-                    <FileDropZone label="Attachments" multipleFiles={true} heightClass="h-74" files={files} onFilesChange={setFiles} />
+                <div className="w-full mt-4" >
+                    <FileDropZone label="Attachments" multipleFiles={false} maxFilesAllowed={1} heightClass="h-74" files={files} onFilesChange={setFiles} />
                 </div>
 
             </div>
             <div className='flex justify-center'>
-                <Button buttonName="Save" onClick={handleSubmit} className="mt-5 px-5 py-2 rounded" />
+                <Button buttonName={files.length <= 0 ? "Submit" : "Upload" } onClick={handleSubmit} className="mt-5 px-5 py-2 rounded" />
             </div>
 
         </>

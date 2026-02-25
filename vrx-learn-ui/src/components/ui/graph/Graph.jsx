@@ -1,4 +1,4 @@
-import { Bold } from 'lucide-react';
+
 import React from 'react'
 import { BarChart, Bar, ResponsiveContainer, XAxis } from 'recharts';
 import { useMediaQuery } from 'react-responsive';

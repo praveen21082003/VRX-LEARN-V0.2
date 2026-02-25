@@ -15,7 +15,7 @@ import { editButtons, buttons } from '@/config/DropdownButtons.js'
 
 
 function LessonsEditor() {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const inputRef = useRef();
     const rowRefs = useRef({});
     const { updateLesson } = useUpdateLesson();
@@ -48,9 +48,30 @@ function LessonsEditor() {
 
 
 
+
+
+
     const handleReorder = () => {
         setIsReorderMode(true);
+
     }
+    useEffect(() => {
+        function handleClickOutside(e) {
+            if (!isOpenDropdown) return;
+
+            const currentRow = rowRefs.current[isOpenDropdown];
+
+            if (currentRow && !currentRow.contains(e.target)) {
+                setIsOpenDropdown(null);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isOpenDropdown]);
 
     if (loading) return <p>Loading...</p>
 
@@ -86,6 +107,8 @@ function LessonsEditor() {
     }
 
 
+
+
     return (
         <div className="space-y-6">
             <div className='flex justify-between'>
@@ -116,64 +139,73 @@ function LessonsEditor() {
                         return (
                             <div key={lesson.id}
                                 ref={(el) => (rowRefs.current[lesson.id] = el)}
-                                className={clsx(
-                                    'flex justify-between gap-3 items-center px-5 py-3 rounded font-semibold hover:bg-active cursor-pointer',
-                                    isOpenDropdown === lesson.id || renameLessonId === lesson.id && 'bg-active'
-                                )}
                             >
-                                <Icon name={`${lesson.type === 'video' ? "ep:video-play" : "basil:document-outline"}`} height="25px" width="25px" />
-                                <div className='flex justify-between w-full items-center'>
-                                    <span className="py-1 mr-2">
-                                        {index + 1}.
-                                    </span>
-                                    {renameLessonId === lesson.id ? (
-                                        <Input
-                                            ref={inputRef}
-                                            value={renameValue}
-                                            onChange={(e) => setRenameValue(e.target.value)}
-                                            autoFocus
-                                            className="text-sm"
-                                            bgClass="bg-primary-border"
-                                            onBlur={() => setRenameLessonId(null)}
-                                            onKeyDown={(e) => {
-                                                if (e.key === "Enter") {
-                                                    e.preventDefault();
-                                                    renameLessonHandler(module.id);
-                                                }
+                                <NavLink
+                                    className={clsx(
+                                        'flex justify-between gap-3 items-center px-5 py-3 rounded font-semibold hover:bg-active cursor-pointer',
+                                        isOpenDropdown === lesson.id || renameLessonId === lesson.id && 'bg-active'
+                                    )}
+                                    onDoubleClick={() => navigate(lesson.id)}
+                                    onClick={(e) => {
+                                        if (isOpenDropdown === lesson.id) {
+                                            e.preventDefault();   // stop navigation
+                                            setIsOpenDropdown(null); // close dropdown
+                                        }
+                                    }}
+                                >
+                                    <Icon name={`${lesson.type === 'video' ? "ep:video-play" : "basil:document-outline"}`} height="25px" width="25px" />
+                                    <div className='flex justify-between w-full items-center'>
+                                        <span className="py-1 mr-2">
+                                            {index + 1}.
+                                        </span>
+                                        {renameLessonId === lesson.id ? (
+                                            <Input
+                                                ref={inputRef}
+                                                value={renameValue}
+                                                onChange={(e) => setRenameValue(e.target.value)}
+                                                autoFocus
+                                                className="text-sm"
+                                                bgClass="bg-primary-border"
+                                                onBlur={() => setRenameLessonId(null)}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === "Enter") {
+                                                        e.preventDefault();
+                                                        renameLessonHandler(module.id);
+                                                    }
 
-                                                if (e.key === "Escape") {
-                                                    setRenameLessonId(null);
-                                                }
-                                            }}
-                                        />
-                                    )
-                                        : (
-                                            <span className="truncate flex-1">
-                                                {lesson.title}
-                                            </span>
-                                        )}
-                                    <div
-                                        className='relative w-20 flex justify-center'
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            setIsOpenDropdown(prev =>
-                                                prev === lesson.id ? null : lesson.id
-                                            );
-                                        }}
-                                    >
-                                        <Icon name="iconamoon:menu-kebab-horizontal" height="32px" width="32px" className="cursor-help" />
-                                        {isOpen && (
-                                            <Dropdown
-                                                buttons={buttons(handleRename, lesson.id)}
-                                                closeDropdown={() => {
-                                                    console.log("Closing...");
-                                                    setIsOpenDropdown(null);
+                                                    if (e.key === "Escape") {
+                                                        setRenameLessonId(null);
+                                                    }
                                                 }}
                                             />
-                                        )}
+                                        )
+                                            : (
+                                                <span className="truncate flex-1">
+                                                    {lesson.title}
+                                                </span>
+                                            )}
+                                        <div
+                                            className='relative w-20 flex justify-center'
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                setIsOpenDropdown(prev =>
+                                                    prev === lesson.id ? null : lesson.id
+                                                );
+                                            }}
+                                        >
+                                            <Icon name="iconamoon:menu-kebab-horizontal" height="32px" width="32px" className="cursor-help" />
+                                            {isOpen && (
+                                                <Dropdown
+                                                    buttons={buttons(handleRename, lesson.id)}
+                                                    closeDropdown={() => {
+                                                        setIsOpenDropdown(null);
+                                                    }}
+                                                />
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
+                                </NavLink>
                             </div>
                         )
                     })}

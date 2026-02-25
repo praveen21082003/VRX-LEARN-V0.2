@@ -1,9 +1,9 @@
 import React from 'react'
-import {TriangleAlert} from 'lucide-react';
+import Icon from '../Icon'
 
 function InputWarnMessage(
     {
-        icon = <TriangleAlert size={15} strokeWidth={3} />,
+        icon = <Icon name="jam:triangle-danger-f" width="16px" height="16px" /> ,
         message,
     }
 ) {

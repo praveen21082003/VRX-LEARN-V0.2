@@ -1,6 +1,5 @@
 
 import { useAuth } from "@/context/AuthContext"
-import { ChevronDown, Bell } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Dropdown from "../Dropdown";
 import { Icon } from '@/components/ui';
@@ -66,7 +65,7 @@ export default function HeaderProfile() {
                 }
 
                 <span>Profile</span>
-                <ChevronDown size={20} />
+                <Icon name="iconamoon:arrow-down-2" width="16px" height="16px" />
             </div>
 
             {/* DROPDOWN (POSITIONED FROM WRAPPER) */}

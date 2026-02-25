@@ -26,8 +26,6 @@ function ModulesEditor() {
     const { addToast } = useToast();
 
 
-
-
     const { modules, moduleloading, moduleError, courseSlug } = useOutletContext();
     const [orderedModules, setOrderedModules] = useState(modules || [])
     const { updateModule, loading, error } = useUpdateMoudule();

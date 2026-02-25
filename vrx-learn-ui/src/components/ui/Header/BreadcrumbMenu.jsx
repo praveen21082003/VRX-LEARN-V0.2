@@ -1,6 +1,6 @@
 // components/ui/BreadcrumbMenu.jsx
 import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import Icon from "../Icon";
 
 export default function BreadcrumbMenu({
   items = [
@@ -16,7 +16,7 @@ export default function BreadcrumbMenu({
         return (
           <div key={index} className="flex items-center gap-1">
             {index !== 0 && (
-              <ChevronRight size={14} className="opacity-70" />
+              <Icon name="iconamoon:arrow-down-2" width="14px" height="14px" className="opacity-70"/>
             )}
 
             {isLast ? (

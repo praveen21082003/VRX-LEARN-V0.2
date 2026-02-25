@@ -48,8 +48,11 @@ function CreateLesson() {
                     onChange={(value) => handleChange("overview", value)}
                 />
             </div>
-            <div className="h-80 w-full mt-4" >
-                <FileDropZone label="Attachments" multipleFiles={true} heightClass="h-74" files={files} onFilesChange={setFiles} />
+            <div className="w-full mt-4" >
+                <FileDropZone label="Attachments" multipleFiles={false} heightClass="h-74" files={files} onFilesChange={setFiles} />
+            </div>
+            <div className='flex justify-center'>
+                <Button buttonName={files.length <= 0 ? "Submit" : "Upload"} className="mt-5 px-5 py-2 rounded" />
             </div>
 
         </>

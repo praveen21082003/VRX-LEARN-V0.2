@@ -61,14 +61,14 @@
     {
       "id": "1",
       "title": "Quiz: React Hooks",
-      "date": "2026-01-19",
+      "date": "2026-02-19",
       "time": "09:00 PM",
       "color": "bg-primary"
     },
     {
       "id": "2",
       "title": "Redux Workshop",
-      "date": "2026-01-29",
+      "date": "2026-03-29",
       "time": "07:30 PM",
       "color": "bg-blue-600"
     }
@@ -176,25 +176,6 @@
       "title": "React Redux",
       "description": "- Redux is one of the most important topic in react. This manages complex useState hook to easy way.\n- Redux is very helpful to handle the useState and api requestes",
       "lessons": []
-    },
-    {
-      "id": "9091",
-      "course_id": 34,
-      "title": "new sample module",
-      "description": "",
-      "lessons": []
-    },
-    {
-      "id": "f674",
-      "course_id": 34,
-      "title": "dummy2",
-      "description": "dummy2"
-    },
-    {
-      "id": "201e",
-      "course_id": 34,
-      "title": "dummy2",
-      "description": "dummy2"
     }
   ],
   "lessons": [

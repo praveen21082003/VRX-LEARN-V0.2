@@ -5,6 +5,7 @@ import Events from './sections/Events';
 
 function CalendarUi() {
   const { events, loading, error } = useEvents();
+  console.log(events)
 
   if (!events && loading) {
     return <p>loading...</p>

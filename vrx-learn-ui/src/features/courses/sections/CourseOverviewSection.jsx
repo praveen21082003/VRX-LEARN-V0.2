@@ -1,5 +1,5 @@
 
-import { Dot } from "lucide-react";
+
 import {CourseTumbnail, Icon} from "@/components/ui";
 import { formatMinutes } from "@/utils/duration";
 import { Button } from "@/components/ui";

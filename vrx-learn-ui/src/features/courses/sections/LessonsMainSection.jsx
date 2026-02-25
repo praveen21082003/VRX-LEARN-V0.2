@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { Dot } from 'lucide-react'
 import { formatMinutes } from "@/utils/duration";
-import { Button, Tabs } from '@/components/ui'
+import { Button, Tabs, Icon } from '@/components/ui'
 import Overview from './Overview';
 import QuestionAnswers from './QuestionAnswers';
 // import { Video } from '../../../components/content';
@@ -35,9 +34,9 @@ function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
             </h1>
             <div className="flex items-center text-sm text-muted-foreground text-dark-gray">
                 <span>{lesson?.type}</span>
-                <Dot />
+                <Icon name="ph:dot-bold" />
                 <span>{formatMinutes(lesson?.duration_minutes)}</span>
-                <Dot />
+                <Icon name="ph:dot-bold" />
                 <span>{lesson?.status}</span>
             </div>
             <div className='flex justify-center'>
