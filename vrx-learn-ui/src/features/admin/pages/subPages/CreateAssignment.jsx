@@ -107,6 +107,7 @@ function CreateAssignment() {
                     <Input
                         label="Due Date & Time"
                         type="datetime-local"
+                        min={new Date().toISOString().slice(0, 16)}
                         value={formData.due_date && formData.due_time
                             ? `${formData.due_date}T${formData.due_time}`
                             : ""}

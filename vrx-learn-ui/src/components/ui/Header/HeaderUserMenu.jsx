@@ -1,4 +1,5 @@
 import React from "react";
+import Icon from "../Icon";
 import { Link, useLocation } from "react-router-dom";
 
 
@@ -18,7 +19,7 @@ function HeaderUserMenu() {
         },
         {
             name: "Courses",
-            icon: "flowbite:graduation-cap-solid",
+            icon: "streamline-plump:graduation-cap-solid",
             path: "/courses",
         },
     ];
@@ -26,7 +27,7 @@ function HeaderUserMenu() {
     return (
         <nav className="flex items-center gap-8 text-[#fafaf8d3]">
             {navigationLinks.map((link) => {
-                const Icon = link.icon;
+                const icon = link.icon;
                 const isActive = location.pathname === link.path;
 
                 return (
@@ -40,8 +41,8 @@ function HeaderUserMenu() {
                             }
             `}
                     >
-                        <Icon name={navigationLinks.icon} width="16px" height="16px" />
-                        <span>{navigationLinks.name}</span>
+                        <Icon name={icon} width="20" height="20" />
+                        <span>{link.name}</span>
                     </Link>
                 );
             })}

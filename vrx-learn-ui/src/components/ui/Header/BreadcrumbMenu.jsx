@@ -16,7 +16,7 @@ export default function BreadcrumbMenu({
         return (
           <div key={index} className="flex items-center gap-1">
             {index !== 0 && (
-              <Icon name="iconamoon:arrow-down-2" width="14px" height="14px" className="opacity-70"/>
+              <Icon name="weui:arrow-filled" width="20" height="20"/>
             )}
 
             {isLast ? (
