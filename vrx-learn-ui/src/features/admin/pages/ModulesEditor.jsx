@@ -121,7 +121,7 @@ function ModulesEditor() {
     return (
         <div className="space-y-6" onClick={() => setRenameModuleId(null)}>
             <div className='flex justify-between'>
-                <h2 className="text-2xl font-semibold flex items-center gap-3">Curriculum</h2>
+                <h2 className="title-h2">Curriculum</h2>
                 <div className='flex gap-3'>
                     <Button buttonName={clsx(isReorderMode ? "Done" : "Reorder")} frontIconName={clsx(isReorderMode ? "material-symbols:done-rounded" : "ix:reorder")} frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass={clsx(isReorderMode ? "bg-primary" : "bg-white")} textClass={clsx(isReorderMode ? "text-white" : "text-black hover:text-primary")} onClick={handleReorder} />
                     <NavLink to={`/courses/${courseSlug}/edit/modules/create`}>

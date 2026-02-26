@@ -63,5 +63,14 @@ export const getAssignmentId = (assignmentId) => {
   return axiosInstance.get(`/assignments/${assignmentId}`);
 };
 
+/* Update assignemnt by id*/
+export const updateAssignment = (assignmentId,playload) => {
+  return axiosInstance.patch(`/assignments/${assignmentId}`,playload)
+}
+
+export const DeleteAssignment = (assignmentId) => {
+  return axiosInstance.delete(`/assignments/${assignmentId}`)
+}
+
 
 
