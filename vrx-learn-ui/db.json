@@ -71,6 +71,13 @@
       "date": "2026-03-29",
       "time": "07:30 PM",
       "color": "bg-blue-600"
+    },
+    {
+      "id": "3",
+      "title": "React Learing",
+      "date": "2026-03-27",
+      "time": "07:30 PM",
+      "color": "bg-blue-600"
     }
   ],
   "course_details": [
@@ -443,6 +450,17 @@
       "due_time": "19:00",
       "marks": 50,
       "attachments": []
+    },
+    {
+      "id": "523a",
+      "course_id": 34,
+      "title": "React Learning",
+      "instructions": "# React\n\n`useState();`\n\n`redux`",
+      "due_date": "2026-02-27",
+      "due_time": "22:13",
+      "marks": 100,
+      "max_attempts": 1,
+      "attachments": []
     }
   ],
   "assignment_submissions": [
@@ -484,7 +502,7 @@
       "id": "1",
       "name": "Admin User",
       "email": "admin@test.com",
-      "password": "admin123",
+      "password": "admin1234",
       "role": "ADMIN"
     },
     {
