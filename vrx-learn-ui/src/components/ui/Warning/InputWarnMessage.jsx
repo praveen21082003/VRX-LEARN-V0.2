@@ -3,15 +3,15 @@ import Icon from '../Icon'
 
 function InputWarnMessage(
     {
-        icon = <Icon name="jam:triangle-danger-f" width="16px" height="16px" /> ,
         message,
+        icon = "jam:triangle-danger-f"
     }
 ) {
 
     
   return (
     <div className='flex gap-1.5 font-medium text-[#D32F2F]'>
-      <span>{icon}</span>
+      <Icon name={icon} width="16px" height="16px" />
       <p className='text-xs'>{message}</p>
     </div>
   )

@@ -92,7 +92,7 @@ function Login({ onForgot }) {
                 </div>
                 <Button
                     type="submit"
-                    className="p-2 rounded-lg font-bold text-white bg-primary"
+                    className="p-2 rounded-lg font-semibold text-white bg-primary"
                     buttonName="Login"
                 />
             </form>
