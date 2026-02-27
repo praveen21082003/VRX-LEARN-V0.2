@@ -219,7 +219,7 @@
       "type": "video",
       "duration_minutes": 15,
       "status": "completed",
-      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
       "overview": "## Course Overview\n\nIn this video, we will explore the fundamentals of web development in a simple and clear way.\n\nYou will learn:\n- What web development really means\n- How frontend and backend systems work together\n- The role of HTML, CSS, and JavaScript in modern applications\n\n### What you’ll gain\nBy the end of this lesson, you will have a clear mental model of how websites and web applications are designed, built, and delivered to users.\n\nThis lesson sets the foundation for everything you will learn in the rest of the course.",
       "qa_enabled": true,
       "notes_enabled": true
@@ -246,7 +246,7 @@
       "type": "video",
       "duration_minutes": 15,
       "status": "completed",
-      "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+      "video_url": "https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
       "overview": "## Lesson Overview\n\nClient–server communication is the backbone of every web application.\n\nIn this lesson, you will learn:\n- What happens when a user clicks a button in the browser\n- How requests travel from client to server\n- How servers process requests and send responses\n\n---\n\n## Key Concepts\n- HTTP and HTTPS protocols\n- Request methods (GET, POST, PUT, DELETE)\n- Status codes and their meanings\n- JSON as a data exchange format\n\n---\n\n## Why it’s important\nUnderstanding client–server communication will help you debug API issues confidently, build scalable applications, and design clean and maintainable backend services.",
       "qa_enabled": true,
       "notes_enabled": true

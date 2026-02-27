@@ -24,7 +24,7 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
 
 
     return (
-        <aside className="hidden w-90 2xl:w-120 border-r-2 border-primary-border bg-muted/40 py-1 md:block">
+        <aside className="hidden w-100 2xl:w-140 border-r-2 border-primary-border bg-muted/40 py-1 md:block">
             <div className="p-1"><BackButton to=".." /></div>
             {modules.map((module, moduleIndex) => {
                 const isOpen = openModuleId === module.id;

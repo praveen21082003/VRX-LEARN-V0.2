@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { formatMinutes } from "@/utils/duration";
 import { Button, Tabs, Icon } from "@/components/ui";
-import ZoomControls from "../../ui/FileViewer/ZoomControls";
-import PDFViewer from "../viewers/PDFViewer";
-import WordViewer from "../viewers/WordViewer";
+import VideoPlayer from "@/components/content/Video";
+import ZoomControls from "../ui/FileViewer/ZoomControls";
+import PDFViewer from "./document/PDFViewer";
+import WordViewer from "./document/WordViewer";
 
-function Viewer({ lesson, error, activeLesson, setButtonAction }) {
+function ContentRenderer({ lesson, error, activeLesson, setButtonAction }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -26,26 +27,11 @@ function Viewer({ lesson, error, activeLesson, setButtonAction }) {
 
   return (
     <>
-      <div className="flex items-center text-sm text-muted-foreground text-dark-gray">
-        <span>{lesson?.type}</span>
-       <Icon name="ph:dot-bold" />
-        {lesson?.type === "video" && (
-          <>
-            <span>{formatMinutes(lesson?.duration_minutes)}</span>
-            <Icon name="ph:dot-bold" />
-          </>
-        )}
-
-        <span>{lesson?.status}</span>
-      </div>
-
-      <div className="flex justify-center h-[700px] w-full mt-4 border rounded-lg overflow-hidden">
+      <div className="flex justify-center w-full mt-4 border rounded-lg overflow-hidden">
         {lesson?.type === "video" ? (
-          <video
-            className="h-full w-full rounded-lg"
-            src={lesson.video_url}
-            controls
-          />
+
+          <VideoPlayer url={lesson?.video_url} />
+
         ) : lesson?.type === "file" ? (
           <ZoomControls
             key={lesson.file_url}
@@ -81,4 +67,4 @@ function Viewer({ lesson, error, activeLesson, setButtonAction }) {
   );
 }
 
-export default Viewer;
+export default ContentRenderer;

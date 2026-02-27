@@ -25,6 +25,10 @@ body {
   .title-h2 {
     @apply text-2xl font-semibold flex items-center gap-3;
   }
+
+  .video-player {
+    @apply flex justify-center items-center rounded-full bg-black h-10;
+  }
 }
 
 /* ---------- Design Tokens ---------- */

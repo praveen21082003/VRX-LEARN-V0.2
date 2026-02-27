@@ -3,8 +3,7 @@ import { formatMinutes } from "@/utils/duration";
 import { Button, Tabs, Icon } from "@/components/ui";
 import Overview from "./Overview";
 import QuestionAnswers from "./QuestionAnswers";
-// import { Video } from '../../../components/content';
-import Viewer from "@/components/content/DocViewer/Viewer";
+import ContentRenderer from "@/components/content/ContentRenderer";
 
 function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
   const [activeTab, setActiveTab] = useState("overview");
@@ -25,13 +24,27 @@ function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
   }
 
   return (
-    <main className="flex-1 overflow-y-auto p-3">
-      <h1 className="text-xl font-semibold">
+    <main className="flex-1 overflow-y-auto py-3 px-6">
+
+      <h1 className="text-xl font-semibold leading-tight">
         {activeLesson.moduleIndex + 1}.{activeLesson.lessonIndex + 1}{" "}
-        {lesson?.title} 
+        {lesson?.title}
       </h1>
-      <Viewer lesson={lesson} error={error} activeLesson={activeLesson} setButtonAction={setButtonAction}/>
-      
+
+      <div className="flex items-center text-xs text-inner-shadow -mt-1.5 text-muted-foreground text-dark-gray">
+        <span>{lesson?.type}</span>
+        <Icon name="ph:dot-bold" />
+        {lesson?.type === "video" && (
+          <>
+            <span>{formatMinutes(lesson?.duration_minutes)}</span>
+            <Icon name="ph:dot-bold" />
+          </>
+        )}
+        <span>{lesson?.status}</span>
+      </div>
+
+      <ContentRenderer lesson={lesson} error={error} activeLesson={activeLesson} setButtonAction={setButtonAction} />
+
       <div className="flex justify-between items-center pt-4">
         <div className="flex gap-4 w-[30%]">
           <Button
