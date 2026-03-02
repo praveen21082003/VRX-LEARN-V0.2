@@ -8,7 +8,7 @@ function Layout() {
 
 
   return (
-    <div className="hidden lg:flex min-h-screen w-full justify-center items-center bg-white md:bg-surface">
+    <div className="dark:bg-dark hidden lg:flex min-h-screen w-full justify-center items-center bg-white md:bg-surface">
       <div
         className="
       flex 

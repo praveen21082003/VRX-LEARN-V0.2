@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 
+@variant dark (&:where(.dark, .dark *));
+
 :root {
   --font-sans: 'Poppins', system-ui, sans-serif;
 }
@@ -61,6 +63,12 @@ body {
   /* Typography tokens (HSL values) */
   --foreground: 222 47% 11%;
   --muted-foreground: 215 16% 47%;
+
+    /* Dark Mode Colours */
+  --color-dark :#0F172A;
+  --color-dark1:#1E293B
+
+
 }
 
 /* body {

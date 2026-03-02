@@ -12,18 +12,35 @@ import { getProfileDropdown } from "@/config/DropdownButtons";
 export default function HeaderProfile() {
     const { user, loading } = useAuth();
     const [open, setOpen] = useState(false);
-    const [mode, setMode] = useState(true);
+    // const [mode, setMode] = useState(true);
     const ref = useRef(null);
     const navigate = useNavigate();
 
+ const [darkMode, setDarkMode] = useState(() => {
+  const saved = localStorage.getItem("theme");
+  if (saved !== null) {
+    return saved === "true";
+  }
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+});
 
+
+    useEffect(() => {
+        if (darkMode) {
+            document.documentElement.classList.add("dark");
+            localStorage.setItem("theme", "true");
+        } else {
+            document.documentElement.classList.remove("dark");
+            localStorage.setItem("theme", "false");
+        }
+    }, [darkMode]);
 
     const handleMode = () => {
-        setMode((prev) => !prev)
+        setDarkMode((prev) => !prev)
     }
 
     const buttons = getProfileDropdown({
-        mode,
+        mode : darkMode,
         handleMode,
         navigate,
     });
