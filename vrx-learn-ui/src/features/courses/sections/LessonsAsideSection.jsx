@@ -24,7 +24,7 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
 
 
     return (
-        <aside className="hidden w-100 2xl:w-140 border-r-2 border-primary-border bg-muted/40 py-1 md:block">
+        <aside className="hidden w-72 2xl:w-100 border-r-2 text-sm border-primary-border bg-muted/40 py-1 md:block">
             <div className="p-1"><BackButton to=".." /></div>
             {modules.map((module, moduleIndex) => {
                 const isOpen = openModuleId === module.id;
@@ -77,21 +77,10 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
                                                     )}
                                                 >
                                                     <div className="flex items-center gap-4 min-w-0">
-                                                        {lesson.type === "video" ?
-                                                            <Icon
-                                                                name="ep:video-play"
-                                                                height="26"
-                                                                width="26"
-                                                            />
-                                                            :
-                                                            <Icon
-                                                                name="basil:document-outline"
-                                                                height="26"
-                                                                width="26"
-                                                            />
-                                                        }
 
-                                                        <p className="text-sm truncate">
+                                                        <Icon name={lesson.type === "video"? "ep:video-play" : "basil:document-outline"} height="26" width="26"/> 
+                                                        
+                                                        <p className="text-xs truncate">
                                                             {moduleIndex + 1}.{lessonIndex + 1} {lesson.title}
                                                         </p>
                                                     </div>

@@ -16,7 +16,7 @@ function LessonsPage() {
   const [buttonAction, setButtonAction] = useState("");
 
   const lessonId = activeLesson?.lessonId;
-  // console.log(lessonId)
+  console.log(lessonId)
 
   const { lesson, loading: lessonLoading, error: lessonError } = useLessons(lessonId);
   // console.log(lesson);

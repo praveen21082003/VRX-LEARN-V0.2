@@ -27,7 +27,7 @@ body {
   }
 
   .video-player {
-    @apply flex justify-center items-center rounded-full bg-black h-10;
+    @apply flex justify-center items-center rounded-full bg-black/50 h-10;
   }
 }
 

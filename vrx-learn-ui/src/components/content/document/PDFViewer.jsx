@@ -1,97 +1,128 @@
-import { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useLayoutEffect, useRef } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-export default function PDFViewer({
-  url,
-  currentPage,
-  setTotalPages,
-  setCurrentPage,
+function PDFViewer({
+    url,
+    scale,
+    currentPage,
+    setTotalPages,
+    pdfDoc,
+    setPdfDoc,
 }) {
-  const canvasRef = useRef(null);
-  const renderTaskRef = useRef(null);
-  const [pdfDoc, setPdfDoc] = useState(null);
+    const canvasRef = useRef(null);
+    const renderTaskRef = useRef(null);
+    const scrollRef = useRef(null);
 
-  // 🔹 Load PDF
-  useEffect(() => {
-    const loadPDF = async () => {
-      try {
 
+    useLayoutEffect(() => {
+        const scrollEl = scrollRef.current;
+        if (!scrollEl) return;
+
+        // Keep left edge visible
+        scrollEl.scrollLeft = 0;
+    }, [scale]);
+
+
+
+    //    LOAD PDF
+
+    useEffect(() => {
         if (!url) return;
 
-        const loadingTask = pdfjsLib.getDocument(url);
-        const pdf = await loadingTask.promise;
+        let destroyed = false;
 
-        setTotalPages(pdf.numPages);
-        setPdfDoc(pdf);
+        const load = async () => {
+            try {
+                const loadingTask = pdfjsLib.getDocument({
+                    url,
+                    disableAutoFetch: true,
+                    disableStream: true,
+                });
 
-        setCurrentPage(1); 
+                const pdf = await loadingTask.promise;
 
-      } catch (err) {
-        console.error("PDF load error:", err);
-      }
-    };
+                if (!destroyed) {
+                    setPdfDoc(pdf);
+                    setTotalPages(pdf.numPages);
+                }
+            } catch (err) {
+                console.error("PDF load error:", err);
+            }
+        };
 
-    loadPDF();
+        load();
 
-  }, [url]);
+        return () => {
+            destroyed = true;
+        };
+    }, [url]);
 
-  // 🔹 Render Page
-  useEffect(() => {
-    if (!pdfDoc) return;
-    if (!canvasRef.current) return;
+    //    RENDER PAGE
 
-    const renderPage = async () => {
-      try {
-        // Cancel previous render
-        if (renderTaskRef.current) {
-          renderTaskRef.current.cancel();
-        }
+    useEffect(() => {
+        if (!pdfDoc) return;
 
-        const safePage =
-          currentPage < 1
-            ? 1
-            : currentPage > pdfDoc.numPages
-              ? pdfDoc.numPages
-              : currentPage;
+        const renderPage = async () => {
+            try {
+                if (renderTaskRef.current) {
+                    renderTaskRef.current.cancel();
+                }
 
-        const page = await pdfDoc.getPage(safePage);
+                const page = await pdfDoc.getPage(currentPage);
+                const viewport = page.getViewport({ scale });
 
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext("2d");
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext("2d");
 
-        const viewport = page.getViewport({ scale: 1 });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
 
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
+                const renderTask = page.render({
+                    canvasContext: ctx,
+                    viewport,
+                });
 
-        const renderTask = page.render({
-          canvasContext: ctx,
-          viewport,
-        });
+                renderTaskRef.current = renderTask;
 
-        renderTaskRef.current = renderTask;
+                await renderTask.promise;
+            } catch (error) {
+                if (error?.name !== "RenderingCancelledException") {
+                    console.error("Render error:", error);
+                }
+            }
+        };
 
-        await renderTask.promise;
+        renderPage();
+    }, [pdfDoc, currentPage, scale]);
 
-      } catch (error) {
-        if (error?.name !== "RenderingCancelledException") {
-          console.error("PDF render error:", error);
-        }
-      }
-    };
 
-    renderPage();
+    //    CLEANUP MEMORY (IMPORTANT)
 
-  }, [pdfDoc, currentPage]);
+    useEffect(() => {
+        return () => {
+            pdfDoc?.destroy();
+        };
+    }, [pdfDoc]);
 
-  return (
-    <div className="flex justify-center " onContextMenu={(e) => e.preventDefault()}>
-      <canvas ref={canvasRef} />
-      
-    </div>
-    
-  );
+    return (
+        <div
+            ref={scrollRef}
+            className="relative flex w-full h-full overflow-auto flex-col items-center"
+            onContextMenu={(e) => e.preventDefault()}
+        >
+            <canvas ref={canvasRef} />
+
+
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                <p className="text-4xl text-white/10 rotate-[-30deg] select-none">
+                    {/* {} - {new Date().toLocaleString()} */}
+                </p>
+            </div>
+        </div>
+    );
 }
+
+export default PDFViewer;

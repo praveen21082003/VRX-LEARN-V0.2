@@ -19,6 +19,7 @@ function Input({
     bgClass = "bg-white",
     onKeyDown,
     paddingClass,
+    widthClass = "w-full"
 
 
 }) {
@@ -62,7 +63,7 @@ function Input({
                     disabled={disabled}
                     placeholder={placeholder}
                     className={`
-                        w-full rounded-lg border
+                        ${widthClass} rounded-lg border
                         ${paddingClass? paddingClass : "p-3" } ${icon ? "pl-10" : ""}
                         text-sm
                         outline-none
