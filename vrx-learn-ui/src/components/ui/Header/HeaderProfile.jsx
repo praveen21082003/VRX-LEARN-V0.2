@@ -5,26 +5,20 @@ import Dropdown from "../Dropdown";
 import { Icon } from '@/components/ui';
 import { useNavigate } from "react-router-dom";
 import { getProfileDropdown } from "@/config/DropdownButtons";
-
-
-
+import { useTheme } from "@/features/dashboard/hook/useTheme";
 
 export default function HeaderProfile() {
     const { user, loading } = useAuth();
     const [open, setOpen] = useState(false);
-    const [mode, setMode] = useState(true);
+    // const [mode, setMode] = useState(true);
     const ref = useRef(null);
     const navigate = useNavigate();
 
-
-
-    const handleMode = () => {
-        setMode((prev) => !prev)
-    }
+     const { darkMode, toggleTheme } = useTheme();
 
     const buttons = getProfileDropdown({
-        mode,
-        handleMode,
+        mode : darkMode,
+        handleMode: toggleTheme,
         navigate,
     });
 

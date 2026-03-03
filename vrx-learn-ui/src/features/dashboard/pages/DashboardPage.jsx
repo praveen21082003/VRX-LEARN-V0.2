@@ -12,7 +12,7 @@ export default function DashboardPage() {
   const { user, loading } = useAuth();
 
   return (
-    <div className="grid grid-cols-14 gap-6 h-full">
+    <div className="dark:bg-dark1 grid grid-cols-14 gap-6 h-full">
       <section className="col-span-10 flex flex-col gap-6 py-8 pl-6 overflow-y-auto scrollbar-hide">
         <WelcomeSection user={user} />
         <MyCoursesSection />
