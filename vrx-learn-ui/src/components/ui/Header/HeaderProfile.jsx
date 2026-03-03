@@ -5,9 +5,7 @@ import Dropdown from "../Dropdown";
 import { Icon } from '@/components/ui';
 import { useNavigate } from "react-router-dom";
 import { getProfileDropdown } from "@/config/DropdownButtons";
-
-
-
+import { useTheme } from "@/features/dashboard/hook/useTheme";
 
 export default function HeaderProfile() {
     const { user, loading } = useAuth();
@@ -16,32 +14,11 @@ export default function HeaderProfile() {
     const ref = useRef(null);
     const navigate = useNavigate();
 
- const [darkMode, setDarkMode] = useState(() => {
-  const saved = localStorage.getItem("theme");
-  if (saved !== null) {
-    return saved === "true";
-  }
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-});
-
-
-    useEffect(() => {
-        if (darkMode) {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "true");
-        } else {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("theme", "false");
-        }
-    }, [darkMode]);
-
-    const handleMode = () => {
-        setDarkMode((prev) => !prev)
-    }
+     const { darkMode, toggleTheme } = useTheme();
 
     const buttons = getProfileDropdown({
         mode : darkMode,
-        handleMode,
+        handleMode: toggleTheme,
         navigate,
     });
 
