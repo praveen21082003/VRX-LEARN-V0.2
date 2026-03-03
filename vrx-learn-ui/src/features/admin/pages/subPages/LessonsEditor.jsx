@@ -110,9 +110,9 @@ function LessonsEditor() {
 
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4">
             <div className='flex justify-between'>
-                <h2 className="title-h2">{module?.title}</h2>
+                <h2 className="text-h3">{module?.title}</h2>
                 <div className='flex gap-px'>
                     <span className=' flex gap-3'>
 
@@ -142,7 +142,7 @@ function LessonsEditor() {
                             >
                                 <NavLink
                                     className={clsx(
-                                        'flex justify-between gap-3 items-center px-5 py-3 rounded font-semibold hover:bg-active cursor-pointer',
+                                        'flex justify-between gap-3 items-center px-5 py-3 rounded text-h45 hover:bg-active cursor-pointer',
                                         isOpenDropdown === lesson.id || renameLessonId === lesson.id && 'bg-active'
                                     )}
                                     onDoubleClick={() => navigate(lesson.id)}

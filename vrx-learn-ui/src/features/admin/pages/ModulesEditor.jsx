@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Icon, Button, Input, Dropdown } from '@/components/ui'
-import { useOutletContext, NavLink, useNavigate } from 'react-router-dom'
+import { Icon, Button, Input, Dropdown, MarkdownContent } from '@/components/ui'
+import { useOutletContext, NavLink, useNavigate,  } from 'react-router-dom'
 import ReorderList from '@/components/dnd/ReorderList';
 import clsx from 'clsx';
 import useUpdateMoudule from '../hooks/useUpdateModule';
@@ -26,7 +26,7 @@ function ModulesEditor() {
     const { addToast } = useToast();
 
 
-    const { modules, moduleloading, moduleError, courseSlug } = useOutletContext();
+    const { modules, moduleloading, moduleError, courseContent, courseSlug } = useOutletContext();
     const [orderedModules, setOrderedModules] = useState(modules || [])
     const { updateModule, loading, error } = useUpdateMoudule();
     const { deleteModule } = useDeleteMoudule();
@@ -119,16 +119,17 @@ function ModulesEditor() {
 
 
     return (
-        <div className="space-y-6" onClick={() => setRenameModuleId(null)}>
+        <div className="space-y-4" onClick={() => setRenameModuleId(null)}>
             <div className='flex justify-between'>
-                <h2 className="title-h2">Curriculum</h2>
+                <h2 className="text-h3">Curriculum</h2>
                 <div className='flex gap-3'>
-                    <Button buttonName={clsx(isReorderMode ? "Done" : "Reorder")} frontIconName={clsx(isReorderMode ? "material-symbols:done-rounded" : "ix:reorder")} frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass={clsx(isReorderMode ? "bg-primary" : "bg-white")} textClass={clsx(isReorderMode ? "text-white" : "text-black hover:text-primary")} onClick={handleReorder} />
+                    <Button buttonName={clsx(isReorderMode ? "Done" : "Reorder")} frontIconName={clsx(isReorderMode ? "material-symbols:done-rounded" : "ix:reorder")} frontIconWidth="24px" frontIconHeght="24px" className="rounded p-1" bgClass={clsx(isReorderMode ? "bg-primary" : "bg-white")} textClass={clsx(isReorderMode ? "text-white" : "text-black hover:text-primary")} onClick={handleReorder} />
                     <NavLink to={`/courses/${courseSlug}/edit/modules/create`}>
-                        <Button buttonName="Add New Module" frontIconName="ic:baseline-plus" frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="bg-white" textClass="hover:text-primary" />
+                        <Button buttonName="Add New Module" frontIconName="ic:baseline-plus" frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded" bgClass="bg-white" textClass="hover:text-primary" />
                     </NavLink>
                 </div>
             </div>
+            <p className='text-body'> {courseContent?.short_description} </p>
             <ul className="flex flex-col">
 
                 {
@@ -157,7 +158,7 @@ function ModulesEditor() {
                                                 }
                                             }}
                                             className={clsx(
-                                                'flex justify-between items-center px-5 py-3 rounded font-semibold hover:bg-active cursor-pointer',
+                                                'flex justify-between items-center px-5 py-3 rounded text-h45 hover:bg-active cursor-pointer',
                                                 isOpenDropdown === module.id || renameModuleId === module.id && 'bg-active'
                                             )}
                                         >

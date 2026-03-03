@@ -51,7 +51,7 @@ function EditerBox({ label, value, onChange }) {
     return (
         <div className='flex flex-col gap-2'>
             {label && (
-                <label className="text-sm font-bold">
+                <label className="text-h5">
                     {label}
                 </label>
             )}

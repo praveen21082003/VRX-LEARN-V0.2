@@ -5,14 +5,14 @@ import HeaderProfile from "./HeaderProfile";
 
 function Header({ menu, breadcrumbs = [], profileURL }) {
     return (
-        <header className="dark:bg-dark sticky top-0 z-50 flex h-[6vh] min-h-14 w-full items-center justify-between bg-primary px-6 font-semibold text-[#FAFAF8]">
+        <header className="sticky top-0 z-50 flex h-[8vh] w-full items-center justify-between bg-primary px-6  text-[#FAFAF8]">
 
             {/* Logo */}
             <div className="flex items-center gap-10">
                 <img
                     src="/logo-white.svg"
                     alt="Logo"
-                    className="h-15 cursor-pointer"
+                    className="h-10 cursor-pointer"
                 />
 
                 {!menu &&

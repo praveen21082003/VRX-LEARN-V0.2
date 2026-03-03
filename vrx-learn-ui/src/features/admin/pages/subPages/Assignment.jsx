@@ -28,21 +28,21 @@ function Assignment() {
     return (
         <div>
             <div className='flex justify-between'>
-                <h2 className="title-h2">{assignment.title}</h2>
+                <h2 className="text-h3">{assignment.title}</h2>
                 <Button buttonName="Edit Details" frontIconName='mingcute:pencil-line' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="bg-white" textClass="text-primary" />
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-muted-foreground text-dark-gray">
+            <div className="flex items-center text-caption gap-2 text-muted-foreground text-dark-gray">
                 <div className="flex gap-2 items-center">
                     <Icon icon="mdi:clock-outline" width="16px" height="16px" />
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground">
                         Due: {formatDate(assignment.due_date)}, {formatDateTime(assignment.due_date, assignment.due_time)}
                     </p>
                 </div>
                 <Icon name="bi:dot" />
                 <div className="flex gap-2 items-center">
                     <Icon name="streamline:star-badge-remix" width="16px" height="16px" />
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground">
                         Max: {assignment.marks} Marks
                     </p>
                 </div>

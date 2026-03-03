@@ -19,6 +19,7 @@ function Input({
     bgClass = "bg-white",
     onKeyDown,
     paddingClass,
+    widthClass = "w-full"
 
 
 }) {
@@ -33,7 +34,7 @@ function Input({
         <div className="flex flex-col gap-2 w-full">
             {/* Label */}
             {label && (
-                <label className="text-sm font-bold">
+                <label className="text-h5">
                     {label}
                 </label>
             )}
@@ -62,9 +63,9 @@ function Input({
                     disabled={disabled}
                     placeholder={placeholder}
                     className={`
-                        w-full rounded-lg border
-                        ${paddingClass? paddingClass : "p-3" } ${icon ? "pl-10" : ""}
-                        text-sm
+                        ${widthClass} rounded-lg border
+                        ${paddingClass? paddingClass : "p-2.5" } ${icon ? "pl-10" : ""}
+                        text-body
                         outline-none
                         transition
                         border-border

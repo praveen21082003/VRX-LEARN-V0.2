@@ -180,7 +180,7 @@ function EditCourseLayout() {
                     {({ isActive }) => (
                       <div
                         className={clsx(
-                          "group flex h-13 w-full items-center font-semibold border-primary",
+                          "group flex h-13 w-full items-center text-h45 border-primary",
                           isActive
                             ? "bg-primary-border text-primary border-x-8 px-1"
                             : "hover:bg-primary/10 px-1"
@@ -246,7 +246,7 @@ function EditCourseLayout() {
                               to={`/courses/${courseSlug}/edit/${section.key}/${child.id}`}
                               className={({ isActive }) =>
                                 clsx(
-                                  "group flex items-center justify-between pl-10 px-2 text-sm py-3 font-semibold",
+                                  "group flex items-center justify-between pl-10 px-2 py-3 text-h5",
                                   isActive
                                     ? "bg-active text-primary"
                                     : "text-dark-gray hover:bg-active"
@@ -267,8 +267,8 @@ function EditCourseLayout() {
                                 >
                                   <Icon
                                     name="ic:baseline-plus"
-                                    height="26px"
-                                    width="26px"
+                                    height="26"
+                                    width="26"
                                     className="text-muted-foreground hover:text-primary"
                                   />
                                 </span>

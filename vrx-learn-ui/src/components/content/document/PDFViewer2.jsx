@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import * as pdfjsLib from "pdfjs-dist";
+
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 export default function PDFViewer({
   url,
+  key,
   currentPage,
   setTotalPages,
   setCurrentPage,
@@ -88,9 +89,8 @@ export default function PDFViewer({
   }, [pdfDoc, currentPage]);
 
   return (
-    <div className="flex justify-center " onContextMenu={(e) => e.preventDefault()}>
+    <div key={key} className="flex justify-center " onContextMenu={(e) => e.preventDefault()}>
       <canvas ref={canvasRef} />
-      
     </div>
     
   );

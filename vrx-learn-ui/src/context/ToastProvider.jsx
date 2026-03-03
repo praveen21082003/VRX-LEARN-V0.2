@@ -5,7 +5,14 @@ import { Icon, Button } from '@/components/ui'
 const ToastContext = createContext();
 
 export function useToast() {
-    return useContext(ToastContext);
+    const context = useContext(ToastContext);
+
+    if (!context) {
+        console.warn("useToast used outside ToastProvider");
+        return { addToast: () => { } };
+    }
+
+    return context;
 }
 
 
@@ -23,7 +30,7 @@ export function ToastProvider({ children }) {
         }, 5000)  // 3 seconds
     }, []);
 
-    const handleClose = (id)=>{
+    const handleClose = (id) => {
         setToasts((prev) => prev.filter((toast) => toast.id != id))
     }
 
@@ -57,7 +64,7 @@ export function ToastProvider({ children }) {
                             </div>
 
                             {/* <Icon name="maki:cross" height="24" width="24" /> */}
-                            <Button frontIconName="maki:cross" frontIconHeight="20" frontIconWidth="20" bgClass="bg-none" onClick={()=>handleClose(toast.id)} textClass="text-dark-gray"/>
+                            <Button frontIconName="maki:cross" frontIconHeight="20" frontIconWidth="20" bgClass="bg-none" onClick={() => handleClose(toast.id)} textClass="text-dark-gray" />
                         </div>
                     </div>
                 ))}

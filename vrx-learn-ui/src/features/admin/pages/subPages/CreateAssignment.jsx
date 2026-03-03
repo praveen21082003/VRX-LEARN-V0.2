@@ -95,8 +95,8 @@ function CreateAssignment() {
 
     return (
         <>
-            <h2 className="text-2xl font-semibold flex items-center">New Assignment</h2>
-            <div className='space-y-3'>
+            <h2 className="text-h3 flex items-center">New Assignment</h2>
+            <div className='space-y-4'>
                 <Input
                     label="Title"
                     placeholder="Assignment name"

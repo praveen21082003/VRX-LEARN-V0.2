@@ -17,12 +17,12 @@ export default function CourseOverviewSection({ course, can }) {
     course.feedback_duration;
 
   return (
-    <div className="flex gap-6 items-start px-10 pt-7">
+    <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start p-4 md:px-10 md:pt-7">
       <CourseTumbnail name={course.name} image={course.thumbnail} classRounded="rounded-lg" />
 
       <div className="space-y-3 flex-1">
         <div className="flex justify-between">
-          <h2 className="text-[26px] font-semibold">{course.name}</h2>
+          <h2 className="text-h2">{course.name}</h2>
         </div>
 
 
@@ -33,7 +33,7 @@ export default function CourseOverviewSection({ course, can }) {
               {course.author}
             </span>
           </p>
-          <div className="flex items-center text-sm text-muted-foreground text-dark-gray">
+          <div className="flex items-center text-body text-muted-foreground text-dark-gray">
             <span>Course</span>
             <Icon name="ph:dot-bold" />
             <span>{formatMinutes(totalLessonMinutes)}</span>
@@ -43,7 +43,7 @@ export default function CourseOverviewSection({ course, can }) {
         </div>
 
 
-        <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3">
+        <p className="text-body text-muted-foreground line-clamp-3">
           {course.short_description}
         </p>
       </div>

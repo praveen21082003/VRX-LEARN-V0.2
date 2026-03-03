@@ -9,14 +9,14 @@ function GraphSection() {
         <div className="bg-surface rounded-lg min-h-55 h-60 2xl:h-79 p-4">
             <div className="flex justify-between items-center">
                 <div>
-                    <h3 className="font-semibold text-xs lg:text-xl">
+                    <h3 className="text-h4">
                         Learning Statistics
                     </h3>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-ll">
                         Hours This Week
                     </span>
                 </div>
-                <p className="text-2xl font-semibold">
+                <p className="text-h3">
                     {data?.totalHours} hrs
                 </p>
             </div>

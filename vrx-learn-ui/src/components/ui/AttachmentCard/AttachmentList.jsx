@@ -10,13 +10,13 @@ function AttachmentCard({ file }) {
       <div className="shrink-0 w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
         <Icon
           name={extension === "pdf" ? "ri:file-pdf-2-line" : "line-md:file"}
-          className="text-xl"
+          height="26" width="26"
         />
       </div>
 
       {/* File Info */}
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-foreground truncate leading-tight">
+        <p className="text-body font-medium text-foreground truncate leading-tight">
           {file.name}
         </p>
         <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
@@ -32,7 +32,7 @@ function AttachmentCard({ file }) {
         className="shrink-0 p-1.5 bg-primary/10 hover:bg-primary hover:text-white rounded-full text-primary transition-colors"
         title="View Attachment"
       >
-        <Icon name="ri:external-link-line" className="text-lg" />
+        <Icon name="ri:external-link-line" height="26" width="26" />
       </a>
     </div>
   );

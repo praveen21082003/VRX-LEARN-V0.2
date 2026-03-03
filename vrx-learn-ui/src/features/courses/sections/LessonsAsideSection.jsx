@@ -3,12 +3,13 @@ import clsx from "clsx";
 import { Icon } from '@/components/ui'
 import { motion, AnimatePresence } from "motion/react";
 import BackButton from "@/components/navigation/BackButton";
-
+import { useParams } from "react-router-dom";
 
 
 
 function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
     const [openModuleId, setOpenModuleId] = useState(null);
+    const {courseSlug} = useParams();
 
     useEffect(() => {
         if (modules?.length && openModuleId === null) {
@@ -24,8 +25,10 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
 
 
     return (
-        <aside className="hidden w-90 2xl:w-120 border-r-2 border-primary-border bg-muted/40 py-1 md:block">
-            <div className="p-1"><BackButton to=".." /></div>
+        <aside className="hidden sidebar-sm 2xl:sidebar-lg border-r-2 text-sm border-primary-border bg-muted/40 md:block">
+            <div className="p-4 border-b-2 border-primary-border w-full">
+                <BackButton to={`/learn/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Overview" />
+            </div>
             {modules.map((module, moduleIndex) => {
                 const isOpen = openModuleId === module.id;
 
@@ -34,8 +37,8 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
                         <button
                             onClick={() => toggleModule(module.id)}
                             className={clsx(
-                                "flex h-16 w-full border-primary items-center justify-between font-semibold",
-                                isOpen ? "bg-primary-border border-x-8 p-2" : "hover:bg-primary/5 p-4"
+                                "flex h-16 w-full border-primary items-center justify-between text-dark-gray text-h45",
+                                isOpen ? "bg-primary-border text-primary border-x-8 p-2" : "hover:bg-primary/5 p-4"
                             )}
                         >
                             <span>{module.title}</span>
@@ -70,28 +73,17 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
                                                     type="button"
                                                     onClick={() => setActiveLesson({ moduleIndex, lessonIndex, lessonId })}
                                                     className={clsx(
-                                                        "flex w-full items-center justify-between p-4 text-left font-semibold transition",
+                                                        "flex w-full items-center justify-between p-4 text-dark-gray transition",
                                                         isActive
                                                             ? "bg-primary-border text-primary"
                                                             : "hover:bg-primary/5"
                                                     )}
                                                 >
                                                     <div className="flex items-center gap-4 min-w-0">
-                                                        {lesson.type === "video" ?
-                                                            <Icon
-                                                                name="ep:video-play"
-                                                                height="26"
-                                                                width="26"
-                                                            />
-                                                            :
-                                                            <Icon
-                                                                name="basil:document-outline"
-                                                                height="26"
-                                                                width="26"
-                                                            />
-                                                        }
 
-                                                        <p className="text-sm truncate">
+                                                        <Icon name={lesson.type === "video" ? "ep:video-play" : "basil:document-outline"} height="26" width="26" />
+
+                                                        <p className="text-h5 truncate">
                                                             {moduleIndex + 1}.{lessonIndex + 1} {lesson.title}
                                                         </p>
                                                     </div>

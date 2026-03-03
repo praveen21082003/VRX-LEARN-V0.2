@@ -11,7 +11,7 @@ export default function InstructionsTab({ description, attachments }) {
     return (
         <>
             <MarkdownContent content={description} />
-            <h1 className="text-xl font-semibold mt-6">Attachments</h1>
+            <h1 className="text-h45 mt-6">Attachments</h1>
 
             <div className="flex flex-wrap gap-3 mt-2">
                 <ul className="flex gap-2">

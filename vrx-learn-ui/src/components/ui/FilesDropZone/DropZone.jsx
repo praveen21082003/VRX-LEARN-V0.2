@@ -31,9 +31,9 @@ export default function DropZone({ label, files, multipleFiles, maxFilesAllowed,
 
 
   return (
-    <div className={`flex flex-col gap-2 h-full w-full`}>
+    <div className={`flex flex-col gap-2 w-full`}>
       {label && (
-        <label className="text-base font-bold">
+        <label className="text-h5">
           {label}
         </label>
       )}
@@ -52,11 +52,11 @@ export default function DropZone({ label, files, multipleFiles, maxFilesAllowed,
             className="text-primary/70"
           />
 
-          <p className="font-semibold text-[28px]">
+          <p className="text-h4">
             Drag and Drop your files here
           </p>
-          <p className="text-base">or Click to browse computer</p>
-          <p className="text-base">
+          <p className="text-body">or Click to browse computer</p>
+          <p className="text-body">
             Supported Formats: PDF, ZIP. Max Size: 50MB.
           </p>
         </div>
@@ -64,10 +64,10 @@ export default function DropZone({ label, files, multipleFiles, maxFilesAllowed,
 
       {files.length > 0 && (
         <div className="w-full space-y-3">
-          <div className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+          {/* <div className="flex items-center gap-2 text-h4 text-gray-500 uppercase tracking-wider">
             <Icon name="ri:file-list-3-line" height="18px" width="18px" />
             <span>Selected File </span>
-          </div>
+          </div> */}
 
           <div className="grid grid-cols-1 gap-2">
             {files.map((file, index) => {
@@ -91,10 +91,10 @@ export default function DropZone({ label, files, multipleFiles, maxFilesAllowed,
                     </div>
 
                     <div className="flex flex-col min-w-0">
-                      <span className="text-sm font-medium text-gray-900 truncate">
+                      <span className="text-h5 font-medium text-gray-900 truncate">
                         {file.name}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-body text-dark-gray">
                         {fileSize}
                       </span>
                     </div>
