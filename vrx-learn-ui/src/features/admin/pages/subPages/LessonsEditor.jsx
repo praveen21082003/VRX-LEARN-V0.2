@@ -112,7 +112,7 @@ function LessonsEditor() {
     return (
         <div className="space-y-6">
             <div className='flex justify-between'>
-                <h2 className="text-2xl font-semibold flex items-center gap-3">{module?.title}</h2>
+                <h2 className="title-h2">{module?.title}</h2>
                 <div className='flex gap-px'>
                     <span className=' flex gap-3'>
 

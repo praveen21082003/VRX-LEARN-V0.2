@@ -28,7 +28,7 @@ function Assignment() {
     return (
         <div>
             <div className='flex justify-between'>
-                <h1 className="text-xl font-semibold">{assignment.title}</h1>
+                <h2 className="title-h2">{assignment.title}</h2>
                 <Button buttonName="Edit Details" frontIconName='mingcute:pencil-line' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="bg-white" textClass="text-primary" />
             </div>
 

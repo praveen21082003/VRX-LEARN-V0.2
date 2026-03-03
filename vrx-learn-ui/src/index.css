@@ -23,6 +23,12 @@ body {
   }
 }
 
+@layer components {
+  .title-h2 {
+    @apply text-2xl font-semibold flex items-center gap-3;
+  }
+}
+
 /* ---------- Design Tokens ---------- */
 @theme {
 
@@ -41,8 +47,8 @@ body {
   --color-secondary: #3f3f3f;
   --color-secondary-light: #6ee7b7;
 
-  --color-active:#84022729;
-  --color-hover-active:#84022714;
+  --color-active: #84022729;
+  --color-hover-active: #84022714;
 
 
   /* Surfaces & borders */
@@ -54,14 +60,12 @@ body {
 
   /* Toasts Colors */
   --color-success-bg: #D1E7DD;
-  --color-success-secondary : #0F2D1F;
+  --color-success-secondary: #0F2D1F;
 
   --color-error-bg: #F8D7DA;
   --color-error-secondary: #661414
-
-
-  /* Typography tokens (HSL values) */
-  --foreground: 222 47% 11%;
+    /* Typography tokens (HSL values) */
+    --foreground: 222 47% 11%;
   --muted-foreground: 215 16% 47%;
 
     /* Dark Mode Colours */
@@ -76,6 +80,10 @@ body {
 } */
 
 
+
+
+
+
 .menu {
   max-height: 0;
   overflow: hidden;
@@ -84,6 +92,7 @@ body {
 }
 
 .menu.open {
-  max-height: 200px; /* Must be larger than the content */
+  max-height: 200px;
+  /* Must be larger than the content */
   opacity: 1;
 }

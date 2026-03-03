@@ -81,11 +81,12 @@ function Layout() {
               {authMode === "reset" && "Reset Password?"}
             </h1>
           </div>
-          {authMode === "login" && (
-            <Login onForgot={() => setAuthMode("forgot")} />
-          )}
-          {authMode === "forgot" && <Forgot />}
-          {authMode === "reset" && <Reset />}
+          
+          {authMode === "login" && <Login onForgot={()=>setAuthMode("forgot")}/>}
+          {authMode === "forgot" && <Forgot onReset={()=>setAuthMode("reset")} onLogin={() => setAuthMode("login")}/>}
+          {authMode === "reset" && <Reset onLogin={() => setAuthMode("login")}/>}
+          
+          
         </div>
       </div>
     </div>

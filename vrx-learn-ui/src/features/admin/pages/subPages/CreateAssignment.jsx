@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { Input, Button, TextEditor, FileDropZone } from '@/components/ui'
 import { useParams } from 'react-router-dom';
 import useCreateAssignment from '../../hooks/useCreateAssignment';
+import { useToast } from '@/context/ToastProvider';
 
 function CreateAssignment() {
     const { courseSlug } = useParams();
+
+
+    const {addToast} = useToast();
+
+
     const [files, setFiles] = useState([]);
     const { createAssignment, loading } = useCreateAssignment();
 
@@ -81,9 +87,9 @@ function CreateAssignment() {
 
         try {
             await createAssignment(formData);
-            alert("Module created successfully");
+            addToast("Module created successfully", "success");
         } catch (err) {
-            alert("Something went wrong");
+            addToast("Something went wrong", "error");
         }
     };
 

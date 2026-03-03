@@ -26,7 +26,7 @@ export const buttons = (handleRename, lessonId) => [
 ]
 
 
-export const getButtons = (moduleId, handleRename, handleDeleteModule) => [
+export const getButtons = (Id, handleRename, handleDelete) => [
   {
     key: "view", title: "View", icon: "material-symbols:view-cozy-sharp", onClick: () => alert("edit clicked")
   },
@@ -35,10 +35,10 @@ export const getButtons = (moduleId, handleRename, handleDeleteModule) => [
     key: "rename",
     title: "Rename",
     icon: "ix:rename",
-    onClick: () => handleRename(moduleId),
+    onClick: () => handleRename(Id),
     permission: "UPDATE_MODULES"
   },
-  { key: "delete", title: "Delete", icon: "ic:baseline-delete", onClick: () => handleDeleteModule(moduleId), permission: "DELETE_MODULES" }
+  { key: "delete", title: "Delete", icon: "ic:baseline-delete", onClick: () => handleDelete(Id), permission: "DELETE_MODULES" }
 ]
 
 

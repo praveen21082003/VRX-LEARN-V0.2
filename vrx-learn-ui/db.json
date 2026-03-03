@@ -71,6 +71,13 @@
       "date": "2026-03-29",
       "time": "07:30 PM",
       "color": "bg-blue-600"
+    },
+    {
+      "id": "3",
+      "title": "React Learing",
+      "date": "2026-03-27",
+      "time": "07:30 PM",
+      "color": "bg-blue-600"
     }
   ],
   "course_details": [
@@ -117,7 +124,8 @@
           "status": "completed"
         }
       ]
-    },{
+    },
+    {
       "id": "2",
       "course_id": 34,
       "title": "Frontend Advanced Concepts",
@@ -242,7 +250,8 @@
       "overview": "## Lesson Overview\n\nClient–server communication is the backbone of every web application.\n\nIn this lesson, you will learn:\n- What happens when a user clicks a button in the browser\n- How requests travel from client to server\n- How servers process requests and send responses\n\n---\n\n## Key Concepts\n- HTTP and HTTPS protocols\n- Request methods (GET, POST, PUT, DELETE)\n- Status codes and their meanings\n- JSON as a data exchange format\n\n---\n\n## Why it’s important\nUnderstanding client–server communication will help you debug API issues confidently, build scalable applications, and design clean and maintainable backend services.",
       "qa_enabled": true,
       "notes_enabled": true
-    },{
+    },
+    {
       "id": "201",
       "module_id": 2,
       "course_id": 34,
@@ -250,7 +259,6 @@
       "type": "file",
       "file_type": "pdf",
       "file_url": "https://vrx-learn.s3.amazonaws.com/Creating%20N%20user%20and%20sessions%20in%20ZIE%20Web%20admin%20console..pdf?response-content-disposition=inline&AWSAccessKeyId=AKIA4CGDKROJB4KSVGNZ&Signature=oR8LRtjAKC%2FTqLk4LBe9G48qDhY%3D&Expires=1787392235",
-    
       "file_size_mb": 2.5,
       "status": "completed",
       "overview": "## Advanced React Patterns\n\nA comprehensive guide to Higher-Order Components, Render Props, and Compound Components.",
@@ -258,7 +266,7 @@
       "qa_enabled": true,
       "notes_enabled": true
     },
-     {
+    {
       "id": "202",
       "module_id": 2,
       "course_id": 34,
@@ -269,7 +277,12 @@
       "file_size_mb": 4.1,
       "status": "yet_to_complete",
       "overview": "## Redux State Management\n\nDocumentation on actions, reducers, and the global store architecture.",
-      "resources": [{ "title": "Redux Toolkit Docs", "url": "https://redux-toolkit.js.org/" }],
+      "resources": [
+        {
+          "title": "Redux Toolkit Docs",
+          "url": "https://redux-toolkit.js.org/"
+        }
+      ],
       "qa_enabled": true,
       "notes_enabled": true
     },
@@ -284,7 +297,12 @@
       "file_size_mb": 4.1,
       "status": "yet_to_complete",
       "overview": "## Redux State Management\n\nDocumentation on actions, reducers, and the global store architecture.",
-      "resources": [{ "title": "Redux Toolkit Docs", "url": "https://redux-toolkit.js.org/" }],
+      "resources": [
+        {
+          "title": "Redux Toolkit Docs",
+          "url": "https://redux-toolkit.js.org/"
+        }
+      ],
       "qa_enabled": true,
       "notes_enabled": true
     },
@@ -434,14 +452,14 @@
       "attachments": []
     },
     {
-      "id": "1312",
+      "id": "523a",
       "course_id": 34,
-      "title": "",
-      "instructions": "",
-      "due_date": "",
-      "due_time": "",
-      "marks": 0,
-      "attempts": 4,
+      "title": "React Learning",
+      "instructions": "# React\n\n`useState();`\n\n`redux`",
+      "due_date": "2026-02-27",
+      "due_time": "22:13",
+      "marks": 100,
+      "max_attempts": 1,
       "attachments": []
     }
   ],
@@ -484,7 +502,7 @@
       "id": "1",
       "name": "Admin User",
       "email": "admin@test.com",
-      "password": "admin123",
+      "password": "admin1234",
       "role": "ADMIN"
     },
     {

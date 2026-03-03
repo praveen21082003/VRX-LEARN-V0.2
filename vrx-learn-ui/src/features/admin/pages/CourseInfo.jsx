@@ -65,7 +65,7 @@ function CourseInfo() {
   return (
 
     <div className="space-y-6">
-      <h2 className="text-2xl font-semibold flex items-center gap-3">
+      <h2 className="title-h2">
         {/* <Icon name="hugeicons:ai-editing" height="28px" width="28px" /> */}
         Edit Course Information
       </h2>
