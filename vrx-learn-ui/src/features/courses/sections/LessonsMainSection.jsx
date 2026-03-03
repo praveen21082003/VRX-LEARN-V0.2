@@ -26,12 +26,12 @@ function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
   return (
     <main className="flex-1 overflow-y-auto py-3 px-6">
 
-      <h1 className="text-xl font-semibold leading-tight">
+      <h1 className="text-h3">
         {activeLesson.moduleIndex + 1}.{activeLesson.lessonIndex + 1}{" "}
         {lesson?.title}
       </h1>
 
-      <div className="flex items-center text-xs text-inner-shadow -mt-1.5 text-muted-foreground text-dark-gray">
+      <div className="flex items-center text-caption text-inner-shadow -mt-1.5 text-muted-foreground text-dark-gray">
         <span>{lesson?.type}</span>
         <Icon name="ph:dot-bold" />
         {lesson?.type === "video" && (

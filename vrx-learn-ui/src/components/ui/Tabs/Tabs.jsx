@@ -5,7 +5,7 @@ function Tabs({ tabs, activeTab, onChange }) {
         <button
           key={tab.value}
           onClick={() => onChange(tab.value)}
-          className={`pb-2 font-semibold transition-colors ${
+          className={`pb-2 text-h4 transition-colors ${
             activeTab === tab.value
               ? "border-b-2 border-primary text-primary"
               : "text-muted-foreground hover:text-foreground"

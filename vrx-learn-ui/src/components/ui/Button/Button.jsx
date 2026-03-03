@@ -31,7 +31,7 @@ function Button({
       disabled={disabled}
       onClick={onClick}
       className={`
-      flex items-center cursor-pointer justify-center
+      flex items-center cursor-pointer justify-center text-h5
       ${isIconOnly ? "" : "gap-2"}
       ${isIconOnly ? "p-0.5" : ""}
       ${className}

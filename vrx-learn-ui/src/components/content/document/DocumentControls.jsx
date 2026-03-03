@@ -209,7 +209,7 @@ function DocumentControls({
                 }}
 
                 className={`absolute left-1/2 -translate-x-1/2 bottom-6 
-                    bg-[#323639] text-white flex items-center gap-4 
+                    bg-black/70 text-white flex items-center gap-4 
                     px-3 py-1 rounded-md shadow-xl 
                     transition-opacity duration-300 z-50
                     ${showControls ? "opacity-100" : "opacity-0 pointer-events-none"}

@@ -64,19 +64,19 @@ function CourseInfo() {
 
   return (
 
-    <div className="space-y-6">
-      <h2 className="title-h2">
+    <>
+      <h2 className="text-h3">
         {/* <Icon name="hugeicons:ai-editing" height="28px" width="28px" /> */}
         Edit Course Information
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-8">
 
 
-        <div className="flex gap-2 h-49">
+        <div className="flex gap-4 h-49">
 
 
-          <div className="flex flex-col gap-6 w-[70%] justify-end">
+          <div className="flex flex-col gap-8 w-[70%] justify-end">
             <Input
               label="Title"
               value={formData.name}
@@ -109,12 +109,12 @@ function CourseInfo() {
 
             <Button
               type="button"
-              buttonName="Upload Image"
+              buttonName="Upload"
               frontIconName="material-symbols:upload"
               frontIconHeight="28px"
               frontIconWidth="28px"
               className="w-full p-1 bg-active rounded-b"
-              textClass="text-primary font-semibold"
+              textClass="text-primary text-h5"
               onClick={() => fileInputRef.current.click()}
             />
           </div>
@@ -122,18 +122,18 @@ function CourseInfo() {
 
 
         <div className="space-y-2">
-          <label className="text-sm font-bold">Short description</label>
+          <label className="text-h5">Short description</label>
           <textarea
             rows="6"
             value={formData.shortDescription}
             onChange={(e) =>
               handleChange("shortDescription", e.target.value)
             }
-            className="w-full border text-sm border-border rounded-lg p-3 focus:outline-none focus:ring-2 bg-active focus:ring-primary"
+            className="w-full border text-body border-border rounded-lg p-3 focus:outline-none focus:ring-2 bg-active focus:ring-primary"
           />
         </div>
         <div>
-          <label className="text-sm font-bold">Description</label>
+          <label className="text-h5">Description</label>
           <TextEditor
             value={formData.description}
             onChange={(value) =>
@@ -154,7 +154,7 @@ function CourseInfo() {
         </div>
 
       </form>
-    </div>
+    </>
   )
 }
 

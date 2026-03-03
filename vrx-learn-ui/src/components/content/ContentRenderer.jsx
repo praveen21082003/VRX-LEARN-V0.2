@@ -11,11 +11,11 @@ function ContentRenderer({ lesson, error, activeLesson, setButtonAction }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  // Add this inside your component
+  
   useEffect(() => {
     setCurrentPage(1);
     setTotalPages(1);
-  }, [lesson?.file_url]); // Runs whenever the file changes
+  }, [lesson?.file_url]); 
 
 
   if (!activeLesson || !lesson) {
@@ -28,7 +28,7 @@ function ContentRenderer({ lesson, error, activeLesson, setButtonAction }) {
 
   return (
     <>
-      <div className="flex justify-center w-full mt-2 rounded overflow-hidden">
+      <div className="flex justify-center w-full mt-1 lg:px-10 2xl:px-0  rounded overflow-hidden">
         {lesson?.type === "video" ? (
 
           <VideoPlayer url={lesson?.video_url} key={lesson.id} />
@@ -38,36 +38,6 @@ function ContentRenderer({ lesson, error, activeLesson, setButtonAction }) {
 
           <DocumentControls title={lesson.title} fileUrl={lesson.file_url} key={lesson.id}/>
 
-
-          // <ZoomControls
-          //   key={lesson.file_url}
-          //   title={lesson?.title || "Document"}
-          //   totalPages={totalPages}
-          //   currentPage={currentPage}
-          //   setCurrentPage={setCurrentPage}
-          //   fileUrl={lesson.file_url}
-          // >
-          //   {lesson?.file_type === "pdf" && (
-          //     <PDFViewer
-          //       key={lesson.id}
-          //       url={lesson.file_url}
-          //       currentPage={currentPage}
-          //       totalPages={totalPages}
-          //       setCurrentPage={setCurrentPage}
-          //       setTotalPages={setTotalPages}
-          //     />
-          //   )}
-
-          //   {lesson?.file_type === "word" && (
-          //     <WordViewer
-          //       url={lesson.file_url}
-          //       currentPage={currentPage}
-          //       totalPages={totalPages}
-          //       setCurrentPage={setCurrentPage}
-          //       setTotalPages={setTotalPages}
-          //     />
-          //   )}
-          // </ZoomControls>
         ) : null}
       </div>
     </>

@@ -9,7 +9,7 @@ export default function MyCoursesSection() {
     return (
         <section className="bg-surface p-4 flex-[0_0_40%] bg-card rounded-xl">
             <header className="flex justify-between mb-4">
-                <h2 className="font-semibold text-2xl">My Courses</h2>
+                <h2 className="text-h4">My Courses</h2>
                 <button className="text-sm underline">View all</button>
             </header>
 

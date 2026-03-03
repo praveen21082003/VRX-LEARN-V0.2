@@ -93,7 +93,7 @@ function AssignmentsEditor() {
     return (
         <div className="space-y-6">
             <div className='flex justify-between'>
-                <h2 className="title-h2">Assignments</h2>
+                <h2 className="text-h3">Assignments</h2>
                 <NavLink to={`/courses/${courseSlug}/edit/assignments/create`}>
                     <Button buttonName="Add New Assignment" frontIconName="ic:baseline-plus" frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="bg-white" textClass="hover:text-primary" />
                 </NavLink>
@@ -115,7 +115,7 @@ function AssignmentsEditor() {
                                 }}
                             >
                                 {/* Left side */}
-                                <div className="flex font-semibold items-center w-full min-w-0 gap-3">
+                                <div className="flex items-center w-full min-w-0 gap-3">
                                     <Icon
                                         name="material-symbols:assignment-outline"
                                         height="25"
@@ -146,11 +146,11 @@ function AssignmentsEditor() {
                                                     }}
                                                 />
                                             </span>
-                                            : <span className="font-medium text-foreground">
+                                            : <span className="text-h45 text-foreground">
                                                 {assignment.title}
                                             </span>
                                         }
-                                        <span className='text-xs text-dark-gray text-muted-foreground'>
+                                        <span className='text-caption text-dark-gray text-muted-foreground'>
                                             Due: {formatDate(assignment.due_date)}, {formatDateTime(assignment.due_date, assignment.due_time)}
                                         </span>
                                     </div>

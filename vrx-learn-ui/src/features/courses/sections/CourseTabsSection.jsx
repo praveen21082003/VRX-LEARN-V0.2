@@ -23,26 +23,26 @@ export default function CourseTabsSection({ course }) {
     ];
 
     return (
-        <div className="space-y-1 px-10 py-3">
+        <div className="space-y-1 py-2 px-4 lg:px-10 lg:py-3">
             {sections.map((section) => (
                 <NavLink
                     key={section.key}
                     to={`/learn/${courseSlug}/${section.key}`}
                     className={({ isActive }) =>
-                        `flex justify-between items-center rounded-lg px-4 py-2
+                        `flex justify-between items-center rounded-lg px-4 py-1
                     ${isActive ? "bg-active" : "hover:bg-hover-active"}`
                     }
                 >
                     <div>
-                        <h3 className="text-xl font-semibold">{section.title}</h3>
+                        <h3 className="text-h3">{section.title}</h3>
 
                         {(section.duration || section.meta) && (
-                            <div className="flex items-center gap-2 text-sm text-dark-gray">
+                            <div className="flex items-center gap-1 text-body text-dark-gray">
                                 {section.meta && <span>{section.meta}</span>}
                                 {section.meta && section.duration && <Icon name="ph:dot-bold" />}
                                 {section.duration && (
                                     <>
-                                        <Icon name="mdi:clock-outline" height="18" width="18"/>
+                                        <Icon name="mdi:clock-outline" height="16" width="16"/>
                                         <span>{section.duration}</span>
                                         
                                     </>

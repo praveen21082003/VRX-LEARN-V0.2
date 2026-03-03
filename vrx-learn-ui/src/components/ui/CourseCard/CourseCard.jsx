@@ -38,8 +38,8 @@ function CourseCard({ name, author, image, buttonName, bgClass,textClass }) {
 
 
       <div className="flex-1">
-        <h1 className="text-lg font-medium">{name}</h1>
-        <p className="text-[11px] text-gray-500">{author}</p>
+        <h1 className="text-h5 truncate">{name}</h1>
+        <p className="text-small">{author}</p>
       </div>
 
       <Button

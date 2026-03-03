@@ -42,7 +42,7 @@ function HeaderUserMenu() {
             `}
                     >
                         <Icon name={icon} width="20" height="20" />
-                        <span>{link.name}</span>
+                        <span className="text-h4">{link.name}</span>
                     </Link>
                 );
             })}

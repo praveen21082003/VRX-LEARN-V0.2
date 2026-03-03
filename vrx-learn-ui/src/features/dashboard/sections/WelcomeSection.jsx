@@ -23,7 +23,7 @@ function WelcomeSection({ user }) {
       <div className="grid h-full grid-cols-1 lg:grid-cols-2 gap-6">
 
         <div className="flex flex-col justify-center gap-5 text-white max-w-xl">
-          <h2 className="text-2xl md:text-3xl 2xl:text-6xl font-semibold">
+          <h2 className="text-h3">
             Hello, {user.name}!
           </h2>
 
@@ -32,7 +32,7 @@ function WelcomeSection({ user }) {
               Continue Learning
             </p>
 
-            <h3 className="text-lg md:text-xl 2xl:text-4xl font-medium">
+            <h3 className="text-h3 truncate">
               {user.current_learing_course}
             </h3>
 

@@ -94,8 +94,7 @@
       "quiz_duration": 90,
       "feedback_duration": 2,
       "thumbnail": "",
-      "short_description": "Web development involves the creation, building, and maintenance of websites and web applications. It encompasses a broad range of tasks, including coding, technical design, and performance optimization. Web development can be classified into two main categories: front-end development and back-end development.",
-      "shortDescription": "Web development involves the creation, building, and maintenance of websites and web applications. It encompasses a broad range of tasks, including coding, technical design, and performance optimization. Web development can be classified into two main categories: front-end development and back-end development."
+      "short_description": "Web development involves the creation, building, and maintenance of websites and web applications. It encompasses a broad range of tasks, including coding, technical design, and performance optimization. Web development can be classified into two main categories: front-end development and back-end development."
     }
   ],
   "modules": [
@@ -145,7 +144,7 @@
         {
           "id": 203,
           "title": "Performance Optimization",
-          "type": "video",
+          "type": "file",
           "status": "yet_to_complete"
         }
       ]
@@ -556,6 +555,7 @@
       "password": "trainee123",
       "role": "TRAINEE",
       "avatar": "https://i.pinimg.com/736x/b2/da/f9/b2daf9019c4b08fa3a90c7d28a08a059.jpg",
+      "current_learing_course": "Advanced Fullstack Web Development",
       "status_percent": 10,
       "theme": "light"
     },

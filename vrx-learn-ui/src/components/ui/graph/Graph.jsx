@@ -34,8 +34,9 @@ function Graph({ data }) {
             axisLine={false}
             tickLine={false}
             tick={{
-              fontSize: 15,
+              fontSize: 14,
               fontWeight: 600,
+              LineHeight: 24,
               fill: "#000000",
             }}
             tickFormatter={(value) => value.charAt(0)}
