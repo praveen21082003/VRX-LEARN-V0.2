@@ -3,8 +3,8 @@ import CalendarUi from '../../calendar/CalendarUi'
 
 function CalendarSection() {
   return (
-    <div className='bg-surface rounded-lg p-4'>
-        <h3 className='text-h4'>Calendar & Schedule</h3>
+    <div className='relative bg-primary-16 noise-overlay rounded-lg p-4'>
+        <h3 className='text-h4 text-main'>Calendar & Schedule</h3>
         <CalendarUi/>
     </div>
   )

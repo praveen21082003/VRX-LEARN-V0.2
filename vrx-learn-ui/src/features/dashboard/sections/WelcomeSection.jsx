@@ -17,9 +17,11 @@ function WelcomeSection({ user }) {
 
   if (!user) return null;
 
+  console.log(user);
+
 
   return (
-    <div className="w-full bg-primary rounded-xl p-6 md:p-8">
+    <div className="w-full bg-brand rounded-xl p-6 md:p-8">
       <div className="grid h-full grid-cols-1 lg:grid-cols-2 gap-6">
 
         <div className="flex flex-col justify-center gap-5 text-white max-w-xl">

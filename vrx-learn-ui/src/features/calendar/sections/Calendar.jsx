@@ -89,15 +89,18 @@ export default function Calendar({ events }) {
                 </select>
             </div>
 
+
+           
+
             {/* Week Header */}
-            <div className="grid grid-cols-7 text-center text-xs text-gray-500 mb-1">
+            <div className="grid grid-cols-7 text-center text-xs bg-surface text-gray-500 mb-1">
                 {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
                     <span key={day}>{day}</span>
                 ))}
             </div>
 
             {/* Days Grid */}
-            <div className="grid grid-cols-7 gap-1">
+            <div className="grid grid-cols-7 bg-surface gap-1">
                 {emptyDays.map((_, i) => (
                     <div key={`empty-${i}`} />
                 ))}

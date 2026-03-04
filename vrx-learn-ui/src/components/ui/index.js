@@ -13,5 +13,6 @@ export { default as MarkdownContent } from './MarkdownContent'
 export { default as FileDropZone } from './FilesDropZone'
 export { default as TextEditor } from './TextEditor'
 export { default as Tabs } from './Tabs'
-export {default as AttachmentCard} from './AttachmentCard/AttachmentList'
+export { default as AttachmentCard } from './AttachmentCard/AttachmentList'
+export { default as CourseCardViewer } from './CourseCardViewer'
 

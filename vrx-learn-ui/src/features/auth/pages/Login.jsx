@@ -71,6 +71,7 @@ function Login({ onForgot }) {
                     icon="ic:outline-email"
                     inputWarning={warning.email}
                     onChange={handleChange}
+                    bgClass="bg-surface"
                     value={credentials.email}
                 />
                 <div className="flex flex-col gap-1">
@@ -81,18 +82,20 @@ function Login({ onForgot }) {
                         placeholder="Enter your password"
                         paddingClass="p-2"
                         icon="material-symbols:lock"
+                        bgClass="bg-surface dark:bg-surface"
                         inputWarning={warning.password}
                         onChange={handleChange}
                         value={credentials.password}
                     />
 
-                    <p onClick={onForgot} className="text-xs mt-2 text-gray-500 cursor-pointer">
+                    <p onClick={onForgot} className="text-caption text-muted mt-2 cursor-pointer hover:text-brand">
                         Forgot Password?
                     </p>
                 </div>
                 <Button
                     type="submit"
-                    className="p-2 rounded-lg font-semibold text-white bg-primary"
+                    bgClass="bg-primary"
+                    className="p-2 rounded-lg"
                     buttonName="Login"
                 />
             </form>
@@ -109,7 +112,7 @@ function Login({ onForgot }) {
                             name={i.name}
                             height="28"
                             width="28"
-                            className={`text-gray-600 ${i.hover} transition-colors duration-200`}
+                            className={`text-muted ${i.hover} transition-colors duration-200`}  
                         />
                     </a>
                 ))}

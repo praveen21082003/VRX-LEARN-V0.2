@@ -34,14 +34,14 @@ function Input({
         <div className="flex flex-col gap-2 w-full">
             {/* Label */}
             {label && (
-                <label className="text-h5">
+                <label className="text-h5 text-main dark:text-white">
                     {label}
                 </label>
             )}
 
 
             {/* Input wrapper */}
-            <div className="relative flex items-center">
+            <div className="relative flex items-center text-main dark:text-white">
                 {/* Icon */}
                 {icon && (
                     <span className="absolute left-3">
@@ -64,18 +64,20 @@ function Input({
                     placeholder={placeholder}
                     className={`
                         ${widthClass} rounded-lg border
-                        ${paddingClass? paddingClass : "p-2.5" } ${icon ? "pl-10" : ""}
+                        ${paddingClass ? paddingClass : "p-2.5"} ${icon ? "pl-10" : ""}
                         text-body
+                        text-main dark:text-white
                         outline-none
                         transition
-                        border-border
+                        border-default
+                        dark:border-default
                         ${bgClass}
-                        focus:ring-1 focus:ring-primary
-                        focus:border-primary
+                        focus:ring-1 focus:ring-brand
+                        focus:border-brand
                         disabled:bg-gray-100 disabled:cursor-not-allowed
                         [&::-ms-reveal]:hidden
                         [&::-ms-clear]:hidden
-                    `}
+                        `}
 
                 />
                 {isPassword && (

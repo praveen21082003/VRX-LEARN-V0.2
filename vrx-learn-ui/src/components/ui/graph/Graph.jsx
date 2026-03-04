@@ -2,9 +2,19 @@
 import React from 'react'
 import { BarChart, Bar, ResponsiveContainer, XAxis } from 'recharts';
 import { useMediaQuery } from 'react-responsive';
+import { useTheme } from '@/context/ThemeProvider';
 
 
 function Graph({ data }) {
+  const { darkMode } = useTheme();
+
+  console.log(darkMode);
+
+  const textColor = darkMode
+    ? getComputedStyle(document.documentElement).getPropertyValue("--color-text-main-dark")
+    : getComputedStyle(document.documentElement).getPropertyValue("--color-text-main");
+
+
   const isMobile = useMediaQuery({ maxWidth: 640 });
   const isTablet = useMediaQuery({ maxWidth: 1024 });
   const is2xlDevice = useMediaQuery({ maxWidth: 1380 });
@@ -37,7 +47,7 @@ function Graph({ data }) {
               fontSize: 14,
               fontWeight: 600,
               LineHeight: 24,
-              fill: "#000000",
+              fill: textColor,
             }}
             tickFormatter={(value) => value.charAt(0)}
           />

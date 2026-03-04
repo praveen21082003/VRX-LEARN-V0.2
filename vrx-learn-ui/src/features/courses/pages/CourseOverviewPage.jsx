@@ -23,6 +23,8 @@ export default function CourseOverviewPage() {
     if (error) return <p>Failed to load course</p>;
     if (!courseContent) return null;
 
+    console.log("this course overvirew")
+
 
 
     return (

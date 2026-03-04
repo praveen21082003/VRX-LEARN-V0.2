@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
 
-/* ========================= DESIGN TOKENS (Single Source of Truth) ========================= */
+/* ========================= DESIGN TOKENS ========================= */
 
 @theme {
-  /* Headings */
+
+  /* ---------------- Typography ---------------- */
+
   --font-h0: 48px;
   --font-h1: 36px;
   --font-h2: 28px;
@@ -21,7 +24,6 @@
   --lh-h45: 24px;
   --lh-h5: 24px;
 
-  /* Body */
   --font-ll: 16px;
   --font-large: 15px;
   --font-normal: 14px;
@@ -35,11 +37,41 @@
   --lh-emphasis: 22px;
   --lh-caption: 18px;
   --lh-small: 16px;
+
+  /* ---------------- Colors (semantic naming) ---------------- */
+
+  --color-primary: #840227;
+  --color-brand: #840227;
+  --color-brand-hover: #F2B6A0;
+
+  --color-surface: #FAFAF8;
+  --color-surface-dark: #1E293B;
+
+  --color-background: #FFFFFF;
+  --color-background-dark: #1E293B;
+
+  --color-surface-primary-dark: #0F172A;
+
+  --color-text-main: #2A2A2A;
+  --color-text-main-dark: #FAFAF8;
+  --color-text-muted: #4D4D4D;
+  --color-text-muted-dark: #BBBFC4;
+
+  --color-border: #E2E4E7;
+
+  --color-logo: #D9D9D9;
+  --color-secondary-surface: #F2F2EE;
+
+  /* Fonts */
+
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-poppins: "Poppins", sans-serif;
 }
 
-/* ========================= SEMANTIC UTILITIES ========================= */
+/* ========================= TYPOGRAPHY UTILITIES ========================= */
 
 @layer utilities {
+
   .text-h0 {
     font-size: var(--font-h0);
     line-height: var(--lh-h0);
@@ -111,38 +143,134 @@
     font-size: var(--font-small);
     line-height: var(--lh-small);
   }
+
 }
 
-
-/* aside and main */
+/* ========================= COLOR UTILITIES ========================= */
 
 @layer utilities {
+
+  /* backgrounds */
+
+  .bg-brand {
+    background-color: var(--color-brand);
+  }
+
+  .bg-primary-16 {
+    background-color: color-mix(in srgb, var(--color-primary) 16%, transparent);
+  }
+
+  .bg-surface {
+    background-color: var(--color-surface);
+  }
+
+  .bg-background {
+    background-color: var(--color-background);
+  }
+
+  .dark .bg-background {
+    background-color: var(--color-background-dark);
+  }
+
+  .bg-secondary-surface {
+    background-color: var(--color-secondary-surface);
+  }
+
+  .dark .bg-surface {
+    background-color: var(--color-surface-dark);
+  }
+
+  .dark .bg-brand {
+    background-color: var(--color-surface-primary-dark);
+  }
+
+  /* text */
+
+  .text-brand {
+    color: var(--color-brand);
+  }
+
+  .text-main {
+    color: var(--color-text-main);
+  }
+
+  .dark .text-main {
+    color: var(--color-text-main-dark);
+  }
+
+  .text-muted {
+    color: var(--color-text-muted);
+  }
+
+  .dark .text-muted {
+    color: var(--color-text-muted-dark);
+  }
+
+  /* borders */
+
+  .border-default {
+    border-color: var(--color-border);
+  }
+
+  .dark .border-default {
+    border-color: color-mix(in srgb, var(--color-border) 16%, transparent);
+  }
+
+  /* hover */
+
+  .hover-brand:hover {
+    background-color: var(--color-brand-hover);
+  }
+
+}
+
+/* ========================= LAYOUT UTILITIES ========================= */
+
+@layer utilities {
+
   .sidebar-sm {
-    width: 22.25rem; /* 356px */
+    width: 22.25rem;
   }
 
   .sidebar-lg {
-    width: 37.5rem; /* 600px */
+    width: 37.5rem;
+  }
+
+}
+
+
+/* ========================= NOISE ========================== */
+@layer utilities {
+  .dark .noise-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    border-radius: 8px;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .noise-overlay::before {
+    z-index: 0;
+  }
+
+  .noise-overlay>* {
+    position: relative;
+    z-index: 1;
   }
 }
 
-
-
-
-
-
-
-
-:root {
-  --font-sans: 'Poppins', system-ui, sans-serif;
-}
+/* ========================= GLOBAL ========================= */
 
 body {
   font-family: var(--font-sans);
 }
 
-/* ---------- Utilities ---------- */
+/* scrollbar hide */
+
 @layer utilities {
+
   .scrollbar-hide {
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -151,9 +279,13 @@ body {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
 }
 
+/* components */
+
 @layer components {
+
   .title-h2 {
     @apply text-2xl font-semibold flex items-center gap-3;
   }
@@ -161,62 +293,27 @@ body {
   .video-player {
     @apply flex justify-center items-center rounded-full bg-black/50 h-10;
   }
-}
-
-/* ---------- Design Tokens ---------- */
-@theme {
-
-  /* 2. Overwrite the default sans font or create a new family */
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
-
-  /* If you want a specific class like font-poppins */
-  --font-poppins: "Poppins", sans-serif;
-
-
-
-  /* Brand colors */
-  --color-primary: #840227;
-  --color-primary-dark: #1d4ed8;
-
-  --color-secondary: #3f3f3f;
-  --color-secondary-light: #6ee7b7;
-
-  --color-active: #84022729;
-  --color-hover-active: #84022714;
-
-
-  /* Surfaces & borders */
-  --color-surface: #F3E1E4;
-  --color-border: #2A2A2A;
-  --color-dark-gray: #4D4D4D;
-  --color-primary-border: #D9D9D9;
-
-
-  /* Toasts Colors */
-  --color-success-bg: #D1E7DD;
-  --color-success-secondary: #0F2D1F;
-
-  --color-error-bg: #F8D7DA;
-  --color-error-secondary: #661414
-    /* Typography tokens (HSL values) */
-    --foreground: 222 47% 11%;
-  --muted-foreground: 215 16% 47%;
-
-    /* Dark Mode Colours */
-  --color-dark :#0F172A;
-  --color-dark1:#1E293B
-
 
 }
 
-/* body {
-  font-family: 'Poppins', sans-serif;
-} */
+/* autofill fix */
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  -webkit-text-fill-color: inherit;
+  transition: background-color 5000s ease-in-out 0s;
+}
 
+.dark input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #1E293B inset;
+  -webkit-text-fill-color: white;
+}
 
-
-
+/* menu animation */
 
 .menu {
   max-height: 0;
@@ -227,6 +324,5 @@ body {
 
 .menu.open {
   max-height: 200px;
-  /* Must be larger than the content */
   opacity: 1;
 }

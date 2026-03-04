@@ -35,10 +35,10 @@ export default function Dropdown({ buttons, closeDropdown }) {
       // "
       ref={dropdownRef}
       className={clsx(
-        'absolute w-full min-w-36 z-20 bg-white border-[#E0E0E0] border text-black text-sm  overflow-hidden',
+        'absolute w-full min-w-36 z-20 bg-background border border-default text-main text-sm  overflow-hidden',
         openUpwards
-          ? "bottom-full mb-3"
-          : "top-full mt-3"
+          ? "bottom-full rounded-t-lg mb-2"
+          : "top-full mt-2 rounded-b-lg"
       )}
     >
       {buttons.map((button) => {
@@ -47,8 +47,8 @@ export default function Dropdown({ buttons, closeDropdown }) {
         return (
           <button
             key={button.key}
-            className={clsx('flex gap-1 p-4 h-10 items-center w-full hover:bg-gray-100',
-              !hasPermission ? 'opacity-50 cursor-default' : 'font-semibold hover:text-primary  cursor-pointer'
+            className={clsx('flex gap-1 p-4 h-10 items-center w-full hover:bg-gray-100 dark:hover:bg-[#334155]',
+              !hasPermission ? 'opacity-50 cursor-default' : 'font-semibold hover:text-primary dark:hover:text-gray-300 cursor-pointer'
             )}
             onClick={(e) => {
               e.stopPropagation();

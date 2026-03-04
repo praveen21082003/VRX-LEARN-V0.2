@@ -5,16 +5,17 @@ import Dropdown from "../Dropdown";
 import { Icon } from '@/components/ui';
 import { useNavigate } from "react-router-dom";
 import { getProfileDropdown } from "@/config/DropdownButtons";
-import { useTheme } from "@/features/dashboard/hook/useTheme";
+import { useTheme } from "../../../context/ThemeProvider";
 
 export default function HeaderProfile() {
     const { user, loading } = useAuth();
+    
     const [open, setOpen] = useState(false);
     // const [mode, setMode] = useState(true);
     const ref = useRef(null);
     const navigate = useNavigate();
 
-     const { darkMode, toggleTheme } = useTheme();
+    const { darkMode, toggleTheme } = useTheme();
 
     const buttons = getProfileDropdown({
         mode : darkMode,
@@ -58,7 +59,7 @@ export default function HeaderProfile() {
                     <Icon name="mingcute:user-4-fill" height="36" width="36" />
                 }
 
-                <span>Profile</span>
+                <span>{user.name}</span>
                 <Icon name="iconamoon:arrow-down-2" width="16px" height="16px" />
             </div>
 

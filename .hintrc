@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "background-color: color-mix(in srgb, var(--color-primary) 16%, transparent)",
+          "scrollbar-width",
+          "scrollbar-width: none",
+          "border-color: color-mix(in srgb, var(--color-border) 16%, transparent)",
+          "border-color: color-mix(in srgb, var(--color-default) 16%, transparent)"
+        ]
+      }
+    ]
+  }
+}
