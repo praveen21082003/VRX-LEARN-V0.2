@@ -52,8 +52,8 @@ function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
             frontIconName="stash:arrow-left-large-duotone"
             frontIconHeight="16"
             frontIconWidth="16"
-            bgClass="bg-white"
-            textClass="text-black"
+            bgClass=""
+            textClass=""
             className="p-1 rounded font-semibold"
             onClick={() => setButtonAction("previous")}
           />
@@ -70,8 +70,8 @@ function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
         <div>
           <Button
             buttonName="Mark as Completed"
-            bgClass="bg-white"
-            textClass="text-black"
+            bgClass=""
+            textClass=""
             className="p-2 rounded px-5 font-semibold"
           />
         </div>

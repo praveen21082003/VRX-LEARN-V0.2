@@ -28,7 +28,7 @@ function AssignmentPage() {
 
 
   return (
-    <div className="flex h-[calc(100vh-56px)] overflow-hidden bg-background">
+    <div className="flex h-[calc(100vh-56px)] overflow-hidden bg-background text-main">
       <AssignmentAsideSection assignments={assignments} activeAssignment={activeAssignment} setActiveAssignment={setActiveAssignment} />
       <AssignmentMainSection assignment={assignment} />
     </div>

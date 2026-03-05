@@ -17,7 +17,7 @@ export default function CourseOverviewSection({ course, can }) {
     course.feedback_duration;
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start p-4 md:px-10 md:pt-7">
+    <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start p-4 md:px-10 md:pt-7 text-main">
       <CourseTumbnail name={course.name} image={course.thumbnail} classRounded="rounded-lg" />
 
       <div className="space-y-3 flex-1">

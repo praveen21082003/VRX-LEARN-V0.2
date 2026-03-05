@@ -108,7 +108,7 @@ function LessonsPage() {
 
 
   return (
-    <div className="flex h-[calc(100vh-56px)] bg-background">
+    <div className="flex h-[calc(100vh-56px)] bg-background text-main">
       
 
       <LessonsAsideSection modules={modules} activeLesson={activeLesson} setActiveLesson={setActiveLesson} />

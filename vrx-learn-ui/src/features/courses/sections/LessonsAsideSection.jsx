@@ -25,8 +25,8 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
 
 
     return (
-        <aside className="hidden sidebar-sm 2xl:sidebar-lg border-r-2 text-sm border-primary-border bg-muted/40 md:block">
-            <div className="p-4 border-b-2 border-primary-border w-full">
+        <aside className="hidden sidebar-sm 2xl:sidebar-lg border-r-2 text-sm border-default bg-muted/40 md:block">
+            <div className="p-4 border-b-2 border-default w-full">
                 <BackButton to={`/learn/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Overview" />
             </div>
             {modules.map((module, moduleIndex) => {
@@ -75,8 +75,8 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
                                                     className={clsx(
                                                         "flex w-full items-center justify-between p-4 text-dark-gray transition",
                                                         isActive
-                                                            ? "bg-primary-border text-primary"
-                                                            : "hover:bg-primary/5"
+                                                            ? "bg-primary/16 dark:bg-primary text-primary dark:text-background"
+                                                            : "hover:bg-primary/16 text-muted"
                                                     )}
                                                 >
                                                     <div className="flex items-center gap-4 min-w-0">
