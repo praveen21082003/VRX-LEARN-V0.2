@@ -126,15 +126,15 @@ function EditCourseLayout() {
 
 
   return (
-    <div className="flex h-[calc(100vh-56px)] bg-background">
+    <div className="flex h-[calc(100vh-56px)]">
 
-      <aside style={{ width: asideWidth }} className=" relative hidden border-r-2 border-primary-border bg-muted/40 py-1 md:block overflow-y-auto scrollbar-hide">
+      <aside style={{ width: asideWidth }} className=" relative hidden border-r-2 border-default bg-muted/40 py-1 md:block overflow-y-auto scrollbar-hide">
 
-        <div className="p-4 border-b-2 border-primary-border w-full">
+        <div className="p-4 w-full">
           <BackButton to={`/dashboard`} iconName="material-symbols:arrow-back-rounded" label="Back to Dashboard" />
         </div>
 
-        <div className="flex justify-center border-b-2 border-primary-border p-4">
+        <div className="flex justify-center border-y-2 border-default p-4">
           <div className="relative">
             <Button
               buttonName="Create"
@@ -182,8 +182,8 @@ function EditCourseLayout() {
                         className={clsx(
                           "group flex h-13 w-full items-center text-h45 border-primary",
                           isActive
-                            ? "bg-primary-border text-primary border-x-8 px-1"
-                            : "hover:bg-primary/10 px-1"
+                            ? "bg-primary/16 dark:bg-primary text-primary dark:text-background border-x-8 px-1"
+                            : "hover:bg-primary/16 text-muted px-1"
                         )}
                       >
 
@@ -194,8 +194,8 @@ function EditCourseLayout() {
                           className={clsx(
                             "transition-transform duration-500",
                             isActive
-                              ? "text-primary"
-                              : "text-white group-hover:text-primary",
+                              ? "text-primary dark:text-background"
+                              : "text-white dark:text-background-dark group-hover:text-primary group-hover:dark:text-background",
                             hasChildren && isOpen && "rotate-90"
                           )}
                         />
@@ -218,8 +218,8 @@ function EditCourseLayout() {
                                 className={clsx(
                                   "transition-colors",
                                   isActive
-                                    ? "text-primary"
-                                    : "text-white group-hover:text-primary"
+                                    ? "text-primary dark:text-background"
+                                    : "text-white dark:text-background-dark group-hover:text-primary group-hover:dark:text-background"
                                 )}
                               />
 
@@ -248,8 +248,8 @@ function EditCourseLayout() {
                                 clsx(
                                   "group flex items-center justify-between pl-10 px-2 py-3 text-h5",
                                   isActive
-                                    ? "bg-active text-primary"
-                                    : "text-dark-gray hover:bg-active"
+                                    ? "bg-primary/16 dark:bg-primary text-primary dark:text-background"
+                                    : "text-muted hover:bg-primary/16"
                                 )
                               }
                             >
@@ -291,7 +291,7 @@ function EditCourseLayout() {
         />
       </aside>
 
-      <main className="flex-1 min-h-0 overflow-y-auto py-4 px-6">
+      <main className="flex-1 min-h-0 overflow-y-auto text-main py-4 px-6">
         <Outlet context={courseEditData} />
       </main>
 

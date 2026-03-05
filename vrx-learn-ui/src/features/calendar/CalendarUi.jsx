@@ -14,7 +14,7 @@ function CalendarUi() {
 
   return (
     <div>
-      <div className="w-full rounded-xl bg-white p-4">
+      <div className="w-full rounded-xl bg-card text-main p-4">
         <Calendar events={events} />
       </div>
 

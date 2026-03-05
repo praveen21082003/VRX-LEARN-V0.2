@@ -81,18 +81,18 @@ function CourseInfo() {
               label="Title"
               value={formData.name}
               onChange={(e) => handleChange("name", e.target.value)}
-              bgClass="bg-primary-border"
+              bgClass="bg-input-bg"
             />
             <Input
               label="Author"
               value={formData.author}
               onChange={(e) => handleChange("author", e.target.value)}
-              bgClass="bg-primary-border"
+              bgClass="bg-input-bg"
             />
           </div>
 
 
-          <div className="flex flex-col ">
+          <div className="relative noise-overlay flex flex-col ">
             <CourseTumbnail
               name={formData.name}
               image={formData.thumbnail}
@@ -113,8 +113,9 @@ function CourseInfo() {
               frontIconName="material-symbols:upload"
               frontIconHeight="28px"
               frontIconWidth="28px"
-              className="w-full p-1 bg-active rounded-b"
-              textClass="text-primary text-h5"
+              className="w-full p-1 rounded-b"
+              textClass="text-h5"
+              bgClass="bg-primary/16 dark:bg-surface-primary-dark"
               onClick={() => fileInputRef.current.click()}
             />
           </div>
@@ -129,7 +130,7 @@ function CourseInfo() {
             onChange={(e) =>
               handleChange("shortDescription", e.target.value)
             }
-            className="w-full border text-body border-border rounded-lg p-3 focus:outline-none focus:ring-2 bg-active focus:ring-primary"
+            className="w-full border text-body bg-input-bg border-input-border rounded-lg p-3 focus:outline-none focus:ring-1 focus:ring-brand"
           />
         </div>
         <div>

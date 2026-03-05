@@ -10,7 +10,7 @@ function Layout() {
   const { darkMode, toggleTheme } = useTheme();
 
   return (
-    <div className="flex min-h-screen w-full justify-center items-center bg-surface px-4">
+    <div className="flex min-h-screen w-full justify-center items-center bg-background px-4">
 
       <div
         className="

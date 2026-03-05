@@ -31,7 +31,7 @@ export const EDITOR_TOOLBAR_MENU = [
             icon: "heroicons:h3-16-solid",
             key: "h3",
             action: (editor) =>
-                editor.chain().focus().setHeading({ level: 3 }).run(),
+                editor.chain().focus().toggleHeading({ level: 3 }).run(),
 
         },
     ],
@@ -65,7 +65,6 @@ export const EDITOR_TOOLBAR_MENU = [
             key: "codeBlock",
             action: (editor) =>
                 editor.chain().focus().toggleCode().run(),
-
         },
     ],
 ]

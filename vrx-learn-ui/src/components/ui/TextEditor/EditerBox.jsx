@@ -56,7 +56,7 @@ function EditerBox({ label, value, onChange }) {
                 </label>
             )}
 
-            <div className="w-full border text-sm border-border rounded overflow-hidden">
+            <div className="w-full border text-sm border-input-border rounded overflow-hidden">
                 <EditorMenu editor={editor} />
                 <div className="min-h-50 p-2 focus:ring-1 focus:ring-primary focus:border-primary">
                     <EditorContent editor={editor} className="tiptap" />

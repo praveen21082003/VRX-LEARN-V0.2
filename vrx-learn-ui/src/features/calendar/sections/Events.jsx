@@ -10,7 +10,7 @@ export default function Events({ events = [] }) {
                 const formattedDay = format(new Date(event.date), "EEE")
 
                 return (
-                    <div key={event.id} className="flex gap-4 rounded-xl bg-white px-4 py-2">
+                    <div key={event.id} className="flex gap-4 rounded-xl bg-card text-main px-4 py-2">
                         <div className="flex flex-col justify-center w-7 items-center">
                             <span className="text-sm">{formattedDay}</span>
                             <span className="text-lg font-semibold">{formattedDate}</span>

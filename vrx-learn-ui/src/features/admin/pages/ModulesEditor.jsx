@@ -123,9 +123,9 @@ function ModulesEditor() {
             <div className='flex justify-between'>
                 <h2 className="text-h3">Curriculum</h2>
                 <div className='flex gap-3'>
-                    <Button buttonName={clsx(isReorderMode ? "Done" : "Reorder")} frontIconName={clsx(isReorderMode ? "material-symbols:done-rounded" : "ix:reorder")} frontIconWidth="24px" frontIconHeght="24px" className="rounded p-1" bgClass={clsx(isReorderMode ? "bg-primary" : "bg-white")} textClass={clsx(isReorderMode ? "text-white" : "text-black hover:text-primary")} onClick={handleReorder} />
+                    <Button buttonName={clsx(isReorderMode ? "Done" : "Reorder")} frontIconName={clsx(isReorderMode ? "material-symbols:done-rounded" : "ix:reorder")} frontIconWidth="24px" frontIconHeght="24px" className="rounded p-1" bgClass={clsx(isReorderMode && "bg-primary")} textClass={clsx(isReorderMode ? "text-white" : "hover:text-primary hover:dark:text-background")} onClick={handleReorder} />
                     <NavLink to={`/courses/${courseSlug}/edit/modules/create`}>
-                        <Button buttonName="Add New Module" frontIconName="ic:baseline-plus" frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded" bgClass="bg-white" textClass="hover:text-primary" />
+                        <Button buttonName="Add New Module" frontIconName="ic:baseline-plus" frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded" bgClass="bg-white dark:bg-primary" textClass="hover:text-primary hover:dark:text-background" />
                     </NavLink>
                 </div>
             </div>

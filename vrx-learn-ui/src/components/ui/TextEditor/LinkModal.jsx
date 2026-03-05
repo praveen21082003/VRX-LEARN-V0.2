@@ -18,7 +18,7 @@ function LinkModal({ editor, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-      <div className="bg-white w-96 rounded-lg shadow-lg p-5 space-y-4">
+      <div className="bg-background w-96 rounded-lg shadow-lg p-5 space-y-4">
 
         <h3 className="text-lg font-semibold">Insert Link</h3>
 
@@ -26,6 +26,7 @@ function LinkModal({ editor, onClose }) {
           placeholder="https://example.com"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
+          bgClass="bg-input-bg"
         />
 
         <div className="flex justify-end gap-2">

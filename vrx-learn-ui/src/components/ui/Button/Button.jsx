@@ -16,9 +16,7 @@ function Button({
   backIconHeight,
 }) {
   const isWhiteBg =
-    bgClass.includes('bg-white') ||
-    bgClass.includes('bg-[#fff]') ||
-    bgClass.includes('bg-[#ffffff]');
+    bgClass.includes('');
 
   const isIconOnly =
     frontIconName &&
@@ -37,7 +35,7 @@ function Button({
       ${className}
       transition-all duration-200
       ${bgClass} ${textClass}
-      ${isWhiteBg ? "border border-primary" : "border-none"}
+      ${isWhiteBg && !bgClass ? "border border-primary dark:border-background" : "border-none"}
       ${disabled
           ? "opacity-50 cursor-not-allowed"
           : "hover:opacity-90 active:scale-[0.98]"

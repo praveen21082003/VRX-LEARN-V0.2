@@ -93,14 +93,14 @@ export default function Calendar({ events }) {
            
 
             {/* Week Header */}
-            <div className="grid grid-cols-7 text-center text-xs bg-surface text-gray-500 mb-1">
+            <div className="grid grid-cols-7 text-center text-xs text-gray-500 mb-1">
                 {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
                     <span key={day}>{day}</span>
                 ))}
             </div>
 
             {/* Days Grid */}
-            <div className="grid grid-cols-7 bg-surface gap-1">
+            <div className="grid grid-cols-7 gap-1">
                 {emptyDays.map((_, i) => (
                     <div key={`empty-${i}`} />
                 ))}
@@ -120,7 +120,7 @@ export default function Calendar({ events }) {
                             key={day.toString()}
                             onClick={() => setSelectedDate(day)}
                             className={`relative flex h-9 w-9 items-center justify-center rounded-full text-sm cursor-pointer
-                                ${isSelected ? "bg-active text-black" : ""}
+                                ${isSelected ? "bg-gray-300 text-black" : ""}
                                 ${isToday(day) && !isSelected ? "border border-primary" : ""}
                                 hover:bg-muted`}
                         >

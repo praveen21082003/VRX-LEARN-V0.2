@@ -6,7 +6,7 @@ function CourseCard({ name, author, image, buttonName, bgClass,textClass }) {
   const hasCustomImage = image?.trim();
 
   return (
-    <div className="flex flex-col gap-4 py-6 px-4 w-full rounded-2xl bg-surface">
+    <div className="flex flex-col gap-4 py-6 px-4 w-full rounded-2xl bg-card">
       
       
       <div className="relative overflow-hidden rounded-2xl lg:h-28 xl:h-38 2xl:h-60 bg-gray-200 group">

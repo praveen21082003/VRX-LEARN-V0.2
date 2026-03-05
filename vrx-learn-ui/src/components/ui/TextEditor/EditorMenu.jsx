@@ -26,7 +26,7 @@ function EditorMenu({ editor }) {
     if (!editor) return null
 
     return (
-        <header className="flex border-b-2 border-primary-border bg-[#F8F9FA] p-2">
+        <header className="flex border-b-2 border-primary-border bg-[#F8F9FA] dark:bg-surface-primary-dark p-2">
             {EDITOR_TOOLBAR_MENU.map((group, groupIndex) => (
                 <div
                     key={groupIndex}
@@ -53,7 +53,7 @@ function EditorMenu({ editor }) {
                                     item.action(editor)
                                 }
                             }}
-                            textClass={editorState[item.key] ? "text-blue-600" : "text-border"}
+                            textClass={editorState[item.key] && "text-blue-600"}
                         />
                     ))}
                 </div>

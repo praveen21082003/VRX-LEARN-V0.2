@@ -11,7 +11,8 @@
           "scrollbar-width",
           "scrollbar-width: none",
           "border-color: color-mix(in srgb, var(--color-border) 16%, transparent)",
-          "border-color: color-mix(in srgb, var(--color-default) 16%, transparent)"
+          "border-color: color-mix(in srgb, var(--color-default) 16%, transparent)",
+          "background-color: color-mix(in srgb, var(--color-logo) 16%, transparent)"
         ]
       }
     ]

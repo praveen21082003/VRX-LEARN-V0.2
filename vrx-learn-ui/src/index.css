@@ -156,12 +156,20 @@
     background-color: var(--color-brand);
   }
 
+  .dark .bg-brand {
+    background-color: var(--color-surface-primary-dark);
+  }
+
   .bg-primary-16 {
     background-color: color-mix(in srgb, var(--color-primary) 16%, transparent);
   }
 
   .bg-surface {
     background-color: var(--color-surface);
+  }
+
+  .dark .bg-surface {
+    background-color: var(--color-surface-dark);
   }
 
   .bg-background {
@@ -176,13 +184,25 @@
     background-color: var(--color-secondary-surface);
   }
 
-  .dark .bg-surface {
-    background-color: var(--color-surface-dark);
+
+  .bg-card {
+    background-color: var(--color-surface);
   }
 
-  .dark .bg-brand {
+  .dark .bg-card {
     background-color: var(--color-surface-primary-dark);
   }
+
+  .bg-input-bg {
+    background-color: var(--color-logo);
+  }
+
+  .dark .bg-input-bg {
+    background-color: color-mix(in srgb, var(--color-logo) 16%, transparent);
+  }
+
+
+
 
   /* text */
 
@@ -222,6 +242,15 @@
     background-color: var(--color-brand-hover);
   }
 
+
+  .border-input-border {
+    border-color: var(--color-text-main);
+  }
+
+  .dark .border-input-border {
+    border-color: var(--color-secondary-surface);
+  }
+
 }
 
 /* ========================= LAYOUT UTILITIES ========================= */
@@ -252,12 +281,28 @@
   }
 
   .noise-overlay::before {
-    z-index: 0;
+    z-index: 10;
   }
 
   .noise-overlay>* {
     position: relative;
     z-index: 1;
+  }
+
+
+
+  .texture-noise {
+    position: relative;
+  }
+
+  .texture-noise::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.08;
+    /* adjust strength */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   }
 }
 

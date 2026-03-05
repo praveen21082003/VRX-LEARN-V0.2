@@ -69,7 +69,7 @@ function Input({
                         text-main dark:text-white
                         outline-none
                         transition
-                        border-default
+                        border-input-border
                         dark:border-default
                         ${bgClass}
                         focus:ring-1 focus:ring-brand
