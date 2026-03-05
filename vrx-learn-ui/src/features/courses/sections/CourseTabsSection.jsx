@@ -23,7 +23,7 @@ export default function CourseTabsSection({ course }) {
     ];
 
     return (
-        <div className="space-y-1 py-2 px-4 lg:px-10 lg:py-3">
+        <div className="space-y-1 py-2 px-4 lg:px-10 lg:py-3 text-main">
             {sections.map((section) => (
                 <NavLink
                     key={section.key}

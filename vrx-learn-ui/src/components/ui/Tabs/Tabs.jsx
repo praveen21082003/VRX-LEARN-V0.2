@@ -7,8 +7,8 @@ function Tabs({ tabs, activeTab, onChange }) {
           onClick={() => onChange(tab.value)}
           className={`pb-2 text-h4 transition-colors ${
             activeTab === tab.value
-              ? "border-b-2 border-primary text-primary"
-              : "text-muted-foreground hover:text-foreground"
+              ? "border-b-2 border-primary text-primary  dark:text-background"
+              : "text-muted hover:text-foreground"
           }`}
         >
           {tab.label}

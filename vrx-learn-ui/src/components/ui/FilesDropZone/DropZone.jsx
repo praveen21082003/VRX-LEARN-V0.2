@@ -41,7 +41,7 @@ export default function DropZone({ label, files, multipleFiles, maxFilesAllowed,
       {files.length === 0 && (
         <div
           {...getRootProps()}
-          className={`flex ${heightClass} w-full flex-col items-center border border-dashed bg-surface justify-center`}
+          className={`relative noise-overlay flex ${heightClass} w-full  flex-col  items-center border border-dashed bg-surface justify-center `}
         >
           <input {...getInputProps()} className="hidden" />
 

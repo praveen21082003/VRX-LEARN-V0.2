@@ -10,8 +10,8 @@ export default function AssignmentAsideSection({ assignments, activeAssignment, 
     const { courseSlug } = useParams();
 
     return (
-        <aside className="hidden sidebar-sm 2xl:sidebar-lg border-r-2 border-primary-border bg-muted/40 md:block">
-            <div className="p-4 border-b-2 border-primary-border w-full">
+        <aside className="hidden sidebar-sm 2xl:sidebar-lg border-r-2 border-default bg-muted/40 md:block">
+            <div className="p-4 border-b-2 border-default w-full">
                 <BackButton to={`/learn/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Overview" />
             </div>
             <AnimatePresence>
@@ -32,7 +32,7 @@ export default function AssignmentAsideSection({ assignments, activeAssignment, 
                                     onClick={() => setActiveAssignment({ assignmentId: assignment.id })}
                                     className={clsx(
                                         "flex h-16 w-full border-primary items-center gap-4 text-dark-gray",
-                                        isActive ? "bg-primary-border text-primary border-x-8 p-2" : "hover:bg-primary/5 p-4"
+                                        isActive ? "bg-primary/16 dark:bg-primary text-primary dark:text-background border-x-8 p-2" : "hover:bg-primary/16 text-muted p-4"
                                     )}
                                 >
                                     <Icon name="material-symbols:assignment-outline" height="26" width="26" />
