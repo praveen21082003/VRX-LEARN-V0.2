@@ -16,7 +16,7 @@ function Input({
     max,
     inputWarning,
     disabled = false,
-    bgClass = "bg-white",
+    bgClass = "",
     onKeyDown,
     paddingClass,
     widthClass = "w-full"

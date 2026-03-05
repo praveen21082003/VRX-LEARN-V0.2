@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Icon, Input, Button } from "@/components/ui";
+import { useToast } from "@/context/ToastProvider";
 
 export default function Reset({ onLogin }) {
-  // const [warning, setWarning] = useState({ email: "", password: "" });
-  // const [credentials, setCredentials] = useState({ email: "", password: "" });
+
+  const {addToast} = useToast();
 
   const [passwords, setPasswords] = useState({
     password: "",
@@ -26,7 +27,7 @@ export default function Reset({ onLogin }) {
     }
 
     if (passwords.password !== passwords.confirmPassword) {
-      setWarning((prev) => ({ ...prev, password: "Passwords do not match" }));
+      addToast("Password Don't match", "warning");
       return;
     }
     console.log(
@@ -72,9 +73,9 @@ export default function Reset({ onLogin }) {
         <Button
           type="submit"
           onClick={onLogin}
-          bgClass="bg-white"
-          textClass="text-black"
-          className="rounded-lg p-2 font-semibold "
+          bgClass=""
+          textClass=""
+          className="rounded-lg p-2"
           buttonName="Back To Login"
           frontIconName="eva:arrow-back-fill"
         />

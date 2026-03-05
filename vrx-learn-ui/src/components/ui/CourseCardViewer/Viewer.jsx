@@ -15,7 +15,7 @@ function Viewer({
     <section className="relative bg-primary/16 noise-overlay p-4 flex-[0_0_40%] rounded-xl">
       <header className="flex justify-between mb-4">
         <h2 className="text-h4 text-main">{title}</h2>
-        {!maxCourses && <button className="text-sm underline">View all</button>}
+        {maxCourses && <button className="text-sm text-main underline">View all</button>}
       </header>
 
       <div className={`grid grid-cols-${gridSize} gap-3`}>

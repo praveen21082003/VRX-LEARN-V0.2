@@ -180,10 +180,10 @@ function EditCourseLayout() {
                     {({ isActive }) => (
                       <div
                         className={clsx(
-                          "group flex h-13 w-full items-center text-h45 border-primary",
+                          "group flex h-13 w-full items-center text-h45 border-primary dark:border-background",
                           isActive
-                            ? "bg-primary/16 dark:bg-primary text-primary dark:text-background border-x-8 px-1"
-                            : "hover:bg-primary/16 text-muted px-1"
+                            ? "bg-primary/16 dark:bg-primary text-primary dark:text-background border-l-8 px-1"
+                            : "hover:bg-primary/16 dark:hover:bg-surface-primary-dark text-muted px-1"
                         )}
                       >
 
@@ -249,7 +249,7 @@ function EditCourseLayout() {
                                   "group flex items-center justify-between pl-10 px-2 py-3 text-h5",
                                   isActive
                                     ? "bg-primary/16 dark:bg-primary text-primary dark:text-background"
-                                    : "text-muted hover:bg-primary/16"
+                                    : "text-muted hover:bg-primary/16 dark:hover:bg-surface-primary-dark"
                                 )
                               }
                             >
@@ -269,7 +269,7 @@ function EditCourseLayout() {
                                     name="ic:baseline-plus"
                                     height="26"
                                     width="26"
-                                    className="text-muted-foreground hover:text-primary"
+                                    className="text-muted-foreground"
                                   />
                                 </span>
                               }

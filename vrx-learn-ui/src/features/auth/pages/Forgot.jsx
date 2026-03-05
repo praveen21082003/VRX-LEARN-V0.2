@@ -45,9 +45,9 @@ function Forgot({ onReset, onLogin }) {
           buttonName="Reset Password"
         />
         <Button
-          type="submit"
-          bgClass="bg-white"
-          textClass="text-black"
+          onClick={onLogin}
+          bgClass=""
+          textClass=""
           className="rounded-lg p-2 font-semibold "
           buttonName="Back To Login"
           frontIconName="eva:arrow-back-fill"

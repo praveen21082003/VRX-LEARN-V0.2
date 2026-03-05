@@ -24,7 +24,7 @@ function SortableItem({ id, title }) {
             {...attributes}
             {...listeners}
             className={`
-        bg-surface px-5 py-2 rounded hover:bg-active hover:text-primary font-semibold
+        bg-primary/16 dark:bg-white/10 px-5 py-2 rounded hover:bg-active hover:text-primary hover:dark:text-white/60 font-semibold
         ${isDragging ? "shadow-2xl scale-105 z-50 cursor-grabbing" : "cursor-grab"}
       `}
         >

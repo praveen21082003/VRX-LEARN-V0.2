@@ -101,7 +101,7 @@
     {
       "id": "1",
       "course_id": 34,
-      "title": "Introduction & Architecture",
+      "title": "Fullstack Architecture Overview",
       "description": "## Introduction & Architecture - Overview of system design, project structure, and end-to-end application architecture.",
       "lessons": [
         {

@@ -4,7 +4,7 @@ import MyCoursesSection from '../sections/MyCoursesSection'
 
 function CoursesPage() {
     return (
-        <div className='flex flex-col gap-6'>
+        <div className='flex flex-col p-6 gap-6'>
             <AllCoursesSection />
             <MyCoursesSection />
         </div>

@@ -95,7 +95,7 @@ function AssignmentsEditor() {
             <div className='flex justify-between'>
                 <h2 className="text-h3">Assignments</h2>
                 <NavLink to={`/courses/${courseSlug}/edit/assignments/create`}>
-                    <Button buttonName="Add New Assignment" frontIconName="ic:baseline-plus" frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="bg-white" textClass="hover:text-primary" />
+                    <Button buttonName="Add New Assignment" frontIconName="ic:baseline-plus" frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="" textClass="hover:text-primary dark:hover:text-white/70" />
                 </NavLink>
             </div>
             <ul className="flex flex-col">
@@ -106,7 +106,7 @@ function AssignmentsEditor() {
                         < li key={assignment.id} >
                             <NavLink
                                 onDoubleClick={`/courses/${courseSlug}/edit/assignments/${assignment.id}`}
-                                className="flex items-center justify-between px-5 py-3 rounded-md hover:bg-surface transition-colors cursor-pointer"
+                                className="flex items-center justify-between px-5 py-3 rounded-md hover:bg-primary/16 dark:hover:bg-primary transition-colors cursor-pointer"
                                 onClick={(e) => {
                                     if (isOpenDropdown === assignment.id) {
                                         e.preventDefault();   // stop navigation

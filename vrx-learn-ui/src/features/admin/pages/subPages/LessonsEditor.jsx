@@ -119,13 +119,13 @@ function LessonsEditor() {
                         {isReorderMode
                             ? <Button buttonName='Done' frontIconWidth="24px" frontIconHeght="24px" frontIconName='material-symbols:done-rounded' className="p-1 px-4 rounded" onClick={() => setIsReorderMode(false)} />
                             : <div className='relative flex gap-px'>
-                                <Button buttonName="Edit Details" frontIconName='mingcute:pencil-line' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="bg-white" textClass="text-primary" />
+                                <Button buttonName="Edit Details" frontIconName='mingcute:pencil-line' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="" textClass="" />
                                 <Button frontIconName="subway:down-2" frontIconWidth="16px" frontIconHeght="16px" className="p-2 px-2 rounded" onClick={() => setOpenDropDown((prve) => !prve)} />
                                 {openDropDown && <Dropdown buttons={editButtons(handleReorder)} closeDropdown={() => setOpenDropDown(false)} />}
                             </div>
                         }
                         <NavLink to={`/admin/courses/${courseSlug}/edit/modules/${moduleId}/lesson/new`}>
-                            <Button buttonName="Add New Lesson" frontIconName='ic:baseline-plus' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="bg-white" textClass="text-primary" />
+                            <Button buttonName="Add New Lesson" frontIconName='ic:baseline-plus' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="" textClass="" />
                         </NavLink>
                     </span>
                 </div>
@@ -142,7 +142,7 @@ function LessonsEditor() {
                             >
                                 <NavLink
                                     className={clsx(
-                                        'flex justify-between gap-3 items-center px-5 py-3 rounded text-h45 hover:bg-active cursor-pointer',
+                                        'flex justify-between gap-3 items-center px-5 py-3 rounded text-h45 hover:bg-primary/16 hover:dark:bg-primary cursor-pointer',
                                         isOpenDropdown === lesson.id || renameLessonId === lesson.id && 'bg-active'
                                     )}
                                     onDoubleClick={() => navigate(lesson.id)}

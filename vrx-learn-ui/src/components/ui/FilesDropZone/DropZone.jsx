@@ -79,10 +79,10 @@ export default function DropZone({ label, files, multipleFiles, maxFilesAllowed,
               return (
                 <div
                   key={`${file.name}-${index}`}
-                  className="group flex items-center justify-between p-3  bg-white border border-gray-200 rounded-xl shadow-sm hover:border-primary/40 transition-colors"
+                  className="group flex items-center justify-between p-3  border border-gray-200 rounded shadow-sm hover:border-primary/40 dark:hover:border-text-main-dark transition-colors"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="shrink-0 w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
+                    <div className="shrink-0 w-10 h-10 flex items-center justify-center bg-primary/10 text-primary dark:text-text-main-dark rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
                       <Icon
                         name="bi:file-earmark-text"
                         height="24px"
@@ -91,7 +91,7 @@ export default function DropZone({ label, files, multipleFiles, maxFilesAllowed,
                     </div>
 
                     <div className="flex flex-col min-w-0">
-                      <span className="text-h5 font-medium text-gray-900 truncate">
+                      <span className="text-h5 font-medium text-muted truncate">
                         {file.name}
                       </span>
                       <span className="text-body text-dark-gray">
@@ -102,7 +102,7 @@ export default function DropZone({ label, files, multipleFiles, maxFilesAllowed,
 
                   <button
                     onClick={() => handleRemoveFile(index)}
-                    className=" hover:bg-primary/10 p-1 rounded-full text-primary transition-colors"
+                    className=" hover:bg-primary/80 p-1 rounded-full text-primary dark:text-text-main-dark transition-colors"
                   >
                     <Icon
                       name="material-symbols:close-rounded"

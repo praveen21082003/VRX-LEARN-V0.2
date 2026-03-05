@@ -38,7 +38,7 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
                             onClick={() => toggleModule(module.id)}
                             className={clsx(
                                 "flex h-16 w-full border-primary items-center justify-between text-dark-gray text-h45",
-                                isOpen ? "bg-primary-border text-primary border-x-8 p-2" : "hover:bg-primary/5 p-4"
+                                isOpen ? "bg-primary/16 dark:bg-primary text-primary dark:text-background border-x-8 p-2" : "hover:bg-primary/16 p-4"
                             )}
                         >
                             <span>{module.title}</span>

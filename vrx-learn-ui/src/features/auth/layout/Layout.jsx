@@ -3,14 +3,15 @@ import Login from "../pages/Login";
 import Forgot from "../pages/Forgot";
 import Reset from "../pages/Reset";
 import { useTheme } from "@/context/ThemeProvider";
-import Icon from "@/components/ui/Icon/Icon";
+import { Icon, InputWarnMessage } from "@/components/ui";
 
 function Layout() {
   const [authMode, setAuthMode] = useState("login");
   const { darkMode, toggleTheme } = useTheme();
+  const [warnMsg, setWarnMsg] = useState("");
 
   return (
-    <div className="flex min-h-screen w-full justify-center items-center bg-background px-4">
+    <div className="flex min-h-screen w-full justify-center items-center text-main bg-background px-4">
 
       <div
         className="
@@ -102,12 +103,13 @@ function Layout() {
               {authMode === "forgot" && "Forgot Password?"}
               {authMode === "reset" && "Reset Password?"}
             </h1>
+            {warnMsg && <InputWarnMessage message={warnMsg} />}
 
           </div>
 
 
           {authMode === "login" && (
-            <Login onForgot={() => setAuthMode("forgot")} />
+            <Login setWarnMsg={setWarnMsg} onForgot={() => setAuthMode("forgot")} />
           )}
 
           {authMode === "forgot" && (

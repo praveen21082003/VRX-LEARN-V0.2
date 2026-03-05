@@ -1,6 +1,6 @@
 export { default as Input } from './Input';
 export { default as Button } from './Button';
-// export { default as InputWarnMessage} from './Warning';
+export { default as InputWarnMessage} from './Warning';
 // export {default as CourseCard } from './CourseCard';
 export { default as Header } from './Header';
 export { default as CourseTumbnail } from './CourseTumbnail'

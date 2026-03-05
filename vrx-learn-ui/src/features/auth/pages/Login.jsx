@@ -5,7 +5,7 @@ import { getUserProfile } from "@/services/profile.service";
 import { useNavigate } from "react-router-dom";
 import { hover } from "motion/react";
 
-function Login({ onForgot }) {
+function Login({ onForgot,setWarnMsg }) {
     const navigate = useNavigate();
     const { setUser, setLoading } = useAuth();
     const [warning, setWarning] = useState({ email: "", password: "" });
@@ -32,12 +32,13 @@ function Login({ onForgot }) {
             );
             setUser(data[0]);
 
-            if (data[0].role === "TRAINEE") {
+            if (data[0].role) {
                 navigate("/dashboard", { replace: true });
-            } else {
-                navigate("/dashboard", { replace: true });
-            }
+            } 
+
+            
         } catch (err) {
+            setWarnMsg("Invaild credentials");
             console.error("Profile fetch failed", err);
         } finally {
             setLoading(false);

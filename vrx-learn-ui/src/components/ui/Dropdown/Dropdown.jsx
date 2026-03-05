@@ -37,8 +37,8 @@ export default function Dropdown({ buttons, closeDropdown }) {
       className={clsx(
         'absolute w-full min-w-36 z-20 bg-background border border-default text-main text-sm  overflow-hidden',
         openUpwards
-          ? "bottom-full rounded-t-lg mb-2"
-          : "top-full mt-2 rounded-b-lg"
+          ? "bottom-full rounded-t mb-2"
+          : "top-full mt-2 rounded-b"
       )}
     >
       {buttons.map((button) => {

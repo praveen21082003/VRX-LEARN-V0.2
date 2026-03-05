@@ -53,8 +53,7 @@
 .markdown-content {
   font-size: 14px;
   line-height: 1.7;
-  color: #1f2937;
-  /* gray-800 */
+  color: inherit;
 }
 
 /* Headings */

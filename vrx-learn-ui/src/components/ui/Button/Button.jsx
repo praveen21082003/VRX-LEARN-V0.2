@@ -1,4 +1,5 @@
 import { Icon } from "@/components/ui"
+import clsx from "clsx";
 
 function Button({
   buttonName,
@@ -28,19 +29,22 @@ function Button({
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`
-      flex items-center cursor-pointer justify-center text-h5
-      ${isIconOnly ? "" : "gap-2"}
-      ${isIconOnly ? "p-0.5" : ""}
-      ${className}
-      transition-all duration-200
-      ${bgClass} ${textClass}
-      ${isWhiteBg && !bgClass ? "border border-primary dark:border-background" : "border-none"}
-      ${disabled
+      className={clsx(
+        "flex items-center cursor-pointer justify-center text-h5 transition-all duration-200",
+
+        !isIconOnly && "gap-2",
+        isIconOnly && "p-0.5",
+
+        className,
+        bgClass,
+        textClass,
+
+        isWhiteBg && !bgClass && buttonName && "border border-primary dark:border-background",
+
+        disabled
           ? "opacity-50 cursor-not-allowed"
           : "hover:opacity-90 active:scale-[0.98]"
-        }
-    `}
+      )}
     >
       {frontIconName && (
         <Icon
