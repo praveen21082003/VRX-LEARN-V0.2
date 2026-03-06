@@ -1,4 +1,4 @@
-
+import { usePermission } from "@/hooks/usePermission"
 
 // In courseInfo page create button
 export const getCreateButtons = ({
@@ -45,8 +45,14 @@ export const getButtons = (Id, handleRename, handleDelete) => [
 export const getProfileDropdown = ({
   mode,
   handleMode,
-  navigate
-}) => [
+  navigate,
+  onSwitch,
+  viewRole,
+  role,
+}) => {
+  const { can } = usePermission();
+
+  const buttons = [
     {
       key: "profile",
       title: "Profile",
@@ -55,16 +61,33 @@ export const getProfileDropdown = ({
     {
       key: "theme",
       title: mode ? "Light Mode" : "Dark Mode",
-      icon:
-        mode
-          ? "line-md:sunny-filled-loop-to-moon-filled-loop-transition"
-          : "line-md:moon-filled-alt-to-sunny-filled-loop-transition",
+      icon: mode
+        ? "line-md:sunny-filled-loop-to-moon-filled-loop-transition"
+        : "line-md:moon-filled-alt-to-sunny-filled-loop-transition",
       onClick: handleMode,
     },
-    {
-      key: "logout",
-      title: "Log out",
-      icon: "mdi:logout",
-      onClick: () => navigate("/"),
-    },
   ];
+
+
+  if (role === "TRAINER") {
+    buttons.push({
+      key: "switch",
+      title: viewRole === "TRAINER"
+        ? "Switch to Trainee"
+        : "Switch to Trainer",
+      icon: viewRole === "TRAINER"
+      ? "mdi:account-tie"
+      : "mdi:account-school",
+      onClick: onSwitch,
+    });
+  }
+
+  buttons.push({
+    key: "logout",
+    title: "Log out",
+    icon: "mdi:logout",
+    onClick: () => navigate("/"),
+  });
+
+  return buttons;
+};

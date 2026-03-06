@@ -8,21 +8,33 @@ import { getProfileDropdown } from "@/config/DropdownButtons";
 import { useTheme } from "../../../context/ThemeProvider";
 
 export default function HeaderProfile() {
-    const { user, loading } = useAuth();
-    
+    const { user, role, viewRole, setViewRole, loading } = useAuth();
+
     const [open, setOpen] = useState(false);
-    // const [mode, setMode] = useState(true);
     const ref = useRef(null);
     const navigate = useNavigate();
 
     const { darkMode, toggleTheme } = useTheme();
 
+
+    const handleSwitchAccount = () => {
+        if (viewRole === "TRAINEE") {
+            setViewRole(role);
+            navigate("/dashboard"); 
+        } else {
+            setViewRole("TRAINEE");
+            navigate("/dashboard"); 
+        }
+    };
+
     const buttons = getProfileDropdown({
-        mode : darkMode,
+        mode: darkMode,
         handleMode: toggleTheme,
+        role,
+        viewRole,
+        onSwitch: handleSwitchAccount,
         navigate,
     });
-
 
 
     useEffect(() => {
@@ -36,6 +48,8 @@ export default function HeaderProfile() {
         return () =>
             document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+
 
 
 
