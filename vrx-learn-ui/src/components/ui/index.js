@@ -1,6 +1,6 @@
 export { default as Input } from './Input';
 export { default as Button } from './Button';
-export { default as InputWarnMessage} from './Warning';
+export { default as InputWarnMessage } from './Warning';
 // export {default as CourseCard } from './CourseCard';
 export { default as Header } from './Header';
 export { default as CourseTumbnail } from './CourseTumbnail'
@@ -15,4 +15,6 @@ export { default as TextEditor } from './TextEditor'
 export { default as Tabs } from './Tabs'
 export { default as AttachmentCard } from './AttachmentCard/AttachmentList'
 export { default as CourseCardViewer } from './CourseCardViewer'
-
+export { default as DataTable } from './Table'
+export {default  as Avatar} from './Table/Avatar'
+export {default as StatusPill} from './Table/StatusPill'

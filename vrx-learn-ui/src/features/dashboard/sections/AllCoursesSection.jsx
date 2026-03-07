@@ -6,12 +6,12 @@ import useAllCourses from "@/features/courses/hooks/useAllCourses";
 export default function AllCoursesSection() {
 
     const { courses, loading } = useAllCourses();
-    
+
     return (
         <CourseCardViewer
-            title="My Courses"
+            title="All Courses"
             courses={courses}
-            maxCourses={3}
+            maxCourses={3}       
         />
     );
 }

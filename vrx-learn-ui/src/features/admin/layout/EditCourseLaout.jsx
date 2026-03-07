@@ -6,17 +6,18 @@ import BackButton from "@/components/navigation/BackButton";
 import useCourseContent from '@/features/courses/hooks/useCourseContent';
 import { COURSE_EDIT_SECTIONS } from "@/config/courseEditConfig";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useModules from "@/features/courses/hooks/useModules";
 import useAssignments from "../../courses/hooks/useAssignments";
 
 import { getCreateButtons } from "@/config/DropdownButtons";
-import { useRef } from "react";
+
 
 
 function EditCourseLayout() {
   const { courseSlug } = useParams();
   const location = useLocation();
+  const ref = useRef(null);
 
   const { courseContent } = useCourseContent(courseSlug);
   const { setCourseBreadcrumb } = useOutletContext();
@@ -112,15 +113,25 @@ function EditCourseLayout() {
       document.body.style.userSelect = "auto";
     };
 
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setOpen(false);
+      }
+    }
+
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
 
   }, []);
+
+
 
 
 
@@ -131,7 +142,7 @@ function EditCourseLayout() {
       <aside style={{ width: asideWidth }} className=" relative hidden border-r-2 border-default bg-muted/40 py-1 md:block overflow-y-auto scrollbar-hide">
 
         <div className="p-4 w-full">
-          <BackButton to={`/dashboard`} iconName="material-symbols:arrow-back-rounded" label="Back to Dashboard" />
+          <BackButton to={`/course/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Dashboard" />
         </div>
 
         <div className="flex justify-center border-y-2 border-default p-4">
@@ -174,7 +185,7 @@ function EditCourseLayout() {
 
 
                   <NavLink
-                    to={`/courses/${courseSlug}/edit/${section.path}`}
+                    to={`/course/${courseSlug}/content/${section.path}`}
                     onClick={() => toggleSection(section.key)}
                   >
                     {({ isActive }) => (
@@ -208,7 +219,7 @@ function EditCourseLayout() {
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                navigate(`/courses/${courseSlug}/edit/${section.key}/create`);
+                                navigate(`/course/${courseSlug}/content/${section.key}/create`);
                               }}
                             >
                               <Icon
@@ -243,7 +254,7 @@ function EditCourseLayout() {
                         {children.map((child) => (
                           <li key={child.id}>
                             <NavLink
-                              to={`/courses/${courseSlug}/edit/${section.key}/${child.id}`}
+                              to={`/course/${courseSlug}/content/${section.key}/${child.id}`}
                               className={({ isActive }) =>
                                 clsx(
                                   "group flex items-center justify-between pl-10 px-2 py-3 text-h5",
@@ -262,7 +273,7 @@ function EditCourseLayout() {
                                   onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
-                                    navigate(`/courses/${courseSlug}/edit/modules/${child.id}/lesson/create`);
+                                    navigate(`/course/${courseSlug}/content/modules/${child.id}/lesson/create`);
                                   }}
                                 >
                                   <Icon

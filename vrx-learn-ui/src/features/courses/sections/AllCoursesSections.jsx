@@ -8,9 +8,9 @@ export default function AllCoursesSection() {
 
     return (
         <CourseCardViewer
-            title="My Courses"
+            title="All Courses"
             courses={courses}
-            gridSize="4"
+            gridSize={4}
         />
     );
 }

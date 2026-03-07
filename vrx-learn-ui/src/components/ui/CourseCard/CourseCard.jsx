@@ -1,14 +1,23 @@
 import React from "react";
 import { Button } from "@/components/ui";
 import { defaultCourse } from "@/assets";
+import clsx from "clsx";
 
-function CourseCard({ name, author, image, buttonName, bgClass,textClass }) {
+function CourseCard({
+  name,
+  author,
+  image,
+  buttonName,
+  bgClass = "bg-transparent border border-primary",
+  textClass = "text-main",
+  onClick
+}) {
   const hasCustomImage = image?.trim();
 
   return (
     <div className="flex flex-col gap-4 py-6 px-4 w-full rounded-2xl bg-card">
-      
-      
+
+
       <div className="relative overflow-hidden rounded-2xl lg:h-28 xl:h-38 2xl:h-60 bg-gray-200 group">
         <img
           src={hasCustomImage ? image : defaultCourse}
@@ -28,7 +37,7 @@ function CourseCard({ name, author, image, buttonName, bgClass,textClass }) {
             bg-[#840227A3]
             px-4 text-center
           ">
-            <img src="/logo-white.svg" alt="logo"/>
+            <img src="/logo-white.svg" alt="logo" />
             <h2 className="text-white font-semibold text-sm leading-snug">
               {name}
             </h2>
@@ -41,11 +50,12 @@ function CourseCard({ name, author, image, buttonName, bgClass,textClass }) {
         <h1 className="text-h5 truncate">{name}</h1>
         <p className="text-small">{author}</p>
       </div>
-
       <Button
-        buttonName= {buttonName}
-        // bgClass= "bg-primary"
+        buttonName={buttonName}
+        bgClass={bgClass}
+        textClass={textClass}
         className="p-3 rounded-lg"
+        onClick={onClick}
       />
     </div>
   );

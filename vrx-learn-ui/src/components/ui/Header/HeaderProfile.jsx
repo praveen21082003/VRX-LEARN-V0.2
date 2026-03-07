@@ -6,9 +6,12 @@ import { Icon } from '@/components/ui';
 import { useNavigate } from "react-router-dom";
 import { getProfileDropdown } from "@/config/DropdownButtons";
 import { useTheme } from "../../../context/ThemeProvider";
+import Pill from "./Pill";
+import { usePermission } from '@/hooks/usePermission'
 
 export default function HeaderProfile() {
     const { user, role, viewRole, setViewRole, loading } = useAuth();
+    const { can } = usePermission();
 
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
@@ -20,10 +23,10 @@ export default function HeaderProfile() {
     const handleSwitchAccount = () => {
         if (viewRole === "TRAINEE") {
             setViewRole(role);
-            navigate("/dashboard"); 
+            navigate("/dashboard");
         } else {
             setViewRole("TRAINEE");
-            navigate("/dashboard"); 
+            navigate("/dashboard");
         }
     };
 
@@ -70,10 +73,13 @@ export default function HeaderProfile() {
                         alt="User profile"
                         className="h-10 w-10 rounded-full object-cover"
                     /> :
-                    <Icon name="mingcute:user-4-fill" height="36" width="36" />
+                    <Icon name="mingcute:user-4-fill" height="32" width="32" />
                 }
 
-                <span>{user.name}</span>
+                <span className="text-h5">{user.name}</span>
+                {role === "TRAINER" && (
+                    <Pill viewRole={viewRole} />
+                )}
                 <Icon name="iconamoon:arrow-down-2" width="16px" height="16px" />
             </div>
 

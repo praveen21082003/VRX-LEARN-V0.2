@@ -53,6 +53,10 @@ export const getAssignments = (courseId) => {
   return axiosInstance.get(`/assignments?course_id=${courseId}`);
 };
 
+export const getAssignmentSubmissions = (assignmentId) => {
+  return axiosInstance.get(`/assignment_submissions?assignment_id=${assignmentId}`);
+};
+
 export const createAssignment = (playload) => {
   return axiosInstance.post('/assignments', playload)
 }

@@ -13,7 +13,7 @@ export default function LearningLayout() {
         const stored = sessionStorage.getItem("learning-breadcrumbs");
         return stored
             ? JSON.parse(stored)
-            : [{ label: "My Learning", to: "/dashboard" }];
+            : [{ label: "Dashboard", to: "/dashboard" }];
     });
 
     useEffect(() => {

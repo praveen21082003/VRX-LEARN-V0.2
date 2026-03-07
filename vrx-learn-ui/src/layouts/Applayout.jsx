@@ -5,10 +5,10 @@ export default function AppLayout() {
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden">
 
-      
-      <div className="h-[5vh] min-h-14 shrink-0">
-        <Header menu={true}/>
-      </div>
+
+
+      <Header menu={true} />
+
 
       <main className="bg-background flex-1 overflow-y-auto">
         <Outlet />

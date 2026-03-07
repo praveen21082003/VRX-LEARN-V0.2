@@ -4,19 +4,29 @@
       "id": "3",
       "name": "Python",
       "author": "Nagarjun R",
-      "thumbnail": "https://i.pinimg.com/1200x/c1/9b/2f/c19b2f857a1aaf54d4ae8a8eccee1cfc.jpg"
+      "thumbnail": "https://i.pinimg.com/1200x/c1/9b/2f/c19b2f857a1aaf54d4ae8a8eccee1cfc.jpg",
+      "progress": 0
+    },
+    {
+      "id": "34",
+      "name": "Advanced Web Development",
+      "author": "Jhon Doe",
+      "thumbnail": "",
+      "progress": 10
     },
     {
       "id": "32",
       "name": "ZOS System Programming",
       "author": "Vijayalakshmie",
-      "thumbnail": ""
+      "thumbnail": "",
+      "progress": 0
     },
     {
       "id": "33",
       "name": "MF Modernization 5 days for Freshers",
       "author": "Vijayalakshmie",
-      "thumbnail": ""
+      "thumbnail": "",
+      "progress": 0
     }
   ],
   "all_courses": [
@@ -494,36 +504,48 @@
   ],
   "assignment_submissions": [
     {
-      "id": "1",
+      "id": 1,
       "assignment_id": 1,
-      "student_id": 101,
-      "submitted_at": "2026-02-13T10:45:00",
+      "student_id": 4,
+      "name": "Arul S",
+      "email": "arulssampathy@gmail.com",
+      "attempt": 1,
+      "submission_date": "2026-02-13T10:45:00",
       "status": "SUBMITTED",
-      "points": 70
+      "grade": null
     },
     {
-      "id": "2",
+      "id": 2,
       "assignment_id": 1,
-      "student_id": 102,
-      "submitted_at": null,
-      "status": "MISSING",
-      "points": null
-    },
-    {
-      "id": "3",
-      "assignment_id": 1,
-      "student_id": 103,
-      "submitted_at": "2026-02-14T09:15:00",
+      "student_id": 6,
+      "name": "Heaven Kane",
+      "email": "heavenkane@gmail.com",
+      "attempt": 1,
+      "submission_date": "2026-02-14T09:15:00",
       "status": "SUBMITTED",
-      "points": 75
+      "grade": null
     },
     {
-      "id": "4",
+      "id": 3,
       "assignment_id": 1,
-      "student_id": 104,
-      "submitted_at": "2026-02-16T15:30:00",
+      "student_id": 7,
+      "name": "Reece Mayer",
+      "email": "reecemayer@gmail.com",
+      "attempt": 1,
+      "submission_date": "2026-02-10T15:30:00",
+      "status": "GRADED",
+      "grade": 90
+    },
+    {
+      "id": 4,
+      "assignment_id": 1,
+      "student_id": 8,
+      "name": "Virat",
+      "email": "virat18@gmail.com",
+      "attempt": 3,
+      "submission_date": "2026-02-16T15:30:00",
       "status": "DONE_LATE",
-      "points": 65
+      "grade": null
     }
   ],
   "users": [

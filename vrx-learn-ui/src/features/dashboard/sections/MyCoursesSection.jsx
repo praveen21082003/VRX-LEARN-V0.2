@@ -11,6 +11,9 @@ export default function MyCoursesSection({ darkMode }) {
             title="My Courses"
             courses={courses}
             maxCourses={3}
+            getButtonName={(course) =>
+                course.progress === 0 ? "Start Learning" : "Resume"
+            }
         />
     );
 }

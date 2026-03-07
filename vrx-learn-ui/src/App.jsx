@@ -7,7 +7,9 @@ import LearningLayout from "@/layouts/LearningLayout";
 import AdminLayout from "@/layouts/AdminLayout";
 import Layout from "./features/auth/layout/Layout";
 
-import DashboardPage from "@/features/dashboard/pages/DashboardPage";
+import DashboardRouter from "@/components/navigation/routers/DashboardRouter";
+import CourseOverView from "@/components/navigation/routers/CourseOverView";
+
 import CoursesPage from "@/features/courses/pages/CoursesPage";
 import CourseOverviewPage from "@/features/courses/pages/CourseOverviewPage";
 import LessonsPage from "@/features/courses/pages/LessonsPage";
@@ -16,9 +18,9 @@ import LabPage from "@/features/courses/pages/LabPage";
 import QuizPage from "@/features/courses/pages/QuizPage";
 import FeedbackPage from "@/features/courses/pages/FeedbackPage";
 
-import CourseInfoPage from "@/features/admin/layout/CourseInfoPage";
 import EditCourseLayout from "./features/admin/layout/EditCourseLaout";
 import CourseInfo from "@/features/admin/pages/CourseInfo";
+
 import ModulesEditor from "@/features/admin/pages/ModulesEditor";
 import LessonsEditor from "@/features/admin/pages/subPages/LessonsEditor";
 import QuizEditor from '@/features/admin/pages/QuizEditor';
@@ -47,13 +49,13 @@ function App() {
           {/* Trainee */}
           <Route element={<ProtectedRoute allowedRoles={["TRAINEE"]} />}>
             <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/dashboard" element={<DashboardRouter />} />
               <Route path="/courses" element={<CoursesPage />} />
             </Route>
 
-            <Route path="/learn/:courseSlug" element={<LearningLayout />}>
+            <Route path="/course/:courseSlug" element={<LearningLayout />}>
               <Route index element={<Navigate to="overview" replace />} />
-              <Route path="overview" element={<CourseOverviewPage />} />
+              <Route path="overview" element={<CourseOverView />} />
               <Route path="lessons" element={<LessonsPage />} />
               <Route path="lessons/:lessonId" element={<LessonsPage />} />
               <Route path="assignments" element={<AssignmentPage />} />
@@ -66,11 +68,13 @@ function App() {
           {/* ADMIN / TRAINER / SUBADMIN */}
           <Route element={<ProtectedRoute allowedRoles={["ADMIN", "SUBADMIN", "TRAINER"]} />}>
             <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/dashboard" element={<DashboardRouter />} />
             </Route>
 
-            <Route path="/courses/:courseSlug" element={<AdminLayout />}>
-              <Route path="edit" element={<EditCourseLayout />}>
+            <Route path="/course/:courseSlug" element={<AdminLayout />}>
+              <Route index element={<Navigate to="overview" replace />} />
+              <Route path="overview" element={<CourseOverView />} />
+              <Route path="content" element={<EditCourseLayout />}>
 
                 <Route index element={<Navigate to="info" replace />} />
 
@@ -92,7 +96,7 @@ function App() {
                 <Route path="quiz" element={<QuizEditor />} />
                 <Route path="lab" element={<LabEditor />} />
                 <Route path="feedback" element={<FeedbackEditor />} />
-                
+
 
               </Route>
 

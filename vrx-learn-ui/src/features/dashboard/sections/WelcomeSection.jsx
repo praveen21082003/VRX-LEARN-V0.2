@@ -2,7 +2,6 @@ import React from 'react'
 import { LearningIllustration } from '@/assets'
 import { Button } from "@/components/ui";
 import { ProgressBar } from '@/components/ui';
-import { usePermission } from "@/hooks/usePermission"
 
 
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 function WelcomeSection({ user }) {
   const navigate = useNavigate();
   const courseId = 34;
-  const { can } = usePermission();
 
 
 
@@ -44,15 +42,11 @@ function WelcomeSection({ user }) {
 
 
           <Button
-            buttonName={can("UPDATE_COURSE") ? "Edit Course" : "Resume"}
+            buttonName="Resume"
             className="max-w-50 2xl:max-w-70 p-3 rounded-lg font-semibold text-sm"
             bgClass="bg-white"
             textClass="text-primary"
-            onClick={() => {
-              can("UPDATE_COURSE")
-                ? navigate(`/courses/${courseId}/edit`)
-                : navigate(`/learn/${courseId}`)
-            }}
+            onClick={() => navigate(`/course/${courseId}`)}
           />
 
         </div>

@@ -1,0 +1,152 @@
+import { useEffect } from "react";
+import { useParams, useOutletContext, NavLink } from "react-router-dom";
+import useCourseContent from "@/features/courses/hooks/useCourseContent";
+import { usePermission } from "@/hooks/usePermission"
+import { CourseTumbnail, Icon } from "@/components/ui";
+import { formatMinutes } from "@/utils/duration";
+import sideArrow from "@/assets/images/side_arrow.svg";
+
+import { TRAINEE_SECTIONS } from "@/config/courseOverview";
+import { TRAINER_SECTIONS } from "@/config/courseOverview";
+
+
+function CourseOverView() {
+    // const {role, viewRole} =useAuth();
+    const { courseSlug } = useParams();
+    const { courseContent, loading, error } = useCourseContent(courseSlug);
+    const { setCourseBreadcrumb } = useOutletContext();
+
+    const { can } = usePermission();
+
+    useEffect(() => {
+        if (!courseContent?.name) return;
+
+        setCourseBreadcrumb(courseContent.name);
+    }, [courseContent?.name]);
+
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Failed to load course</p>;
+    if (!courseContent) return null;
+
+
+    const totalLessonMinutes =
+        courseContent.module_duration +
+        courseContent.assignment_duration +
+        courseContent.lab_duration +
+        courseContent.quiz_duration +
+        courseContent.feedback_duration;
+
+
+    const sections =
+        can("UPDATE_COURSE")
+            ? TRAINER_SECTIONS
+            : TRAINEE_SECTIONS;
+
+
+
+
+    return (
+        <>
+            <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start p-4 text-main">
+                <CourseTumbnail name={courseContent.name} image={courseContent.thumbnail} classRounded="rounded-lg" />
+                <div className="space-y-3 flex-1">
+                    <div className="flex justify-between">
+                        <h2 className="text-h3">{courseContent.name}</h2>
+                    </div>
+                    <div>
+                        <p className="text-sm font-medium text-muted-foreground">
+                            Instructor:{" "}
+                            <span className="text-foreground">
+                                {courseContent.author}
+                            </span>
+                        </p>
+                        <div className="flex items-center text-body text-muted-foreground text-dark-gray">
+                            <span>Course</span>
+                            <Icon name="ph:dot-bold" />
+                            <span>{formatMinutes(totalLessonMinutes)}</span>
+                            <Icon name="ph:dot-bold" />
+                            <span>{courseContent.progess_status}</span>
+                        </div>
+                    </div>
+
+
+                    <p className="text-body text-muted-foreground line-clamp-3">
+                        {courseContent.short_description}
+                    </p>
+
+                </div>
+            </div>
+            <div className="space-y-1 py-4 px-4 lg:px-6 lg:py-2 text-main">
+                {sections.map((section) => {
+
+                    const basePath = can("UPDATE_COURSE")
+                        ? `/courses/${courseSlug}`
+                        : `/learn/${courseSlug}`;
+
+                    const meta =
+                        section.metaKey && courseContent[section.metaKey]
+                            ? `${courseContent[section.metaKey]} ${section.metaLabel || ""}`
+                            : null;
+
+                    const duration =
+                        section.durationKey && courseContent[section.durationKey]
+                            ? formatMinutes(courseContent[section.durationKey])
+                            : null;
+
+                    const description =
+                        typeof section.description === "function"
+                            ? section.description(courseContent)
+                            : null;
+
+                    return (
+                        <NavLink
+                            key={section.key}
+                            to={`/course/${courseSlug}/${section.key}`}
+                            className={({ isActive }) =>
+                                `flex items-center gap-3 rounded-lg px-4 py-1
+                                ${isActive ? "bg-primary-16" : "hover:bg-primary/16 dark:hover:bg-primary"}`
+                            }
+                        >
+                            {section.icon && (
+                                <Icon name={section.icon} height="36" width="36" />
+                            )}
+                            <div className="flex justify-between w-full items-center">
+                                <div className="space-y-0">
+
+
+                                    <h3 className="text-h3">{section.title}</h3>
+
+                                    {/* Trainer Description */}
+                                    {description && (
+                                        <p className="text-body text-muted">
+                                            {description}
+                                        </p>
+                                    )}
+
+                                    {/* Trainee Meta + Duration */}
+                                    {!description && (meta || duration) && (
+                                        <div className="flex items-center gap-1 text-body text-dark-gray">
+                                            {meta && <span>{meta}</span>}
+                                            {meta && duration && <Icon name="ph:dot-bold" />}
+                                            {duration && (
+                                                <>
+                                                    <Icon name="mdi:clock-outline" height="16" width="16" />
+                                                    <span>{duration}</span>
+                                                </>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <img src={sideArrow} alt="arrow" className="w-4 h-4" />
+                            </div>
+                        </NavLink>
+                    );
+                })}
+            </div>
+        </>
+    )
+}
+
+export default CourseOverView

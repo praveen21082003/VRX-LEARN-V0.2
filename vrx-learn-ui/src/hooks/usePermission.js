@@ -1,19 +1,24 @@
-import {ROLE_PERMISSION} from '@/config/permission.js'
-import {useAuth} from "@/context/AuthContext";
+import { ROLE_PERMISSION } from '@/config/permission.js'
+import { useAuth } from "@/context/AuthContext";
 
-export function usePermission(){
+export function usePermission() {
 
-    const {role, viewRole} = useAuth();
+    const { role, viewRole } = useAuth();
 
-    const can = (permission)=>{
+    const can = (permission) => {
 
-        const activeRole = viewRole || role
+        const activeRole =
+            role === "TRAINER" && viewRole
+                ? viewRole
+                : role;
+
+        console.log(activeRole);
 
         if (!activeRole) return false;
 
         return ROLE_PERMISSION[activeRole]?.includes(permission);
     };
 
-    return {can}
-    
+    return { can }
+
 }

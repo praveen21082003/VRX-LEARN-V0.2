@@ -2,12 +2,9 @@
 
 import {CourseTumbnail, Icon} from "@/components/ui";
 import { formatMinutes } from "@/utils/duration";
-import { Button } from "@/components/ui";
-import { NavLink } from "react-router-dom";
-import { useParams } from "react-router-dom";
 
 export default function CourseOverviewSection({ course, can }) {
-  const { courseSlug } = useParams();
+
 
   const totalLessonMinutes =
     course.module_duration +

@@ -12,7 +12,7 @@ export default function AssignmentAsideSection({ assignments, activeAssignment, 
     return (
         <aside className="hidden sidebar-sm 2xl:sidebar-lg border-r-2 border-default bg-muted/40 md:block">
             <div className="p-4 border-b-2 border-default w-full">
-                <BackButton to={`/learn/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Overview" />
+                <BackButton to={`/course/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Overview" />
             </div>
             <AnimatePresence>
                 <motion.ul

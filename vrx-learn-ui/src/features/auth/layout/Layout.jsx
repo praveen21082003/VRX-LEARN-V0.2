@@ -28,7 +28,7 @@ function Layout() {
       "
       >
 
-        <div className="hidden md:block relative w-[500px] bg-brand overflow-hidden">
+        <div className="hidden md:block relative w-lg bg-brand overflow-hidden">
 
           <img
             src="/src/assets/images/Learning-Illustration.png"

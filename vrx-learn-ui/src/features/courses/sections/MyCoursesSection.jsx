@@ -10,7 +10,10 @@ export default function MyCoursesSection() {
         <CourseCardViewer
             title="My Courses"
             courses={courses}
-            gridSize="4"
+            gridSize={4}
+            getButtonName={(course) =>
+                course.progress === 0 ? "Start Learning" : "Resume"
+            }
         />
     );
 }

@@ -44,6 +44,8 @@
   --color-brand: #840227;
   --color-brand-hover: #F2B6A0;
 
+  --color-table: #F1F3F5;
+
   --color-surface: #FAFAF8;
   --color-surface-dark: #1E293B;
 
@@ -199,6 +201,14 @@
 
   .dark .bg-input-bg {
     background-color: color-mix(in srgb, var(--color-logo) 16%, transparent);
+  }
+
+  .bg-table-Header-bg {
+    background-color: var(--color-table);
+  }
+
+  .dark .bg-table-Header-bg{
+    background-color: var(--color-surface-primary-dark);
   }
 
 

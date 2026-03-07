@@ -47,7 +47,7 @@ export default function Dropdown({ buttons, closeDropdown }) {
         return (
           <button
             key={button.key}
-            className={clsx('flex gap-1 p-3 h-10 items-center w-full text-xs hover:bg-gray-100 dark:hover:bg-[#334155]',
+            className={clsx('flex gap-1 p-3 h-10 items-center w-full text-sm hover:bg-gray-100 dark:hover:bg-[#334155]',
               !hasPermission ? 'opacity-50 cursor-default' : 'font-semibold hover:text-primary dark:hover:text-gray-300 cursor-pointer'
             )}
             onClick={(e) => {

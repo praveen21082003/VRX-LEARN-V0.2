@@ -5,10 +5,10 @@ export const getCreateButtons = ({
   navigate,
   courseSlug
 }) => [
-    { key: "module", title: "Module", icon: "codicon:file-submodule", onClick: () => navigate(`/courses/${courseSlug}/edit/modules/create`), permission: "CREATE_MODULES" },
-    { key: "assignment", title: "Assignment", icon: "material-symbols:assignment-outline", onClick: () => navigate(`/courses/${courseSlug}/edit/assignments/create`), permission: "CREATE_ASSIGNMENTS" },
-    { key: "lab_credential", title: "Lab Credential", icon: "ooui:lab-flask", onClick: () => navigate(`/courses/${courseSlug}/labs/create`), permission: "CREATE_LABS" },
-    { key: "quiz", title: "Quiz", icon: "hugeicons:quiz-05", onClick: () => navigate(`/courses/${courseSlug}/quiz/create`), permission: "CREATE_QUIZ" }
+    { key: "module", title: "Module", icon: "codicon:file-submodule", onClick: () => navigate(`/course/${courseSlug}/content/modules/create`), permission: "CREATE_MODULES" },
+    { key: "assignment", title: "Assignment", icon: "material-symbols:assignment-outline", onClick: () => navigate(`/course/${courseSlug}/content/assignments/create`), permission: "CREATE_ASSIGNMENTS" },
+    { key: "lab_credential", title: "Lab Credential", icon: "ooui:lab-flask", onClick: () => navigate(`/course/${courseSlug}/content/labs/create`), permission: "CREATE_LABS" },
+    { key: "quiz", title: "Quiz", icon: "hugeicons:quiz-05", onClick: () => navigate(`/course/${courseSlug}/content/quiz/create`), permission: "CREATE_QUIZ" }
   ]
 
 
@@ -19,7 +19,7 @@ export const editButtons = (handleReorder) => [
 ];
 
 export const buttons = (handleRename, lessonId) => [
-  { key: "view", title: "View", icon: "material-symbols:view-cozy-sharp", onClick: () => navigate(`/learn/${courseSlug}/lessons`) },
+  { key: "view", title: "View", icon: "material-symbols:view-cozy-sharp", onClick: () => navigate(`/course/${courseSlug}/lessons`) },
   { key: "edit", title: "Edit", icon: "mingcute:pencil-line", onClick: () => alert("edit clicked") },
   { key: "rename", title: "Rename", icon: "ix:rename", onClick: () => handleRename(lessonId) },
   { key: "delete", title: "Delete", icon: "ic:baseline-delete", onClick: () => alert("delete clicked") }
