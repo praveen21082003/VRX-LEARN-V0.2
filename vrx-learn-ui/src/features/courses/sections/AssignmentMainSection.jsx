@@ -1,4 +1,4 @@
-import formatDate from "@/utils/formatDate"
+
 import formatDateTime from "@/utils/formatDateTime"
 import { Icon,Button, MarkdownContent, AttachmentCard, FileDropZone } from "@/components/ui"
 import { useState, useEffect } from "react"
@@ -23,7 +23,7 @@ export default function AssignmentMainSection({ assignment }) {
                 <div className="flex gap-2 items-center">
                     <Icon icon="mdi:clock-outline" width="16" height="16" />
                     <p className="text-muted-foreground">
-                        Due: {formatDate(assignment.due_date)}, {formatDateTime(assignment.due_date, assignment.due_time)}
+                        Due: {formatDateTime(assignment.submission_date)}
                     </p>
                 </div>
                 <Icon name="bi:dot" height="16" width="16" />

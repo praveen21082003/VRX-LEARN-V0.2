@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useParams, useOutletContext, NavLink } from "react-router-dom";
+
 import useCourseContent from "@/features/courses/hooks/useCourseContent";
 import { usePermission } from "@/hooks/usePermission"
 import { CourseTumbnail, Icon } from "@/components/ui";
@@ -52,7 +53,7 @@ function CourseOverView() {
                 <CourseTumbnail name={courseContent.name} image={courseContent.thumbnail} classRounded="rounded-lg" />
                 <div className="space-y-3 flex-1">
                     <div className="flex justify-between">
-                        <h2 className="text-h3">{courseContent.name}</h2>
+                        <h2 className="text-h2">{courseContent.name}</h2>
                     </div>
                     <div>
                         <p className="text-sm font-medium text-muted-foreground">
@@ -109,13 +110,13 @@ function CourseOverView() {
                             }
                         >
                             {section.icon && (
-                                <Icon name={section.icon} height="36" width="36" />
+                                <Icon name={section.icon} height="32" width="32" />
                             )}
                             <div className="flex justify-between w-full items-center">
                                 <div className="space-y-0">
 
 
-                                    <h3 className="text-h3">{section.title}</h3>
+                                    <h3 className="text-h4">{section.title}</h3>
 
                                     {/* Trainer Description */}
                                     {description && (

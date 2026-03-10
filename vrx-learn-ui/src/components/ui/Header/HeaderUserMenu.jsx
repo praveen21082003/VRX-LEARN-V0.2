@@ -1,28 +1,17 @@
 import React from "react";
 import Icon from "../Icon";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from '@/context/AuthContext'
+import { roleNavigation } from "@/config/headerMenu";
 
 
 function HeaderUserMenu() {
     const location = useLocation();
 
-    const navigationLinks = [
-        {
-            name: "Dashboard",
-            icon: "material-symbols:dashboard-rounded",
-            path: "/dashboard",
-        },
-        {
-            name: "My Learning",
-            icon: "mdi:compass",
-            path: "/learning",
-        },
-        {
-            name: "Courses",
-            icon: "streamline-plump:graduation-cap-solid",
-            path: "/courses",
-        },
-    ];
+    const { role } = useAuth();
+
+
+    const navigationLinks = roleNavigation[role] || [];
 
     return (
         <nav className="flex items-center gap-8 text-[#fafaf8d3]">
@@ -41,7 +30,7 @@ function HeaderUserMenu() {
                             }
             `}
                     >
-                        <Icon name={icon} width="20" height="20" />
+                        <Icon name={icon} width="24" height="24" />
                         <span className="text-h5">{link.name}</span>
                     </Link>
                 );

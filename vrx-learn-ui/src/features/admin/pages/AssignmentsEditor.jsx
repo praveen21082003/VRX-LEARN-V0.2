@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect} from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Button, Input, Icon, Dropdown } from '@/components/ui'
 import { useOutletContext, NavLink } from 'react-router-dom'
 import formatDateTime from '@/utils/formatDateTime';
@@ -105,7 +105,9 @@ function AssignmentsEditor() {
                     return (
                         < li key={assignment.id} >
                             <NavLink
-                                onDoubleClick={`/courses/${courseSlug}/edit/assignments/${assignment.id}`}
+                                onDoubleClick={() =>
+                                    navigate(`/courses/${courseSlug}/edit/assignments/${assignment.id}`)
+                                }
                                 className="flex items-center justify-between px-5 py-3 rounded-md hover:bg-primary/16 dark:hover:bg-primary transition-colors cursor-pointer"
                                 onClick={(e) => {
                                     if (isOpenDropdown === assignment.id) {

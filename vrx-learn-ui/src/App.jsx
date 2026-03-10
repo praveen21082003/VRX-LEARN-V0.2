@@ -9,9 +9,9 @@ import Layout from "./features/auth/layout/Layout";
 
 import DashboardRouter from "@/components/navigation/routers/DashboardRouter";
 import CourseOverView from "@/components/navigation/routers/CourseOverView";
+import UsersManagement from "@/features/admin/dashboard/pages/UsersManagement";
 
 import CoursesPage from "@/features/courses/pages/CoursesPage";
-import CourseOverviewPage from "@/features/courses/pages/CourseOverviewPage";
 import LessonsPage from "@/features/courses/pages/LessonsPage";
 import AssignmentPage from "@/features/courses/pages/AssignmentPage";
 import LabPage from "@/features/courses/pages/LabPage";
@@ -20,6 +20,7 @@ import FeedbackPage from "@/features/courses/pages/FeedbackPage";
 
 import EditCourseLayout from "./features/admin/layout/EditCourseLaout";
 import CourseInfo from "@/features/admin/pages/CourseInfo";
+import TraineeRoster from "@/features/admin/layout/TraineeRoster";
 
 import ModulesEditor from "@/features/admin/pages/ModulesEditor";
 import LessonsEditor from "@/features/admin/pages/subPages/LessonsEditor";
@@ -69,6 +70,9 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={["ADMIN", "SUBADMIN", "TRAINER"]} />}>
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<DashboardRouter />} />
+              <Route path="/users" element={< UsersManagement/>} />
+              <Route path="/enrollments" element={<p>enrollments</p>} />
+              <Route path="/courses" element={<p>courses</p>} />
             </Route>
 
             <Route path="/course/:courseSlug" element={<AdminLayout />}>
@@ -99,7 +103,7 @@ function App() {
 
 
               </Route>
-
+              <Route path="roster" element={<TraineeRoster />} />
             </Route>
 
 

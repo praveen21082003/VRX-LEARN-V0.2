@@ -1,5 +1,5 @@
 import React from 'react'
-import CourseCard from "@/components/ui/CourseCard";
+import CourseCard from "@/components/ui/Cards";
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 

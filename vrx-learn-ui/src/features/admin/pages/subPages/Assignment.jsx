@@ -1,25 +1,38 @@
 import React, { useState } from 'react'
 import { Icon, Tabs, Button } from '@/components/ui'
 import { useParams, useOutletContext } from "react-router-dom";
-import formatDate from '@/utils/formatDate'
+
 import formatDateTime from '@/utils/formatDateTime';
-import { InstructionsTab, SubmissionsTab } from "./sections";
+import { InstructionsTab, SubmissionsTab, SubmissionView } from "./sections";
+
+import useAssignmentSubmissions from '../../hooks/useAssignmentSubmissions';
 
 function Assignment() {
     const { assignmentId } = useParams();
     const { assignments } = useOutletContext();
     const [activeTab, setActiveTab] = useState("instructions");
+    const [activeAssignmentId, setActiveAssignmentId] = useState(null);
+
+
+
+    const { submissions, loading, error, refetch } =
+        useAssignmentSubmissions(assignmentId);
 
     const tabs = [
         { label: "Instructions", value: "instructions" },
-        { label: "Submissions", value: "submissions" }
+        { label: "Submissions", value: ["submissions", "view_submission"]},
     ]
 
+    
     if (!assignments) return <p>Assignment not found</p>;
 
     const assignment = assignments.find(
         (a) => a.id === assignmentId
     );
+
+
+    if (loading) return <p>Loading submissions...</p>;
+    if (error) return <p>Error loading submissions</p>;
 
 
 
@@ -38,7 +51,7 @@ function Assignment() {
                 <div className="flex gap-2 items-center">
                     <Icon icon="mdi:clock-outline" width="16px" height="16px" />
                     <p className="text-muted-foreground">
-                        Due: {formatDate(assignment.due_date)}, {formatDateTime(assignment.due_date, assignment.due_time)}
+                        Due: {formatDateTime(assignment.submission_date)}
                     </p>
                 </div>
                 <Icon name="bi:dot" />
@@ -53,12 +66,13 @@ function Assignment() {
                 <Tabs
                     tabs={tabs}
                     activeTab={activeTab}
-                    onChange={setActiveTab}
+                    setActiveTab={setActiveTab}
                 />
 
                 <div className="py-5">
                     {activeTab === "instructions" && <InstructionsTab description={assignment.description} attachments={assignment.attachments} />}
-                    {activeTab === "submissions" && <SubmissionsTab />}
+                    {activeTab === "submissions" && <SubmissionsTab submissions={submissions} setActiveTab={setActiveTab} setActiveAssignmentId={setActiveAssignmentId}/>}
+                    {activeTab === "view_submission" && <SubmissionView submissions={submissions} setActiveTab={setActiveTab} assignmentId={assignmentId} activeAssignmentId={activeAssignmentId}/>}
                 </div>
 
             </div>

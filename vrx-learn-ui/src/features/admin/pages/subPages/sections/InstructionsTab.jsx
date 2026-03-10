@@ -15,8 +15,9 @@ export default function InstructionsTab({ description, attachments }) {
 
             <div className="flex flex-wrap gap-3 mt-2">
                 <ul className="flex gap-2">
-                    {attachments.map((file) => (
-                        <li key={file.url}>
+                    {/* After change to url */}
+                    {attachments.map((file, index) => (
+                        <li key={index}>    
                             <AttachmentCard file={file} />
                         </li>
                     ))}

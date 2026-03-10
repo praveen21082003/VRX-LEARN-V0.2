@@ -15,6 +15,7 @@ function Button({
   frontIconHeight,
   backIconWidth,
   backIconHeight,
+  fontClass = 'text-h5'
 }) {
   const isWhiteBg =
     bgClass.includes('');
@@ -30,7 +31,9 @@ function Button({
       disabled={disabled}
       onClick={onClick}
       className={clsx(
-        "flex items-center cursor-pointer justify-center text-h5 transition-all duration-200",
+        "flex items-center cursor-pointer justify-center transition-all duration-200",
+
+        fontClass,
 
         !isIconOnly && "gap-2",
         isIconOnly && "p-0.5",

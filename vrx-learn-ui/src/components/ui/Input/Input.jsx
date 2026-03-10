@@ -17,8 +17,10 @@ function Input({
     inputWarning,
     disabled = false,
     bgClass = "",
+    textClass="text-main",
     onKeyDown,
     paddingClass,
+    border,
     widthClass = "w-full"
 
 
@@ -63,13 +65,14 @@ function Input({
                     disabled={disabled}
                     placeholder={placeholder}
                     className={`
-                        ${widthClass} rounded-lg border
+                        ${widthClass} rounded border
                         ${paddingClass ? paddingClass : "p-2.5"} ${icon ? "pl-10" : ""}
                         text-body
-                        text-main dark:text-white
+                        ${textClass}
                         outline-none
                         transition
-                        border-input-border
+                        
+                        ${! border ? " border border-input-border" : `border-2 ${border}` }
                         dark:border-default
                         ${bgClass}
                         focus:ring-1 focus:ring-brand

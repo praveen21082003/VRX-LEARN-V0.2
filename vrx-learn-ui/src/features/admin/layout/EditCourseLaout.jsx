@@ -142,7 +142,7 @@ function EditCourseLayout() {
       <aside style={{ width: asideWidth }} className=" relative hidden border-r-2 border-default bg-muted/40 py-1 md:block overflow-y-auto scrollbar-hide">
 
         <div className="p-4 w-full">
-          <BackButton to={`/course/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Dashboard" />
+          <BackButton to={`/course/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Overview" />
         </div>
 
         <div className="flex justify-center border-y-2 border-default p-4">

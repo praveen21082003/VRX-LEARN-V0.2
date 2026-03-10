@@ -64,6 +64,8 @@
   --color-logo: #D9D9D9;
   --color-secondary-surface: #F2F2EE;
 
+  --color-pagenation-bg : #EDEEEF;
+
   /* Fonts */
 
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
@@ -144,6 +146,7 @@
   .text-small {
     font-size: var(--font-small);
     line-height: var(--lh-small);
+    font-weight: 500;
   }
 
 }

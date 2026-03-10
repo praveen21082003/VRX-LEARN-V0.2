@@ -6,7 +6,8 @@ function TableHeader({ columns }) {
           <th
             key={col.key}
             style={{ width: col.width }}
-            className="text-left text-h5 p-2"
+            className={`p-2 text-h5 ${col.align === "left" ? "text-left" : "text-center"
+              }`}
           >
             {col.label}
           </th>

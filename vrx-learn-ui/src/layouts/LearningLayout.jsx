@@ -1,7 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import CourseHeaderSection from "@/features/courses/sections/CourseHeaderSection";
+import { Header } from "@/components/ui"
 
 
 
@@ -88,7 +88,10 @@ export default function LearningLayout() {
 
     return (
         <div className="h-screen w-screen flex flex-col overflow-hidden">
-            <CourseHeaderSection breadcrumbs={breadcrumbs} />
+            <Header
+                menu={false}
+                breadcrumbs={breadcrumbs}
+            />
 
             <main className="flex-1 relative overflow-hidden bg-background">
                 <AnimatePresence mode="popLayout" custom={direction}>

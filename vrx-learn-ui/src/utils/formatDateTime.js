@@ -16,7 +16,7 @@ export default function formatDateTime(dateString) {
 
   const today = new Date();
   const isToday =
-    dateTime.toDateString() === today.toDateString();
+    date.toDateString() === today.toDateString();
 
   return `${formattedDate}, ${isToday ? `${formattedTime} (Today)` : formattedTime}`;
 }

@@ -106,6 +106,7 @@ function DocumentControls({
                             <Input
                                 widthClass="w-10"
                                 bgClass="bg-[#191B1C]"
+                                textClass="text-white"
                                 paddingClass="px-1 py-[2px]"
                                 value={currentPage}
                                 onChange={(e) => {
