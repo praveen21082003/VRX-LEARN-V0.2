@@ -33,7 +33,7 @@ function Input({
 
 
     return (
-        <div className="flex flex-col gap-2 w-full">
+        <div className={`flex flex-col gap-2 ${widthClass}`}>
             {/* Label */}
             {label && (
                 <label className="text-h5 text-main dark:text-white">
@@ -65,7 +65,8 @@ function Input({
                     disabled={disabled}
                     placeholder={placeholder}
                     className={`
-                        ${widthClass} rounded border
+                        w-full
+                        rounded border
                         ${paddingClass ? paddingClass : "p-2.5"} ${icon ? "pl-10" : ""}
                         text-body
                         ${textClass}

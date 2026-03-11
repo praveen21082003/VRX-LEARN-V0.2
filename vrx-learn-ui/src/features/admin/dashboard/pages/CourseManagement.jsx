@@ -1,71 +1,13 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom';
-
-
-
-import { Icon, Input, Button, DataTable, Avatar, StatusPill, FilterSelect } from '@/components/ui'
-// import BackButton from '@/components/navigation/BackButton'
+import { Button, FilterSelect, Input, DataTable, Avatar, StatusPill, } from '@/components/ui';
 import formatDateTime from '@/utils/formatDateTime';
 
-function UsersManagement() {
-    // const { courseSlug } = useParams();
-
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
+function CourseManagement() {
 
     const [selectedRows, setSelectedRows] = useState([]);
 
-    const handleSelectRow = (id, checked) => {
-        if (checked) {
-            setSelectedRows((prev) => [...prev, id]);
-        } else {
-            setSelectedRows((prev) => prev.filter((rowId) => rowId !== id));
-        }
-    };
-
-    const handleSelectAll = (checked) => {
-        if (checked) {
-            setSelectedRows(data.map((row) => row.id));
-        } else {
-            setSelectedRows([]);
-        }
-    };
-
-
-    const data = [
-        {
-            "id": 21,
-            "name": "Heaven Kane",
-            "email": "heavenkane@gmail.com",
-            "role": "ADMIN",
-            "last_login": "10 min ago",
-            "created_at": "2026-02-14T09:15:00",
-            "status": "ACTIVE",
-        },
-        {
-            "id": 22,
-            "name": "Arul S",
-            "email": "arul@gmail.com",
-            "role": "SUB_ADMIN",
-            "last_login": "1 min ago",
-            "created_at": "2026-02-14T09:15:00",
-            "status": "PENDING",
-        },
-        {
-            "id": 23,
-            "name": "Praveen kumar",
-            "email": "praveen@gmail.com",
-            "role": "TRAINEE",
-            "last_login": "2 hours ago",
-            "created_at": "2026-02-14T09:15:00",
-            "status": "INACTIVE",
-        },
-    ]
-
-
-
-    const usersManagementColumns = [
-        {
+    const coursesManagementColumns = [
+       {
             key: "check_box",
             label: (
                 <div className="flex justify-center">
@@ -90,61 +32,34 @@ function UsersManagement() {
             )
         },
         {
-            key: "profile",
-            label: "Profile",
-            width: "8%",
-            align: "center",
-            render: (row) => (
-                <span className='flex justify-center items-center'>
-                    <Avatar name={row.name} />
-                </span>
-            )
-        },
-        {
-            key: "name",
-            label: "Name",
-            width: "15%",
-            align: "left",
-            render: (row) => (
-                <p className="text-body">{row.name}</p>
-            )
-        },
-        {
-            key: "email",
-            label: "Email",
+            key: "title",
+            label: "Course Title",
             align: "left",
             width: "25%"
         },
         {
-            key: "role",
-            label: "Role",
-            width: "12%",
-            render: (row) => (
-                <StatusPill status={row.role} />
-            )
+            key: "overview",
+            label: "Overview",
+            align: "left",
+            width: "25%"
         },
         {
-            key: "last_login",
-            label: "Last Login",
-            width: "15%"
+            key: "trainers",
+            label: "Trainers",
+            align: "left",
+            width: "25%"
         },
         {
-            key: "date",
+            key: "no_of_trainee",
+            label: "No. of Trainee",
+            align: "left",
+            width: "25%"
+        },
+        {
+            key: "created_at",
             label: "Created At",
-            width: "20%",
-            render: (row) => (
-                <span className="text-body">
-                    {formatDateTime(row.created_at)}
-                </span>
-            )
-        },
-        {
-            key: "status",
-            label: "Status",
-            width: "12%",
-            render: (row) => (
-                <StatusPill status={row.status} />
-            )
+            align: "left",
+            width: "25%"
         },
         {
             key: "actions",
@@ -165,19 +80,14 @@ function UsersManagement() {
 
 
         },
-    ];
-
-
-
+    ]
 
     return (
         <div className='p-5 bg-background text-main'>
-
             <div className="flex items-center justify-between h-5">
-                <h3 className="text-h3 font-semibold">User Management</h3>
+                <h3 className="text-h3 font-semibold">Enrollment Management</h3>
                 {selectedRows.length === 0 &&
-                    < div className="flex items-center gap-3">
-
+                    <div className="flex items-center gap-3">
                         <Button
                             buttonName="Export as CSV"
                             frontIconName="material-symbols:download"
@@ -189,7 +99,7 @@ function UsersManagement() {
                         />
 
                         <Button
-                            buttonName="Add New User"
+                            buttonName="Add New Course"
                             frontIconName="mdi:plus"
                             frontIconWidth="26"
                             frontIconHeght="26"
@@ -200,9 +110,7 @@ function UsersManagement() {
 
                     </div>
                 }
-
             </div>
-
             {
                 selectedRows.length === 0
                     ? (
@@ -219,25 +127,14 @@ function UsersManagement() {
                                 ]}
                             />
                             <FilterSelect
-                                label="Sort by:"
+                                label="Filter by Course:"
                                 options={[
                                     { label: "Newest First", value: "newest" },
                                     { label: "Oldest First", value: "oldest" },
                                     { label: "Name (A - Z)", value: "name_asc" },
                                     { label: "Name (Z - A)", value: "name_desc" },
-                                    { label: "Last Active", value: "last_active" }
                                 ]}
                             />
-                            <FilterSelect
-                                label="Status:"
-                                options={[
-                                    { label: "All", value: "all" },
-                                    { label: "Active", value: "active" },
-                                    { label: "Inactive", value: "inactive" },
-                                    { label: "Pending", value: "pending" }
-                                ]}
-                            />
-
 
                         </div>
                     ) : (
@@ -248,13 +145,6 @@ function UsersManagement() {
                             </div>
                             <div className='flex items-center gap-3  whitespace-nowrap'>
                                 <p className='text-caption'>Bulk Actions:</p>
-                                <FilterSelect
-                                    label="Change Status:"
-                                    options={[
-                                        { label: "Active", value: "active" },
-                                        { label: "Inactive", value: "inactive" },
-                                    ]}
-                                />
                                 <Button
                                     buttonName="Delete"
                                     frontIconName="ic:baseline-delete"
@@ -271,19 +161,18 @@ function UsersManagement() {
             <div>
                 <DataTable
                     selectedRows={selectedRows}
-                    columns={usersManagementColumns}
-                    data={data}
-                    page={page}
-                    setPage={setPage}
-                    pageSize={pageSize}
-                    setPageSize={setPageSize}
-                    total={data.length}
+                    columns={coursesManagementColumns}
+                // data={data}
+                // page={page}
+                // setPage={setPage}
+                // pageSize={pageSize}
+                // setPageSize={setPageSize}
+                // total={data.length}
                 />
             </div >
 
-
-        </div >
+        </div>
     )
 }
 
-export default UsersManagement
+export default CourseManagement

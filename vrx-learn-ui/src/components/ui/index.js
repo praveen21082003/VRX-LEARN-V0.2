@@ -1,4 +1,6 @@
 export { default as Input } from './Input';
+export { default as FilterSelect } from './Input/FilterSelect'
+
 export { default as Button } from './Button';
 export { default as InputWarnMessage } from './Warning';
 // export {default as CourseCard } from './CourseCard';

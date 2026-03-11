@@ -2,7 +2,7 @@ import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
 import TablePagination from "./TablePagination";
 import getPagination from '@/utils/getPagination';
-function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize }) {
+function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize, selectedRows }) {
 
   const totalPages = Math.ceil(total / pageSize);
 
@@ -21,7 +21,7 @@ function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize 
 
       <table className="w-full table-fixed border-b border-default">
         <TableHeader columns={columns} />
-        <TableBody columns={columns} data={paginatedData} />
+        <TableBody selectedRows={selectedRows} columns={columns} data={paginatedData} />
       </table>
 
 

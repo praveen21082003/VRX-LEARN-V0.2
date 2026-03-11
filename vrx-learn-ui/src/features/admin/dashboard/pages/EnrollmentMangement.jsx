@@ -1,14 +1,8 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom';
-
-
-
-import { Icon, Input, Button, DataTable, Avatar, StatusPill, FilterSelect } from '@/components/ui'
-// import BackButton from '@/components/navigation/BackButton'
+import { Button, FilterSelect, Input, DataTable, Avatar, StatusPill, } from '@/components/ui';
 import formatDateTime from '@/utils/formatDateTime';
 
-function UsersManagement() {
-    // const { courseSlug } = useParams();
+function EnrollmentMangement() {
 
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
@@ -38,8 +32,8 @@ function UsersManagement() {
             "name": "Heaven Kane",
             "email": "heavenkane@gmail.com",
             "role": "ADMIN",
-            "last_login": "10 min ago",
-            "created_at": "2026-02-14T09:15:00",
+            "course_name": "A Complete Guide: React - Javascript",
+            "enrolled_at": "2026-02-14T09:15:00",
             "status": "ACTIVE",
         },
         {
@@ -47,8 +41,8 @@ function UsersManagement() {
             "name": "Arul S",
             "email": "arul@gmail.com",
             "role": "SUB_ADMIN",
-            "last_login": "1 min ago",
-            "created_at": "2026-02-14T09:15:00",
+            "course_name": "Advance Full Stack Web Development",
+            "enrolled_at": "2026-02-14T09:15:00",
             "status": "PENDING",
         },
         {
@@ -56,15 +50,14 @@ function UsersManagement() {
             "name": "Praveen kumar",
             "email": "praveen@gmail.com",
             "role": "TRAINEE",
-            "last_login": "2 hours ago",
-            "created_at": "2026-02-14T09:15:00",
+            "course_name": "Advance Full Stack Web Development",
+            "enrolled_at": "2026-02-14T09:15:00",
             "status": "INACTIVE",
         },
     ]
 
+    const enrollmentsManagementColumns = [
 
-
-    const usersManagementColumns = [
         {
             key: "check_box",
             label: (
@@ -100,6 +93,7 @@ function UsersManagement() {
                 </span>
             )
         },
+
         {
             key: "name",
             label: "Name",
@@ -124,17 +118,17 @@ function UsersManagement() {
             )
         },
         {
-            key: "last_login",
-            label: "Last Login",
-            width: "15%"
+            key: "course_name",
+            label: "Course Name",
+            width: "35%",
         },
         {
             key: "date",
-            label: "Created At",
+            label: "Enrollment Date",
             width: "20%",
             render: (row) => (
                 <span className="text-body">
-                    {formatDateTime(row.created_at)}
+                    {formatDateTime(row.enrolled_at)}
                 </span>
             )
         },
@@ -165,16 +159,12 @@ function UsersManagement() {
 
 
         },
-    ];
 
-
-
-
+    ]
     return (
         <div className='p-5 bg-background text-main'>
-
             <div className="flex items-center justify-between h-5">
-                <h3 className="text-h3 font-semibold">User Management</h3>
+                <h3 className="text-h3 font-semibold">Enrollment Management</h3>
                 {selectedRows.length === 0 &&
                     < div className="flex items-center gap-3">
 
@@ -189,7 +179,7 @@ function UsersManagement() {
                         />
 
                         <Button
-                            buttonName="Add New User"
+                            buttonName="Add New Enrollment"
                             frontIconName="mdi:plus"
                             frontIconWidth="26"
                             frontIconHeght="26"
@@ -200,7 +190,6 @@ function UsersManagement() {
 
                     </div>
                 }
-
             </div>
 
             {
@@ -219,13 +208,12 @@ function UsersManagement() {
                                 ]}
                             />
                             <FilterSelect
-                                label="Sort by:"
+                                label="Filter by Course:"
                                 options={[
                                     { label: "Newest First", value: "newest" },
                                     { label: "Oldest First", value: "oldest" },
                                     { label: "Name (A - Z)", value: "name_asc" },
                                     { label: "Name (Z - A)", value: "name_desc" },
-                                    { label: "Last Active", value: "last_active" }
                                 ]}
                             />
                             <FilterSelect
@@ -233,7 +221,7 @@ function UsersManagement() {
                                 options={[
                                     { label: "All", value: "all" },
                                     { label: "Active", value: "active" },
-                                    { label: "Inactive", value: "inactive" },
+                                    { label: "Dropout", value: "dropout" },
                                     { label: "Pending", value: "pending" }
                                 ]}
                             />
@@ -252,7 +240,7 @@ function UsersManagement() {
                                     label="Change Status:"
                                     options={[
                                         { label: "Active", value: "active" },
-                                        { label: "Inactive", value: "inactive" },
+                                        { label: "Dropout", value: "dropout" },
                                     ]}
                                 />
                                 <Button
@@ -271,7 +259,7 @@ function UsersManagement() {
             <div>
                 <DataTable
                     selectedRows={selectedRows}
-                    columns={usersManagementColumns}
+                    columns={enrollmentsManagementColumns}
                     data={data}
                     page={page}
                     setPage={setPage}
@@ -280,10 +268,8 @@ function UsersManagement() {
                     total={data.length}
                 />
             </div >
-
-
-        </div >
+        </div>
     )
 }
 
-export default UsersManagement
+export default EnrollmentMangement

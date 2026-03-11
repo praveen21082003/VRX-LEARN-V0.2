@@ -9,7 +9,9 @@ import Layout from "./features/auth/layout/Layout";
 
 import DashboardRouter from "@/components/navigation/routers/DashboardRouter";
 import CourseOverView from "@/components/navigation/routers/CourseOverView";
+
 import UsersManagement from "@/features/admin/dashboard/pages/UsersManagement";
+import EnrollmentMangement from "@/features/admin/dashboard/pages/EnrollmentMangement";
 
 import CoursesPage from "@/features/courses/pages/CoursesPage";
 import LessonsPage from "@/features/courses/pages/LessonsPage";
@@ -71,7 +73,7 @@ function App() {
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<DashboardRouter />} />
               <Route path="/users" element={< UsersManagement/>} />
-              <Route path="/enrollments" element={<p>enrollments</p>} />
+              <Route path="/enrollments" element={<EnrollmentMangement/>} />
               <Route path="/courses" element={<p>courses</p>} />
             </Route>
 
