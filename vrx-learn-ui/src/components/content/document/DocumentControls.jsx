@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Button, Input } from "@/components/ui"
 import PDFViewer from './PDFViewer';
-import { useKeyboardShortcuts } from '../../../hooks/useKeyboardShortcuts';
+
 function DocumentControls({
     title,
     fileUrl,
@@ -33,49 +33,20 @@ function DocumentControls({
         }
     };
 
-//Praveen Bro
 
-    // useEffect(() => {
-    //     const handleKey = (e) => {
-    //         if (e.key === "ArrowRight") {
-    //             setCurrentPage((p) => Math.min(p + 1, totalPages));
-    //         }
-    //         if (e.key === "ArrowLeft") {
-    //             setCurrentPage((p) => Math.max(p - 1, 1));
-    //         }
-    //     };
+    useEffect(() => {
+        const handleKey = (e) => {
+            if (e.key === "ArrowRight") {
+                setCurrentPage((p) => Math.min(p + 1, totalPages));
+            }
+            if (e.key === "ArrowLeft") {
+                setCurrentPage((p) => Math.max(p - 1, 1));
+            }
+        };
 
-    //     window.addEventListener("keydown", handleKey);
-    //     return () => window.removeEventListener("keydown", handleKey);
-    // }, [totalPages]);
-
-    // At the top of DocumentControls
-
-//Up and Down Updated
-
-const handleScroll = (direction) => {
-    // We look for the specific child div that has the scrollbar
-    const scrollContainer = containerRef.current?.querySelector('.overflow-y-auto');
-    
-    if (!scrollContainer) return;
-
-    const distance = direction === 'up' ? -160 : 160;
-    scrollContainer.scrollBy({
-        top: distance,
-        behavior: 'smooth' 
-    });
-};
-
-// Updated
-useKeyboardShortcuts({
-    'f': toggleFullScreen,
-    'arrowright': () => setCurrentPage((p) => Math.min(p + 1, totalPages)),
-    'arrowleft': () => setCurrentPage((p) => Math.max(p - 1, 1)),
-   'arrowup': () => handleScroll('up'),
-    'arrowdown': () => handleScroll('down'),
-    '=': () => setScale((s) => Math.min(s + 0.2, 2)), 
-    '-': () => setScale((s) => Math.max(s - 0.2, 0.6)), 
-}, [totalPages, isFullscreen, scale]); 
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+    }, [totalPages]);
 
 
     useEffect(() => {
@@ -104,15 +75,11 @@ useKeyboardShortcuts({
 
 
     return (
-        // <div ref={containerRef} key={key} className={`relative group flex flex-col h-[80vh] w-full max-w-5xl overflow-y-auto select-none transition-all duration-300 
-        //     ${isFullscreen ? "bg-black" : "bg-[#525659]"}
-        //     `}>
+        <div ref={containerRef} key={key} className={`relative group flex flex-col h-[80vh] w-full max-w-5xl overflow-hidden select-none transition-all duration-300 
+            ${isFullscreen ? "bg-black" : "bg-[#525659]"}
+            `}>
+            <header className="flex-shrink-0 flex items-center justify-between px-4 h-12 bg-[#323639] text-white shadow-md shrink-0 z-20">
 
-        //Updated
-        <div ref={containerRef} className={`relative flex flex-col h-[80vh] w-full overflow-hidden rounded-md ${isFullscreen ? "bg-black" : "bg-[#525659]"}`}>
-            {/* <header className="flex-shrink-0 flex items-center justify-between px-4 h-12 bg-[#323639] text-white shadow-md shrink-0 z-20"> */}
-            {/* //Updated */}
-            <header className="flex-shrink-0 sticky top-0 z-30 flex items-center justify-between px-4 h-12 bg-[#323639] text-white shadow-md">  
 
                 <h2 className="text-sm font-medium truncate max-w-[20%]">
                     {title}
@@ -222,7 +189,6 @@ useKeyboardShortcuts({
 
             </header>
             {/* <div className="flex-1 overflow-hidden"> */}
-            <div className="flex-1 overflow-y-auto w-full flex flex-col items-center custom-scrollbar">
 
                 <PDFViewer
                     url={fileUrl}
@@ -233,8 +199,6 @@ useKeyboardShortcuts({
                     setPdfDoc={setPdfDoc}
                 />
             {/* </div> */}
-            <div className="h-10 w-full flex-shrink-0" />
-            </div>
             <div
 
                 onMouseEnter={() => {
@@ -245,12 +209,12 @@ useKeyboardShortcuts({
                     isHoveringControlsRef.current = false;
                 }}
 
-                className={`absolute bottom-6 left-1/2 -translate-x-1/2 
-                bg-black/60 backdrop-blur-md text-white flex items-center gap-4 
-                px-4 py-1.5 rounded-md shadow-2xl z-30 
-                transition-opacity duration-300 border border-white/10
-                ${showControls ? "opacity-100" : "opacity-0 pointer-events-none"}
-            `}
+                className={`absolute left-1/2 -translate-x-1/2 bottom-6 
+                    bg-black/70 text-white flex items-center gap-4 
+                    px-3 py-1 rounded-md shadow-xl 
+                    transition-opacity duration-300 z-50
+                    ${showControls ? "opacity-100" : "opacity-0 pointer-events-none"}
+                `}
             >
                 <Button
                     frontIconName="mingcute:left-fill"

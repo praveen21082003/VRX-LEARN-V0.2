@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Icon, Button } from '@/components/ui'
 import { logo } from '@/assets';
-import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 function VideoControls({ videoRef }) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -48,43 +47,17 @@ function VideoControls({ videoRef }) {
     }
   }
 
-  //Praveen Bro
+  const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
+    videoRef.current.volume = newVolume;
+    setVolume(newVolume);
 
-  // const handleVolumeChange = (e) => {
-  //   const newVolume = parseFloat(e.target.value);
-  //   videoRef.current.volume = newVolume;
-  //   setVolume(newVolume);
-
-  //   if (newVolume === 0) {
-  //     setIsMuted(true);
-  //   } else {
-  //     setIsMuted(false);
-  //   }
-  // };
-
-  //Updated
-
- const updateVolume = (newVolume) => {
-  const video = videoRef.current;
-  if (!video) return;
-
-  const clampedVolume = Math.min(1, Math.max(0, newVolume));
-
-  video.volume = clampedVolume;
-  setVolume(clampedVolume);
-  setIsMuted(clampedVolume === 0);
-
-  if (clampedVolume > 0) {
-    video.muted = false;
-  }
-};
-
-//Updated
-
-const handleVolumeChange = (e) => {
-const val = parseFloat(e.target.value);
-updateVolume(val);
-};
+    if (newVolume === 0) {
+      setIsMuted(true);
+    } else {
+      setIsMuted(false);
+    }
+  };
 
   const handleProgressBarChange = (e) => {
     const newTime = Number(e.target.value);
@@ -92,22 +65,12 @@ updateVolume(val);
     setCurrentTime(newTime);
   }
 
-//Praveen Bro
-
-  // const toggleMute = () => {
-  //   const video = videoRef.current;
-  //   video.muted = !video.muted;
-  //   setIsMuted(video.muted);
-  // }
-
-
-  // Updated
 
   const toggleMute = () => {
-  const targetVolume = isMuted ? (volume > 0 ? volume : 0.5) : 0;
-  updateVolume(targetVolume);
-};
-
+    const video = videoRef.current;
+    video.muted = !video.muted;
+    setIsMuted(video.muted);
+  }
 
   const toggleFullscreen = () => {
     const videoContainer = videoRef.current?.parentElement;
@@ -119,16 +82,6 @@ updateVolume(val);
       document.exitFullscreen();
     }
   };
-
-      useKeyboardShortcuts({
-      'f': toggleFullscreen,
-      ' ': togglePlay,
-      'arrowright': () => { videoRef.current.currentTime += 10 },
-      'arrowleft': () => { videoRef.current.currentTime -= 10 },
-      'arrowup': () => updateVolume(volume + 0.1),
-      'arrowdown': () => updateVolume(volume - 0.1),
-      'm': toggleMute
-  }, [volume, isPlaying, isFullscreen , isMuted]);
 
 
   useEffect(() => {
@@ -283,11 +236,11 @@ updateVolume(val);
                   min="0"
                   max="1"
                   step="0.01"
-                  value={isMuted ? 0 : volume}
+                  value={volume}
                   onChange={handleVolumeChange}
                   className="w-21 h-1 appearance-none rounded cursor-pointer accent-white"
                   style={{
-                    background: `linear-gradient(to right, white ${ (isMuted ? 0 : volume) * 100}%, #4b5563 ${ (isMuted ? 0 : volume) * 100}%)`
+                    background: `linear-gradient(to right, white ${volume * 100}%, #4b5563 ${volume * 100}%)`
                   }}
                 />
               </div>
