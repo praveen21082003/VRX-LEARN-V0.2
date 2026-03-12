@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import VideoControls from './VideoControls'
 import { useContentProtection } from '@/hooks/useContentProtection';
 function VideoPlayer({ url,id }) {
-    useContentProtection(true)
+    useContentProtection(true);
     const videoRef = useRef(null);
 
 
