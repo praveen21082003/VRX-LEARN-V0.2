@@ -9,11 +9,13 @@ import Layout from "./features/auth/layout/Layout";
 
 import DashboardRouter from "@/components/navigation/routers/DashboardRouter";
 import CourseOverView from "@/components/navigation/routers/CourseOverView";
+import CoursesRouter from "@/components/navigation/routers/CoursesRouter";
 
 import UsersManagement from "@/features/admin/dashboard/pages/UsersManagement";
 import EnrollmentMangement from "@/features/admin/dashboard/pages/EnrollmentMangement";
 
-import CoursesPage from "@/features/courses/pages/CoursesPage";
+
+
 import LessonsPage from "@/features/courses/pages/LessonsPage";
 import AssignmentPage from "@/features/courses/pages/AssignmentPage";
 import LabPage from "@/features/courses/pages/LabPage";
@@ -53,7 +55,7 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={["TRAINEE"]} />}>
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<DashboardRouter />} />
-              <Route path="/courses" element={<CoursesPage />} />
+              <Route path="/courses" element={<CoursesRouter />} />
             </Route>
 
             <Route path="/course/:courseSlug" element={<LearningLayout />}>
@@ -74,7 +76,7 @@ function App() {
               <Route path="/dashboard" element={<DashboardRouter />} />
               <Route path="/users" element={< UsersManagement/>} />
               <Route path="/enrollments" element={<EnrollmentMangement/>} />
-              <Route path="/courses" element={<p>courses</p>} />
+              <Route path="/courses" element={<CoursesRouter />} />
             </Route>
 
             <Route path="/course/:courseSlug" element={<AdminLayout />}>

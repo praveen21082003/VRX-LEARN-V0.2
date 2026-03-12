@@ -42,7 +42,7 @@ export const roleNavigation = {
                 path:"/enrollments",
             },
             {
-                name:"Manage Course",
+                name:"Courses",
                 icon:"si:book-fill",
                 path:"/courses"
             }
