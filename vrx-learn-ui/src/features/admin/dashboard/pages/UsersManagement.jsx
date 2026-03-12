@@ -1,19 +1,19 @@
 import React, { useState } from 'react'
+import { useParams } from 'react-router-dom';
 
-import { Icon, Input, Button, DataTable, Avatar, StatusPill, Select, Modal } from '@/components/ui'
 
+
+import { Icon, Input, Button, DataTable, Avatar, StatusPill, FilterSelect } from '@/components/ui'
+// import BackButton from '@/components/navigation/BackButton'
 import formatDateTime from '@/utils/formatDateTime';
-import CreateUser from '../../dialogs/CreateUser';
 
 function UsersManagement() {
+    // const { courseSlug } = useParams();
 
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
 
     const [selectedRows, setSelectedRows] = useState([]);
-
-    const [open, setOpen] = useState(false);
-
 
     const handleSelectRow = (id, checked) => {
         if (checked) {
@@ -196,7 +196,6 @@ function UsersManagement() {
                             className="px-3 py-1.5 text-sm rounded-md"
                             bgClass="bg-primary"
                             textClass="text-white"
-                            onClick={() => setOpen(true)}
                         />
 
                     </div>
@@ -209,7 +208,7 @@ function UsersManagement() {
                     ? (
                         <div className="flex items-center py-5 gap-3  whitespace-nowrap">
                             <Input icon="ic:twotone-search" border="border-default" paddingClass="py-2" widthClass="w-96" placeholder="Search by name or email..." />
-                            <Select
+                            <FilterSelect
                                 label="Users:"
                                 options={[
                                     { label: "All Users", value: "all" },
@@ -219,7 +218,7 @@ function UsersManagement() {
                                     { label: "Trainee", value: "trainee" }
                                 ]}
                             />
-                            <Select
+                            <FilterSelect
                                 label="Sort by:"
                                 options={[
                                     { label: "Newest First", value: "newest" },
@@ -229,7 +228,7 @@ function UsersManagement() {
                                     { label: "Last Active", value: "last_active" }
                                 ]}
                             />
-                            <Select
+                            <FilterSelect
                                 label="Status:"
                                 options={[
                                     { label: "All", value: "all" },
@@ -249,7 +248,7 @@ function UsersManagement() {
                             </div>
                             <div className='flex items-center gap-3  whitespace-nowrap'>
                                 <p className='text-caption'>Bulk Actions:</p>
-                                <Select
+                                <FilterSelect
                                     label="Change Status:"
                                     options={[
                                         { label: "Active", value: "active" },
@@ -281,16 +280,6 @@ function UsersManagement() {
                     total={data.length}
                 />
             </div >
-
-            {open && (
-                <Modal
-                    isOpen={open}
-                    onClose={() => setOpen(false)}
-                    title="Create New User"
-                >
-                    <CreateUser/>
-                </Modal>
-            )}
 
 
         </div >

@@ -1,5 +1,5 @@
 export { default as Input } from './Input';
-export { default as Select } from './Input/Select'
+export { default as FilterSelect } from './Input/FilterSelect'
 
 export { default as Button } from './Button';
 export { default as InputWarnMessage } from './Warning';
@@ -21,4 +21,3 @@ export { default as DataTable } from './Table'
 export { default as Avatar } from './Table/Avatar'
 export { default as StatusPill } from './Table/StatusPill'
 export { default as StatCard } from './Cards/StatCard'
-export { default as Modal } from './Modal/Modal'

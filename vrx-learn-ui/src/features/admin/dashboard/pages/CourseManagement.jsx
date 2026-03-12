@@ -1,79 +1,13 @@
 import React, { useState } from 'react'
-import { Button, Select, Input, DataTable, Avatar, StatusPill, } from '@/components/ui';
+import { Button, FilterSelect, Input, DataTable, Avatar, StatusPill, } from '@/components/ui';
 import formatDateTime from '@/utils/formatDateTime';
 
 function CourseManagement() {
 
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
-
     const [selectedRows, setSelectedRows] = useState([]);
 
-
-    const handleSelectRow = (id, checked) => {
-        if (checked) {
-            setSelectedRows((prev) => [...prev, id]);
-        } else {
-            setSelectedRows((prev) => prev.filter((rowId) => rowId !== id));
-        }
-    };
-
-    const handleSelectAll = (checked) => {
-        if (checked) {
-            setSelectedRows(data.map((row) => row.id));
-        } else {
-            setSelectedRows([]);
-        }
-    };
-
-
-
-    const data = [
-        {
-            "id": 1,
-            "title": "Advanced Web Development",
-            "description": "The z/OS System Programming course provides an in-depth understanding of IBM mainframe operating systems.",
-            "trainers": ["Jhon Doe", "Virat Kohli"],
-            "students": 130,
-            "date": "2026-01-02"
-        },
-        {
-            "id": 2,
-            "title": "Advanced UI/UX Design: Prototyping in Figma",
-            "description": "Master the principles of user-centric design, from initial wireframing to high-fidelity prototyping.",
-            "trainers": ["Jhon Doe", "Virat Kohli"],
-            "students": 78,
-            "date": "2026-01-02"
-        },
-        {
-            "id": 3,
-            "title": "Modern React: Component Architecture and State Management",
-            "description": "Build dynamic, scalable web applications from the ground up using advanced React concepts.",
-            "trainers": ["Jhon Doe", "Virat Kohli"],
-            "students": 12,
-            "date": "2026-01-02"
-        },
-        {
-            "id": 4,
-            "title": "Modern React: Component Architecture and State Management",
-            "description": "Build dynamic, scalable web applications from the ground up. Explore advanced React patterns and state management.",
-            "trainers": ["Jhon Doe", "Virat Kohli"],
-            "students": 56,
-            "date": "2026-01-02"
-        },
-        {
-            "id": 5,
-            "title": "Applied Large Language Models (LLMs) in Python",
-            "description": "Dive into practical applications of open-source and commercial LLMs. Learn how to leverage models like GPT in Python.",
-            "trainers": ["Jhon Doe", "Virat Kohli"],
-            "students": 80,
-            "date": "2026-01-02"
-        }
-    ]
-
-
     const coursesManagementColumns = [
-        {
+       {
             key: "check_box",
             label: (
                 <div className="flex justify-center">
@@ -101,41 +35,36 @@ function CourseManagement() {
             key: "title",
             label: "Course Title",
             align: "left",
-            width: "20%"
+            width: "25%"
         },
         {
-            key: "description",
+            key: "overview",
             label: "Overview",
             align: "left",
-            width: "30%"
+            width: "25%"
         },
         {
             key: "trainers",
             label: "Trainers",
             align: "left",
-            width: "15%"
+            width: "25%"
         },
         {
-            key: "students",
-            label: "No.of Trainee",
+            key: "no_of_trainee",
+            label: "No. of Trainee",
             align: "left",
-            width: "10%"
+            width: "25%"
         },
         {
             key: "created_at",
             label: "Created At",
             align: "left",
-            width: "10%",
-            render: (row) => (
-                <span className="text-body">
-                    {formatDateTime(row.date)}
-                </span>
-            )
+            width: "25%"
         },
         {
             key: "actions",
             label: "Actions",
-            width: "10%",
+            width: "12%",
             render: (row) => {
                 const actions = ["mingcute:pencil-line", "ic:baseline-delete"]
 
@@ -187,7 +116,17 @@ function CourseManagement() {
                     ? (
                         <div className="flex items-center py-5 gap-3  whitespace-nowrap">
                             <Input icon="ic:twotone-search" border="border-default" paddingClass="py-2" widthClass="w-96" placeholder="Search by name or email..." />
-                            <Select
+                            <FilterSelect
+                                label="Users:"
+                                options={[
+                                    { label: "All Users", value: "all" },
+                                    { label: "Admin", value: "admin" },
+                                    { label: "Sub Admin", value: "sub_admin" },
+                                    { label: "Trainer", value: "trainer" },
+                                    { label: "Trainee", value: "trainee" }
+                                ]}
+                            />
+                            <FilterSelect
                                 label="Filter by Course:"
                                 options={[
                                     { label: "Newest First", value: "newest" },
@@ -223,12 +162,12 @@ function CourseManagement() {
                 <DataTable
                     selectedRows={selectedRows}
                     columns={coursesManagementColumns}
-                    data={data}
-                    page={page}
-                    setPage={setPage}
-                    pageSize={pageSize}
-                    setPageSize={setPageSize}
-                    total={data.length}
+                // data={data}
+                // page={page}
+                // setPage={setPage}
+                // pageSize={pageSize}
+                // setPageSize={setPageSize}
+                // total={data.length}
                 />
             </div >
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Select, Input, DataTable, Avatar, StatusPill, } from '@/components/ui';
+import { Button, FilterSelect, Input, DataTable, Avatar, StatusPill, } from '@/components/ui';
 import formatDateTime from '@/utils/formatDateTime';
 
 function EnrollmentMangement() {
@@ -197,7 +197,7 @@ function EnrollmentMangement() {
                     ? (
                         <div className="flex items-center py-5 gap-3  whitespace-nowrap">
                             <Input icon="ic:twotone-search" border="border-default" paddingClass="py-2" widthClass="w-96" placeholder="Search by name or email..." />
-                            <Select
+                            <FilterSelect
                                 label="Users:"
                                 options={[
                                     { label: "All Users", value: "all" },
@@ -207,7 +207,7 @@ function EnrollmentMangement() {
                                     { label: "Trainee", value: "trainee" }
                                 ]}
                             />
-                            <Select
+                            <FilterSelect
                                 label="Filter by Course:"
                                 options={[
                                     { label: "Newest First", value: "newest" },
@@ -216,7 +216,7 @@ function EnrollmentMangement() {
                                     { label: "Name (Z - A)", value: "name_desc" },
                                 ]}
                             />
-                            <Select
+                            <FilterSelect
                                 label="Status:"
                                 options={[
                                     { label: "All", value: "all" },
@@ -236,7 +236,7 @@ function EnrollmentMangement() {
                             </div>
                             <div className='flex items-center gap-3  whitespace-nowrap'>
                                 <p className='text-caption'>Bulk Actions:</p>
-                                <Select
+                                <FilterSelect
                                     label="Change Status:"
                                     options={[
                                         { label: "Active", value: "active" },

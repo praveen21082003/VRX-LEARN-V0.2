@@ -1,25 +1,16 @@
 import { useState } from "react";
 import { Icon } from "@/components/ui";
 
-export default function FilterSelect({
-  inputLabel,
-  label,
-  options,
-  borderClass = "border-default"
-}) {
+export default function FilterSelect({ label, options }) {
   const [selected, setSelected] = useState(options[0]);
   const [open, setOpen] = useState(false);
 
   return (
     <div className="relative">
-      {inputLabel &&
-        <label className="block text-h5 mb-2 text-main dark:text-white">
-          {inputLabel}
-        </label>
-      }
 
+      {/* top select UI (unchanged) */}
       <div
-        className={`flex items-center ${borderClass ? "border" : "border-2"} ${borderClass} rounded px-3 py-2 gap-2 min-w-40 cursor-pointer`}
+        className="flex items-center border-2 border-default rounded px-3 py-2 gap-2 min-w-40 cursor-pointer"
         onClick={() => setOpen(!open)}
       >
         <span className="text-body text-muted whitespace-nowrap">
@@ -34,7 +25,7 @@ export default function FilterSelect({
         />
       </div>
 
-
+      {/* custom dropdown */}
       {open && (
         <div className="absolute mt-1 w-full bg-background border border-default shadow-md z-20">
           {options.map((opt) => (
