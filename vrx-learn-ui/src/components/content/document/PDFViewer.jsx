@@ -1,6 +1,7 @@
 import React, { use, useEffect, useLayoutEffect, useRef } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+import { useContentProtection } from "@/hooks/useContentProtection";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
@@ -12,6 +13,7 @@ function PDFViewer({
     pdfDoc,
     setPdfDoc,
 }) {
+    useContentProtection(true);
     const canvasRef = useRef(null);
     const renderTaskRef = useRef(null);
     const scrollRef = useRef(null);
@@ -110,8 +112,8 @@ function PDFViewer({
     return (
         <div
             ref={scrollRef}
-            className="relative flex w-full h-full overflow-auto flex-col items-center"
-            onContextMenu={(e) => e.preventDefault()}
+           className="relative flex w-full h-full flex-col items-center" // Removed overflow-auto
+        onContextMenu={(e) => e.preventDefault()}
         >
             <canvas ref={canvasRef} />
 
