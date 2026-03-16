@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Icon } from "@/components/ui";
+import { useClickOutside } from "@/hooks/useClickOutside";
 
 export default function FilterSelect({
   inputLabel,
@@ -8,10 +9,12 @@ export default function FilterSelect({
   borderClass = "border-default"
 }) {
   const [selected, setSelected] = useState(options[0]);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
+  const [open, ref, setOpen, toggle] = useClickOutside(false);
+
 
   return (
-    <div className="relative">
+    <div className="relative"  ref={ref}>
       {inputLabel &&
         <label className="block text-h5 mb-2 text-main dark:text-white">
           {inputLabel}
@@ -20,7 +23,7 @@ export default function FilterSelect({
 
       <div
         className={`flex items-center ${borderClass ? "border" : "border-2"} ${borderClass} rounded px-3 py-2 gap-2 min-w-40 cursor-pointer`}
-        onClick={() => setOpen(!open)}
+        onClick={toggle}
       >
         <span className="text-body text-muted whitespace-nowrap">
           {label} {selected.label}
