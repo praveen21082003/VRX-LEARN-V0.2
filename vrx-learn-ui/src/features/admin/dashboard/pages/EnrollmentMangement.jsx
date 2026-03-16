@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
 import { Button, Select, Input, DataTable, Avatar, StatusPill, } from '@/components/ui';
 import formatDateTime from '@/utils/formatDateTime';
+import CreateUser from '../../dialogs/CreateUser';
+import Modal from '../../../../components/ui/Modal/Modal';
+import NewEnrollment from '../../dialogs/NewEnrollment';
 
 function EnrollmentMangement() {
 
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
+    const [open, setOpen] = useState(false);
+    const [editingUser, setEditingUser] = useState(null); // null means "Add Mode"
 
     const [selectedRows, setSelectedRows] = useState([]);
 
@@ -25,6 +30,10 @@ function EnrollmentMangement() {
         }
     };
 
+    const handleOpenEdit = (user) => {
+        setEditingUser(user);
+        setOpen(true);
+    };
 
     const data = [
         {
@@ -55,6 +64,12 @@ function EnrollmentMangement() {
             "status": "INACTIVE",
         },
     ]
+
+    // Derive unique Courses list from data
+  const allCourses = [...new Set(data.flatMap((course) => course.course_name))];
+
+    const allNames = [...new Set(data.flatMap((course) => course.name))];
+    const allStatus = [...new Set(data.flatMap((course) => course.status))];
 
     const enrollmentsManagementColumns = [
 
@@ -144,17 +159,35 @@ function EnrollmentMangement() {
             key: "actions",
             label: "Actions",
             width: "12%",
-            render: (row) => {
-                const actions = ["mingcute:pencil-line", "ic:baseline-delete"]
+            // render: (row) => {
+            //     const actions = ["mingcute:pencil-line", "ic:baseline-delete"]
 
-                return (
-                    <div className="flex items-center justify-center gap-3">
+            //     return (
+            //         <div className="flex items-center justify-center gap-3">
+            //             {actions.map((icon, index) => (
+            //                 <Button key={index} frontIconName={icon} frontIconHeight="18" frontIconWidth="18" bgClass="" textClass="" />
+            //                 // onClick={() => { setActiveTab("view_submission"); setActiveAssignmentId(row.id) }}
+            //             ))}
+            //         </div>
+            //     )
+            // }
+             render: (row) => {
+                        const actions = ["mingcute:pencil-line", "ic:baseline-delete"];
+                        return (
+                        <div className="flex items-center justify-center gap-3">
                         {actions.map((icon, index) => (
-                            <Button key={index} frontIconName={icon} frontIconHeight="18" frontIconWidth="18" bgClass="" textClass="" />
-                            // onClick={() => { setActiveTab("view_submission"); setActiveAssignmentId(row.id) }}
+                            <Button 
+                                key={index} 
+                                frontIconName={icon} 
+                                frontIconHeight="18" frontIconWidth="18" bgClass="" textClass=""
+                                onClick={() => {
+                                    if (icon === "mingcute:pencil-line") handleOpenEdit(row);
+                                }}
+                               
+                            />
                         ))}
                     </div>
-                )
+                );
             }
 
 
@@ -186,6 +219,9 @@ function EnrollmentMangement() {
                             className="px-3 py-1.5 text-sm rounded-md"
                             bgClass="bg-primary"
                             textClass="text-white"
+                            onClick={() =>{ setOpen(true)
+                            setEditingUser(null); // 1. Clear any previous edit data
+                            setOpen(true);}}
                         />
 
                     </div>
@@ -268,6 +304,22 @@ function EnrollmentMangement() {
                     total={data.length}
                 />
             </div >
+             {open && (
+    <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title={editingUser ? "Edit New Enrollment" : "Create New Enrollment"}
+    >
+        <NewEnrollment
+            isEdit={!!editingUser} 
+            userData={editingUser} 
+            onClose={() => setOpen(false)} 
+            courses = {allCourses}
+            Names = {allNames}
+            Status = {allStatus}
+        />
+    </Modal>
+)}
         </div>
     )
 }
