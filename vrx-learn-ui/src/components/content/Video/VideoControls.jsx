@@ -1,395 +1,248 @@
-import React, { useState, useEffect } from 'react'
-import { Icon, Button } from '@/components/ui'
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Icon, Button } from '@/components/ui';
 import { logo } from '@/assets';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
-function VideoControls({ videoRef }) {
+const SPEED_OPTIONS = [0.5, 0.75, 1, 1.5, 2];
+
+const VideoControls = ({ videoRef }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [speedIcon, setSpeedIcon] = useState("mdi:speedometer-medium");
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [buffered, setBuffered] = useState(0);
 
-
+  // --- Utilities ---
   const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    if (isNaN(time)) return "0:00";
+    const mins = Math.floor(time / 60);
+    const secs = Math.floor(time % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // --- Core Handlers ---
+  const updateVolume = useCallback((newVolume) => {
+    const video = videoRef.current;
+    if (!video) return;
+    const clampedVolume = Math.min(1, Math.max(0, newVolume));
+    video.volume = clampedVolume;
+    setVolume(clampedVolume);
+    setIsMuted(clampedVolume === 0);
+    video.muted = clampedVolume === 0;
+  }, [videoRef]);
 
-  useEffect(() => {
-    if (speed === 1) {
-      setSpeedIcon("mdi:speedometer-medium")
-    }
-    if (speed < 1) {
-      setSpeedIcon("mdi:speedometer-slow")
-    }
-    if (speed > 1) {
-      setSpeedIcon("mdi:speedometer")
-    }
-  }, [speed]);
+  const togglePlay = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.paused ? video.play() : video.pause();
+  }, [videoRef]);
 
+  const toggleMute = useCallback(() => {
+    const targetVolume = isMuted ? (volume > 0 ? volume : 0.5) : 0;
+    updateVolume(targetVolume);
+  }, [isMuted, volume, updateVolume]);
 
-
-  const togglePlay = () => {
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    }
-    else {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  }
-
-  //Praveen Bro
-
-  // const handleVolumeChange = (e) => {
-  //   const newVolume = parseFloat(e.target.value);
-  //   videoRef.current.volume = newVolume;
-  //   setVolume(newVolume);
-
-  //   if (newVolume === 0) {
-  //     setIsMuted(true);
-  //   } else {
-  //     setIsMuted(false);
-  //   }
-  // };
-
-  //Updated
-
- const updateVolume = (newVolume) => {
-  const video = videoRef.current;
-  if (!video) return;
-
-  const clampedVolume = Math.min(1, Math.max(0, newVolume));
-
-  video.volume = clampedVolume;
-  setVolume(clampedVolume);
-  setIsMuted(clampedVolume === 0);
-
-  if (clampedVolume > 0) {
-    video.muted = false;
-  }
-};
-
-//Updated
-
-const handleVolumeChange = (e) => {
-const val = parseFloat(e.target.value);
-updateVolume(val);
-};
-
-  const handleProgressBarChange = (e) => {
-    const newTime = Number(e.target.value);
-    videoRef.current.currentTime = newTime;
-    setCurrentTime(newTime);
-  }
-
-//Praveen Bro
-
-  // const toggleMute = () => {
-  //   const video = videoRef.current;
-  //   video.muted = !video.muted;
-  //   setIsMuted(video.muted);
-  // }
-
-
-  // Updated
-
-  const toggleMute = () => {
-  const targetVolume = isMuted ? (volume > 0 ? volume : 0.5) : 0;
-  updateVolume(targetVolume);
-};
-
-
-  const toggleFullscreen = () => {
-    const videoContainer = videoRef.current?.parentElement;
-    if (!videoContainer) return;
-
+  const toggleFullscreen = useCallback(() => {
+    const container = videoRef.current?.parentElement;
+    if (!container) return;
     if (!document.fullscreenElement) {
-      videoContainer.requestFullscreen();
+      container.requestFullscreen().catch(console.error);
     } else {
       document.exitFullscreen();
     }
+  }, [videoRef]);
+
+  const handleSeek = (e) => {
+    const time = Number(e.target.value);
+    videoRef.current.currentTime = time;
+    setCurrentTime(time);
   };
 
-      useKeyboardShortcuts({
-      'f': toggleFullscreen,
-      ' ': togglePlay,
-      'arrowright': () => { videoRef.current.currentTime += 10 },
-      'arrowleft': () => { videoRef.current.currentTime -= 10 },
-      'arrowup': () => updateVolume(volume + 0.1),
-      'arrowdown': () => updateVolume(volume - 0.1),
-      'm': toggleMute
-  }, [volume, isPlaying, isFullscreen , isMuted]);
+  // --- Keyboard Shortcuts ---
+  useKeyboardShortcuts({
+    'f': toggleFullscreen,
+    ' ': togglePlay,
+    'k': togglePlay,
+    'm': toggleMute,
+    'arrowright': () => { videoRef.current.currentTime += 5 },
+    'arrowleft': () => { videoRef.current.currentTime -= 5 },
+    'arrowup': () => updateVolume(volume + 0.1),
+    'arrowdown': () => updateVolume(volume - 0.1),
+  }, [volume, isMuted, togglePlay, toggleFullscreen, toggleMute]);
 
+  // --- Dynamic Icons ---
+  const speedIcon = useMemo(() => {
+    if (speed < 1) return "mdi:speedometer-slow";
+    if (speed > 1) return "mdi:speedometer";
+    return "mdi:speedometer-medium";
+  }, [speed]);
 
+  // --- Video Event Listeners ---
   useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
+    const video = videoRef.current;
+    if (!video) return;
 
-    const onPlay = () => setIsPlaying(true)
-    const onPause = () => setIsPlaying(false)
-
-    const handleClickOutside = (e) => {
-      if (!e.target.closest(".speed-dropdown")) {
-        setIsOpen(false);
-      }
-    };
-
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    }
-
-    const handleLoadMetadata = () => {
-      setDuration(video.duration);
-    }
-
-    const handleTimeUpdate = () => {
+    const handleSync = () => {
+      setIsPlaying(!video.paused);
       setCurrentTime(video.currentTime);
+      setDuration(video.duration || 0);
+      setVolume(video.volume);
+      setIsMuted(video.muted);
     };
 
     const handleProgress = () => {
-      const video = videoRef.current
-
-      if (!video || video.buffered.length === 0) return;
-
-      const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-      setBuffered(bufferedEnd);
-    }
-
-
-    const handleVisibilityChange = () => {
-      if (document.hidden && !video.paused){
-        video.pause();
-        setIsPlaying(false);
-      }
-    }
-
-    const handleWindowBlur = () => {
-      if (!video.paused) {
-        video.pause();
-        setIsPlaying(false);
+      if (video.buffered.length > 0) {
+        setBuffered(video.buffered.end(video.buffered.length - 1));
       }
     };
 
-    video.addEventListener("play", onPlay)
-    video.addEventListener("pause", onPause)
-    video.addEventListener("loadedmetadata", handleLoadMetadata)
-    video.addEventListener("timeupdate", handleTimeUpdate)
-    video.addEventListener("progress", handleProgress)
-    document.addEventListener("click", handleClickOutside)
-    document.addEventListener("fullscreenchange", handleFullscreenChange)
-    window.addEventListener("visibilityChange", handleVisibilityChange);
-    window.addEventListener("blur", handleVisibilityChange)
+    const handleFS = () => setIsFullscreen(!!document.fullscreenElement);
 
+    // Auto-pause when tab is hidden (Production standard for UX/Performance)
+    const handleVisibility = () => {
+      if (document.hidden && !video.paused) video.pause();
+    };
+
+    video.addEventListener('play', handleSync);
+    video.addEventListener('pause', handleSync);
+    video.addEventListener('timeupdate', handleSync);
+    video.addEventListener('loadedmetadata', handleSync);
+    video.addEventListener('progress', handleProgress);
+    video.addEventListener('volumechange', handleSync);
+    document.addEventListener('fullscreenchange', handleFS);
+    document.addEventListener('visibilitychange', handleVisibility);
 
     return () => {
-      video.removeEventListener("play", onPlay)
-      video.removeEventListener("pause", onPause)
-      video.removeEventListener("loadedmetadata", handleLoadMetadata)
-      video.removeEventListener("timeupdate", handleTimeUpdate)
-      video.removeEventListener("progress", handleProgress)
-      document.removeEventListener("click", handleClickOutside)
-      document.removeEventListener("fullscreenchange", handleFullscreenChange)
-      window.removeEventListener("visibilitychange", handleVisibilityChange)
-      window.removeEventListener("blur",handleWindowBlur)
+      video.removeEventListener('play', handleSync);
+      video.removeEventListener('pause', handleSync);
+      video.removeEventListener('timeupdate', handleSync);
+      video.removeEventListener('loadedmetadata', handleSync);
+      video.removeEventListener('progress', handleProgress);
+      video.removeEventListener('volumechange', handleSync);
+      document.removeEventListener('fullscreenchange', handleFS);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, [videoRef]);
 
-    }
-  }, [videoRef, isPlaying])
-
-
-
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!isOpen) return;
+    const close = () => setIsOpen(false);
+    window.addEventListener('click', close);
+    return () => window.removeEventListener('click', close);
+  }, [isOpen]);
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 
-                bg-linear-to-t
-                text-white
-                to-transparent 
-                px-5 py-3 flex flex-col gap-3 items-center"
-    >
-      <input
-        type="range"
-        min="0"
-        max={duration}
-        step="0.01"
-        value={currentTime}
-        onChange={handleProgressBarChange}
-        className="w-full h-1 hover:h-1.5 rounded appearance-none cursor-pointer accent-red-800"
-        style={{
-          background: `linear-gradient(to right, #840227 ${(currentTime / duration) * 100}%, #4b5563 ${(currentTime / duration) * 100}%)`
-        }}
-      />
+    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-4 py-4 flex flex-col gap-2 group/controls transition-opacity duration-300">
 
+      {/* Progress Bar Container */}
+      <div className="relative w-full h-1 bg-white/10 flex items-center group/progress">
+        <input
+          type="range"
+          min="0"
+          max={duration || 0}
+          step="any"
+          value={currentTime}
+          onChange={handleSeek}
+          className="absolute z-30 w-full h-full appearance-none bg-transparent cursor-pointer accent-red-600"
+        />
+        {/* Visual Track: Buffered */}
+        <div
+          className="absolute z-10 h-full bg-white/30 rounded-full transition-all"
+          style={{ width: `${(buffered / duration) * 100}%` }}
+        />
+        {/* Visual Track: Played */}
+        <div
+          className="absolute z-20 h-full bg-red-600 rounded-full"
+          style={{ width: `${(currentTime / duration) * 100}%` }}
+        />
+      </div>
 
-      <div className='flex w-full justify-between'>
+      <div className="flex w-full items-center justify-between">
+        <div className="flex items-center gap-2 md:gap-4">
+          <Button
+            frontIconName={isPlaying ? "iconoir:pause-solid" : "iconoir:play-solid"}
+            onClick={togglePlay}
+            className="p-3 hover:bg-white/20 rounded-full transition-colors"
+            bgClass="bg-black/50"
+            textClass="text-white"
+          />
 
-
-        <div className='flex  gap-4'>
-          <div className='video-player w-10'>
+          {/* Volume Group */}
+          <div className="hidden sm:flex items-center group/volume gap-2 bg-black/50 rounded-full p-2 pr-3 transition-all">
             <Button
-              frontIconHeight="18"
-              frontIconWidth="18"
-              frontIconName={isPlaying ? "iconoir:pause-solid" : "iconoir:play-solid"}
-              textClass="text-white"
+              frontIconName={isMuted ? 'mingcute:volume-off-fill' : 'mingcute:volume-fill'}
+              onClick={toggleMute}
+              className="p-1"
               bgClass=""
-              className="w-8 h-8 rounded-full hover:bg-white/13"
-              onClick={() => togglePlay()}
+              textClass="text-white"
+            />
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={isMuted ? 0 : volume}
+              onChange={(e) => updateVolume(parseFloat(e.target.value))}
+              className="w-0 group-hover/volume:w-20 transition-all duration-300 appearance-none h-1 bg-white/30 rounded-full accent-white"
             />
           </div>
 
-
-          <div className="
-            video-player
-            group
-            hover:p-1
-            w-10
-            hover:w-36
-            transition-all
-            duration-300
-            ease-in-out
-          ">
-            <div className="
-                flex items-center
-                w-full
-                h-full
-                p-2
-                rounded-full
-                hover:bg-white/13
-                transition-colors
-                duration-200
-              ">
-
-              <Button frontIconName={isMuted ? 'mingcute:volume-off-fill' : 'mingcute:volume-fill'} frontIconHeight="20" frontIconWidth="20" bgClass="" onClick={() => toggleMute()} />
-
-              <div className="
-                flex-1
-                ml-2
-                mb-1
-                opacity-0
-                group-hover:opacity-100
-                transition-opacity items-center
-                duration-300
-              ">
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  value={isMuted ? 0 : volume}
-                  onChange={handleVolumeChange}
-                  className="w-21 h-1 appearance-none rounded cursor-pointer accent-white"
-                  style={{
-                    background: `linear-gradient(to right, white ${ (isMuted ? 0 : volume) * 100}%, #4b5563 ${ (isMuted ? 0 : volume) * 100}%)`
-                  }}
-                />
-              </div>
-
-            </div>
+          {/* Time Display */}
+          <div className="px-2 py-2 text-xs md:text-sm font-medium bg-black/50 hover:bg-black/60 rounded-full text-white tabular-nums flex items-center gap-1 select-none">
+            <span>{formatTime(currentTime)}</span>
+            <span className="opacity-60 "> / </span>
+            <span>{formatTime(duration)}</span>
           </div>
-
-
-
-          <div className='video-player text-xs w-25'>
-            <div className='flex justify-center rounded-full items-center w-23 h-8 hover:bg-white/13'>
-              <span>{formatTime(currentTime)}</span><Icon name="fad:digital-colon" height="18" width="18" /><span>{formatTime(duration)}</span>
-            </div>
-          </div>
-
         </div>
 
-        <div className='video-player px-3 gap-1'>
+        <div className="flex items-center bg-black/50 hover:bg-black/60 px-3 py-1 rounded-full gap-1">
+          {/* Logo - Hidden on mobile to save space */}
+          <img src={logo} alt="Logo" className="hidden md:block h-7 p-0.5 bg-white rounded-sm ml-2 opacity-80 hover:opacity-100 transition-opacity" />
 
-          <img src={logo} className='bg-white h-7 ml-2 rounded-xs p-0.5' />
+          {/* Speed Selector */}
+          <div className="relative">
+            <button
+              onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
+              className="flex items-center gap-1 px-2 py-1 text-white hover:bg-white/10 rounded-full transition-colors text-sm font-medium"
+            >
+              <Icon name={speedIcon} height="18" width="18" />
+              <span>{speed}x</span>
+            </button>
 
-          <div className="video-playerp gap-2 px-2 h-8 hover:bg-white/13 rounded-full flex items-center">
-
-            <Icon name={speedIcon} height="20" width="20" />
-
-            <div className="relative speed-dropdown">
-
-              <div
-                onClick={() => setIsOpen(prev => !prev)}
-                className="
-                  flex justify-between items-end 
-                  cursor-pointer 
-                  py-1
-                  rounded-md
-                  transition
-                  select-none
-                "
-              >
-                <span className="text-white text-sm font-medium">
-                  {speed}x
-                </span>
-
-                <Icon
-                  name="ic:round-arrow-drop-up"
-                  height="14"
-                  width="14"
-                  className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""
-                    }`}
-                />
+            {isOpen && (
+              <div className="absolute bottom-full mb-2 right-0 bg-zinc-900 border border-white/10 rounded-lg shadow-xl overflow-hidden min-w-[80px]">
+                {SPEED_OPTIONS.map((s) => (
+                  <button
+                    key={s}
+                    className={`w-full px-4 py-2 text-left text-sm hover:bg-white/10 transition-colors ${speed === s ? 'text-red-500 bg-white' : 'text-white'}`}
+                    onClick={() => {
+                      videoRef.current.playbackRate = s;
+                      setSpeed(s);
+                    }}
+                  >
+                    {s}x
+                  </button>
+                ))}
               </div>
-
-              {/* Dropdown */}
-              {isOpen && (
-                <div className="
-                  absolute 
-                  bottom-10 
-                  left-0
-                  bg-black/90 
-                  backdrop-blur-md
-                  rounded-md 
-                  shadow-lg 
-                  py-2 
-                  w-24
-                  text-sm
-                ">
-                  {[0.5, 0.75, 1, 1.5, 2].map((s) => (
-                    <div
-                      key={s}
-                      onClick={() => {
-                        setSpeed(s);
-                        videoRef.current.playbackRate = s;
-                        setIsOpen(false);
-                      }}
-                      className={`
-                        px-3 py-1 cursor-pointer
-                        hover:bg-white/10
-                        ${speed === s ? "text-primary font-semibold" : "text-white"}
-                      `}
-                    >
-                      {s}x
-                    </div>
-                  ))}
-                </div>
-              )}
-
-            </div>
+            )}
           </div>
 
-
           <Button
-            frontIconHeight="18"
-            frontIconWidth="18"
             frontIconName={isFullscreen ? "mingcute:fullscreen-exit-fill" : "mingcute:fullscreen-fill"}
-            textClass="text-white"
+            onClick={toggleFullscreen}
+            className="p-2 hover:bg-white/10 text-white rounded-full transition-colors"
             bgClass=""
-            onClick={() => toggleFullscreen()}
-            className="p-2 rounded-full hover:bg-white/13"
+            textClass=""
           />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default VideoControls
+export default React.memo(VideoControls);

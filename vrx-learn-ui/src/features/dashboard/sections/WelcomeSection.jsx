@@ -1,7 +1,7 @@
 import React from 'react'
 import { LearningIllustration } from '@/assets'
 import { Button } from "@/components/ui";
-import { ProgressBar } from '@/components/ui';
+// import { ProgressBar } from '@/components/ui';
 
 
 import { useNavigate } from 'react-router-dom';
@@ -15,12 +15,10 @@ function WelcomeSection({ user }) {
 
   if (!user) return null;
 
-  console.log(user);
-
 
   return (
     <div className="w-full bg-brand rounded-xl p-6 md:p-8">
-      <div className="grid h-full grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="flex flex-col md:flex-row h-full gap-6">
 
         <div className="flex flex-col justify-center gap-5 text-white max-w-xl">
           <h2 className="text-h3">
@@ -36,14 +34,14 @@ function WelcomeSection({ user }) {
               {user.current_learing_course}
             </h3>
 
-            <ProgressBar percent={user.status_percent} />
+            {/* <ProgressBar percent={user.status_percent} /> */}
           </div>
 
 
 
           <Button
             buttonName="Resume"
-            className="max-w-50 2xl:max-w-70 p-3 rounded-lg font-semibold text-sm"
+            className="lg:max-w-50 2xl:max-w-70 p-3 rounded-lg font-semibold text-sm"
             bgClass="bg-white"
             textClass="text-primary"
             onClick={() => navigate(`/course/${courseId}`)}
@@ -51,11 +49,11 @@ function WelcomeSection({ user }) {
 
         </div>
 
-        <div className="hidden lg:flex items-center justify-end">
+        <div className="hidden sm:flex md:flex-1 items-center justify-center md:justify-end">
           <img
             src={LearningIllustration}
             alt="Learning illustration"
-            className="max-h-56 2xl:max-h-100 object-contain"
+            className="max-h-100 object-contain"
           />
         </div>
 

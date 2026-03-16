@@ -1,14 +1,14 @@
 import React from "react";
 import Icon from "../Icon";
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from '@/context/AuthContext'
+
 import { roleNavigation } from "@/config/headerMenu";
 
 
-function HeaderUserMenu() {
+function HeaderUserMenu({role}) {
     const location = useLocation();
 
-    const { role } = useAuth();
+    
 
 
     const navigationLinks = roleNavigation[role] || [];

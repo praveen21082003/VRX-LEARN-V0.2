@@ -5,7 +5,7 @@ import Overview from "./Overview";
 import QuestionAnswers from "./QuestionAnswers";
 import ContentRenderer from "@/components/content/ContentRenderer";
 
-function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
+function LessonsMainSection({ lesson, error, activeLesson, setButtonAction, setOpenPlaylist }) {
   const [activeTab, setActiveTab] = useState("overview");
 
   const tabs = [
@@ -24,7 +24,7 @@ function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
   }
 
   return (
-    <main className="flex-1 overflow-y-auto py-3 px-6">
+    <main className="flex-1 overflow-y-auto py-1 px-2 md:py-3 md:px-6">
 
       <h1 className="text-h3">
         {activeLesson.moduleIndex + 1}.{activeLesson.lessonIndex + 1}{" "}
@@ -45,7 +45,7 @@ function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
 
       <ContentRenderer lesson={lesson} error={error} activeLesson={activeLesson} setButtonAction={setButtonAction} />
 
-      <div className="flex justify-between items-center pt-4">
+      <div className="hidden md:flex justify-between items-center pt-4">
         <div className="flex gap-4 w-[30%]">
           <Button
             buttonName="Previous"
@@ -84,6 +84,13 @@ function LessonsMainSection({ lesson, error, activeLesson, setButtonAction }) {
           {activeTab === "qa" && <QuestionAnswers />}
         </div>
       </div>
+      <button
+        className="lg:hidden flex items-center gap-2 p-2"
+        onClick={() => setOpenPlaylist(true)}
+      >
+        <Icon name="mdi:playlist-play" width="20" />
+        Contents
+      </button>
     </main>
   );
 }

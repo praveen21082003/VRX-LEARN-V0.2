@@ -10,7 +10,7 @@ export default function AssignmentAsideSection({ assignments, activeAssignment, 
     const { courseSlug } = useParams();
 
     return (
-        <aside className="hidden sidebar-sm 2xl:sidebar-lg border-r-2 border-default bg-muted/40 md:block">
+        <aside className="sidebar-sm 2xl:sidebar-lg border-r-2 border-default bg-muted/40">
             <div className="p-4 border-b-2 border-default w-full">
                 <BackButton to={`/course/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Overview" />
             </div>

@@ -15,19 +15,15 @@ function CourseCard({
   const hasCustomImage = image?.trim();
 
   return (
-    <div className="flex flex-col gap-4 py-6 px-4 w-full rounded-2xl bg-card">
+    <div className="flex flex-col gap-4 p-3 lg:p-4 w-72 md:w-full rounded-2xl bg-card flex-shrink-0 snap-start md:flex-shrink">
 
 
-      <div className="relative overflow-hidden rounded-2xl lg:h-28 xl:h-38 2xl:h-60 bg-gray-200 group">
+      <div className="relative overflow-hidden rounded-lg h-[140px] sm:h-[150px] lg:h-28 xl:h-38 2xl:h-60 bg-gray-200 group">
+
         <img
           src={hasCustomImage ? image : defaultCourse}
           alt={`${name} thumbnail`}
-          className="
-            w-full h-full object-cover
-            transition-transform duration-500 ease-out
-            group-hover:scale-110
-          "
-          onError={(e) => (e.currentTarget.src = defaultCourse)}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
 
         {!hasCustomImage && (
@@ -54,7 +50,7 @@ function CourseCard({
         buttonName={buttonName}
         bgClass={bgClass}
         textClass={textClass}
-        className="p-3 rounded-lg"
+        className="p-3 rounded-lg w-full"
         onClick={onClick}
       />
     </div>

@@ -8,17 +8,21 @@ import useModules from "../hooks/useModules";
 import useLessons from "../hooks/useLessons";
 
 function LessonsPage() {
-  const { courseSlug  } = useParams();
+  const { courseSlug } = useParams();
+
+
   const { modules, moduleLoading, moduleError } = useModules(courseSlug);
-  
-  
+
+
   const [activeLesson, setActiveLesson] = useState(null);
   const [buttonAction, setButtonAction] = useState("");
+  const [openPlaylist, setOpenPlaylist] = useState(false);
 
   const lessonId = activeLesson?.lessonId;
-  console.log(lessonId)
-
   const { lesson, loading: lessonLoading, error: lessonError } = useLessons(lessonId);
+
+
+
   // console.log(lesson);
 
 
@@ -33,7 +37,7 @@ function LessonsPage() {
       lessonIndex: 0,
       lessonId: firstModule.lessons[0].id,
     });
-    
+
   }, [modules]);
 
 
@@ -109,12 +113,23 @@ function LessonsPage() {
 
   return (
     <div className="flex h-[calc(100vh-56px)] bg-background text-main">
-      
-
-      <LessonsAsideSection modules={modules} activeLesson={activeLesson} setActiveLesson={setActiveLesson} />
 
 
-      <LessonsMainSection lesson={lesson} activeLesson={activeLesson} setButtonAction={setButtonAction} />
+      <LessonsAsideSection
+        modules={modules}
+        activeLesson={activeLesson}
+        setActiveLesson={setActiveLesson}
+        openPlaylist={openPlaylist}
+        setOpenPlaylist={setOpenPlaylist}
+      />
+
+
+      <LessonsMainSection
+        lesson={lesson}
+        activeLesson={activeLesson}
+        setButtonAction={setButtonAction}
+        setOpenPlaylist={setOpenPlaylist}
+      />
     </div>
   );
 }

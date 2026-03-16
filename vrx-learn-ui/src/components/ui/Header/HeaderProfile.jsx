@@ -1,5 +1,5 @@
 
-import { useAuth } from "@/context/AuthContext"
+
 import { useEffect, useRef, useState } from "react";
 import Dropdown from "../Dropdown";
 import { Icon } from '@/components/ui';
@@ -7,17 +7,21 @@ import { useNavigate } from "react-router-dom";
 import { getProfileDropdown } from "@/config/DropdownButtons";
 import { useTheme } from "../../../context/ThemeProvider";
 import Pill from "./Pill";
-import { usePermission } from '@/hooks/usePermission'
 
-export default function HeaderProfile() {
-    const { user, role, viewRole, setViewRole, loading } = useAuth();
-    const { can } = usePermission();
+
+export default function HeaderProfile({ user, role, viewRole, setViewRole, loading }) {
+
+
 
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
     const navigate = useNavigate();
 
     const { darkMode, toggleTheme } = useTheme();
+
+    if (loading) {
+        return null;
+    }
 
 
     const handleSwitchAccount = () => {
@@ -53,18 +57,16 @@ export default function HeaderProfile() {
     }, []);
 
 
-
-
-
-    if (loading) return null;
-
     return (
         <div ref={ref} className="relative flex items-center">
 
             {/* CLICK TARGET */}
             <div
                 className="flex items-center gap-2 cursor-pointer select-none"
-                onClick={() => setOpen((prev) => !prev)}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setOpen(prev => !prev);
+                }}
             >
 
                 {user?.avatar ?
@@ -73,10 +75,10 @@ export default function HeaderProfile() {
                         alt="User profile"
                         className="h-10 w-10 rounded-full object-cover"
                     /> :
-                    <Icon name="mingcute:user-4-fill" height="32" width="32" />
+                    <Icon name="mingcute:user-4-fill" height="40" width="40" />
                 }
 
-                <span className="text-h5">{user.name}</span>
+                <span className="text-h5 w-28 truncate">{user?.name}</span>
                 {role === "TRAINER" && (
                     <Pill viewRole={viewRole} />
                 )}
@@ -84,7 +86,7 @@ export default function HeaderProfile() {
             </div>
 
             {/* DROPDOWN (POSITIONED FROM WRAPPER) */}
-            {open && <Dropdown buttons={buttons} />}
+            {open && <Dropdown buttons={buttons} className="right-0 top-full mt-2" />}
         </div>
     );
 }

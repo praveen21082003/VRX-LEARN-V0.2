@@ -8,6 +8,8 @@ export default function AssignmentMainSection({ assignment }) {
 
     const [files, setFiles] = useState([]);
 
+    console.log(assignment)
+
 
     useEffect(() => {
         setFiles([]);
@@ -17,7 +19,7 @@ export default function AssignmentMainSection({ assignment }) {
 
 
     return (
-        <main className="flex-1 min-h-0 overflow-y-auto p-3">
+        <main className="flex-1 min-h-0 overflow-y-auto p-3 w-full">
             <h1 className="flex gap-2 items-center text-h3"><Icon name="hugeicons:assignments" />{assignment.title}</h1>
             <div className="flex items-center gap-2 text-caption text-muted-foreground text-dark-gray">
                 <div className="flex gap-2 items-center">

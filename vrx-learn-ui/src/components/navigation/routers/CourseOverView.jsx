@@ -49,9 +49,11 @@ function CourseOverView() {
 
     return (
         <>
-            <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start p-4 text-main">
-                <CourseTumbnail name={courseContent.name} image={courseContent.thumbnail} classRounded="rounded-lg" />
-                <div className="space-y-3 flex-1">
+            <div className="flex flex-col lg:flex-row gap-4 md:gap-6 items-start p-4 text-main min-w-0">
+                <div className="w-full md:w-[320px]">
+                    <CourseTumbnail name={courseContent.name} image={courseContent.thumbnail} classRounded="rounded-lg" />
+                </div>
+                <div className="flex-1 min-w-0">
                     <div className="flex justify-between">
                         <h2 className="text-h2">{courseContent.name}</h2>
                     </div>
@@ -62,7 +64,7 @@ function CourseOverView() {
                                 {courseContent.author}
                             </span>
                         </p>
-                        <div className="flex items-center text-body text-muted-foreground text-dark-gray">
+                        <div className="flex flex-wrap items-center gap-1 text-body text-muted-foreground text-dark-gray">
                             <span>Course</span>
                             <Icon name="ph:dot-bold" />
                             <span>{formatMinutes(totalLessonMinutes)}</span>
@@ -105,8 +107,8 @@ function CourseOverView() {
                             key={section.key}
                             to={`/course/${courseSlug}/${section.key}`}
                             className={({ isActive }) =>
-                                `flex items-center gap-3 rounded-lg px-4 py-1
-                                ${isActive ? "bg-primary-16" : "hover:bg-primary/16 dark:hover:bg-primary"}`
+                                `flex items-center gap-3 rounded-lg px-4 py-2 transition-colors
+                                ${isActive ? "bg-primary-16" : "hover:bg-primary/16"}`
                             }
                         >
                             {section.icon && (
@@ -140,7 +142,7 @@ function CourseOverView() {
                                     )}
                                 </div>
 
-                                <img src={sideArrow} alt="arrow" className="w-4 h-4" />
+                                <span className="text-xl font-bold">{">"}</span>
                             </div>
                         </NavLink>
                     );

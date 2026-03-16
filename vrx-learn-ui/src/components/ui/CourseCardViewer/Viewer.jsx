@@ -47,7 +47,7 @@ function Viewer({
     : courses;
 
   return (
-    <section className="relative bg-primary/16 noise-overlay p-4 flex-[0_0_40%] rounded-xl">
+    <section className="relative bg-primary/16 noise-overlay p-4 rounded-xl">
       <header className="flex justify-between mb-4">
         <h2 className="text-h4 text-main">{title}</h2>
         {maxCourses && <button className="text-sm text-main underline">View all</button>}
@@ -55,11 +55,11 @@ function Viewer({
 
       <div
         className={clsx(
-          "grid gap-3",
-          gridSize === 1 && "grid-cols-1",
-          gridSize === 2 && "grid-cols-2",
-          gridSize === 3 && "grid-cols-3",
-          gridSize === 4 && "grid-cols-4"
+          "flex gap-4 overflow-x-auto snap-x snap-mandatory lg:grid lg:overflow-visible",
+          gridSize === 1 && "lg:grid-cols-1",
+          gridSize === 2 && "lg:grid-cols-2",
+          gridSize === 3 && "lg:grid-cols-3",
+          gridSize === 4 && "lg:grid-cols-4"
         )}
       >
         {visibleCourses.map(course => {

@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 
 
 
-function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
+function LessonsAsideSection({ modules, activeLesson, setActiveLesson, openPlaylist, setOpenPlaylist }) {
     const [openModuleId, setOpenModuleId] = useState(null);
     const {courseSlug} = useParams();
 
@@ -25,7 +25,7 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson }) {
 
 
     return (
-        <aside className="hidden sidebar-sm 2xl:sidebar-lg border-r-2 text-sm border-default bg-muted/40 md:block">
+        <aside className="hidden sidebar-sm 2xl:sidebar-lg border-r-2 text-sm border-default bg-muted/40 lg:block">
             <div className="p-4 border-b-2 border-default w-full">
                 <BackButton to={`/course/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Overview" />
             </div>

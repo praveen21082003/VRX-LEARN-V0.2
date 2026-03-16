@@ -97,7 +97,7 @@ export default function LearningLayout() {
                 <AnimatePresence mode="popLayout" custom={direction}>
                     <motion.div
                         key={location.pathname}
-                        custom={direction} // Pass direction to variants
+                        custom={direction}
                         variants={variants}
                         initial="enter"
                         animate="center"

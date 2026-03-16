@@ -507,7 +507,6 @@
       "attempt": 1,
       "submission_date": "2026-02-13T10:45:00",
       "file_name": "Assignment.pdf",
-      "file_name": "Assignment.pdf",
       "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
@@ -885,7 +884,7 @@
     },
     {
       "id": "4",
-      "name": "Trainee User",
+      "name": "Yenugula PraveenKumar",
       "email": "trainee@test.com",
       "password": "trainee123",
       "role": "TRAINEE",
