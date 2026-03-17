@@ -8,9 +8,9 @@ function TrainerDashboard() {
 
 
     return (
-        <div className='py-4 px-6 text-main bg-background'>
+        <div className='p-3 sm:p-4 text-main bg-background'>
             <h2 className='text-h2'>Hello, Trainer!</h2>
-            <div className='grid grid-cols-4 gap-4 py-4'>
+            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4 gap-4 py-4'>
                 <StatCard
                     icon="mdi:book-open-variant"
                     label="Assigned Courses"

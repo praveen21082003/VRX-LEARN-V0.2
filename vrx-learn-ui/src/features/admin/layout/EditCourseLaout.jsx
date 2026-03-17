@@ -139,7 +139,7 @@ function EditCourseLayout() {
   return (
     <div className="flex h-[calc(100vh-56px)]">
 
-      <aside style={{ width: asideWidth }} className=" relative hidden border-r-2 border-default bg-muted/40 py-1 md:block overflow-y-auto scrollbar-hide">
+      <aside style={{ width: asideWidth }} className=" relative hidden border-r-2 border-default bg-muted/40 py-1 lg:block overflow-y-auto scrollbar-hide">
 
         <div className="p-4 w-full">
           <BackButton to={`/course/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Overview" />
@@ -302,7 +302,7 @@ function EditCourseLayout() {
         />
       </aside>
 
-      <main className="flex-1 min-h-0 overflow-y-auto text-main py-4 px-6">
+      <main className="flex-1 min-h-0 overflow-y-auto text-main py-4 px-6 sm:px-6">
         <Outlet context={courseEditData} />
       </main>
 

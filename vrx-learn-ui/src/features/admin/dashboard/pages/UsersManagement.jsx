@@ -12,7 +12,7 @@ function UsersManagement() {
 
     const [selectedRows, setSelectedRows] = useState([]);
 
-    const [open, setOpen,ref,toggle] = useClickOutside(false)
+    const [open, setOpen] = useState(false)
     const [editingUser, setEditingUser] = useState(null); // null means "Add Mode"
 
 
@@ -68,7 +68,8 @@ const handleOpenEdit = (user) => {
         },
     ]
 
-
+const allRoles = [...new Set(data.map((user) => user.role))];
+const allStatuses = [...new Set(data.map((user) => user.status))];
 
     const usersManagementColumns = [
         {
@@ -324,11 +325,13 @@ const handleOpenEdit = (user) => {
         onClose={() => setOpen(false)}
         title={editingUser ? "Edit User" : "Create New User"}
     >
-        <CreateUser 
-            isEdit={!!editingUser} 
-            userData={editingUser} 
-            onClose={() => setOpen(false)} 
-        />
+        <CreateUser
+        isEdit={!!editingUser}
+        userData={editingUser}
+        onClose={() => setOpen(false)}
+        roles={allRoles}
+        statuses={allStatuses}
+/>
     </Modal>
 )}
 
