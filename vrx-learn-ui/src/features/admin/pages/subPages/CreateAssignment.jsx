@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Input, Button, TextEditor, FileDropZone } from '@/components/ui'
+import { Input, Button, TextEditor, UploadSection } from '@/components/ui'
 import { useParams } from 'react-router-dom';
 import useCreateAssignment from '../../hooks/useCreateAssignment';
 import { useToast } from '@/context/ToastProvider';
@@ -8,7 +8,7 @@ function CreateAssignment() {
     const { courseSlug } = useParams();
 
 
-    const {addToast} = useToast();
+    const { addToast } = useToast();
 
 
     const [files, setFiles] = useState([]);
@@ -80,7 +80,7 @@ function CreateAssignment() {
         const validationErrors = validate();
 
         if (Object.keys(validationErrors).length > 0) {
-            setFormDataErrors(validationErrors);    
+            setFormDataErrors(validationErrors);
             return;
         }
 
@@ -143,13 +143,15 @@ function CreateAssignment() {
                         onChange={(e) => handleChange("max_attempts", Number(e.target.value))}
                     />
                 </div>
-                <div className="w-full mt-4" >
-                    <FileDropZone label="Attachments" multipleFiles={false} maxFilesAllowed={1} heightClass="h-74" files={files} onFilesChange={setFiles} />
-                </div>
+                <UploadSection
+                    files={files}
+                    setFiles={setFiles}
+                    onUpload={handleUpload}
+                />
 
             </div>
             <div className='flex justify-center'>
-                <Button buttonName={files.length <= 0 ? "Submit" : "Upload" } onClick={handleSubmit} className="mt-5 px-5 py-2 rounded" />
+                <Button buttonName={files.length <= 0 ? "Submit" : "Upload"} onClick={handleSubmit} className="mt-5 px-5 py-2 rounded" />
             </div>
 
         </>

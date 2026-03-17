@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useParams, useOutletContext } from 'react-router-dom';
-import { Input, FileDropZone, Button, TextEditor } from '@/components/ui'
+import { Input, UploadSection, Button, TextEditor } from '@/components/ui'
 import BackButton from '@/components/navigation/BackButton';
 
 
@@ -50,9 +50,11 @@ function CreateLesson() {
                         onChange={(value) => handleChange("overview", value)}
                     />
                 </div>
-                <div className="w-full mt-4" >
-                    <FileDropZone label="Attachments" multipleFiles={false} heightClass="h-74" files={files} onFilesChange={setFiles} />
-                </div>
+                <UploadSection
+                    files={files}
+                    setFiles={setFiles}
+                    onUpload={handleUpload}
+                />
                 <div className='flex justify-center'>
                     <Button buttonName={files.length <= 0 ? "Submit" : "Upload"} className="mt-5 px-5 py-2 rounded" />
                 </div>

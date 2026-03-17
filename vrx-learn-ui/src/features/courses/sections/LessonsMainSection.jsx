@@ -1,12 +1,44 @@
-import React, { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { formatMinutes } from "@/utils/duration";
 import { Button, Tabs, Icon } from "@/components/ui";
 import Overview from "./Overview";
 import QuestionAnswers from "./QuestionAnswers";
 import ContentRenderer from "@/components/content/ContentRenderer";
+import { motion } from "motion/react";
 
-function LessonsMainSection({ lesson, error, activeLesson, setButtonAction, setOpenPlaylist }) {
+function LessonsMainSection({ lesson, error, activeLesson, setActiveLesson, setButtonAction, setOpenPlaylist, nextLessonData }) {
   const [activeTab, setActiveTab] = useState("overview");
+  const [showButton, setShowButton] = useState(true);
+  const lastScrollY = useRef(0);
+
+  const scrollRef = useRef(null);
+  // console.log(nextLessonData);
+
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const currentScrollY = container.scrollTop;
+
+      if (Math.abs(currentScrollY - lastScrollY.current) < 10) return;
+
+      if (currentScrollY > lastScrollY.current) {
+        setShowButton(false);
+      } else {
+        setShowButton(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    container.addEventListener("scroll", handleScroll);
+
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const tabs = [
     { label: "Overview", value: "overview" },
@@ -24,7 +56,10 @@ function LessonsMainSection({ lesson, error, activeLesson, setButtonAction, setO
   }
 
   return (
-    <main className="flex-1 overflow-y-auto py-1 px-2 md:py-3 md:px-6">
+    <main
+      ref={scrollRef}
+      className="flex-1 overflow-y-auto py-1 px-2 md:py-3 md:px-6 pb-24"
+    >
 
       <h1 className="text-h3">
         {activeLesson.moduleIndex + 1}.{activeLesson.lessonIndex + 1}{" "}
@@ -77,20 +112,52 @@ function LessonsMainSection({ lesson, error, activeLesson, setButtonAction, setO
         </div>
       </div>
       <div className="mt-6">
-        <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
+        <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
 
         <div className="py-5">
           {activeTab === "overview" && <Overview lesson={lesson} />}
           {activeTab === "qa" && <QuestionAnswers />}
         </div>
       </div>
-      <button
-        className="lg:hidden flex items-center gap-2 p-2"
+      <motion.button
+        initial={{ y: 0 }}
+        animate={{ y: showButton ? 0 : 120 }}
+        transition={{ duration: 0.25 }}
+        className="lg:hidden fixed bottom-4 left-4 right-4
+       flex bg-primary text-white items-center gap-3
+       p-3 rounded-lg shadow-lg z-40"
         onClick={() => setOpenPlaylist(true)}
       >
-        <Icon name="mdi:playlist-play" width="20" />
-        Contents
-      </button>
+        <Icon name="nrk:media-playlist-add-next" width="24" height="24"/>
+
+        <div className="flex justify-between items-center w-full text-left overflow-hidden">
+          {nextLessonData ? (
+            <div
+              onClick={(e) => {
+                e.preventDefault();
+                if (nextLessonData) {
+                  setActiveLesson({
+                    moduleIndex: nextLessonData.moduleIndex,
+                    lessonIndex: nextLessonData.lessonIndex,
+                    lessonId: nextLessonData.lesson.id,
+                  });
+                } else {
+                  setOpenPlaylist(true);
+                }
+              }}
+              className="flex flex-col"
+            >
+              <span className="text-body opacity-80">Next : {activeLesson.moduleIndex + 1}.{activeLesson.lessonIndex + 2}{" "} {nextLessonData?.lesson.title}</span>
+              <span className="text-caption font-medium truncate">
+                {nextLessonData?.lesson?.type}
+              </span>
+            </div>
+          ) : (
+            <span>Contents</span>
+          )}
+          <Icon name="mingcute:up-fill" width="24" height="24"/>
+        </div>
+      </motion.button>
     </main>
   );
 }

@@ -1,13 +1,22 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Header } from "@/components/ui"
+import BackButton from "@/components/navigation/BackButton";
 
 
 
 export default function LearningLayout() {
     const location = useLocation();
-    const navigate = useNavigate();
+    const { courseSlug } = useParams();
+
+
+    const isOverviewPage = location.pathname === `/course/${courseSlug}/overview`;
+    const backPath = isOverviewPage
+        ? "/dashboard"
+        : `/course/${courseSlug}/overview`;
+
+
 
     const [breadcrumbs, setBreadcrumbs] = useState(() => {
         const stored = sessionStorage.getItem("learning-breadcrumbs");
@@ -108,8 +117,10 @@ export default function LearningLayout() {
                         }}
                         className="h-full w-full absolute top-0 left-0 overflow-y-auto"
                     >
-
-                        {/* Page content */}
+                        <div className="block lg:hidden p-2 w-full border-b border-default">
+                            <BackButton to={backPath} iconName="material-symbols:arrow-back-rounded" label={isOverviewPage? "Back to Dashboard" : "Back to Overview"} />
+                        </div>
+                        
                         <Outlet
                             context={{
                                 setCourseBreadcrumb,

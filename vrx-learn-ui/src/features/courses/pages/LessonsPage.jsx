@@ -110,6 +110,36 @@ function LessonsPage() {
   }, [buttonAction, activeLesson, modules]);
 
 
+  const getNextLesson = () => {
+    if (!activeLesson || !modules?.length) return null;
+
+    const { moduleIndex, lessonIndex } = activeLesson;
+    const currentModule = modules[moduleIndex];
+
+    // Case 1: next lesson in same module
+    if (lessonIndex < currentModule.lessons.length - 1) {
+      return {
+        lesson: currentModule.lessons[lessonIndex + 1],
+        moduleIndex,
+        lessonIndex: lessonIndex + 1,
+      };
+    }
+
+    // Case 2: first lesson of next module
+    if (moduleIndex < modules.length - 1) {
+      return {
+        lesson: modules[moduleIndex + 1].lessons[0],
+        moduleIndex: moduleIndex + 1,
+        lessonIndex: 0,
+      };
+    }
+
+    return null; // no next lesson
+  };
+
+  const nextLessonData = getNextLesson();
+
+
 
   return (
     <div className="flex h-[calc(100vh-56px)] bg-background text-main">
@@ -121,7 +151,7 @@ function LessonsPage() {
         setActiveLesson={setActiveLesson}
         openPlaylist={openPlaylist}
         setOpenPlaylist={setOpenPlaylist}
-      />
+        />
 
 
       <LessonsMainSection
@@ -129,6 +159,8 @@ function LessonsPage() {
         activeLesson={activeLesson}
         setButtonAction={setButtonAction}
         setOpenPlaylist={setOpenPlaylist}
+        setActiveLesson={setActiveLesson}
+        nextLessonData={nextLessonData}
       />
     </div>
   );

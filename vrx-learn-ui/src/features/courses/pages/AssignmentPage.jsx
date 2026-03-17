@@ -11,9 +11,13 @@ import AssignmentMainSection from '../sections/AssignmentMainSection'
 function AssignmentPage() {
   const { courseSlug } = useParams();
   const { setSectionBreadcrumb } = useOutletContext()
-  const [activeAssignment, setActiveAssignment] = useState({ assignmentId: "1" });
+  const isMobile = window.innerWidth < 768;
 
-  const assignmentId = activeAssignment?.assignmentId
+  const [activeAssignment, setActiveAssignment] = useState(
+    isMobile ? null : { assignmentId: "1" }
+  );
+
+  const assignmentId = activeAssignment?.assignmentId;
 
   const { assignments, error, loading } = useAssignments(courseSlug)
   const { assignment, assignmentError, assignmentLoading } = useAssignment(assignmentId);
@@ -29,8 +33,35 @@ function AssignmentPage() {
 
   return (
     <div className="flex h-[calc(100vh-56px)] overflow-hidden bg-background text-main">
-      <AssignmentAsideSection assignments={assignments} activeAssignment={activeAssignment} setActiveAssignment={setActiveAssignment} />
-      <AssignmentMainSection assignment={assignment} />
+
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:block h-screen">
+        <AssignmentAsideSection
+          assignments={assignments}
+          activeAssignment={activeAssignment}
+          setActiveAssignment={setActiveAssignment}
+        />
+      </div>
+
+      {/* Mobile List View */}
+      {!activeAssignment && (
+        <div className="lg:hidden w-full h-screen">
+          <AssignmentAsideSection
+            assignments={assignments}
+            activeAssignment={activeAssignment}
+            setActiveAssignment={setActiveAssignment}
+          />
+        </div>
+      )}
+
+      {/* Assignment Detail */}
+      {activeAssignment && (
+        <AssignmentMainSection
+          assignment={assignment}
+          onBack={() => setActiveAssignment(null)}
+        />
+      )}
+
     </div>
   )
 }
