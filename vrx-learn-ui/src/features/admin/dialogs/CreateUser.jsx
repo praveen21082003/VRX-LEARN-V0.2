@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { Input, Select, Button } from '@/components/ui'
 
 
-function CreateUser({ isEdit = false, userData = {}, onClose }) {
+function CreateUser({ isEdit = false, userData = {}, onClose,roles = [], statuses = []  }) {
     const [showResetFields, setShowResetFields] = useState(false);
+    const roleOptions = roles.map((r) => ({ label: r, value: r.toLowerCase() }));
+    const statusOptions = statuses.map((s) => ({ label: s, value: s.toLowerCase() }));
     return (
         <div className='space-y-4'>
             <Input
@@ -22,23 +24,14 @@ function CreateUser({ isEdit = false, userData = {}, onClose }) {
             <Select
                 inputLabel="Role"
                 defaultValue={userData?.role?.toLowerCase() || ""}
-                options={[
-                    { label: "Admin", value: "admin" },
-                    { label: "Sub Admin", value: "sub_admin" },
-                    { label: "Trainer", value: "trainer" },
-                    { label: "Trainee", value: "trainee" }
-                ]}
+                options={roleOptions}
                 borderClass="border-input-border"
             />
             {isEdit && (
                 <Select
                     inputLabel="Status"
                     defaultValue={userData?.status?.toLowerCase() || "active"}
-                    options={[
-                        { label: "Active", value: "active" },
-                        { label: "Inactive", value: "inactive" },
-                        { label: "Pending", value: "pending" }
-                    ]}
+                    options={statusOptions}
                     borderClass="border-input-border"
                 />
             )}

@@ -73,10 +73,10 @@ function CourseInfo() {
       <form onSubmit={handleSubmit} className="space-y-8">
 
 
-        <div className="flex gap-4 h-49">
+        <div className="flex flex-col-reverse md:flex-row gap-4 md:h-49">
 
 
-          <div className="flex flex-col gap-8 w-[70%] justify-end">
+          <div className="flex flex-col gap-8 md:w-[65%] xl:w-[70%] justify-end">
             <Input
               label="Title"
               value={formData.name}
@@ -92,7 +92,7 @@ function CourseInfo() {
           </div>
 
 
-          <div className="relative noise-overlay flex flex-col ">
+          <div className="relative noise-overlay flex flex-col md:w-[35%]  xl:w-[30%]">
             <CourseTumbnail
               name={formData.name}
               image={formData.thumbnail}
