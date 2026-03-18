@@ -111,7 +111,7 @@
     {
       "id": "1",
       "course_id": 34,
-      "title": "Fullstack Architecture Overview",
+      "title": "Fun",
       "description": "## Introduction & Architecture - Overview of system design, project structure, and end-to-end application architecture.",
       "lessons": [
         {
@@ -499,7 +499,7 @@
   ],
   "assignment_submissions": [
     {
-      "id": 1,
+      "id": "1",
       "assignment_id": 1,
       "student_id": 4,
       "name": "Arul S",
@@ -507,12 +507,12 @@
       "attempt": 1,
       "submission_date": "2026-02-13T10:45:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 2,
+      "id": "2",
       "assignment_id": 1,
       "student_id": 6,
       "name": "Heaven Kane",
@@ -520,12 +520,12 @@
       "attempt": 1,
       "submission_date": "2026-02-14T09:15:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 3,
+      "id": "3",
       "assignment_id": 1,
       "student_id": 7,
       "name": "Reece Mayer",
@@ -533,12 +533,12 @@
       "attempt": 1,
       "submission_date": "2026-02-10T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "GRADED",
       "grade": 90
     },
     {
-      "id": 4,
+      "id": "4",
       "assignment_id": 1,
       "student_id": 8,
       "name": "Virat",
@@ -546,12 +546,12 @@
       "attempt": 3,
       "submission_date": "2026-02-16T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "DONE_LATE",
       "grade": null
     },
     {
-      "id": 5,
+      "id": "5",
       "assignment_id": 1,
       "student_id": 4,
       "name": "Arul S",
@@ -559,12 +559,12 @@
       "attempt": 1,
       "submission_date": "2026-02-13T10:45:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 6,
+      "id": "6",
       "assignment_id": 1,
       "student_id": 6,
       "name": "Heaven Kane",
@@ -572,12 +572,12 @@
       "attempt": 1,
       "submission_date": "2026-02-14T09:15:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 7,
+      "id": "7",
       "assignment_id": 1,
       "student_id": 7,
       "name": "Reece Mayer",
@@ -585,12 +585,12 @@
       "attempt": 1,
       "submission_date": "2026-02-10T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "GRADED",
       "grade": 90
     },
     {
-      "id": 8,
+      "id": "8",
       "assignment_id": 1,
       "student_id": 8,
       "name": "Virat",
@@ -598,12 +598,12 @@
       "attempt": 3,
       "submission_date": "2026-02-16T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "DONE_LATE",
       "grade": null
     },
     {
-      "id": 9,
+      "id": "9",
       "assignment_id": 1,
       "student_id": 4,
       "name": "Arul S",
@@ -611,12 +611,12 @@
       "attempt": 1,
       "submission_date": "2026-02-13T10:45:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 10,
+      "id": "10",
       "assignment_id": 1,
       "student_id": 6,
       "name": "Heaven Kane",
@@ -624,12 +624,12 @@
       "attempt": 1,
       "submission_date": "2026-02-14T09:15:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 11,
+      "id": "11",
       "assignment_id": 1,
       "student_id": 7,
       "name": "Reece Mayer",
@@ -637,12 +637,12 @@
       "attempt": 1,
       "submission_date": "2026-02-10T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "GRADED",
       "grade": 90
     },
     {
-      "id": 12,
+      "id": "12",
       "assignment_id": 1,
       "student_id": 8,
       "name": "Virat",
@@ -654,7 +654,7 @@
       "grade": null
     },
     {
-      "id": 13,
+      "id": "13",
       "assignment_id": 1,
       "student_id": 4,
       "name": "Arul S",
@@ -666,7 +666,7 @@
       "grade": null
     },
     {
-      "id": 14,
+      "id": "14",
       "assignment_id": 1,
       "student_id": 6,
       "name": "Heaven Kane",
@@ -678,7 +678,7 @@
       "grade": null
     },
     {
-      "id": 15,
+      "id": "15",
       "assignment_id": 1,
       "student_id": 7,
       "name": "Reece Mayer",
@@ -686,12 +686,12 @@
       "attempt": 1,
       "submission_date": "2026-02-10T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "GRADED",
       "grade": 90
     },
     {
-      "id": 16,
+      "id": "16",
       "assignment_id": 1,
       "student_id": 8,
       "name": "Virat",
@@ -699,12 +699,12 @@
       "attempt": 3,
       "submission_date": "2026-02-16T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "DONE_LATE",
       "grade": null
     },
     {
-      "id": 17,
+      "id": "17",
       "assignment_id": 1,
       "student_id": 4,
       "name": "Arul S",
@@ -712,12 +712,12 @@
       "attempt": 1,
       "submission_date": "2026-02-13T10:45:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 18,
+      "id": "18",
       "assignment_id": 1,
       "student_id": 6,
       "name": "Heaven Kane",
@@ -725,12 +725,12 @@
       "attempt": 1,
       "submission_date": "2026-02-14T09:15:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 19,
+      "id": "19",
       "assignment_id": 1,
       "student_id": 7,
       "name": "Reece Mayer",
@@ -738,12 +738,12 @@
       "attempt": 1,
       "submission_date": "2026-02-10T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "GRADED",
       "grade": 90
     },
     {
-      "id": 20,
+      "id": "20",
       "assignment_id": 1,
       "student_id": 8,
       "name": "Virat",
@@ -751,12 +751,12 @@
       "attempt": 3,
       "submission_date": "2026-02-16T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "DONE_LATE",
       "grade": null
     },
     {
-      "id": 21,
+      "id": "21",
       "assignment_id": 1,
       "student_id": 4,
       "name": "Arul S",
@@ -764,12 +764,12 @@
       "attempt": 1,
       "submission_date": "2026-02-13T10:45:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 22,
+      "id": "22",
       "assignment_id": 1,
       "student_id": 6,
       "name": "Heaven Kane",
@@ -777,12 +777,12 @@
       "attempt": 1,
       "submission_date": "2026-02-14T09:15:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 23,
+      "id": "23",
       "assignment_id": 1,
       "student_id": 7,
       "name": "Reece Mayer",
@@ -790,12 +790,12 @@
       "attempt": 1,
       "submission_date": "2026-02-10T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "GRADED",
       "grade": 90
     },
     {
-      "id": 24,
+      "id": "24",
       "assignment_id": 1,
       "student_id": 8,
       "name": "Virat",
@@ -803,12 +803,12 @@
       "attempt": 3,
       "submission_date": "2026-02-16T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "DONE_LATE",
       "grade": null
     },
     {
-      "id": 25,
+      "id": "25",
       "assignment_id": 1,
       "student_id": 4,
       "name": "Arul S",
@@ -816,12 +816,12 @@
       "attempt": 1,
       "submission_date": "2026-02-13T10:45:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 26,
+      "id": "26",
       "assignment_id": 1,
       "student_id": 6,
       "name": "Heaven Kane",
@@ -829,12 +829,12 @@
       "attempt": 1,
       "submission_date": "2026-02-14T09:15:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "SUBMITTED",
       "grade": null
     },
     {
-      "id": 27,
+      "id": "27",
       "assignment_id": 1,
       "student_id": 7,
       "name": "Reece Mayer",
@@ -842,12 +842,12 @@
       "attempt": 1,
       "submission_date": "2026-02-10T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "GRADED",
       "grade": 90
     },
     {
-      "id": 28,
+      "id": "28",
       "assignment_id": 1,
       "student_id": 8,
       "name": "Virat",
@@ -855,7 +855,7 @@
       "attempt": 3,
       "submission_date": "2026-02-16T15:30:00",
       "file_name": "Assignment.pdf",
-      "file_url":"https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
+      "file_url": "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf",
       "status": "DONE_LATE",
       "grade": null
     }

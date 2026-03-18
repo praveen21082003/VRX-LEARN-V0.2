@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import { formatMinutes } from "@/utils/duration";
 import { Button, Tabs, Icon } from "@/components/ui";
 import Overview from "./Overview";
 import QuestionAnswers from "./QuestionAnswers";
@@ -10,9 +9,21 @@ function LessonsMainSection({ lesson, error, activeLesson, setActiveLesson, setB
   const [activeTab, setActiveTab] = useState("overview");
   const [showButton, setShowButton] = useState(true);
   const lastScrollY = useRef(0);
+  const [videoDuration, setVideoDuration] = useState(0);
 
   const scrollRef = useRef(null);
   // console.log(nextLessonData);
+
+  const formatTime = (time) => {
+    if (isNaN(time) || time <= 0) return "0 sec";
+
+    if (time < 60) {
+      return `${Math.floor(time)} sec`;
+    }
+
+    const mins = Math.round(time / 60);
+    return `${mins} min${mins > 1 ? "s" : ""}`;
+  };
 
 
   useEffect(() => {
@@ -71,14 +82,14 @@ function LessonsMainSection({ lesson, error, activeLesson, setActiveLesson, setB
         <Icon name="ph:dot-bold" />
         {lesson?.type === "video" && (
           <>
-            <span>{formatMinutes(lesson?.duration_minutes)}</span>
+            <span>{formatTime(videoDuration)}</span>
             <Icon name="ph:dot-bold" />
           </>
         )}
         <span>{lesson?.status}</span>
       </div>
 
-      <ContentRenderer lesson={lesson} error={error} activeLesson={activeLesson} setButtonAction={setButtonAction} />
+      <ContentRenderer lesson={lesson} error={error} activeLesson={activeLesson} setButtonAction={setButtonAction} setVideoDuration={setVideoDuration} />
 
       <div className="hidden md:flex justify-between items-center pt-4">
         <div className="flex gap-4 w-[30%]">
@@ -128,7 +139,7 @@ function LessonsMainSection({ lesson, error, activeLesson, setActiveLesson, setB
        p-3 rounded-lg shadow-lg z-40"
         onClick={() => setOpenPlaylist(true)}
       >
-        <Icon name="nrk:media-playlist-add-next" width="24" height="24"/>
+        <Icon name="nrk:media-playlist-add-next" width="24" height="24" />
 
         <div className="flex justify-between items-center w-full text-left overflow-hidden">
           {nextLessonData ? (
@@ -155,7 +166,7 @@ function LessonsMainSection({ lesson, error, activeLesson, setActiveLesson, setB
           ) : (
             <span>Contents</span>
           )}
-          <Icon name="mingcute:up-fill" width="24" height="24"/>
+          <Icon name="mingcute:up-fill" width="24" height="24" />
         </div>
       </motion.button>
     </main>

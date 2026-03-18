@@ -10,6 +10,7 @@ import Layout from "./features/auth/layout/Layout";
 import DashboardRouter from "@/components/navigation/routers/DashboardRouter";
 import CourseOverView from "@/components/navigation/routers/CourseOverView";
 import CoursesRouter from "@/components/navigation/routers/CoursesRouter";
+import MyLearning from "./features/dashboard/pages/MyLearning";
 
 import UsersManagement from "@/features/admin/dashboard/pages/UsersManagement";
 import EnrollmentMangement from "@/features/admin/dashboard/pages/EnrollmentMangement";
@@ -56,6 +57,7 @@ function App() {
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<DashboardRouter />} />
               <Route path="/courses" element={<CoursesRouter />} />
+              <Route path="/learning" element={<MyLearning/>} />
             </Route>
 
             <Route path="/course/:courseSlug" element={<LearningLayout />}>
@@ -64,6 +66,7 @@ function App() {
               <Route path="lessons" element={<LessonsPage />} />
               <Route path="lessons/:lessonId" element={<LessonsPage />} />
               <Route path="assignments" element={<AssignmentPage />} />
+              <Route path="assignments/:assignmentId" element={<AssignmentPage />} />
               <Route path="labs" element={<LabPage />} />
               <Route path="quizzes" element={<QuizPage />} />
               <Route path="feedback" element={<FeedbackPage />} />

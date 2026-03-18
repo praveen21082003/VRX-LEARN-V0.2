@@ -1,8 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import { Outlet, } from "react-router-dom";
+import { Outlet,useParams, useLocation } from "react-router-dom";
 import { Header } from '@/components/ui'
+import BackButton from "@/components/navigation/BackButton";
 
 export default function AdminLayout() {
+    const location = useLocation();
+    const { courseSlug } = useParams();
+    const isOverviewPage = location.pathname === `/course/${courseSlug}/overview`;
+    const backPath = isOverviewPage
+        ? "/dashboard"
+        : `/course/${courseSlug}/overview`;
 
     const [breadcrumbs, setBreadcrumbs] = useState([
 
@@ -29,6 +36,9 @@ export default function AdminLayout() {
 
 
             <main className="flex-1 overflow-y-auto bg-background">
+                <div className="block lg:hidden p-2 w-full border-b border-default">
+                    <BackButton to={backPath} iconName="material-symbols:arrow-back-rounded" label={isOverviewPage ? "Back to Dashboard" : "Back to Overview"} />
+                </div>
                 <Outlet
                     context={{
                         setCourseBreadcrumb: setBreadcrumbs,

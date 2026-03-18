@@ -7,7 +7,7 @@ import ZoomControls from "../ui/FileViewer/ZoomControls";
 import PDFViewer from "./document/PDFViewer";
 import WordViewer from "./document/WordViewer";
 
-function ContentRenderer({ lesson, error, activeLesson, setButtonAction }) {
+function ContentRenderer({ lesson, error, activeLesson, setButtonAction, setVideoDuration }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -31,7 +31,7 @@ function ContentRenderer({ lesson, error, activeLesson, setButtonAction }) {
       <div className="flex justify-center w-full mt-1 lg:px-10 2xl:px-0  rounded overflow-hidden">
         {lesson?.type === "video" ? (
 
-          <VideoPlayer url={lesson?.video_url} key={lesson.id} />
+          <VideoPlayer url={lesson?.video_url} key={lesson.id}  setVideoDuration={setVideoDuration}/>
 
         ) : lesson?.type === "file" ? (
 

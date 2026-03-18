@@ -3,9 +3,8 @@ import { useParams, useOutletContext, NavLink } from "react-router-dom";
 
 import useCourseContent from "@/features/courses/hooks/useCourseContent";
 import { usePermission } from "@/hooks/usePermission"
-import { CourseTumbnail, Icon } from "@/components/ui";
+import { CourseTumbnail, Icon, FloatingMenu } from "@/components/ui";
 import { formatMinutes } from "@/utils/duration";
-import sideArrow from "@/assets/images/side_arrow.svg";
 
 import { TRAINEE_SECTIONS } from "@/config/courseOverview";
 import { TRAINER_SECTIONS } from "@/config/courseOverview";
@@ -54,7 +53,7 @@ function CourseOverView() {
                     <CourseTumbnail name={courseContent.name} image={courseContent.thumbnail} classRounded="rounded-lg" />
                 </div>
                 <div className="flex-1 min-w-0">
-                    <div className="flex justify-between">
+                    <div className="hidden lg:flex justify-between">
                         <h2 className="text-h2">{courseContent.name}</h2>
                     </div>
                     <div>
@@ -147,6 +146,18 @@ function CourseOverView() {
                         </NavLink>
                     );
                 })}
+            </div>
+            <div>
+                {can("UPDATE_COURSE")
+                    && <FloatingMenu
+                        actions={[
+                            { label: "Module", icon: "codicon:file-submodule", path: "modules" },
+                            { label: "Assignments", icon: "material-symbols:assignment-outline", path: "assignments" },
+                            { label: "Lab Credentials", icon: "ooui:lab-flask", path: "lab" },
+                            { label: "Quiz", icon: "hugeicons:quiz-05", path: "quiz" },
+                        ]}
+                    />
+                }
             </div>
         </>
     )

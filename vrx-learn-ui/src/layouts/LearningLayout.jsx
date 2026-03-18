@@ -12,6 +12,9 @@ export default function LearningLayout() {
 
 
     const isOverviewPage = location.pathname === `/course/${courseSlug}/overview`;
+
+    const isAssignmentPage = location.pathname === `/course/${courseSlug}/assignments`
+
     const backPath = isOverviewPage
         ? "/dashboard"
         : `/course/${courseSlug}/overview`;
@@ -117,10 +120,12 @@ export default function LearningLayout() {
                         }}
                         className="h-full w-full absolute top-0 left-0 overflow-y-auto"
                     >
-                        <div className="block lg:hidden p-2 w-full border-b border-default">
-                            <BackButton to={backPath} iconName="material-symbols:arrow-back-rounded" label={isOverviewPage? "Back to Dashboard" : "Back to Overview"} />
-                        </div>
-                        
+                        {isAssignmentPage &&
+                            <div className="block lg:hidden p-2 w-full border-b border-default">
+                                <BackButton to={backPath} iconName="material-symbols:arrow-back-rounded" label={isOverviewPage ? "Back to Dashboard" : "Back to Overview"} />
+                            </div>
+                        }
+
                         <Outlet
                             context={{
                                 setCourseBreadcrumb,

@@ -29,15 +29,16 @@ export const TRAINEE_SECTIONS = [
     metaLabel: "Modules",
   },
   {
-    key: "quizzes",
-    title: "Quiz",
-    durationKey: "quiz_duration",
-  },
-  {
     key: "assignments",
     title: "Assignment",
     durationKey: "assignment_duration",
   },
+  {
+    key: "quizzes",
+    title: "Quiz",
+    durationKey: "quiz_duration",
+  },
+
   {
     key: "labs",
     title: "Lab Credentials",

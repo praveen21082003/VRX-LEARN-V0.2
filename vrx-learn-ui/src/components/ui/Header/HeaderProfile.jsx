@@ -3,45 +3,23 @@
 import { useEffect, useRef, useState } from "react";
 import Dropdown from "../Dropdown";
 import { Icon } from '@/components/ui';
-import { useNavigate } from "react-router-dom";
-import { getProfileDropdown } from "@/config/DropdownButtons";
-import { useTheme } from "../../../context/ThemeProvider";
+
+
 import Pill from "./Pill";
 
 
-export default function HeaderProfile({ user, role, viewRole, setViewRole, loading }) {
-
-
+export default function HeaderProfile({ user, role, viewRole, loading, buttons  }) {
 
     const [open, setOpen] = useState(false);
-    const ref = useRef(null);
-    const navigate = useNavigate();
+    const isMobile = window.innerWidth < 768
 
-    const { darkMode, toggleTheme } = useTheme();
+    const ref = useRef(null);
+    
 
     if (loading) {
         return null;
     }
 
-
-    const handleSwitchAccount = () => {
-        if (viewRole === "TRAINEE") {
-            setViewRole(role);
-            navigate("/dashboard");
-        } else {
-            setViewRole("TRAINEE");
-            navigate("/dashboard");
-        }
-    };
-
-    const buttons = getProfileDropdown({
-        mode: darkMode,
-        handleMode: toggleTheme,
-        role,
-        viewRole,
-        onSwitch: handleSwitchAccount,
-        navigate,
-    });
 
 
     useEffect(() => {
@@ -62,7 +40,7 @@ export default function HeaderProfile({ user, role, viewRole, setViewRole, loadi
 
             {/* CLICK TARGET */}
             <div
-                className="flex items-center gap-2 cursor-pointer select-none"
+                className="flex flex-row-reverse md:flex-row items-center gap-2 cursor-pointer select-none"
                 onClick={(e) => {
                     e.stopPropagation();
                     setOpen(prev => !prev);
@@ -78,15 +56,17 @@ export default function HeaderProfile({ user, role, viewRole, setViewRole, loadi
                     <Icon name="mingcute:user-4-fill" height="40" width="40" />
                 }
 
-                <span className="text-h5 w-28 truncate">{user?.name}</span>
+                <span className="hidden md:block text-h5 max-w-28 truncate">{user?.name}</span>
                 {role === "TRAINER" && (
                     <Pill viewRole={viewRole} />
                 )}
-                <Icon name="iconamoon:arrow-down-2" width="16px" height="16px" />
+                <span className="hidden md:block">
+                    <Icon name="iconamoon:arrow-down-2" width="16px" height="16px" />
+                </span>
             </div>
 
-            {/* DROPDOWN (POSITIONED FROM WRAPPER) */}
-            {open && <Dropdown buttons={buttons} className="right-0 top-full mt-2" />}
+            {open && !isMobile && <Dropdown buttons={buttons} className="right-0 top-full mt-2" />}
+
         </div>
     );
 }

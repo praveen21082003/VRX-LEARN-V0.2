@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, useOutletContext } from 'react-router-dom'
+import { useParams, useOutletContext, useNavigate } from 'react-router-dom'
 
 import useAssignments from '../hooks/useAssignments'
 import useAssignment from '../hooks/useAssingment'
@@ -9,56 +9,47 @@ import AssignmentMainSection from '../sections/AssignmentMainSection'
 
 
 function AssignmentPage() {
-  const { courseSlug } = useParams();
-  const { setSectionBreadcrumb } = useOutletContext()
-  const isMobile = window.innerWidth < 768;
+  const { courseSlug, assignmentId } = useParams();
 
-  const [activeAssignment, setActiveAssignment] = useState(
-    isMobile ? null : { assignmentId: "1" }
-  );
+  const navigate = useNavigate();
 
-  const assignmentId = activeAssignment?.assignmentId;
-
-  const { assignments, error, loading } = useAssignments(courseSlug)
-  const { assignment, assignmentError, assignmentLoading } = useAssignment(assignmentId);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
-    if (assignment?.title) {
-      setSectionBreadcrumb(assignment.title);
-    }
-  }, [assignment, setSectionBreadcrumb]);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-  if (!assignments) return null;
+  const { assignments } = useAssignments(courseSlug);
+  const { assignment } = useAssignment(assignmentId);
+
+
+  // Auto select first (desktop)
+  useEffect(() => {
+    if (!isMobile && assignments?.length > 0 && !assignmentId) {
+      navigate(`/course/${courseSlug}/assignments/${assignments[0].id}`, { replace: true });
+    }
+  }, [assignments, isMobile, assignmentId]);
 
 
   return (
     <div className="flex h-[calc(100vh-56px)] overflow-hidden bg-background text-main">
 
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:block h-screen">
-        <AssignmentAsideSection
-          assignments={assignments}
-          activeAssignment={activeAssignment}
-          setActiveAssignment={setActiveAssignment}
-        />
+      {/* desktop always visible */}
+      <div className="hidden lg:block">
+        <AssignmentAsideSection assignments={assignments} />
       </div>
 
-      {/* Mobile List View */}
-      {!activeAssignment && (
-        <div className="lg:hidden w-full h-screen">
-          <AssignmentAsideSection
-            assignments={assignments}
-            activeAssignment={activeAssignment}
-            setActiveAssignment={setActiveAssignment}
-          />
-        </div>
+      {/* mobile */}
+      {!assignmentId && isMobile && (
+        <AssignmentAsideSection assignments={assignments} />
       )}
 
-      {/* Assignment Detail */}
-      {activeAssignment && (
+      {assignmentId && (
         <AssignmentMainSection
           assignment={assignment}
-          onBack={() => setActiveAssignment(null)}
+          courseId={courseSlug}
         />
       )}
 

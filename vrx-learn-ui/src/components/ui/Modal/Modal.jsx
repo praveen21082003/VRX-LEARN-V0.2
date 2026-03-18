@@ -13,7 +13,7 @@ export default function Modal({ isOpen, onClose, title, children, width = "max-w
             />
 
 
-            <div className={`relative bg-background text-main rounded-lg shadow-lg w-full ${width}`}>
+            <div className={`relative bg-background text-main rounded-lg shadow-lg w-full ${width} max-h-[90vh] flex flex-col`}>
 
 
                 <div className="flex justify-between items-center p-4">
@@ -29,7 +29,7 @@ export default function Modal({ isOpen, onClose, title, children, width = "max-w
                 </div>
 
 
-                <div className="p-4">
+                <div className="p-4 overflow-y-auto">
                     {children}
                 </div>
 

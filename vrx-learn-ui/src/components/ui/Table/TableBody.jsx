@@ -4,7 +4,7 @@ function TableBody({ columns, data, selectedRows }) {
       {data.map((row) => (
         <tr
           key={row.id}
-          className={`border-b border-default ${selectedRows.includes(row.id) ? "bg-primary-16" : ""
+          className={`border-b border-default ${selectedRows?.includes(row.id) ? "bg-primary-16" : ""
             }`}
         >
           {columns.map((col) => (

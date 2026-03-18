@@ -4,14 +4,14 @@ import TrainerDashboard from "@/features/admin/dashboard/pages/TrainerDashboard"
 import AdminDashboard from "@/features/admin/dashboard/pages/AdminDashboard";
 
 export default function DashboardRouter() {
-    const { role } = useAuth();
+    const { viewRole } = useAuth();
 
 
-    if (role === "ADMIN" || role === "SUBADMIN") {
+    if (viewRole === "ADMIN" || viewRole === "SUBADMIN") {
         return <AdminDashboard />;
     }
 
-    if (role === "TRAINER") {
+    if (viewRole === "TRAINER") {
         return <TrainerDashboard />;
     }
 

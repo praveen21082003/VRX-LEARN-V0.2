@@ -55,11 +55,12 @@ function Viewer({
 
       <div
         className={clsx(
-          "flex gap-4 overflow-x-auto snap-x snap-mandatory lg:grid lg:overflow-visible",
-          gridSize === 1 && "lg:grid-cols-1",
-          gridSize === 2 && "lg:grid-cols-2",
-          gridSize === 3 && "lg:grid-cols-3",
-          gridSize === 4 && "lg:grid-cols-4"
+          "flex gap-4 overflow-x-auto snap-x snap-mandatory",
+          "md:grid md:overflow-visible",
+          gridSize === 1 && "md:grid-cols-1",
+          gridSize === 2 && "md:grid-cols-2",
+          gridSize === 3 && "md:grid-cols-3",
+          gridSize === 4 && "md:grid-cols-4"
         )}
       >
         {visibleCourses.map(course => {

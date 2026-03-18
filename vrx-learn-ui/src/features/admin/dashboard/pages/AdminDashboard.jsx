@@ -74,7 +74,7 @@ function AdminDashboard() {
       <div className='space-y-4'>
         <h4 className="text-h4">Quick Actions</h4>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {quickAction.map((action, index) => {
             const isPrimary = action.bgClass;
 

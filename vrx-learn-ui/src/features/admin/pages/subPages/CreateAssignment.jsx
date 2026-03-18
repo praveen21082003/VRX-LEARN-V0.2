@@ -109,7 +109,7 @@ function CreateAssignment() {
                     value={formData.description}
                     onChange={(value) => handleChange("instructions", value)}
                 />
-                <div className='flex space-x-2'>
+                <div className='grid grid-cols-1 lg:grid-cols-2 space-x-2'>
                     <Input
                         label="Due Date & Time"
                         type="datetime-local"
@@ -146,7 +146,7 @@ function CreateAssignment() {
                 <UploadSection
                     files={files}
                     setFiles={setFiles}
-                    onUpload={handleUpload}
+                    // onUpload={handleUpload}
                 />
 
             </div>

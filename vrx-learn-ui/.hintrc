@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "background-color: color-mix(in srgb, var(--color-primary-16) 16%, transparent)"
+        ]
+      }
+    ]
+  }
+}

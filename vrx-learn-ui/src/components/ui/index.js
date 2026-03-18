@@ -2,6 +2,7 @@ export { default as Input } from './Input';
 export { default as Select } from './Input/Select'
 
 export { default as Button } from './Button';
+export { default as FloatingMenu } from './Button/FloatingMenu'
 export { default as InputWarnMessage } from './Warning';
 // export {default as CourseCard } from './CourseCard';
 export { default as Header } from './Header';
@@ -22,3 +23,4 @@ export { default as Avatar } from './Table/Avatar'
 export { default as StatusPill } from './Table/StatusPill'
 export { default as StatCard } from './Cards/StatCard'
 export { default as Modal } from './Modal/Modal'
+

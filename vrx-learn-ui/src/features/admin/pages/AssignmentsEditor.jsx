@@ -10,6 +10,8 @@ import { useToast } from '@/context/ToastProvider';
 
 
 function AssignmentsEditor() {
+    const isMobile = window.innerWidth < 768;
+
     const { assignments, courseSlug } = useOutletContext();
     const { updateAssignemt, loading, error } = useUpdateAssignment();
     const { deleteAssignment } = useDeleteAssignment();
@@ -86,27 +88,40 @@ function AssignmentsEditor() {
     }, [isOpenDropdown]);
 
 
+    useEffect(() => {
+        if (assignments) {
+            setUpdatedAssignments(assignments);
+        }
+    }, [assignments]);
 
-
-
-    if (!assignments) return null
     return (
         <div className="space-y-6">
             <div className='flex justify-between'>
                 <h2 className="text-h3">Assignments</h2>
-                <NavLink to={`/courses/${courseSlug}/edit/assignments/create`}>
-                    <Button buttonName="Add New Assignment" frontIconName="ic:baseline-plus" frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="" textClass="hover:text-primary dark:hover:text-white/70" />
+                <NavLink to={`/course/${courseSlug}/content/assignments/create`}>
+                    <Button
+                        buttonName="Add New Assignment"
+                        frontIconName="ic:baseline-plus"
+                        frontIconWidth="24px"
+                        frontIconHeght="24px"
+                        className="p-1 rounded font-semibold text-md"
+                        bgClass=""
+                        textClass="hover:text-primary dark:hover:text-white/70"
+                        isMobile={isMobile}
+                    />
                 </NavLink>
             </div>
+
             <ul className="flex flex-col">
-                {updatedAssignments.map((assignment) => {
+
+                {updatedAssignments?.map((assignment) => {
                     const isOpen = isOpenDropdown === assignment.id;
 
                     return (
-                        < li key={assignment.id} >
+                        <li key={assignment.id} className=''>
                             <NavLink
                                 onDoubleClick={() =>
-                                    navigate(`/courses/${courseSlug}/edit/assignments/${assignment.id}`)
+                                    navigate(`/course/${courseSlug}/content/assignments/${assignment.id}`)
                                 }
                                 className="flex items-center justify-between px-5 py-3 rounded-md hover:bg-primary/16 dark:hover:bg-primary transition-colors cursor-pointer"
                                 onClick={(e) => {
@@ -153,7 +168,7 @@ function AssignmentsEditor() {
                                             </span>
                                         }
                                         <span className='text-caption text-dark-gray text-muted-foreground'>
-                                            Due: {formatDate(assignment.due_date)}, {formatDateTime(assignment.due_date, assignment.due_time)}
+                                            Due:{formatDateTime(assignment.submission_date)}
                                         </span>
                                     </div>
 

@@ -15,6 +15,9 @@ import { editButtons, buttons } from '@/config/DropdownButtons.js'
 
 
 function LessonsEditor() {
+
+    const isMobile = window.innerWidth < 768;
+
     const navigate = useNavigate();
     const inputRef = useRef();
     const rowRefs = useRef({});
@@ -112,20 +115,44 @@ function LessonsEditor() {
     return (
         <div className="space-y-4">
             <div className='flex justify-between'>
-                <h2 className="text-h3">{module?.title}</h2>
+                <h2 className="text-h4 md:text-h3 truncate">{module?.title}</h2>
                 <div className='flex gap-px'>
                     <span className=' flex gap-3'>
 
                         {isReorderMode
                             ? <Button buttonName='Done' frontIconWidth="24px" frontIconHeght="24px" frontIconName='material-symbols:done-rounded' className="p-1 px-4 rounded" onClick={() => setIsReorderMode(false)} />
-                            : <div className='relative flex gap-px'>
-                                <Button buttonName="Edit Details" frontIconName='mingcute:pencil-line' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="" textClass="" />
-                                <Button frontIconName="subway:down-2" frontIconWidth="16px" frontIconHeght="16px" className="p-2 px-2 rounded" onClick={() => setOpenDropDown((prve) => !prve)} />
+                            : <div className='relative flex flex-row gap-px'>
+                                <Button
+                                    buttonName="Edit Details"
+                                    frontIconName='mingcute:pencil-line'
+                                    frontIconWidth="24px"
+                                    frontIconHeght="24px"
+                                    className="p-1 rounded font-semibold text-md"
+                                    bgClass=""
+                                    textClass=""
+                                    isMobile={isMobile}
+                                />
+                                <Button
+                                    frontIconName="subway:down-2"
+                                    frontIconWidth="16px"
+                                    frontIconHeght="16px"
+                                    className="p-2 px-2 rounded"
+                                    onClick={() => setOpenDropDown((prve) => !prve)}
+                                />
                                 {openDropDown && <Dropdown buttons={editButtons(handleReorder)} closeDropdown={() => setOpenDropDown(false)} />}
                             </div>
                         }
-                        <NavLink to={`/admin/courses/${courseSlug}/edit/modules/${moduleId}/lesson/new`}>
-                            <Button buttonName="Add New Lesson" frontIconName='ic:baseline-plus' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="" textClass="" />
+                        <NavLink to={`/course/${courseSlug}/content/modules/${moduleId}/lesson/create`}>
+                            <Button
+                                buttonName="Add New Lesson"
+                                frontIconName='ic:baseline-plus'
+                                frontIconWidth="24px"
+                                frontIconHeght="24px"
+                                className="p-1 rounded font-semibold text-md"
+                                bgClass=""
+                                textClass=""
+                                isMobile={isMobile}
+                            />
                         </NavLink>
                     </span>
                 </div>
@@ -142,7 +169,7 @@ function LessonsEditor() {
                             >
                                 <NavLink
                                     className={clsx(
-                                        'flex justify-between gap-3 items-center px-5 py-3 rounded text-h45 hover:bg-primary/16 hover:dark:bg-primary cursor-pointer',
+                                        'flex gap-2 items-center p-2 lg:px-5 py-3 rounded text-h45 hover:bg-primary/16 dark:hover:bg-primary cursor-pointer',
                                         isOpenDropdown === lesson.id || renameLessonId === lesson.id && 'bg-active'
                                     )}
                                     onDoubleClick={() => navigate(lesson.id)}
@@ -154,7 +181,7 @@ function LessonsEditor() {
                                     }}
                                 >
                                     <Icon name={`${lesson.type === 'video' ? "ep:video-play" : "basil:document-outline"}`} height="25px" width="25px" />
-                                    <div className='flex justify-between w-full items-center'>
+                                    <div className='flex items-center gap-2 w-full min-w-0'>
                                         <span className="py-1 mr-2">
                                             {index + 1}.
                                         </span>
@@ -185,7 +212,7 @@ function LessonsEditor() {
                                                 </span>
                                             )}
                                         <div
-                                            className='relative w-20 flex justify-center'
+                                            className='relative flex justify-center'
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 e.stopPropagation();

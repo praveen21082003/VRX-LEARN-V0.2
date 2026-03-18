@@ -15,7 +15,8 @@ function Button({
   frontIconHeight,
   backIconWidth,
   backIconHeight,
-  fontClass = 'text-h5'
+  fontClass = 'text-h5',
+  isMobile
 }) {
   const isWhiteBg =
     bgClass.includes('');
@@ -57,7 +58,7 @@ function Button({
         />
       )}
 
-      {buttonName && <span>{buttonName}</span>}
+      {buttonName && !isMobile && <span>{buttonName}</span>}
 
       {backIconName && (
         <Icon

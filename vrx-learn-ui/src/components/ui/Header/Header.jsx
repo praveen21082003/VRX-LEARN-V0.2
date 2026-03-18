@@ -5,14 +5,45 @@ import BreadcrumbMenu from "./BreadcrumbMenu";
 import HeaderProfile from "./HeaderProfile";
 import { useAuth } from '@/context/AuthContext'
 import Sidebar from "@/components/ui/Header/Sidebar";
+import { useTheme } from "../../../context/ThemeProvider";
+import { getProfileDropdown } from "@/config/DropdownButtons";
+import { useNavigate } from "react-router-dom";
 
 function Header({ menu, breadcrumbs = [] }) {
+
+    const navigate = useNavigate();
+
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const { user, role, viewRole, setViewRole, loading } = useAuth();
+
+    const { darkMode, toggleTheme } = useTheme();
+
+
+
 
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen)
     }
+
+    const handleSwitchAccount = () => {
+        if (viewRole === "TRAINEE") {
+            setViewRole(role);
+            navigate("/dashboard");
+        } else {
+            setViewRole("TRAINEE");
+            navigate("/dashboard");
+        }
+    };
+
+
+    const buttons = getProfileDropdown({
+        mode: darkMode,
+        handleMode: toggleTheme,
+        role,
+        viewRole,
+        onSwitch: handleSwitchAccount,
+        navigate,
+    });
 
     return (
         <header className="sticky top-0 z-40 flex h-[50px] w-full items-center justify-between bg-brand 
@@ -24,7 +55,7 @@ function Header({ menu, breadcrumbs = [] }) {
                     onClick={() => setSidebarOpen(false)}
                 />
             )}
-            <Sidebar open={sidebarOpen} role={role} toggleSidebar={toggleSidebar} />
+            <Sidebar open={sidebarOpen} role={role} toggleSidebar={toggleSidebar} darkMode={darkMode} buttons={buttons} />
 
 
 
@@ -62,7 +93,7 @@ function Header({ menu, breadcrumbs = [] }) {
                         <HeaderUserMenu role={role} />
                     </div>
                 )}
-                <HeaderProfile role={role} viewRole={viewRole} user={user} setViewRole={setViewRole} loading={loading} />
+                <HeaderProfile role={role} viewRole={viewRole} user={user} setViewRole={setViewRole} loading={loading} buttons={buttons} />
             </div>
 
         </header>

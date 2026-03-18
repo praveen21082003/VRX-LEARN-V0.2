@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Icon, Button, Input, Dropdown, MarkdownContent } from '@/components/ui'
-import { useOutletContext, NavLink, useNavigate,  } from 'react-router-dom'
+import { useOutletContext, NavLink, useNavigate, } from 'react-router-dom'
 import ReorderList from '@/components/dnd/ReorderList';
 import clsx from 'clsx';
 import useUpdateMoudule from '../hooks/useUpdateModule';
@@ -10,6 +10,8 @@ import { useToast } from '@/context/ToastProvider';
 
 
 function ModulesEditor() {
+
+    const isMobile = window.innerWidth < 768;
 
     const navigate = useNavigate();
 
@@ -123,9 +125,26 @@ function ModulesEditor() {
             <div className='flex justify-between'>
                 <h2 className="text-h3">Curriculum</h2>
                 <div className='flex gap-3'>
-                    <Button buttonName={clsx(isReorderMode ? "Done" : "Reorder")} frontIconName={clsx(isReorderMode ? "material-symbols:done-rounded" : "ix:reorder")} frontIconWidth="24px" frontIconHeght="24px" className="rounded p-1" bgClass={clsx(isReorderMode && "bg-primary")} textClass={clsx(isReorderMode ? "text-white" : "hover:text-primary hover:dark:text-background")} onClick={handleReorder} />
-                    <NavLink to={`/courses/${courseSlug}/edit/modules/create`}>
-                        <Button buttonName="Add New Module" frontIconName="ic:baseline-plus" frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded" bgClass="" textClass="hover:text-primary hover:dark:text-background" />
+                    <Button
+                        buttonName={clsx(isReorderMode ? "Done" : "Reorder")}
+                        frontIconName={clsx(isReorderMode ? "material-symbols:done-rounded" : "ix:reorder")}
+                        frontIconWidth="24px" frontIconHeght="24px"
+                        className="rounded p-1"
+                        bgClass={clsx(isReorderMode && "bg-primary")} textClass={clsx(isReorderMode ? "text-white" : "hover:text-primary hover:dark:text-background")}
+                        onClick={handleReorder}
+                        isMobile={isMobile}
+                    />
+                    <NavLink to={`/course/${courseSlug}/content/modules/create`}>
+                        <Button
+                            buttonName="Add New Module"
+                            frontIconName="ic:baseline-plus"
+                            frontIconWidth="24px"
+                            frontIconHeght="24px"
+                            className="p-1 rounded"
+                            bgClass=""
+                            textClass="hover:text-primary hover:dark:text-background"
+                            isMobile={isMobile}
+                        />
                     </NavLink>
                 </div>
             </div>
@@ -158,13 +177,13 @@ function ModulesEditor() {
                                                 }
                                             }}
                                             className={clsx(
-                                                'flex justify-between items-center px-5 py-3 rounded text-h45 hover:bg-primary/16 dark:hover:bg-primary cursor-pointer',
+                                                'flex justify-between items-center p-2 lg:px-5 py-3 rounded text-h45 hover:bg-primary/16 dark:hover:bg-primary cursor-pointer',
                                                 isOpenDropdown === module.id || renameModuleId === module.id && 'bg-active'
                                             )}
                                         >
                                             <li className="flex items-center gap-2 w-full min-w-0">
 
-                                                <span className="shrink-0 text-muted-foreground">
+                                                <span className="hidden md:block shrink-0 text-muted-foreground">
                                                     Module {index + 1} -
                                                 </span>
 
@@ -200,7 +219,7 @@ function ModulesEditor() {
                                             </li>
 
                                             <div
-                                                className='relative w-20 h-auto flex justify-center'
+                                                className='relative h-auto flex justify-center'
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     e.stopPropagation();

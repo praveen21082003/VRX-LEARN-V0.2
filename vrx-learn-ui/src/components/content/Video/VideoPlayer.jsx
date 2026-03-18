@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import VideoControls from './VideoControls'
 import { useContentProtection } from '@/hooks/useContentProtection';
-function VideoPlayer({ url,id }) {
+function VideoPlayer({ url,id,setVideoDuration }) {
     useContentProtection(true);
     const videoRef = useRef(null);
 
@@ -22,7 +22,7 @@ function VideoPlayer({ url,id }) {
             >
                 <source src={url} type="video/mp4" />
             </video>
-            <VideoControls videoRef={videoRef} />
+            <VideoControls videoRef={videoRef} setVideoDuration={setVideoDuration}/>
         </div>
 
     )

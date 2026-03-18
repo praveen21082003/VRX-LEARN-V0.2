@@ -1,16 +1,18 @@
 import { Icon } from '@/components/ui'
 import DropZone from "./DropZone";
 import UploadButton from "./UploadButton";
+import { motion } from "motion/react";
 
 export default function UploadSection({
     files,
     setFiles,
     onUpload,
-    label = "Your Work"
+    label = "Your Work",
+    showButton = true
 }) {
 
     const handleRemoveFile = (indexToRemove) => {
-        onFilesChange(files.filter((_, index) => index !== indexToRemove));
+        setFiles(files.filter((_, index) => index !== indexToRemove));
     };
 
 
@@ -26,7 +28,7 @@ export default function UploadSection({
                     return (
                         <div
                             key={`${file.name}-${index}`}
-                            className="group flex items-center justify-between p-3  border border-gray-200 rounded shadow-sm hover:border-primary/40 dark:hover:border-text-main-dark transition-colors"
+                            className="group flex items-center bg-background justify-between p-3  border border-gray-200 rounded shadow-sm hover:border-primary/40 dark:hover:border-text-main-dark transition-colors"
                         >
                             <div className="flex items-center gap-3 min-w-0">
                                 <div className="shrink-0 w-10 h-10 flex items-center justify-center bg-primary/10 text-primary dark:text-text-main-dark rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
@@ -82,27 +84,36 @@ export default function UploadSection({
             </div>
 
 
-            <div className="lg:hidden flex flex-col gap-2.5 fixed bottom-0 left-0 right-0 bg-primary-16 border-t rounded-t-2xl border-default p-3 z-50">
+            <motion.div
+                initial={{ y: 0 }}
+                animate={{ y: showButton ? 0 : "100%" }}
+                transition={{ duration: 0.25 }}
+                className="lg:hidden fixed bottom-0 left-0 right-0
+                bg-background overflow-hidden  rounded-t-2xl shadow-lg z-40"
+            >
+                <div className='bg-primary-16 p-3 '>
 
-                <p className="text-h5 font-medium mb-2">{label}</p>
+                    <p className="text-h5 font-medium mb-2">{label}</p>
 
-                {files.length === 0 ? (
-                    <label className="block border border-primary rounded-md text-center py-2 cursor-pointer">
-                        + Add File
-                        <input
-                            type="file"
-                            className="hidden"
-                            onChange={(e) => setFiles([...e.target.files])}
-                        />
-                    </label>
-                ) : (
-                    <>
-                        <UploadedFiles />
-                    </>
-                )}
+                    {files.length === 0 ? (
+                        <label className="block border border-primary dark:bg-primary rounded-md text-center py-2 cursor-pointer">
+                            + Add File
+                            <input
+                                type="file"
+                                className="hidden"
+                                onChange={(e) => setFiles([...e.target.files])}
+                            />
+                        </label>
+                    ) : (
+                        <>
+                            <UploadedFiles />
+                        </>
+                    )}
 
-                <UploadButton files={files} onUpload={onUpload} />
-            </div>
+                    <UploadButton files={files} onUpload={onUpload} />
+                </div>
+            </motion.div>
+
         </>
     );
 }
