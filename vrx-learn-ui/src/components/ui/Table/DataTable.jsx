@@ -2,7 +2,7 @@ import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
 import TablePagination from "./TablePagination";
 import getPagination from '@/utils/getPagination';
-function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize, selectedRows }) {
+function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize, selectedRows,renderMobileCard }) {
 
   const totalPages = Math.ceil(total / pageSize);
 
@@ -19,9 +19,9 @@ function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize,
   return (
     <div className="w-full h-dvh border-2 border-default flex justify-between flex-col">
 
-      <table className="w-full table-fixed border-b border-default">
+      <table className="w-full table-fixed md:border-b border-default">
         <TableHeader columns={columns} />
-        <TableBody selectedRows={selectedRows} columns={columns} data={paginatedData} />
+        <TableBody selectedRows={selectedRows} columns={columns} data={paginatedData}/>
       </table>
 
 

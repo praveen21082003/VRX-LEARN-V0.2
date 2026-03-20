@@ -1,6 +1,9 @@
-function TableBody({ columns, data, selectedRows }) {
+import CardView from "./CardView";
+
+function TableBody({ columns, data, selectedRows,renderMobileCard }) {
   return (
-    <tbody className="flex-1 overflow-y-auto">
+    <>
+    <tbody className="hidden md:table-row-group flex-1 overflow-y-auto">
       {data.map((row) => (
         <tr
           key={row.id}
@@ -10,7 +13,7 @@ function TableBody({ columns, data, selectedRows }) {
           {columns.map((col) => (
             <td key={col.key}
               className={`p-2 text-body ${col.align === "left" ? "text-left" : "text-center"
-                }`}
+                } ${col.className || ""}`}
             >
               {col.render ? col.render(row) : row[col.key]}
             </td>
@@ -18,6 +21,10 @@ function TableBody({ columns, data, selectedRows }) {
         </tr>
       ))}
     </tbody>
+    <div className="block md:hidden">
+      <CardView data={data}  />
+    </div>
+    </>   
   );
 }
 
