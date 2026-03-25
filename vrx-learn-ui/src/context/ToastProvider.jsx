@@ -45,9 +45,9 @@ export function ToastProvider({ children }) {
                         className={clsx(
                             "px-5 py-2 border-l-5 rounded shadow-lg font-medium animate-slideIn",
 
-                            toast.type === "success" && "bg-success-bg text-success-secondary border-success-secondary",
-                            toast.type === "error" && "bg-error-bg text-error-secondary border-error-secondary",
-                            toast.type === "warning" && "bg-[#e7f8d7] border-yellow-500",
+                            toast.type === "success" && "bg-[#D1E7DD] text-text-muted border-[#0F2D1F]",
+                            toast.type === "error" && "bg-[#c06e6e] text-text-muted border-[#661414]",
+                            toast.type === "warning" && "bg-[#e7f8d7] text-[#D32F2F] border-[#ffcc00]",
                         )}
                     >
                         <div className="flex justify-between items-center">

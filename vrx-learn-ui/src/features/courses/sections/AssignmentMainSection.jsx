@@ -85,7 +85,7 @@ export default function AssignmentMainSection({ assignment, courseId }) {
                     </div>
                 </div>
                 <div>
-                    <MarkdownContent content={assignment.description} />
+                    <MarkdownContent content={assignment.instructions} />
                 </div>
                 <h1 className="text-h5">Attachments</h1>
                 <div className="flex flex-wrap gap-3 py-4">

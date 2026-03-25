@@ -429,7 +429,7 @@
       "id": "1",
       "course_id": 34,
       "title": "React Hook",
-      "description": "## Assignment Overview\n\nIn this assignment, you will build a React application that demonstrates effective usage of React Hooks.\n\n### Objectives\n- Use `useState` to manage component state\n- Use `useEffect` to handle side effects such as API calls\n- Create at least one custom hook for reusable logic\n\n### Guidelines\n- Follow React Hooks rules\n- Write clean and readable code\n- Ensure proper component structure\n\nThis assignment helps reinforce core React concepts used in modern applications.",
+      "instructions": "## Assignment Overview\n\nIn this assignment, you will build a React application that demonstrates effective usage of React Hooks.\n\n### Objectives\n- Use `useState` to manage component state\n- Use `useEffect` to handle side effects such as API calls\n- Create at least one custom hook for reusable logic\n\n### Guidelines\n- Follow React Hooks rules\n- Write clean and readable code\n- Ensure proper component structure\n\nThis assignment helps reinforce core React concepts used in modern applications.",
       "submission_date": "2026-02-05T23:59:00",
       "marks": 100,
       "attachments": [
@@ -447,7 +447,7 @@
       "id": "2",
       "course_id": 34,
       "title": "Components Life Cycle",
-      "description": "## Assignment Overview\n\nThis assignment focuses on understanding the React component lifecycle.\n\n### What you need to do\n- Explain lifecycle phases in class components\n- Convert lifecycle methods into Hooks\n- Demonstrate mounting, updating, and unmounting behavior\n\n### Deliverables\n- Source code\n- Short explanation document\n\nCompleting this assignment will strengthen your understanding of component behavior.",
+      "instructions": "## Assignment Overview\n\nThis assignment focuses on understanding the React component lifecycle.\n\n### What you need to do\n- Explain lifecycle phases in class components\n- Convert lifecycle methods into Hooks\n- Demonstrate mounting, updating, and unmounting behavior\n\n### Deliverables\n- Source code\n- Short explanation document\n\nCompleting this assignment will strengthen your understanding of component behavior.",
       "submission_date": "2026-02-10T23:59:00",
       "marks": 100,
       "attachments": [
@@ -461,7 +461,7 @@
       "id": "3",
       "course_id": 34,
       "title": "Use State",
-      "description": "## Assignment Overview\n\nThis assignment is designed to help you master the `useState` hook.\n\n### Tasks\n- Build a form using controlled components\n- Manage multiple state values\n- Handle user input validation\n\n### Expected Outcome\nBy completing this assignment, you will be confident in managing state in functional components.",
+      "instructions": "## Assignment Overview\n\nThis assignment is designed to help you master the `useState` hook.\n\n### Tasks\n- Build a form using controlled components\n- Manage multiple state values\n- Handle user input validation\n\n### Expected Outcome\nBy completing this assignment, you will be confident in managing state in functional components.",
       "submission_date": "2026-02-15T23:59:00",
       "marks": 100,
       "attachments": [
@@ -481,7 +481,7 @@
       "id": "0925",
       "course_id": 34,
       "title": "Build a React CRUD Application",
-      "description": "## Assignment Overview\n\nIn this assignment, you will build a complete CRUD (Create, Read, Update, Delete) application using React.\n\n### Objectives\n\n- Manage state using `useState` \n-  Fetch data using `useEffect`\n- Implement form handling\n- Handle list rendering with unique keys\n- Use controlled components\n\n### Requirements\n\n1. Create a form to add new items\n2. Display items in a list\n3. Allow editing existing items\n4. Allow deleting items\n5.  Maintain clean component structure\n\n### Submission Guidelines\n\n- Submit working source code\n- Follow clean coding practices\n- Use meaningful variable names\n- Handle edge cases properly\n\nThis assignment will help you understand real-world React application structure.",
+      "instructions": "## Assignment Overview\n\nIn this assignment, you will build a complete CRUD (Create, Read, Update, Delete) application using React.\n\n### Objectives\n\n- Manage state using `useState` \n-  Fetch data using `useEffect`\n- Implement form handling\n- Handle list rendering with unique keys\n- Use controlled components\n\n### Requirements\n\n1. Create a form to add new items\n2. Display items in a list\n3. Allow editing existing items\n4. Allow deleting items\n5.  Maintain clean component structure\n\n### Submission Guidelines\n\n- Submit working source code\n- Follow clean coding practices\n- Use meaningful variable names\n- Handle edge cases properly\n\nThis assignment will help you understand real-world React application structure.",
       "submission_date": "2026-02-19T19:00:00",
       "marks": 50,
       "attachments": []
@@ -493,6 +493,36 @@
       "instructions": "# React\n\n`useState();`\n\n`redux`",
       "submission_date": "2026-02-27T22:13:00",
       "marks": 100,
+      "max_attempts": 1,
+      "attachments": []
+    },
+    {
+      "id": "ca2e",
+      "course_id": 34,
+      "title": "Test",
+      "instructions": "# Test assignment\n\nWrite a python script that add two numbers\n\n`def add(a: int, b: int) -> int:`\n\n`    pass`",
+      "submission_date": "",
+      "marks": 5,
+      "max_attempts": 3,
+      "attachments": []
+    },
+    {
+      "id": "a5b4",
+      "course_id": 34,
+      "title": "Test",
+      "instructions": "# Test assignment\n\nWrite a python script that add two numbers\n\n`def add(a: int, b: int) -> int:`\n\n`    pass`",
+      "submission_date": "",
+      "marks": 5,
+      "max_attempts": 3,
+      "attachments": []
+    },
+    {
+      "id": "0261",
+      "course_id": 34,
+      "title": "Test assignment 2",
+      "instructions": "```python\nasync def fetc_data(url: str) -> dict:\n```\n\n    pass\n\n```\n```",
+      "submission_date": "2026-03-22T15:14",
+      "marks": 0,
       "max_attempts": 1,
       "attachments": []
     }

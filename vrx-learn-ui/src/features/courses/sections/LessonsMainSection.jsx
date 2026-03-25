@@ -4,12 +4,16 @@ import Overview from "./Overview";
 import QuestionAnswers from "./QuestionAnswers";
 import ContentRenderer from "@/components/content/ContentRenderer";
 import { motion } from "motion/react";
+import BackButton from "@/components/navigation/BackButton";
+import { useParams } from "react-router-dom";
+
 
 function LessonsMainSection({ lesson, error, activeLesson, setActiveLesson, setButtonAction, setOpenPlaylist, nextLessonData }) {
   const [activeTab, setActiveTab] = useState("overview");
   const [showButton, setShowButton] = useState(true);
   const lastScrollY = useRef(0);
   const [videoDuration, setVideoDuration] = useState(0);
+  const { courseSlug } = useParams();
 
   const scrollRef = useRef(null);
   // console.log(nextLessonData);
@@ -71,6 +75,9 @@ function LessonsMainSection({ lesson, error, activeLesson, setActiveLesson, setB
       ref={scrollRef}
       className="flex-1 overflow-y-auto py-1 px-2 md:py-3 md:px-6 pb-24"
     >
+      <div className="block lg:hidden w-full border-b border-default p-1">
+        <BackButton to={`/course/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back" />
+      </div>
 
       <h1 className="text-h3">
         {activeLesson.moduleIndex + 1}.{activeLesson.lessonIndex + 1}{" "}

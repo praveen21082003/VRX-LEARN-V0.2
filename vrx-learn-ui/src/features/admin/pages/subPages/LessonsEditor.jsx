@@ -127,16 +127,17 @@ function LessonsEditor() {
                                     frontIconName='mingcute:pencil-line'
                                     frontIconWidth="24px"
                                     frontIconHeght="24px"
-                                    className="p-1 rounded font-semibold text-md"
+                                    className="p-1 rounded-r-none rounded font-semibold text-md"
                                     bgClass=""
                                     textClass=""
                                     isMobile={isMobile}
+                                    onClick={()=> navigate(`/course/${courseSlug}/content/modules/${moduleId}/edit`)}
                                 />
                                 <Button
                                     frontIconName="subway:down-2"
                                     frontIconWidth="16px"
                                     frontIconHeght="16px"
-                                    className="p-2 px-2 rounded"
+                                    className="p-2 px-2 rounded-l-none rounded"
                                     onClick={() => setOpenDropDown((prve) => !prve)}
                                 />
                                 {openDropDown && <Dropdown buttons={editButtons(handleReorder)} closeDropdown={() => setOpenDropDown(false)} />}
@@ -224,7 +225,7 @@ function LessonsEditor() {
                                             <Icon name="iconamoon:menu-kebab-horizontal" height="32px" width="32px" className="cursor-help" />
                                             {isOpen && (
                                                 <Dropdown
-                                                    buttons={buttons(handleRename, lesson.id)}
+                                                    buttons={buttons(courseSlug, moduleId,handleRename,lesson.id, navigate)} 
                                                     closeDropdown={() => {
                                                         setIsOpenDropdown(null);
                                                     }}

@@ -27,6 +27,10 @@ import EditCourseLayout from "./features/admin/layout/EditCourseLaout";
 import CourseInfo from "@/features/admin/pages/CourseInfo";
 import TraineeRoster from "@/features/admin/layout/TraineeRoster";
 
+import EditAssignment from "@/features/admin/pages/subPages/sections/EditAssignment";
+import EditModule from "@/features/admin/pages/subPages/sections/EditModule";
+import EditLesson from "@/features/admin/pages/subPages/sections/EditLesson";
+
 import ModulesEditor from "@/features/admin/pages/ModulesEditor";
 import LessonsEditor from "@/features/admin/pages/subPages/LessonsEditor";
 import QuizEditor from '@/features/admin/pages/QuizEditor';
@@ -95,13 +99,16 @@ function App() {
                   <Route index element={<ModulesEditor />} />
                   <Route path=":moduleId" element={<LessonsEditor />} />
                   <Route path="create" element={<CreateModule />} />
+                  <Route path=":moduleId/edit" element={<EditModule />} />
                   <Route path=":moduleId/lesson/create" element={<CreateLesson />} />
+                  <Route path=":moduleId/lesson/:lessonId/edit" element={<EditLesson />} />
                 </Route>
 
                 <Route path="assignments">
                   <Route index element={<AssignmentsEditor />} />
                   <Route path=":assignmentId" element={<Assignment />} />
                   <Route path="create" element={<CreateAssignment />} />
+                  <Route path=":assignmentId/edit" element={<EditAssignment />} />
                 </Route>
 
                 <Route path="quiz" element={<QuizEditor />} />

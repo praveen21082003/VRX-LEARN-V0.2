@@ -1,7 +1,10 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, lazy, Suspense } from 'react'
 import VideoControls from './VideoControls'
 import { useContentProtection } from '@/hooks/useContentProtection';
-function VideoPlayer({ url,id,setVideoDuration }) {
+// const MovingWatermark = lazy(() => import("./MovingWatermark"));
+
+
+function VideoPlayer({ url, id, setVideoDuration }) {
     useContentProtection(true);
     const videoRef = useRef(null);
 
@@ -12,17 +15,24 @@ function VideoPlayer({ url,id,setVideoDuration }) {
 
     return (
 
-        <div className="relative  w-full aspect-video bg-black rounded-lg overflow-hidden">
+        <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden group">
             <video
                 key={id}
                 ref={videoRef}
-                className="w-full h-full"
+                className="w-full h-full object-contain" // Changed to object-contain
                 controlsList="nodownload noplaybackrate"
                 disablePictureInPicture
+                playsInline // Added for mobile
             >
                 <source src={url} type="video/mp4" />
             </video>
-            <VideoControls videoRef={videoRef} setVideoDuration={setVideoDuration}/>
+            {/* <Suspense fallback={null}>
+                <MovingWatermark text="user@email.com" />
+            </Suspense> */}
+
+            <div className="absolute inset-0">
+                <VideoControls videoRef={videoRef} setVideoDuration={setVideoDuration} />
+            </div>
         </div>
 
     )

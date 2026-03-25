@@ -5,7 +5,7 @@ import ReorderList from '@/components/dnd/ReorderList';
 import clsx from 'clsx';
 import useUpdateMoudule from '../hooks/useUpdateModule';
 import useDeleteMoudule from '../hooks/useDeleteModule';
-import { getButtons } from '@/config/DropdownButtons';
+import { getModuleButtons } from '@/config/DropdownButtons';
 import { useToast } from '@/context/ToastProvider';
 
 
@@ -232,7 +232,7 @@ function ModulesEditor() {
 
                                                 {isOpen && (
                                                     <Dropdown
-                                                        buttons={getButtons(module.id, handleRename, handleDeleteModule)}
+                                                        buttons={getModuleButtons(courseSlug,module.id, handleRename, handleDeleteModule, navigate)}
                                                         closeDropdown={() => setIsOpenDropdown(null)}
                                                     />
                                                 )}

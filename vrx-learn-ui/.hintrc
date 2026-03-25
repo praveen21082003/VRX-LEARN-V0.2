@@ -7,7 +7,9 @@
       "default",
       {
         "ignore": [
-          "background-color: color-mix(in srgb, var(--color-primary-16) 16%, transparent)"
+          "background-color: color-mix(in srgb, var(--color-primary-16) 16%, transparent)",
+          "scrollbar-width",
+          "scrollbar-width: none"
         ]
       }
     ]

@@ -70,7 +70,7 @@ function Assignment() {
                 />
 
                 <div className="py-5">
-                    {activeTab === "instructions" && <InstructionsTab description={assignment.description} attachments={assignment.attachments} />}
+                    {activeTab === "instructions" && <InstructionsTab instructions={assignment.instructions} attachments={assignment.attachments} />}
                     {activeTab === "submissions" && <SubmissionsTab submissions={submissions} setActiveTab={setActiveTab} setActiveAssignmentId={setActiveAssignmentId}/>}
                     {activeTab === "view_submission" && <SubmissionView submissions={submissions} setActiveTab={setActiveTab} assignmentId={assignmentId} activeAssignmentId={activeAssignmentId}/>}
                 </div>

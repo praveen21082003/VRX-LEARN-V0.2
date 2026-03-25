@@ -10,6 +10,7 @@ export default function AssignedCourses() {
             title="Assigned Courses"
             courses={courses}
             gridSize={4}
+            vertical = {true}
         />
     )
 }

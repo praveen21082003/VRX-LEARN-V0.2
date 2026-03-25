@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import Starterkit from '@tiptap/starter-kit'
 import Link from "@tiptap/extension-link"
@@ -23,7 +23,12 @@ function EditerBox({ label, value, onChange }) {
                 link: false,
             }),
             Link.configure({
-                openOnClick: false,
+                openOnClick: true,
+                HTMLAttributes: {
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                },
+                validate: href => /^https?:\/\//.test(href),
             }),
 
             Placeholder.configure({

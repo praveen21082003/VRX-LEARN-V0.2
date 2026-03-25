@@ -9,6 +9,9 @@ export default function MarkdownContent({ content }) {
       <ReactMarkdown
         components={{
           hr: () => <br />,
+          a: ({ node, ...props }) => (
+            <a {...props} target="_blank" rel="noopener noreferrer" />
+          ),
         }}
       >
         {content}

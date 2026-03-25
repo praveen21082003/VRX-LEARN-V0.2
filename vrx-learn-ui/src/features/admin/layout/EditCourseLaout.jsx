@@ -141,7 +141,7 @@ function EditCourseLayout() {
 
       <aside style={{ width: asideWidth }} className=" relative hidden border-r-2 border-default bg-muted/40 py-1 lg:block overflow-y-auto scrollbar-hide">
 
-        <div className="p-4 w-full">
+        <div className="p-2 w-full">
           <BackButton to={`/course/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Overview" />
         </div>
 
@@ -298,7 +298,7 @@ function EditCourseLayout() {
         </AnimatePresence>
         <div
           onMouseDown={() => { (isResizing.current = true); document.body.style.userSelect = "none" }}
-          className="absolute top-0 right-0 h-screen w-1 cursor-col-resize bg-transparent hover:bg-active"
+          className="absolute top-0 right-0 h-screen w-1 cursor-col-resize bg-transparent hover:bg-primary/16"
         />
       </aside>
 

@@ -18,27 +18,42 @@ export const editButtons = (handleReorder) => [
   { key: "delete", title: "Delete", icon: "ic:baseline-delete", onClick: () => alert("delete clicked") },
 ];
 
-export const buttons = (handleRename, lessonId) => [
+export const buttons = (courseSlug,moduleId,handleRename, lessonId, navigate) => [
   { key: "view", title: "View", icon: "material-symbols:view-cozy-sharp", onClick: () => navigate(`/course/${courseSlug}/lessons`) },
-  { key: "edit", title: "Edit", icon: "mingcute:pencil-line", onClick: () => alert("edit clicked") },
+  { key: "edit", title: "Edit", icon: "mingcute:pencil-line", onClick: () => navigate(`/course/${courseSlug}/content/modules/${moduleId}/lesson/${lessonId}/edit`) },
   { key: "rename", title: "Rename", icon: "ix:rename", onClick: () => handleRename(lessonId) },
   { key: "delete", title: "Delete", icon: "ic:baseline-delete", onClick: () => alert("delete clicked") }
 ]
 
 
-export const getButtons = (Id, handleRename, handleDelete) => [
+export const getButtons = (courseSlug, assignmentId, handleRename, handleDelete, navigate) => [
   {
     key: "view", title: "View", icon: "material-symbols:view-cozy-sharp", onClick: () => alert("edit clicked")
   },
-  { key: "edit", title: "Edit", icon: "mingcute:pencil-line", onClick: () => alert("edit clicked"), permission: "UPDATE_MODULES" },
+  { key: "edit", title: "Edit", icon: "mingcute:pencil-line", onClick: () => navigate(`/course/${courseSlug}/content/assignments/${assignmentId}/edit`), permission: "UPDATE_MODULES" },
   {
     key: "rename",
     title: "Rename",
     icon: "ix:rename",
-    onClick: () => handleRename(Id),
+    onClick: () => handleRename(assignmentId),
     permission: "UPDATE_MODULES"
   },
-  { key: "delete", title: "Delete", icon: "ic:baseline-delete", onClick: () => handleDelete(Id), permission: "DELETE_MODULES" }
+  { key: "delete", title: "Delete", icon: "ic:baseline-delete", onClick: () => handleDelete(assignmentId), permission: "DELETE_MODULES" }
+]
+
+export const getModuleButtons = (courseSlug, moduleId, handleRename, handleDelete, navigate) => [
+  {
+    key: "view", title: "View", icon: "material-symbols:view-cozy-sharp", onClick: () => alert("edit clicked")
+  },
+  { key: "edit", title: "Edit", icon: "mingcute:pencil-line", onClick: () => navigate(`/course/${courseSlug}/content/modules/${moduleId}/edit`), permission: "UPDATE_MODULES" },
+  {
+    key: "rename",
+    title: "Rename",
+    icon: "ix:rename",
+    onClick: () => alert("rename"),
+    permission: "UPDATE_MODULES"
+  },
+  { key: "delete", title: "Delete", icon: "ic:baseline-delete", onClick: () => alert("deleted"), permission: "DELETE_MODULES" }
 ]
 
 
@@ -76,8 +91,8 @@ export const getProfileDropdown = ({
         ? "Switch to Trainee"
         : "Switch to Trainer",
       icon: viewRole === "TRAINER"
-      ? "mdi:account-tie"
-      : "mdi:account-school",
+        ? "mdi:account-tie"
+        : "mdi:account-school",
       onClick: onSwitch,
     });
   }

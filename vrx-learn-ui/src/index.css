@@ -64,7 +64,7 @@
   --color-logo: #D9D9D9;
   --color-secondary-surface: #F2F2EE;
 
-  --color-pagenation-bg : #EDEEEF;
+  --color-pagenation-bg: #EDEEEF;
 
   /* Fonts */
 
@@ -210,7 +210,7 @@
     background-color: var(--color-table);
   }
 
-  .dark .bg-table-Header-bg{
+  .dark .bg-table-Header-bg {
     background-color: var(--color-surface-primary-dark);
   }
 
@@ -311,18 +311,44 @@ body {
 
 /* scrollbar hide */
 
-@layer utilities {
 
-  .scrollbar-hide {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
 }
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+  transition: background 0.3s, opacity 0.3s;
+  opacity: 0;
+}
+
+/* ONLY controlled by JS */
+.custom-scroll.scrolling::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  opacity: 1;
+}
+
+
+
+/* hide scroll bar */
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE, Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari */
+}
+
 
 /* components */
 
