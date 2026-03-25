@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Input, Button, TextEditor, UploadSection } from '@/components/ui'
+import AssignmentFormSection from '../../sections/AssignmentFormSection';
 import { useParams } from 'react-router-dom';
 import useCreateAssignment from '../../hooks/useCreateAssignment';
 import { useToast } from '@/context/ToastProvider';
 
 function CreateAssignment() {
+
     const { courseSlug } = useParams();
-
-
     const { addToast } = useToast();
 
 
@@ -19,8 +18,7 @@ function CreateAssignment() {
         course_id: Number(courseSlug),
         title: "",
         instructions: "",
-        due_date: "",
-        due_time: "",
+        submission_date:"",
         marks: 0,
         max_attempts: 1,
         attachments: []
@@ -95,64 +93,16 @@ function CreateAssignment() {
 
     return (
         <>
-            <h2 className="text-h3 flex items-center">New Assignment</h2>
-            <div className='space-y-4'>
-                <Input
-                    label="Title"
-                    placeholder="Assignment name"
-                    value={formData.title}
-                    inputWarning={formDataErrors.title}
-                    onChange={(e) => handleChange("title", e.target.value)}
-                />
-                <TextEditor
-                    label="Instructions"
-                    value={formData.description}
-                    onChange={(value) => handleChange("instructions", value)}
-                />
-                <div className='grid grid-cols-1 lg:grid-cols-2 space-x-2'>
-                    <Input
-                        label="Due Date & Time"
-                        type="datetime-local"
-                        min={new Date().toISOString().slice(0, 16)}
-                        value={formData.due_date && formData.due_time
-                            ? `${formData.due_date}T${formData.due_time}`
-                            : ""}
-                        onChange={(e) => {
-                            const value = e.target.value; // 2026-02-05T23:59
-                            const [date, time] = value.split("T");
-
-                            handleChange("due_date", date);
-                            handleChange("due_time", time);
-                        }}
-                    />
-                    <Input
-                        label="Max Points"
-                        type="number"
-                        min='0'
-                        value={formData.marks}
-                        inputWarning={formDataErrors.marks}
-                        onChange={(e) => handleChange("marks", Number(e.target.value))}
-                    />
-                    <Input
-                        label="Max Attempts"
-                        type="number"
-                        min="1"
-                        max="3"
-                        inputWarning={formDataErrors.max_attempts}
-                        value={formData.max_attempts}
-                        onChange={(e) => handleChange("max_attempts", Number(e.target.value))}
-                    />
-                </div>
-                <UploadSection
-                    files={files}
-                    setFiles={setFiles}
-                    // onUpload={handleUpload}
-                />
-
-            </div>
-            <div className='flex justify-center'>
-                <Button buttonName={files.length <= 0 ? "Submit" : "Upload"} onClick={handleSubmit} className="mt-5 px-5 py-2 rounded" />
-            </div>
+            <AssignmentFormSection
+                mode="create"
+                formData={formData}
+                formDataErrors={formDataErrors}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                files={files}
+                setFiles={setFiles}
+                loading={loading}
+            />
 
         </>
     )

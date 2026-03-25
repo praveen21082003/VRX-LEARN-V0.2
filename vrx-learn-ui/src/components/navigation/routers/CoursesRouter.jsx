@@ -5,10 +5,10 @@ import DashboardPage from "@/features/dashboard/pages/DashboardPage";
 
 
 export default function CoursesRouter() {
-    const { viewRole } = useAuth();
+    const { role,viewRole } = useAuth();
 
 
-    if (viewRole === "ADMIN" || viewRole === "SUBADMIN") {
+    if (role === "ADMIN" || role === "SUBADMIN") {
         return <CourseManagement />;
     }
 
@@ -16,5 +16,5 @@ export default function CoursesRouter() {
         return <CoursesPage />;
     }
 
-    return <DashboardPage />; 
+    return <CoursesPage />; 
 }

@@ -10,12 +10,13 @@ function CourseCard({
   buttonName,
   bgClass = "bg-transparent border border-primary",
   textClass = "text-main",
-  onClick
+  onClick,
+  vertical
 }) {
   const hasCustomImage = image?.trim();
 
   return (
-    <div className="flex flex-col gap-4 p-3 lg:p-4 w-72 md:w-full rounded-2xl bg-card flex-shrink-0 snap-start md:flex-shrink">
+    <div className={`flex flex-col gap-4 p-3 lg:p-4 ${!vertical ? 'w-72' : 'w-full'} md:w-full rounded-2xl bg-card flex-shrink-0 snap-start md:flex-shrink`}>
 
 
       <div className="relative overflow-hidden rounded-lg h-[140px] sm:h-[150px] lg:h-28 xl:h-38 2xl:h-60 bg-gray-200 group">

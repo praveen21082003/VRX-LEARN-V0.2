@@ -13,7 +13,7 @@ function UsersManagement() {
     const [selectedRows, setSelectedRows] = useState([]);
 
     const [open, setOpen] = useState(false)
-    const [editingUser, setEditingUser] = useState(null); // null means "Add Mode"
+    const [editingUser, setEditingUser] = useState(null);
 
 
     const handleSelectRow = (id, checked) => {
@@ -30,12 +30,12 @@ function UsersManagement() {
         } else {
             setSelectedRows([]);
         }
-    };  
+    };
 
-const handleOpenEdit = (user) => {
-    setEditingUser(user);
-    setOpen(true);
-};
+    const handleOpenEdit = (user) => {
+        setEditingUser(user);
+        setOpen(true);
+    };
 
 
     const data = [
@@ -68,8 +68,8 @@ const handleOpenEdit = (user) => {
         },
     ]
 
-const allRoles = [...new Set(data.map((user) => user.role))];
-const allStatuses = [...new Set(data.map((user) => user.status))];
+    const allRoles = ["ADMIN", "SUB_ADMIN", "TRAINER", "TRAINEE"];
+    const allStatuses = ["ACTIVE", "INACTIVE", "PENDING"];
 
     const usersManagementColumns = [
         {
@@ -170,23 +170,23 @@ const allStatuses = [...new Set(data.map((user) => user.status))];
             //     )
             // }
             render: (row) => {
-            const actions = ["mingcute:pencil-line", "ic:baseline-delete"];
-            return (
-            <div className="flex items-center justify-center gap-3">
-            {actions.map((icon, index) => (
-                <Button 
-                    key={index} 
-                    frontIconName={icon} 
-                    frontIconHeight="18" frontIconWidth="18" bgClass="" textClass=""
-                    onClick={() => {
-                        if (icon === "mingcute:pencil-line") handleOpenEdit(row);
-                    }}
-                   
-                />
-            ))}
-        </div>
-    );
-}
+                const actions = ["mingcute:pencil-line", "ic:baseline-delete"];
+                return (
+                    <div className="flex items-center justify-center gap-3">
+                        {actions.map((icon, index) => (
+                            <Button
+                                key={index}
+                                frontIconName={icon}
+                                frontIconHeight="18" frontIconWidth="18" bgClass="" textClass=""
+                                onClick={() => {
+                                    if (icon === "mingcute:pencil-line") handleOpenEdit(row);
+                                }}
+
+                            />
+                        ))}
+                    </div>
+                );
+            }
 
 
         },
@@ -221,9 +221,11 @@ const allStatuses = [...new Set(data.map((user) => user.status))];
                             className="px-3 py-1.5 text-sm rounded-md"
                             bgClass="bg-primary"
                             textClass="text-white"
-                            onClick={() =>{ setOpen(true)
-                            setEditingUser(null); // 1. Clear any previous edit data
-                            setOpen(true);}}
+                            onClick={() => {
+                                setOpen(true)
+                                setEditingUser(null); // 1. Clear any previous edit data
+                                setOpen(true);
+                            }}
                         />
 
                     </div>
@@ -308,7 +310,7 @@ const allStatuses = [...new Set(data.map((user) => user.status))];
                     total={data.length}
                 />
             </div >
-{/* 
+            {/* 
             {open && (
                 <Modal
                     isOpen={open}
@@ -320,20 +322,20 @@ const allStatuses = [...new Set(data.map((user) => user.status))];
             )} */}
 
             {open && (
-    <Modal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        title={editingUser ? "Edit User" : "Create New User"}
-    >
-        <CreateUser
-        isEdit={!!editingUser}
-        userData={editingUser}
-        onClose={() => setOpen(false)}
-        roles={allRoles}
-        statuses={allStatuses}
-/>
-    </Modal>
-)}
+                <Modal
+                    isOpen={open}
+                    onClose={() => setOpen(false)}
+                    title={editingUser ? "Edit User" : "Create New User"}
+                >
+                    <CreateUser
+                        isEdit={!!editingUser}
+                        userData={editingUser}
+                        onClose={() => setOpen(false)}
+                        roles={allRoles}
+                        statuses={allStatuses}
+                    />
+                </Modal>
+            )}
 
 
         </div >

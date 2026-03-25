@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { Input, Select, Button } from '@/components/ui'
 
 
-function CreateUser({ isEdit = false, userData = {}, onClose,roles = [], statuses = []  }) {
+function CreateUser({ isEdit = false, userData = {}, onClose, roles = [], statuses = []  }) {
     const [showResetFields, setShowResetFields] = useState(false);
+    
     const roleOptions = roles.map((r) => ({ label: r, value: r.toLowerCase() }));
     const statusOptions = statuses.map((s) => ({ label: s, value: s.toLowerCase() }));
+
     return (
         <div className='space-y-4'>
             <Input

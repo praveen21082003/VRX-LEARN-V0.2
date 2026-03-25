@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Button, Input, Icon, Dropdown } from '@/components/ui'
-import { useOutletContext, NavLink } from 'react-router-dom'
+import { useOutletContext, NavLink, useNavigate } from 'react-router-dom'
 import formatDateTime from '@/utils/formatDateTime';
 import formatDate from "@/utils/formatDate";
 import { getButtons } from '@/config/DropdownButtons';
@@ -13,6 +13,8 @@ function AssignmentsEditor() {
     const isMobile = window.innerWidth < 768;
 
     const { assignments, courseSlug } = useOutletContext();
+    const navigate = useNavigate();
+
     const { updateAssignemt, loading, error } = useUpdateAssignment();
     const { deleteAssignment } = useDeleteAssignment();
     const { addToast } = useToast();
@@ -187,7 +189,7 @@ function AssignmentsEditor() {
 
                                     {isOpen && (
                                         <Dropdown
-                                            buttons={getButtons(assignment.id, handleRename, handleDelete)}
+                                            buttons={getButtons(courseSlug, assignment.id, handleRename, handleDelete, navigate)}
                                             closeDropdown={() => setIsOpenDropdown(null)}
                                         />
                                     )}

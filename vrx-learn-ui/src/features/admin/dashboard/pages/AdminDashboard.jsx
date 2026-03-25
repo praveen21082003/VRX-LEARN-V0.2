@@ -1,27 +1,46 @@
-import React from 'react'
-import { Icon } from '@/components/ui'
+import React, { useState } from 'react'
+import { Icon, Modal } from '@/components/ui'
+import CreateUser from '../../dialogs/CreateUser';
+import NewCourses from '../../dialogs/NewCourses';
+import NewEnrollment from '../../dialogs/NewEnrollment';
+
+
 
 function AdminDashboard() {
+
+  const [open, setOpen] = useState(false);
+  const [activeAction, setActiveAction] = useState();
+
+  const [editingUser, setEditingUser] = useState(null);
+
+  const allRoles = ["ADMIN", "SUB_ADMIN", "TRAINER", "TRAINEE"];
+  // const allStatuses = ["ACTIVE", "INACTIVE", "PENDING"];
 
 
   const quickAction = [
     {
+      key: "user",
       icon: "mdi:users",
       title: "New User",
       caption: "Create account",
       bgClass: "bg-primary"
     },
     {
+      key: "course",
       icon: "mdi:book-education-outline",
       title: "New Course",
       caption: "Publish content"
     },
     {
+      key: "enroll",
       icon: "mdi:book-account",
       title: "Enroll Trainee",
       caption: "Assign to course"
     }
   ]
+
+
+
 
 
   const data = [
@@ -68,6 +87,19 @@ function AdminDashboard() {
   ]
 
 
+  const allTrainers = [...new Set(data.flatMap((course) => course.trainers))];
+
+  const allTitles = [...new Set(data.map((course) => course.title))];
+
+  const allDescription = [...new Set(data.map((course) => course.description))];
+
+
+  const handleOnClick = (actionKey) => {
+    setActiveAction(actionKey);
+    setOpen(true);
+  };
+
+
   return (
     <div className="space-y-4 text-main py-4 px-6">
 
@@ -79,10 +111,11 @@ function AdminDashboard() {
             const isPrimary = action.bgClass;
 
             return (
-              <div
+              <button
                 key={index}
                 className={`flex items-center gap-4 border-2 rounded px-4 py-3 cursor-pointer
-        ${isPrimary ? `${action.bgClass} text-white border-primary` : "border-primary hover:bg-primary/10"}`}
+                ${isPrimary ? `${action.bgClass} text-white border-primary` : "border-primary hover:bg-primary/10"}`}
+                onClick={() => handleOnClick(action.key)}
               >
                 <Icon
                   name={action.icon}
@@ -98,7 +131,7 @@ function AdminDashboard() {
                     {action.caption}
                   </span>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
@@ -152,6 +185,49 @@ function AdminDashboard() {
         </div>
 
       </div>
+      {open && (
+        <Modal
+          isOpen={open}
+          onClose={() => setOpen(false)}
+          title={
+            activeAction === "user"
+              ? "Create New User"
+              : activeAction === "course"
+                ? "Create Course"
+                : "Enroll Trainee"
+          }
+        >
+
+          {activeAction === "user" && (
+            <CreateUser
+              isEdit={!!editingUser}
+              userData={editingUser}
+              onClose={() => setOpen(false)}
+              roles={allRoles}
+            />
+          )}
+
+          {activeAction === "course" && (
+            <NewCourses
+              trainers={allTrainers}
+              courseTitles={allTitles}
+              description={allDescription}
+            />
+          )}
+
+          {activeAction === "enroll" && (
+            <NewEnrollment
+              isEdit={!!editingUser}
+              userData={editingUser}
+              onClose={() => setOpen(false)}
+              courses={allCourses}
+              Names={allNames}
+              Status={allStatus}
+            />
+          )}
+
+        </Modal>
+      )}
     </div>
   )
 }

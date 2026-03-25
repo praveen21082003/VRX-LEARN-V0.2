@@ -1,16 +1,16 @@
 import { MarkdownContent, AttachmentCard } from "@/components/ui"
-export default function InstructionsTab({ description, attachments }) {
+export default function InstructionsTab({ instructions, attachments }) {
     if (!attachments || attachments.length === 0) {
         return (
             <>
-                <MarkdownContent content={description} />
+                <MarkdownContent content={instructions} />
             </>
         );
     }
 
     return (
         <>
-            <MarkdownContent content={description} />
+            <MarkdownContent content={instructions} />
             <h1 className="text-h45 mt-6">Attachments</h1>
 
             <div className="flex flex-wrap gap-3 mt-2">
