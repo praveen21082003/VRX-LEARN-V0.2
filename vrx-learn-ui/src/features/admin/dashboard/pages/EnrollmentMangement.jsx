@@ -195,11 +195,11 @@ function EnrollmentMangement() {
 
     ]
     return (
-        <div className='p-5 bg-background text-main'>
-            <div className="flex items-center justify-between h-5">
+        <div className="w-full p-4 bg-white border-b border-gray-200">
+            <div className="flex items-center justify-between mb-6">
                 <h3 className="text-h3 font-semibold">Enrollment Management</h3>
                 {selectedRows.length === 0 &&
-                    < div className="flex items-center gap-3">
+                    < div className="hidden md:flex items-center gap-3">
 
                         <Button
                             buttonName="Export as CSV"
@@ -231,8 +231,13 @@ function EnrollmentMangement() {
             {
                 selectedRows.length === 0
                     ? (
-                        <div className="flex items-center py-5 gap-3  whitespace-nowrap">
-                            <Input icon="ic:twotone-search" border="border-default" paddingClass="py-2" widthClass="w-96" placeholder="Search by name or email..." />
+                        <div className="flex flex-col md:flex-row gap-4 mb-4 ">
+                            <div className="w-full md:w-96">
+                            <Input icon="ic:twotone-search" border="border-default" paddingClass="py-2" widthClass="w-full md:w-96" placeholder="Search by name or email..." />
+                            </div>
+
+                            <div className="grid grid-cols-2 md:flex md:items-center gap-3">
+                            <div className="col-span-1">
                             <Select
                                 label="Users:"
                                 options={[
@@ -243,6 +248,9 @@ function EnrollmentMangement() {
                                     { label: "Trainee", value: "trainee" }
                                 ]}
                             />
+                            </div>
+
+                            <div className="col-span-1">
                             <Select
                                 label="Filter by Course:"
                                 options={[
@@ -252,6 +260,8 @@ function EnrollmentMangement() {
                                     { label: "Name (Z - A)", value: "name_desc" },
                                 ]}
                             />
+                            </div>
+                            <div className="col-span-1 md:col-span-1">
                             <Select
                                 label="Status:"
                                 options={[
@@ -261,8 +271,8 @@ function EnrollmentMangement() {
                                     { label: "Pending", value: "pending" }
                                 ]}
                             />
-
-
+                            </div>
+                        </div>
                         </div>
                     ) : (
                         <div className='flex justify-between items-center py-5 gap-3  whitespace-nowrap'>
@@ -302,6 +312,31 @@ function EnrollmentMangement() {
                     pageSize={pageSize}
                     setPageSize={setPageSize}
                     total={data.length}
+                    renderMobileCard={(row) => (
+                                  <div className="shrink-0 flex flex-col items-end gap-2 pt-0.5">
+                                    <div className="flex gap-3">
+                                      <StatusPill status={row.role} />
+                                      <StatusPill status={row.status} />
+                                    </div>
+                                    <div className="flex gap-3 mt-1">
+                                      <Button
+                                        frontIconName="mingcute:pencil-line"
+                                        frontIconHeight="18"
+                                        frontIconWidth="18"
+                                        bgClass=""
+                                        textClass=""
+                                        onClick={() => handleOpenEdit(row)}
+                                      />
+                                      <Button
+                                        frontIconName="ic:baseline-delete"
+                                        frontIconHeight="18"
+                                        frontIconWidth="18"
+                                        bgClass=""
+                                        textClass=""
+                                      />
+                                    </div>
+                                  </div>
+                                )}
                 />
             </div >
              {open && (

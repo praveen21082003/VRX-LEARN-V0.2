@@ -1,6 +1,6 @@
-function Avatar({ name }) {
+function Avatar({ name = "" }) {
 
-    function getColor(name) {
+    function getColor(name = "") {
         let hash = 0;
 
         for (let i = 0; i < name.length; i++) {
@@ -12,11 +12,13 @@ function Avatar({ name }) {
     }
 
     const initials = name
-        ?.split(" ")
-        .map(n => n[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase();
+        ? name
+            .split(" ")
+            .map(n => n[0])
+            .join("")
+            .slice(0, 2)
+            .toUpperCase()
+        : "NA";
 
     return (
         <div

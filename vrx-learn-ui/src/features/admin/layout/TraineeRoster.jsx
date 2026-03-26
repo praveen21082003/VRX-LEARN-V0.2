@@ -235,7 +235,7 @@ function TraineeRoster() {
 
 
         <div className='flex flex-col md:flex-row py-5 gap-3 w-full md:w-[75%]  lg:w-[50%]'>
-          <Input icon="ic:twotone-search" border="border-default" paddingClass="py-2" widthClass="w-96" placeholder="Search by name or email..." />
+          <Input icon="ic:twotone-search" border="border-default" paddingClass="py-2" widthClass="w-full" placeholder="Search by name or email..." />
           <div className="w-full  md:w-45 lg:w-55 ">
               <Select
               label="Sort By :"

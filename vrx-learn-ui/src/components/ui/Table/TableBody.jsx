@@ -22,7 +22,7 @@ function TableBody({ columns, data, selectedRows,renderMobileCard }) {
       ))}
     </tbody>
     <div className="block md:hidden">
-      <CardView data={data}  />
+      <CardView data={data} renderMobileCard={renderMobileCard} />
     </div>
     </>   
   );

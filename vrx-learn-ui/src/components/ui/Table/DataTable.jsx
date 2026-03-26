@@ -17,11 +17,11 @@ function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize,
   const pages = getPagination(page, totalPages);
 
   return (
-    <div className="w-full h-dvh border-2 border-default flex justify-between flex-col">
+    <div className="w-full h-dvh md:border-2 border-default flex justify-between flex-col">
 
       <table className="w-full table-fixed md:border-b border-default">
         <TableHeader columns={columns} />
-        <TableBody selectedRows={selectedRows} columns={columns} data={paginatedData}/>
+        <TableBody selectedRows={selectedRows} columns={columns} data={paginatedData} renderMobileCard={renderMobileCard}/>
       </table>
 
 
