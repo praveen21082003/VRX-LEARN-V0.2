@@ -9,12 +9,15 @@ import {
   StatusPill,
   Select,
   Modal,
+  UserCard,
 } from "@/components/ui";
 
 import formatDateTime from "@/utils/formatDateTime";
 import CreateUser from "../../dialogs/CreateUser";
 
 function UsersManagement() {
+  const isMobile = window.innerWidth < 768;
+
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
@@ -142,7 +145,7 @@ function UsersManagement() {
       label: "Created At",
       width: "20%",
       render: (row) => (
-        <span className="text-body">{formatDateTime(row.created_at)}</span>
+        <span className="text-caption">{formatDateTime(row.created_at)}</span>
       ),
     },
     {
@@ -183,15 +186,16 @@ function UsersManagement() {
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-h3 font-semibold">User Management</h3>
         {selectedRows.length === 0 && (
-          <div className="hidden md:flex items-center gap-3">
+          <div className="flex items-center lg:gap-3">
             <Button
               buttonName="Export as CSV"
               frontIconName="material-symbols:download"
               frontIconWidth="26"
               frontIconHeght="26"
-              className="px-3 py-1.5 text-sm rounded-md"
+              className="lg:p-3 lg:py-1.5 text-sm rounded-md"
               bgClass=""
-              textClass="text-body"
+              textClass="lg:text-body"
+              isMobile={isMobile}
             />
 
             <Button
@@ -199,14 +203,15 @@ function UsersManagement() {
               frontIconName="mdi:plus"
               frontIconWidth="26"
               frontIconHeght="26"
-              className="px-3 py-1.5 text-sm rounded-md"
-              bgClass="bg-primary"
-              textClass="text-white"
+              className="lg:p-3 lg:py-1.5 text-sm rounded-md"
+              bgClass="lg:bg-primary"
+              textClass="lg:text-white"
               onClick={() => {
                 setOpen(true);
                 setEditingUser(null); // 1. Clear any previous edit data
                 setOpen(true);
               }}
+              isMobile={isMobile}
             />
           </div>
         )}
@@ -308,29 +313,10 @@ function UsersManagement() {
             setPageSize={setPageSize}
             total={data.length}
             renderMobileCard={(row) => (
-              <div className="shrink-0 flex flex-col items-end gap-2 pt-0.5">
-                <div className="flex gap-3">
-                  <StatusPill status={row.role} />
-                  <StatusPill status={row.status} />
-                </div>
-                <div className="flex gap-3 mt-1">
-                  <Button
-                    frontIconName="mingcute:pencil-line"
-                    frontIconHeight="18"
-                    frontIconWidth="18"
-                    bgClass=""
-                    textClass=""
-                    onClick={() => handleOpenEdit(row)}
-                  />
-                  <Button
-                    frontIconName="ic:baseline-delete"
-                    frontIconHeight="18"
-                    frontIconWidth="18"
-                    bgClass=""
-                    textClass=""
-                  />
-                </div>
-              </div>
+              <UserCard
+                row={row}
+                columns={usersManagementColumns}
+              />
             )}
           />
         </div>

@@ -14,8 +14,8 @@ export default function StatusPill({ status='' }) {
   };
 
   return (
-    <div className="text-[11px] leading-none"> 
-      <span className={`capitalize px-2 py-1 rounded-md font-medium ${colors[status] || "bg-gray-200 text-gray-700"}`}>
+    <div className="leading-none"> 
+      <span className={`capitalize px-2 py-0.5 rounded-xs text-small ${colors[status] || "bg-gray-200 text-gray-700"}`}>
         {status.toLowerCase().replace(/_/g, " ")}
       </span>
     </div>
