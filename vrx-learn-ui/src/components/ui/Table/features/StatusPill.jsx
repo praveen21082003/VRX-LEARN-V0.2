@@ -1,4 +1,4 @@
-export default function StatusPill({ status }) {
+export default function StatusPill({ status='' }) {
 
   const colors = {
     SUBMITTED: "bg-[#D1E7DD] text-[#0F5132]",
@@ -14,8 +14,8 @@ export default function StatusPill({ status }) {
   };
 
   return (
-    <div className="text-body">
-      <span className={`capitalize px-2 rounded py-px ${colors[status] || "bg-gray-200 text-gray-700"}`}>
+    <div className="leading-none"> 
+      <span className={`capitalize px-2 py-0.5 rounded-xs text-small ${colors[status] || "bg-gray-200 text-gray-700"}`}>
         {status.toLowerCase().replace(/_/g, " ")}
       </span>
     </div>

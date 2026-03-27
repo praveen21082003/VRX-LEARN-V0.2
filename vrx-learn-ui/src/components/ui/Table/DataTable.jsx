@@ -2,7 +2,9 @@ import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
 import TablePagination from "./TablePagination";
 import getPagination from '@/utils/getPagination';
-function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize, selectedRows }) {
+import CardView from './tableCard/CardView'
+
+function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize, selectedRows, renderMobileCard }) {
 
   const totalPages = Math.ceil(total / pageSize);
 
@@ -17,12 +19,31 @@ function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize,
   const pages = getPagination(page, totalPages);
 
   return (
-    <div className="w-full h-dvh border-2 border-default flex justify-between flex-col">
+    <div className="w-full h-dvh md:border-2 border-default flex flex-col">
 
-      <table className="w-full table-fixed border-b border-default">
-        <TableHeader columns={columns} />
-        <TableBody selectedRows={selectedRows} columns={columns} data={paginatedData} />
-      </table>
+
+      <div className="hidden md:block">
+        <table className="w-full table-fixed border-b border-default">
+          <TableHeader columns={columns} />
+        </table>
+      </div>
+
+      <div className="hidden md:block flex-1 overflow-y-auto">
+        <table className="w-full table-fixed">
+          <TableBody
+            selectedRows={selectedRows}
+            columns={columns}
+            data={paginatedData}
+          />
+        </table>
+      </div>
+
+  
+      <div className="block md:hidden flex-1 overflow-y-auto p-2">
+        {renderMobileCard
+          ? data.map((row) => renderMobileCard(row))
+          : null}
+      </div>
 
 
       <div className="border-t border-default">
@@ -39,7 +60,6 @@ function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize,
         />
       </div>
 
-    </div>
-  );
+    </div>);
 }
 export default DataTable;

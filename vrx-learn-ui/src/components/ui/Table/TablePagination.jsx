@@ -18,7 +18,7 @@ function TablePagination({
 
   return (
     <div className="flex items-center justify-between px-3 text-small h-10 border-t border-default">
-      <div className='flex items-center gap-3'>
+      <div className='hidden md:flex items-center gap-3'>
         <span>Rows per page</span>
         <select
           value={pageSize}
@@ -33,11 +33,11 @@ function TablePagination({
           <option value={25}>25</option>
         </select>
       </div>
-      <div>
+      <div className="hidden md:block">
         {start}-{end} of {total} entries
       </div>
 
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 w-full md:w-auto justify-center md:justify-end">
         <Button
           buttonName="Previous"
           disabled={page === 1}
@@ -47,6 +47,8 @@ function TablePagination({
           className="px-2 py-1 text-body rounded-sm border border-default"
           onClick={() => setPage(page - 1)}
         />
+                <div className="flex items-center gap-1">
+
         {pages.map((p, index) => {
 
           if (p === "...") {
@@ -65,6 +67,7 @@ function TablePagination({
             />
           );
         })}
+        </div>
         <Button
           buttonName="Next"
           disabled={page === totalPages}

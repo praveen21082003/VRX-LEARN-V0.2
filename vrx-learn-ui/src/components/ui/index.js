@@ -19,8 +19,14 @@ export { default as Tabs } from './Tabs'
 export { default as AttachmentCard } from './AttachmentCard/AttachmentList'
 export { default as CourseCardViewer } from './CourseCardViewer'
 export { default as DataTable } from './Table'
-export { default as Avatar } from './Table/Avatar'
-export { default as StatusPill } from './Table/StatusPill'
+export { default as Avatar } from './Table/features/Avatar'
+export { default as StatusPill } from './Table/features/StatusPill'
 export { default as StatCard } from './Cards/StatCard'
 export { default as Modal } from './Modal/Modal'
+
+
+// table cards
+export {default as UserCard } from './Cards/tableCards/UserCard'
+export {default as EnrollmentCard} from './Cards/tableCards/EnrollmentCard'
+export {default as CourseCard} from './Cards/tableCards/CourseCard'
 

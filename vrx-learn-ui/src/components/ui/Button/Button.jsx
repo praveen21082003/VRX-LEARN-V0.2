@@ -16,7 +16,8 @@ function Button({
   backIconWidth,
   backIconHeight,
   fontClass = 'text-h5',
-  isMobile
+  isMobile,
+  border
 }) {
   const isWhiteBg =
     bgClass.includes('');
@@ -43,7 +44,7 @@ function Button({
         bgClass,
         textClass,
 
-        isWhiteBg && !bgClass && buttonName && "border border-primary dark:border-background",
+        isWhiteBg && !bgClass && buttonName && !isMobile && "border border-primary dark:border-background",
 
         disabled
           ? "opacity-50 cursor-not-allowed"
