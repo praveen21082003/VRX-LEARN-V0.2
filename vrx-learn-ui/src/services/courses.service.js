@@ -7,7 +7,7 @@ export const getMyCourses = () => {
 
 /* All Courses */
 export const getAllCourses = () => {
-  return axiosInstance.get("/all_courses");
+  return axiosInstance.get(`/api/v1/dashboard/trainee/top-new-courses/${3}`);
 };
 
 /* Course Overview */

@@ -10,8 +10,24 @@ export function AuthProvider({ children }) {
     return localStorage.getItem("viewRole");
   });
 
-  const isAuthenticated = !user;
+  const isAuthenticated = !!user;
   const role = user?.role;
+
+
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        const res = await getMe(); // call your API
+        setUser(res.data);
+      } catch (err) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initAuth();
+  }, []);
 
 
   useEffect(() => {
@@ -21,6 +37,11 @@ export function AuthProvider({ children }) {
       localStorage.removeItem("viewRole");
     }
   }, [viewRole]);
+
+
+  if (loading) {
+    return <div>Loading...</div>; // or spinner
+  }
 
 
 

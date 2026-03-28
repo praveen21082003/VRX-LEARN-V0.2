@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Icon, Input, Button } from "@/components/ui";
 import { useAuth } from "@/context/AuthContext";
-import { getUserProfile } from "@/services/profile.service";
+import { getUserProfile, getMe } from "@/services/profile.service";
 import { useNavigate } from "react-router-dom";
 import { hover } from "motion/react";
 
-function Login({ onForgot,setWarnMsg }) {
+function Login({ onForgot, setWarnMsg }) {
     const navigate = useNavigate();
     const { setUser, setLoading } = useAuth();
     const [warning, setWarning] = useState({ email: "", password: "" });
@@ -30,16 +30,24 @@ function Login({ onForgot,setWarnMsg }) {
                 credentials.email,
                 credentials.password,
             );
-            setUser(data[0]);
-
-            if (data[0].role) {
+            console.log(data);
+            if (data.message === "Logged in successfully") {
+                const userData = await getMe();
+                console.log(userData)
+                setUser(userData);
                 navigate("/dashboard", { replace: true });
-            } 
+            }
 
-            
+
         } catch (err) {
-            setWarnMsg("Invaild credentials");
-            console.error("Profile fetch failed", err);
+            if (err.response?.status === 401) {
+                setWarnMsg("Invalid email or password.");
+            } else if (err.response?.status === 500) {
+                setWarnMsg("Server error. Please try again later.");
+            } else {
+                setWarnMsg("Something went wrong. Check your connection.");
+            }
+            console.error("Login Error:", err.response?.data || err.message);
         } finally {
             setLoading(false);
         }
@@ -113,7 +121,7 @@ function Login({ onForgot,setWarnMsg }) {
                             name={i.name}
                             height="28"
                             width="28"
-                            className={`text-muted ${i.hover} transition-colors duration-200`}  
+                            className={`text-muted ${i.hover} transition-colors duration-200`}
                         />
                     </a>
                 ))}

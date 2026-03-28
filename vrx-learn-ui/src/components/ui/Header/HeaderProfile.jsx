@@ -56,8 +56,8 @@ export default function HeaderProfile({ user, role, viewRole, loading, buttons  
                     <Icon name="mingcute:user-4-fill" height="40" width="40" />
                 }
 
-                <span className="hidden md:block text-h5 max-w-28 truncate">{user?.name}</span>
-                {role === "TRAINER" && (
+                <span className="hidden md:block text-h5 max-w-28 truncate">{user?.username}</span>
+                {role === "trainer" && (
                     <Pill viewRole={viewRole} />
                 )}
                 <span className="hidden md:block">

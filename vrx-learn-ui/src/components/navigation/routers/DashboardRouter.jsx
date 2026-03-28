@@ -7,13 +7,17 @@ export default function DashboardRouter() {
     const { role, viewRole } = useAuth();
 
 
-    if (role === "ADMIN" || role === "SUBADMIN") {
+    if (role === "admin" || role === "SUBADMIN") {
         return <AdminDashboard />;
     }
 
-    if (viewRole === "TRAINER" && role === "TRAINER") {
+    if (viewRole === "trainer" && role === "trainer") {
         return <TrainerDashboard />;
     }
 
-    return <DashboardPage />; 
+    if (role === "trainee"){
+        return <DashboardPage />; 
+    }
+
+    return <p>role not there</p>; 
 }

@@ -22,7 +22,7 @@ function WelcomeSection({ user }) {
 
         <div className="flex flex-col justify-center gap-5 text-white max-w-xl">
           <h2 className="text-h3">
-            Hello, {user.name}!
+            Hello, {user.username}!
           </h2>
 
           <div className="flex flex-col gap-2">

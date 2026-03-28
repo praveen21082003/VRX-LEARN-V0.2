@@ -81,9 +81,9 @@ function Viewer({
 
           return (
             <CourseCard
-              key={course.id}
-              name={course.name}
-              author={course.author}
+              key={course.courseId}
+              name={course.courseName}
+              author={course.trainerName}
               image={course.thumbnail}
               buttonName={btn.name}
               bgClass={btn.bg}

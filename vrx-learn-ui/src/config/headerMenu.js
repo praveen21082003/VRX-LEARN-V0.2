@@ -1,5 +1,5 @@
 export const roleNavigation = {
-    TRAINEE: [
+    trainee: [
         {
             name: "Dashboard",
             icon: "material-symbols:dashboard-rounded",
@@ -17,7 +17,7 @@ export const roleNavigation = {
         }
     ],
 
-    TRAINER: [
+    trainer: [
         {
             name: "Dashboard",
             icon: "material-symbols:dashboard-rounded",
@@ -30,7 +30,7 @@ export const roleNavigation = {
         },
     ],
 
-    ADMIN: [
+    admin: [
         {
             name: "Dashboard",
             icon: "tabler:layout-dashboard-filled",
