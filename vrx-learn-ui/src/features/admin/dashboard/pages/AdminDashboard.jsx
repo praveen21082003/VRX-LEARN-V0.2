@@ -3,11 +3,18 @@ import { Icon, Modal } from '@/components/ui'
 import CreateUser from '../../dialogs/CreateUser';
 import NewCourses from '../../dialogs/NewCourses';
 import NewEnrollment from '../../dialogs/NewEnrollment';
+import { StatCard } from '@/components/ui';
+import useAdminKpis from "@/features/courses/hooks/useAdminKpis";
+import useAdminTopCourses from "@/features/courses/hooks/useAdminTopCourses";
 
 
 
 function AdminDashboard() {
 
+    const { kpis, isLoading, error } = useAdminKpis();  
+    const { topCourses, loading, error: topCoursesError } = useAdminTopCourses();
+    console.log("KPIS:", kpis);
+    console.log("Top Courses:", topCourses);
   const [open, setOpen] = useState(false);
   const [activeAction, setActiveAction] = useState();
 
@@ -99,9 +106,55 @@ function AdminDashboard() {
     setOpen(true);
   };
 
+  const avgTrainees =
+  kpis?.totalCourses
+    ? Math.round(kpis.totalEnrollments / kpis.totalCourses)
+    : 0;
+
 
   return (
     <div className="space-y-4 text-main py-4 px-6">
+
+                  <h2 className='text-h2 mb-1'>Welcome Admin!</h2>
+                  <p className='mb-1 '>Here's what's happening across your learning platform.</p>
+                  <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4 gap-4 py-4'>
+                      <StatCard
+                          icon="mdi:users"
+                          label="Total Users"
+                          value={kpis.totalUsers}
+                      />
+      
+                      <StatCard
+                          icon="mdi:book-education-outline"
+                          label="Total Courses"
+                          value={kpis.totalCourses}
+                      />
+      
+                      <StatCard
+                          icon="mdi:book-account"
+                          label="Total Enrollments"
+                          value={kpis.totalEnrollments}
+                      />
+      
+                      {/* <StatCard
+                          icon="nrk:media-completed"
+                          label="Average Completion"
+                          // value="78%"
+                            value={kpis?.avgCompletion ? `${kpis.avgCompletion}%` : "78%"}
+
+                      /> */}
+{/* {
+  "totalTrainees": 100,
+  "completedTrainees": 78
+} */}
+{/* const completion = (course.completedTrainees / course.totalTrainees) * 100; */}
+
+                  <StatCard
+                  icon="mdi:account-group"
+                  label="Avg Trainees / Course"
+                  value={avgTrainees}
+                  />
+                  </div>
 
       <div className='space-y-4'>
         <h4 className="text-h4">Quick Actions</h4>
@@ -149,7 +202,7 @@ function AdminDashboard() {
         </div>
 
         <div className="space-y-3">
-          {data.slice(0, 5).map((course, index) => (
+          {topCourses.map((course, index) => (
             <div
               key={course.id}
               className="flex justify-between items-center border-b border-default pb-3 last:border-none"
@@ -162,11 +215,11 @@ function AdminDashboard() {
 
                 <div>
                   <p className="text-body font-medium">
-                    {course.title}
+                    {course.courseName}
                   </p>
 
                   <p className="text-caption text-muted">
-                    {course.trainers.join(", ")}
+                    {course.trainerName}
                   </p>
                 </div>
               </div>
@@ -174,7 +227,7 @@ function AdminDashboard() {
 
               <div className="text-right">
                 <p className="text-primary dark:text-white font-semibold">
-                  {course.students}
+                  {course.totalTrainees}
                 </p>
                 <p className="text-caption text-muted">
                   Trainees
