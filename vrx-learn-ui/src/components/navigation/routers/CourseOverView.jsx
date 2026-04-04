@@ -5,24 +5,31 @@ import useCourseContent from "@/features/courses/hooks/useCourseContent";
 import { usePermission } from "@/hooks/usePermission"
 import { CourseTumbnail, Icon, FloatingMenu } from "@/components/ui";
 import { formatMinutes } from "@/utils/duration";
+import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter'
 
 import { TRAINEE_SECTIONS } from "@/config/courseOverview";
 import { TRAINER_SECTIONS } from "@/config/courseOverview";
+
+import CourseContentPlaceholder from "@/features/courses/components/CourseContentPlaceholder";
 
 
 function CourseOverView() {
     // const {role, viewRole} =useAuth();
     const { courseSlug } = useParams();
     const { courseContent, loading, error } = useCourseContent(courseSlug);
+
+    const title = capitalizeFirstLetter(courseContent?.course?.title)
+
+
     const { setCourseBreadcrumb } = useOutletContext();
 
     const { can } = usePermission();
 
     useEffect(() => {
-        if (!courseContent?.name) return;
+        if (!courseContent?.course?.title) return;
 
-        setCourseBreadcrumb(courseContent.name);
-    }, [courseContent?.name]);
+        setCourseBreadcrumb(title);
+    }, [courseContent?.course?.title]);
 
 
     if (loading) return <p>Loading...</p>;
@@ -37,6 +44,8 @@ function CourseOverView() {
         courseContent.quiz_duration +
         courseContent.feedback_duration;
 
+    const moduleCount = courseContent?.modules?.length || 0;
+
 
     const sections =
         can("UPDATE_COURSE")
@@ -45,51 +54,29 @@ function CourseOverView() {
 
 
 
+    console.log(can("UPDATE_COURSE"))
 
-    return (
-        <>
-            <div className="flex flex-col lg:flex-row gap-4 md:gap-6 items-start p-4 text-main min-w-0">
-                <div className="w-full md:w-[320px]">
-                    <CourseTumbnail name={courseContent.name} image={courseContent.thumbnail} classRounded="rounded-lg" />
+
+    const renderCourseContent = () => {
+
+        if (!courseContent?.modules?.length && !can("UPDATE_COURSE")) {
+            return (
+                <div className="w-full flex justify-center">
+                    <CourseContentPlaceholder />
                 </div>
-                <div className="flex-1 min-w-0">
-                    <div className="hidden lg:flex justify-between">
-                        <h2 className="text-h2">{courseContent.name}</h2>
-                    </div>
-                    <div>
-                        <p className="text-sm font-medium text-muted-foreground">
-                            Instructor:{" "}
-                            <span className="text-foreground">
-                                {courseContent.author}
-                            </span>
-                        </p>
-                        <div className="flex flex-wrap items-center gap-1 text-body text-muted-foreground text-dark-gray">
-                            <span>Course</span>
-                            <Icon name="ph:dot-bold" />
-                            <span>{formatMinutes(totalLessonMinutes)}</span>
-                            <Icon name="ph:dot-bold" />
-                            <span>{courseContent.progess_status}</span>
-                        </div>
-                    </div>
+            );
+        }
 
-
-                    <p className="text-body text-muted-foreground line-clamp-3">
-                        {courseContent.short_description}
-                    </p>
-
-                </div>
-            </div>
+        return (
             <div className="space-y-1 py-4 px-4 lg:px-6 lg:py-2 text-main">
                 {sections.map((section) => {
 
-                    const basePath = can("UPDATE_COURSE")
-                        ? `/courses/${courseSlug}`
-                        : `/learn/${courseSlug}`;
-
                     const meta =
-                        section.metaKey && courseContent[section.metaKey]
-                            ? `${courseContent[section.metaKey]} ${section.metaLabel || ""}`
-                            : null;
+                        section.getMeta
+                            ? section.getMeta(courseContent)
+                            : section.metaKey && courseContent[section.metaKey]
+                                ? `${courseContent[section.metaKey]} ${section.metaLabel || ""}`
+                                : null;
 
                     const duration =
                         section.durationKey && courseContent[section.durationKey]
@@ -147,6 +134,51 @@ function CourseOverView() {
                     );
                 })}
             </div>
+        )
+    }
+
+
+
+
+    return (
+        <div className="space-y-6 p-4">
+            <div className="flex flex-col lg:flex-row gap-4 md:gap-6 items-start text-main min-w-0">
+                <div className="w-full md:w-[320px]">
+                    <CourseTumbnail name={title} image={courseContent.thumbnail} classRounded="rounded-lg" />
+                </div>
+                <div className="flex-1 min-w-0">
+                    <div className="hidden lg:flex justify-between">
+                        <h2 className="text-h2">{title}</h2>
+                    </div>
+                    <div>
+                        <p className="text-sm font-medium text-muted-foreground">
+                            Instructor:{" "}
+                            <span className="text-foreground">
+                                {courseContent.author}
+                            </span>
+                        </p>
+                        <div className="flex flex-wrap items-center gap-1 text-body text-muted">
+                            <span>Course</span>
+                            <Icon name="ph:dot-bold" />
+                            <span>{totalLessonMinutes ? formatMinutes(totalLessonMinutes) : "Duration TBD"}</span>
+                            <Icon name="ph:dot-bold" />
+                            <span>{courseContent?.progess_status || "Not Started"}</span>
+                        </div>
+                    </div>
+
+
+                    <p className="text-body text-muted-foreground line-clamp-3">
+                        {courseContent.course.shortDescription}
+                    </p>
+
+                </div>
+            </div>
+
+
+            {renderCourseContent()}
+
+
+
             <div>
                 {can("UPDATE_COURSE")
                     && <FloatingMenu
@@ -159,7 +191,7 @@ function CourseOverView() {
                     />
                 }
             </div>
-        </>
+        </div>
     )
 }
 

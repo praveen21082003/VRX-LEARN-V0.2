@@ -13,6 +13,7 @@ function AssignmentFormSection({
     setFiles,
     loading
 }) {
+    // console.log(formData)
 
     const { courseSlug } = useParams();
     const { courseContent } = useOutletContext();
@@ -49,20 +50,20 @@ function AssignmentFormSection({
                         type="datetime-local"
                         min={new Date().toISOString().slice(0, 16)}
                         value={
-                            formData?.submission_date
+                            formData?.dueDate
                         }
                         onChange={(e) => {
                             const value = e.target.value;
-                            handleChange("submission_date", value);
+                            handleChange("dueDate", value);
                         }}
                     />
                     <Input
                         label="Max Points"
                         type="number"
                         min='0'
-                        value={formData?.marks}
+                        value={formData?.maxScore}
                         // inputWarning={formDataErrors.marks}
-                        onChange={(e) => handleChange("marks", Number(e.target.value))}
+                        onChange={(e) => handleChange("maxScore", Number(e.target.value))}
                     />
                     <Input
                         label="Max Attempts"
@@ -70,13 +71,13 @@ function AssignmentFormSection({
                         min="1"
                         max="3"
                         // inputWarning={formDataErrors.max_attempts}
-                        value={formData?.max_attempts}
-                        onChange={(e) => handleChange("max_attempts", Number(e.target.value))}
+                        value={formData?.numberOfAttempts}
+                        onChange={(e) => handleChange("numberOfAttempts", Number(e.target.value))}
                     />
                 </div>
 
                 {!isEdit && (
-                    <UploadSection files={files} setFiles={setFiles} />
+                    <UploadSection files={files} setFiles={setFiles} label="Attachments" optional={true}/>
                 )}
 
                 {isEdit && (

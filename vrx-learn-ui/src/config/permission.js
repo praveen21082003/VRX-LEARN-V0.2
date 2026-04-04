@@ -1,5 +1,5 @@
 export const ROLE_PERMISSION = {
-    ADMIN: [
+    admin: [
         "CREATE_USER",
         "CREATE_COURSE",
         "CREATE_MODULES",
@@ -20,12 +20,12 @@ export const ROLE_PERMISSION = {
         "UPDATE_LABS",
     ],
 
-    SUBADMIN: [
+    subadmin: [
         "UPDATE_COURSE",
         "ASSIGN_TRAINER",
     ],
 
-    TRAINER: [
+    trainer: [
         "CREATE_MODULES",
         "UPDATE_MODULES",
         "UPDATE_COURSE",
@@ -34,7 +34,7 @@ export const ROLE_PERMISSION = {
         "SWITCH_TO_TRAINEE"
     ],
 
-    TRAINEE: [
+    trainee: [
         "VIEW_COURSE",
         "SUBMIT_ASSIGNMENT"
     ]

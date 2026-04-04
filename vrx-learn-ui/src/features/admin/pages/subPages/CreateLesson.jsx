@@ -1,25 +1,41 @@
-import React, { useState } from 'react'
-import { useParams, useOutletContext } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import LessonFormSection from '../../sections/LessonFormSection';
-
+import { useLessons } from '../../hooks/useLessons';
 
 function CreateLesson() {
     const { courseSlug, moduleId } = useParams();
+    const navigate = useNavigate();
     const [files, setFiles] = useState([]);
-    const { modules } = useOutletContext();
+    const [warning, setWarning] = useState({
+        title: "",
+        description: "",
+        file: ""
+    });
+
+    const { modules,addToast } = useOutletContext();
+    console.log(moduleId);
+    
+
+    const { lessons, isCreating, uploadProgress, loadedData, mediaStatus, lessonsError, createLesson } = useLessons();
+
+    
+
 
     const currentModule = modules?.find(
         (m) => String(m.id) === String(moduleId)
     );
 
-
     const [formData, setFormData] = useState({
-        course_id: Number(courseSlug),
-        module_id: Number(moduleId),
         title: "",
-        overview: ""
-
+        description: "",
+        filename: "",
+        contentType: "",
+        fileSize: 1,
     });
+
+
 
     const handleChange = (field, value) => {
         setFormData((prev) => ({
@@ -27,47 +43,90 @@ function CreateLesson() {
             [field]: value,
         }));
     };
+
+
+    const validatePayload = (formData, file) => {
+
+        const errors = {
+            title: "",
+            description: "",
+            file: ""
+        };
+
+        if (!formData.title || formData.title.trim() === "") {
+            errors.title = "Title is required";
+        }
+
+        if (formData.description && formData.description.trim() !== "") {
+            const len = formData.description.trim().length;
+
+            if (len < 5 || len > 5000) {
+                errors.description = "Description must be between 5 and 5000 characters";
+            }
+        }
+
+        if (!file) {
+            errors.file = "Please Upload the file";
+        }
+
+        return errors;
+    };
+
+    const handleSubmit = async (e) => {
+        if (e) e.preventDefault();
+
+        const file = files?.[0];
+
+        const errors = validatePayload(formData, file);
+
+        setWarning(errors);
+
+        const hasError = Object.values(errors).some(val => val !== "");
+
+        if (hasError) return;
+
+
+        const payload = {
+            title: formData.title.trim(),
+            description: formData.description.trim() || null,
+            moduleId: moduleId,
+            ...(file && {
+                filename: file.name,
+                contentType: file.type || 'application/octet-stream',
+                fileSize: file.size,
+            }),
+        };
+
+
+
+
+        try {
+            await createLesson(payload, file);
+            addToast("Lesson created successfully", "success");
+            navigate(`/course/${courseSlug}/content/modules/${moduleId}`);
+        } catch (err) {
+            addToast(err.response?.data?.message || "Failed to create lesson", "error");
+        }
+    };
+
+
+
     return (
-        <>
-            {/* <BackButton to={`/course/${courseSlug}/content/modules/${moduleId}`} label={`Module - ${currentModule?.title || "Loading..."}`} />
-
-            <h2 className="text-h3 font-semibold mt-2 mb-4">
-                New Lesson
-            </h2>
-
-            <div className='space-y-4'>
-                <Input
-                    label="Title"
-                    placeholder="Lesson name"
-                    value={formData.title}
-                    onChange={(e) => handleChange("title", e.target.value)}
-                />
-                <div className="space-y-2">
-                    <TextEditor
-                        label="Overview"
-                        value={formData.description}
-                        onChange={(value) => handleChange("overview", value)}
-                    />
-                </div>
-                <UploadSection
-                    files={files}
-                    setFiles={setFiles}
-                    // onUpload={handleUpload}
-                />
-                <div className='flex justify-center'>
-                    <Button buttonName={files.length <= 0 ? "Submit" : "Upload"} className="mt-5 px-5 py-2 rounded" />
-                </div>
-            </div> */}
-            <LessonFormSection
-                mode="create"
-                formData={formData}
-                files={files}
-                setFiles={setFiles}
-                handleChange={handleChange}
-                currentModule={currentModule}
-            />
-        </>
+        <LessonFormSection
+            mode="create"
+            formData={formData}
+            files={files}
+            setFiles={setFiles}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            isCreating={isCreating}
+            currentModule={currentModule}
+            uploadProgress={uploadProgress}
+            mediaStatus={mediaStatus}
+            loadedData={loadedData}
+            warning={warning}
+        />
     )
 }
 
-export default CreateLesson
+export default CreateLesson;

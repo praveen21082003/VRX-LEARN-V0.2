@@ -4,30 +4,46 @@ import { Button, Icon, Dropdown } from "@/components/ui";
 import BackButton from "@/components/navigation/BackButton";
 
 import useCourseContent from '@/features/courses/hooks/useCourseContent';
+
 import { COURSE_EDIT_SECTIONS } from "@/config/courseEditConfig";
 import clsx from "clsx";
 import { useEffect, useState, useRef } from "react";
 import useModules from "@/features/courses/hooks/useModules";
-import useAssignments from "../../courses/hooks/useAssignments";
+import useAssignments from "../hooks/useAssignment"
 
 import { getCreateButtons } from "@/config/DropdownButtons";
+import { useToast } from '@/context/ToastProvider'
+
 
 
 
 function EditCourseLayout() {
-  const { courseSlug } = useParams();
+
+  const { addToast } = useToast();
+  const { moduleId, courseSlug, assignmnetId } = useParams();
   const location = useLocation();
   const ref = useRef(null);
 
-  const { courseContent } = useCourseContent(courseSlug);
+  const { courseContent, fetchCourseContent, loading, error } = useCourseContent(courseSlug);
+
   const { setCourseBreadcrumb } = useOutletContext();
 
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(null);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
-  const { modules = [], moduleLoading, moduleError } = useModules(courseSlug);
-  const { assignments, error, loading } = useAssignments(courseSlug);
+  const { modules, fetchModules, updateModule, isUpdating, moduleLoading, moduleError } = useModules();
+
+
+
+  const {
+    assignment,
+    assignmentLoading,
+    assignmentError,
+    fetchAssignment,
+  } = useAssignments();
+
+
   const [asideWidth, setAsideWidth] = useState(() => {
     if (window.innerWidth >= 1536) return 480; // 2xl
     return 360; // normal
@@ -41,20 +57,46 @@ function EditCourseLayout() {
   });
 
 
+  useEffect(() => {
+    fetchModules();
+  }, [])
+
+
+  useEffect(() => {
+    fetchCourseContent(courseSlug);
+  }, [courseSlug])
+
+  useEffect(()=>{
+    fetchAssignment(assignmnetId)
+  },[assignmnetId])
+
+
   const courseEditData = {
-    modules,
+    modules: courseContent?.modules,
+    moduleId,
+    updateModule,
+    addToast,
     moduleLoading,
+    isUpdating,
     moduleError,
     courseSlug,
-    assignments,
-    courseContent
+    assignments: courseContent?.assignments,
+    courseContent,
+    fetchCourseContent,
+    fetchModules,
 
+    assignment,
+    assignmentLoading,
+    assignmentError,
+    fetchAssignment,
 
   };
 
+  console.log(courseContent);
+
   const sectionChildrenMap = {
-    modules: modules,
-    assignments: assignments,
+    modules: courseContent?.modules,
+    assignments: courseContent?.assignments,
     lab: [],
     quiz: [],
     feedback: [],
@@ -66,7 +108,7 @@ function EditCourseLayout() {
 
 
   useEffect(() => {
-    if (!courseContent?.name) return;
+    if (!courseContent?.course?.title) return;
 
     const pathParts = location.pathname.split("/");
     const editIndex = pathParts.indexOf("edit");
@@ -88,11 +130,11 @@ function EditCourseLayout() {
 
     setCourseBreadcrumb([
       { label: "Dashboard", to: "/dashboard" },
-      { label: courseContent.name, to: `/courses/${courseSlug}/edit/info` },
+      { label: courseContent.course?.title, to: `/courses/${courseSlug}/edit/info` },
       ...(sectionLabel ? [{ label: sectionLabel }] : []),
     ]);
 
-  }, [courseContent?.name, location.pathname]);
+  }, [courseContent?.course?.title, location.pathname]);
 
 
   useEffect(() => {

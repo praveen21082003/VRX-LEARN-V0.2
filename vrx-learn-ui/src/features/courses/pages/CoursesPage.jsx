@@ -8,7 +8,6 @@ function CoursesPage() {
             <AllCoursesSection />
             <MyCoursesSection />
         </div>
-
     )
 }
 

@@ -1,5 +1,6 @@
 import React from "react";
 import {Icon} from '@/components/ui'
+import {capitalizeFirstLetter} from '@/utils/capitalizeFirstLetter'
 
 function CourseCard({ row, columns }) {
   const getCol = (key) => columns.find((c) => c.key === key);
@@ -24,7 +25,7 @@ function CourseCard({ row, columns }) {
 
         {/* Title */}
         <p className="text-h5 text-main truncate">
-          {row.title}
+          {capitalizeFirstLetter(row.title)}
         </p>
 
         {/* Trainers */}
@@ -35,7 +36,7 @@ function CourseCard({ row, columns }) {
 
         {/* Description */}
         <p className="text-caption text-muted line-clamp-2">
-          {row.description}
+          {row.shortDescription}
         </p>
 
         {/* Created Date */}

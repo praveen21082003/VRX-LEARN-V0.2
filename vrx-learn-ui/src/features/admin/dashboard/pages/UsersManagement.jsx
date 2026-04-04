@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useUsersData } from "../../hooks/useUsersData";
 
 import {
   Icon,
@@ -18,13 +19,35 @@ import CreateUser from "../../dialogs/CreateUser";
 function UsersManagement() {
   const isMobile = window.innerWidth < 768;
 
+  const { users, fetchUsers, loading, total } = useUsersData();
+
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
 
   const [selectedRows, setSelectedRows] = useState([]);
 
   const [open, setOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
+
+
+  const [search, setSearch] = useState("");
+  const [role, setRole] = useState("all");
+  const [status, setStatus] = useState("all");
+  const [sort, setSort] = useState("newest");
+
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+
+  // console.log("Current Page:", page, "Users Count:", users.length);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
 
   const handleSelectRow = (id, checked) => {
     if (checked) {
@@ -36,7 +59,7 @@ function UsersManagement() {
 
   const handleSelectAll = (checked) => {
     if (checked) {
-      setSelectedRows(data.map((row) => row.id));
+      setSelectedRows(users.map((row) => row.id));
     } else {
       setSelectedRows([]);
     }
@@ -47,38 +70,30 @@ function UsersManagement() {
     setOpen(true);
   };
 
-  const data = [
-    {
-      id: 21,
-      name: "Heaven Kane",
-      email: "heavenkane@gmail.com",
-      role: "ADMIN",
-      last_login: "10 min ago",
-      created_at: "2026-02-14T09:15:00",
-      status: "ACTIVE",
-    },
-    {
-      id: 22,
-      name: "Arul S",
-      email: "arul@gmail.com",
-      role: "SUB_ADMIN",
-      last_login: "1 min ago",
-      created_at: "2026-02-14T09:15:00",
-      status: "PENDING",
-    },
-    {
-      id: 23,
-      name: "Praveen kumar",
-      email: "praveen@gmail.com",
-      role: "TRAINEE",
-      last_login: "2 hours ago",
-      created_at: "2026-02-14T09:15:00",
-      status: "INACTIVE",
-    },
-  ];
 
-  const allRoles = ["ADMIN", "SUB_ADMIN", "TRAINER", "TRAINEE"];
-  const allStatuses = ["ACTIVE", "INACTIVE", "PENDING"];
+  useEffect(() => {
+
+    const sortMapping = {
+      create_asc: { sortByCreatedAt: "asc" },
+      create_desc: { sortByCreatedAt: "desc" },
+      user_asc: { sortByUsername: "asc" },
+      user_desc: { sortByUsername: "desc" },
+    };
+
+    fetchUsers({
+      page,
+      limit: pageSize,
+      nameOrEmail: debouncedSearch || undefined,
+      role: role !== "all" ? role : undefined,
+      status: status !== "all" ? status : undefined,
+      ...(sortMapping[sort] || {}),
+    });
+  }, [page, pageSize, debouncedSearch, role, status, sort]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, role, status, sort]);
+
 
   const usersManagementColumns = [
     {
@@ -136,16 +151,19 @@ function UsersManagement() {
       render: (row) => <StatusPill status={row.role} />,
     },
     {
-      key: "last_login",
+      key: "lastLogin",
       label: "Last Login",
       width: "15%",
+      render: (row) => (
+        <span className="text-caption">{formatDateTime(row.lastLogin)}</span>
+      ),
     },
     {
-      key: "date",
+      key: "createdAt",
       label: "Created At",
       width: "20%",
       render: (row) => (
-        <span className="text-caption">{formatDateTime(row.created_at)}</span>
+        <span className="text-caption">{formatDateTime(row.createdAt)}</span>
       ),
     },
     {
@@ -159,7 +177,7 @@ function UsersManagement() {
       label: "Actions",
       width: "12%",
       render: (row) => {
-        const actions = ["mingcute:pencil-line", "ic:baseline-delete"];
+        const actions = ["mingcute:pencil-line", "mdi:delete-outline"];
         return (
           <div className="flex items-center justify-center gap-3">
             {actions.map((icon, index) => (
@@ -182,7 +200,7 @@ function UsersManagement() {
   ];
 
   return (
-    <div className="w-full p-4 bg-white border-b border-gray-200">
+    <div className="w-full p-4 bg-transparent text-main border-b border-gray-200">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-h3 font-semibold">User Management</h3>
         {selectedRows.length === 0 && (
@@ -226,6 +244,8 @@ function UsersManagement() {
               paddingClass="py-2"
               widthClass="w-full md:w-96"
               placeholder="Search by name or email..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
@@ -233,10 +253,12 @@ function UsersManagement() {
             <div className="col-span-1">
               <Select
                 label="Users:"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
                 options={[
-                  { label: "All Users", value: "all" },
+                  { label: "All Users", value: null },
                   { label: "Admin", value: "admin" },
-                  { label: "Sub Admin", value: "sub_admin" },
+                  { label: "Sub Admin", value: "subadmin" },
                   { label: "Trainer", value: "trainer" },
                   { label: "Trainee", value: "trainee" },
                 ]}
@@ -245,23 +267,27 @@ function UsersManagement() {
             <div className="col-span-1">
               <Select
                 label="Sort by:"
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
                 options={[
-                  { label: "Newest First", value: "newest" },
-                  { label: "Oldest First", value: "oldest" },
-                  { label: "Name (A - Z)", value: "name_asc" },
-                  { label: "Name (Z - A)", value: "name_desc" },
-                  { label: "Last Active", value: "last_active" },
+                  { label: "None", value: null },
+                  { label: "Newest First", value: "create_desc" },
+                  { label: "Oldest First", value: "create_asc" },
+                  { label: "Username (A - Z)", value: "user_asc" },
+                  { label: "Username (Z - A)", value: "user_desc" },
                 ]}
               />
             </div>
             <div className="col-span-1 md:col-span-1">
               <Select
                 label="Status:"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
                 options={[
-                  { label: "All", value: "all" },
+                  { label: "All", value: "" },
                   { label: "Active", value: "active" },
-                  { label: "Inactive", value: "inactive" },
-                  { label: "Pending", value: "pending" },
+                  // { label: "Inactive", value: "inactive" },
+                  // { label: "Pending", value: "pending" },
                 ]}
               />
             </div>
@@ -304,14 +330,15 @@ function UsersManagement() {
       <div>
         <div className="w-full overflow-x-auto">
           <DataTable
+            total={total}
+            loading={loading}
             selectedRows={selectedRows}
             columns={usersManagementColumns}
-            data={data}
+            data={users}
             page={page}
             setPage={setPage}
             pageSize={pageSize}
             setPageSize={setPageSize}
-            total={data.length}
             renderMobileCard={(row) => (
               <UserCard
                 row={row}
@@ -329,11 +356,10 @@ function UsersManagement() {
           title={editingUser ? "Edit User" : "Create New User"}
         >
           <CreateUser
+            onSuccess={fetchUsers}
             isEdit={!!editingUser}
             userData={editingUser}
             onClose={() => setOpen(false)}
-            roles={allRoles}
-            statuses={allStatuses}
           />
         </Modal>
       )}

@@ -1,25 +1,27 @@
 import React from 'react'
-import useEvents from './hooks/useEvents'
+// import useEvents from './hooks/useEvents'
 import Calendar from './sections/Calendar';
 import Events from './sections/Events';
 
 function CalendarUi() {
-  const { events, loading, error } = useEvents();
-  console.log(events)
+  // const { events, loading, error } = useEvents();
+  // console.log(events)
 
-  if (!events && loading) {
-    return <p>loading...</p>
-  }
+  // if (!events && loading) {
+  //   return <p>loading...</p>
+  // }
+
+  const events = [];
 
 
   return (
     <div>
       <div className="w-full rounded-xl bg-card text-main p-4">
-        <Calendar events={events} />
+        <Calendar />
       </div>
 
-      <Events events={events} />
-
+      <Events events={null} />
+    
     </div>
 
   )

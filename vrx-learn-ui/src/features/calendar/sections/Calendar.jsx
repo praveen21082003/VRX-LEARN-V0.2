@@ -121,7 +121,7 @@ export default function Calendar({ events }) {
                             onClick={() => setSelectedDate(day)}
                             className={`relative flex h-9 w-9 items-center justify-center rounded-full text-sm cursor-pointer
                                 ${isSelected ? "bg-gray-300 text-black" : ""}
-                                ${isToday(day) && !isSelected ? "border border-primary" : ""}
+                                ${isToday(day) && !isSelected ? "text-white bg-[#0073D9]" : ""}
                                 hover:bg-muted`}
                         >
                             {format(day, "d")}

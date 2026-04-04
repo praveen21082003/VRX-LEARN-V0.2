@@ -4,6 +4,7 @@ import Starterkit from '@tiptap/starter-kit'
 import Link from "@tiptap/extension-link"
 import Placeholder from "@tiptap/extension-placeholder"
 import { Markdown } from "tiptap-markdown"
+import InputWarnMessage from "../Warning";
 
 
 import EditorMenu from './EditorMenu'
@@ -12,7 +13,7 @@ import './tiptap.css'
 
 
 
-function EditerBox({ label, value, onChange }) {
+function EditerBox({ label, value, onChange, inputWarning }) {
 
     const editor = useEditor({
         extensions: [
@@ -61,12 +62,13 @@ function EditerBox({ label, value, onChange }) {
                 </label>
             )}
 
-            <div className="w-full border text-sm border-input-border rounded overflow-hidden">
+            <div className="relative w-full border text-sm border-input-border rounded overflow-hidden">
                 <EditorMenu editor={editor} />
                 <div className="min-h-50 p-2 focus:ring-1 focus:ring-primary focus:border-primary">
                     <EditorContent editor={editor} className="tiptap" />
                 </div>
             </div>
+            {inputWarning && <InputWarnMessage message={inputWarning} />}
         </div>
     )
 }

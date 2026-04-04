@@ -46,7 +46,7 @@ export function ToastProvider({ children }) {
                             "px-5 py-2 border-l-5 rounded shadow-lg font-medium animate-slideIn",
 
                             toast.type === "success" && "bg-[#D1E7DD] text-text-muted border-[#0F2D1F]",
-                            toast.type === "error" && "bg-[#c06e6e] text-text-muted border-[#661414]",
+                            toast.type === "error" && "bg-[#F8D7DA] text-text-muted border-[#661414]",
                             toast.type === "warning" && "bg-[#e7f8d7] text-[#D32F2F] border-[#ffcc00]",
                         )}
                     >

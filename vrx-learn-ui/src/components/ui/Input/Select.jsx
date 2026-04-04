@@ -5,16 +5,18 @@ import { useClickOutside } from "@/hooks/useClickOutside";
 export default function FilterSelect({
   inputLabel,
   label,
+  value,
+  onChange,
   options,
   borderClass = "border-default"
 }) {
-  const [selected, setSelected] = useState(options[0]);
   // const [open, setOpen] = useState(false);
   const [open, ref, setOpen, toggle] = useClickOutside(false);
+  const selectedOption = options.find(opt => opt.value === value) || options[0];
 
 
   return (
-    <div className="relative"  ref={ref}>
+    <div className="relative" ref={ref}>
       {inputLabel &&
         <label className="block text-h5 mb-2 text-main dark:text-white">
           {inputLabel}
@@ -22,11 +24,11 @@ export default function FilterSelect({
       }
 
       <div
-        className={`flex items-center ${borderClass ? "border" : "border-2"} ${borderClass} rounded px-3 py-2 gap-2 min-w-40 cursor-pointer`}
+        className={`flex items-center ${borderClass ? "border" : "border-2"} ${borderClass} rounded px-3 py-2 gap-2 min-w-44 cursor-pointer`}
         onClick={toggle}
       >
         <span className="text-body text-muted whitespace-nowrap">
-          {label} {selected.label}
+          {label} {selectedOption?.label}
         </span>
 
         <Icon
@@ -44,10 +46,11 @@ export default function FilterSelect({
             <div
               key={opt.value}
               onClick={() => {
-                setSelected(opt);
+                onChange({ target: { value: opt.value } });
                 setOpen(false);
               }}
-              className="px-3 py-2 text-body hover:bg-gray-100 cursor-pointer"
+              className={`px-3 py-2 text-body hover:bg-gray-100 cursor-pointer ${value === opt.value ? "bg-gray-50 font-semibold" : ""
+                }`}
             >
               {opt.label}
             </div>

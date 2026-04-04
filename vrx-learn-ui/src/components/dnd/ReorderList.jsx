@@ -4,12 +4,14 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSo
 
 import { Icon } from '@/components/ui'
 import SortableItem from './SortableItem'
+import clsx from 'clsx';
 
 
-function ReorderList({ items }) {
+
+function ReorderList({ items, reorder, fetchCourseContent, isUpdating }) {
     const [data, setData] = useState(items);
-    console.log(data)
-    console.log(items)
+    // console.log(data)
+    // console.log(items)
 
     useEffect(() => {
         setData(items);
@@ -24,39 +26,64 @@ function ReorderList({ items }) {
     );
 
 
-    const handleDragEnd = (event) => {
+    const handleDragEnd = async (event) => {
         const { active, over } = event;
-
         if (!over || active.id === over.id) return;
 
         const oldIndex = data.findIndex(i => i.id === active.id);
         const newIndex = data.findIndex(i => i.id === over.id);
 
+        // 1. Calculate New State
         const newArray = arrayMove(data, oldIndex, newIndex);
 
+        // 2. Optimistic UI Update (Snappy feel)
+        const previousData = [...data];
         setData(newArray);
 
-        // later you will call parent here
+        // 3. Prepare Payload
+        const movedIndex = newIndex;
+        const precedingId = newArray[movedIndex - 1]?.id || null;
+        const succeedingId = newArray[movedIndex + 1]?.id || null;
+
+        try {
+
+            await reorder(active.id, {
+                precedingId,
+                succeedingId
+            });
+
+
+            if (fetchCourseContent) {
+                await fetchCourseContent();
+            }
+
+
+        } catch (err) {
+
+            setData(previousData);
+            addToast("Failed to move item. Restoring order...", "error");
+        }
     };
-
-
 
 
     return (
         <div>
-            <DndContext collisionDetection={closestCorners} sensors={sensors} onDragEnd={handleDragEnd}>
-                <SortableContext items={items} strategy={verticalListSortingStrategy}>
+            <DndContext collisionDetection={closestCorners} sensors={sensors} onDragEnd={handleDragEnd} disabled={isUpdating}>
+                <SortableContext items={data} strategy={verticalListSortingStrategy} disabled={isUpdating}>
                     <h3 className="flex items-center gap-2 text-lg font-semibold text-muted">
                         <Icon name="streamline:one-finger-drag-vertical-remix" height="22px" width="22px" />
                         Drag to Reorder
                     </h3>
 
-                    <div className='touch-none border p-3 mt-3 rounded-lg flex flex-col gap-1'>
+                    <div className={clsx('border p-3 mt-3 rounded-lg flex flex-col gap-1',
+                        isUpdating && "opacity-90 bg-black/20"
+                    )}>
                         {data.map((item) => (
                             <SortableItem
                                 key={item.id}
                                 id={item.id}
                                 title={item.title}
+                                isUpdating={isUpdating}
                             />
                         ))}
 

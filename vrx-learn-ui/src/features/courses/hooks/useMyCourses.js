@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMyCourses } from "@/services/courses.service";
+import { getEnrolledCourses } from "@/services/dashboard.service";
 
 export default function useCourses() {
   const [courses, setCourses] = useState([]);
@@ -9,7 +9,7 @@ export default function useCourses() {
   useEffect(() => {
     async function fetchCourses() {
       try {
-        const coursesData = await getMyCourses();
+        const coursesData = await getEnrolledCourses();
         setCourses(coursesData);
       } catch (err) {
         console.warn(err);

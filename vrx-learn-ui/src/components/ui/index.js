@@ -1,5 +1,6 @@
 export { default as Input } from './Input';
 export { default as Select } from './Input/Select'
+export { default as SearchDropdown } from './Input/SearchDropdown'
 
 export { default as Button } from './Button';
 export { default as FloatingMenu } from './Button/FloatingMenu'
@@ -11,7 +12,10 @@ export { default as Dropdown } from './Dropdown'
 export { default as Video } from '../content/Video'
 export { default as ProgressBar } from './Progress'
 export { default as Graph } from './graph'
+
 export { default as Icon } from './Icon'
+export { default as IconContainer } from './Icon/IconContainer'
+
 export { default as MarkdownContent } from './MarkdownContent'
 export { default as UploadSection } from './FileUpload'
 export { default as TextEditor } from './TextEditor'
@@ -26,7 +30,7 @@ export { default as Modal } from './Modal/Modal'
 
 
 // table cards
-export {default as UserCard } from './Cards/tableCards/UserCard'
-export {default as EnrollmentCard} from './Cards/tableCards/EnrollmentCard'
-export {default as CourseCard} from './Cards/tableCards/CourseCard'
+export { default as UserCard } from './Cards/tableCards/UserCard'
+export { default as EnrollmentCard } from './Cards/tableCards/EnrollmentCard'
+export { default as CourseCard } from './Cards/tableCards/CourseCard'
 

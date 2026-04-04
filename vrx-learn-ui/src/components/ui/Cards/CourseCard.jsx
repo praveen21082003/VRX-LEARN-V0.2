@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui";
 import { defaultCourse } from "@/assets";
+import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter'
 import clsx from "clsx";
 
 function CourseCard({
@@ -36,7 +37,7 @@ function CourseCard({
           ">
             <img src="/logo-white.svg" alt="logo" />
             <h2 className="text-white font-semibold text-sm leading-snug">
-              {name}
+              {capitalizeFirstLetter(name)}
             </h2>
           </div>
         )}
@@ -44,8 +45,8 @@ function CourseCard({
 
 
       <div className="flex-1 text-main">
-        <h1 className="text-h5 truncate">{name}</h1>
-        <p className="text-small">{author}</p>
+        <h1 className="text-h5 truncate">{capitalizeFirstLetter(name)}</h1>
+        <p className="text-small">{capitalizeFirstLetter(author)}</p>
       </div>
       <Button
         buttonName={buttonName}

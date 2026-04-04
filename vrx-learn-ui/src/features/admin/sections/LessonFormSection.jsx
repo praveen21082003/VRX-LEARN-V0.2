@@ -11,17 +11,73 @@ function LessonFormSection({
     handleChange,
     files,
     setFiles,
-    currentModule
+    currentModule,
+    handleSubmit,
+    isCreating,
+    uploadProgress,
+    mediaStatus,
+    loadedData,
+    warning
 }) {
 
     const isEdit = mode === "edit";
 
-    const { courseSlug, moduleId } = useParams();
+    const { courseContent, courseSlug, moduleId } = useOutletContext();
+
+
+    const moduleTitle = courseContent?.modules?.find(
+        m => String(m.id) === String(moduleId)
+    )?.title || "Loading...";
+
+    const isLoading = isEdit ? isUpdating : isCreating;
+
+
+    const renderFileContent = () => {
+        if (!isEdit) {
+            return (
+                <UploadSection
+                    files={files}
+                    setFiles={setFiles}
+                    uploadProgress={uploadProgress}
+                    isUploading={isCreating}
+                    isUploaded={uploadProgress === 100}
+                    mediaStatus={mediaStatus}
+                    loadedData={loadedData}
+                    inputWarning={warning.file}
+                />
+            )
+        }
+        return (
+            <div className="text-sm text-gray-500">
+                lesson content (pdf or document)
+            </div>
+        )
+    }
+
+
+    const getButtonText = () => {
+        if (isCreating && uploadProgress === 0) {
+            return "Preparing for Upload...";
+        }
+
+        if (isCreating && uploadProgress > 0 && uploadProgress < 100) {
+            return `Uploading... ${uploadProgress}%`;
+        }
+
+
+        if (mediaStatus === "uploaded") {
+            return "Done";
+        }
+
+        if (isEdit) return "Save Changes";
+
+        return files.length > 0 ? "Upload & Create" : "Create Lesson";
+    };
 
 
     return (
         <>
-            <BackButton to={`/course/${courseSlug}/content/modules/${moduleId}`} label={`Module - ${currentModule?.title || "Loading..."}`} />
+            <BackButton to={`/course/${courseSlug}/content/modules/${moduleId}`} label={`Module - ${moduleTitle}`} />
             <h2 className="text-h3">
                 {isEdit ? "Edit Lesson" : "New Lesson"}
             </h2>
@@ -31,31 +87,25 @@ function LessonFormSection({
                     placeholder="Lesson name"
                     value={formData.title}
                     onChange={(e) => handleChange("title", e.target.value)}
+                    inputWarning={warning.title}
                 />
                 <div className="space-y-2">
                     <TextEditor
                         label="Overview"
                         value={formData.description}
-                        onChange={(value) => handleChange("overview", value)}
+                        onChange={(value) => handleChange("description", value)}
+                        inputWarning={warning.description}
                     />
                 </div>
 
-                {!isEdit && (
-                    <UploadSection
-                        files={files}
-                        setFiles={setFiles}
-                    // onUpload={handleUpload}
-                    />
-                )}
-                {isEdit && (
-                    <div className="text-sm text-gray-500">
-                        lesson content (pdf or document)
-                    </div>
-                )}
+
+                {renderFileContent()}
 
                 <div className='flex justify-center'>
                     <Button
-                        buttonName={isEdit ? "save" : files.length <= 0 ? "Submit" : "Upload"}
+                        onClick={handleSubmit}
+                        disabled={isLoading}
+                        buttonName={getButtonText()}
                         className="mt-5 px-5 py-2 rounded" />
                 </div>
             </div>

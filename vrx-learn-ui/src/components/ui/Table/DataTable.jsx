@@ -4,22 +4,25 @@ import TablePagination from "./TablePagination";
 import getPagination from '@/utils/getPagination';
 import CardView from './tableCard/CardView'
 
-function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize, selectedRows, renderMobileCard }) {
+function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize, selectedRows, renderMobileCard, loading }) {
 
   const totalPages = Math.ceil(total / pageSize);
 
-  const startIndex = (page - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
+  // const startIndex = (page - 1) * pageSize;
+  // const endIndex = startIndex + pageSize;
 
-  const paginatedData = data.slice(startIndex, endIndex);
+  // const paginatedData = data.slice(startIndex, endIndex);
+  const paginatedData = data;
 
-  const start = startIndex + 1;
-  const end = Math.min(endIndex, total);
+  const start = (page - 1) * pageSize + 1;
+  const end = Math.min(page * pageSize, total);
 
   const pages = getPagination(page, totalPages);
 
+  const emptyRows = Math.max(0, pageSize - data.length);
+
   return (
-    <div className="w-full h-dvh md:border-2 border-default flex flex-col">
+    <div className="w-full md:border-2 border-default flex flex-col">
 
 
       <div className="hidden md:block">
@@ -29,24 +32,29 @@ function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize,
       </div>
 
       <div className="hidden md:block flex-1 overflow-y-auto">
+
         <table className="w-full table-fixed">
           <TableBody
+            loading={loading}
             selectedRows={selectedRows}
             columns={columns}
             data={paginatedData}
+            emptyRows={emptyRows}
+            pageSize={pageSize}
           />
         </table>
+
       </div>
 
-  
+
       <div className="block md:hidden flex-1 overflow-y-auto p-2">
         {renderMobileCard
-          ? data.map((row) => renderMobileCard(row))
+          ? data.map((row) => renderMobileCard(row, row.id))
           : null}
       </div>
 
 
-      <div className="border-t border-default">
+      <div className="">
         <TablePagination
           page={page}
           setPage={setPage}

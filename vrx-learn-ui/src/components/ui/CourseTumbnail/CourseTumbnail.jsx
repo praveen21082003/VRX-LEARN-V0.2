@@ -6,7 +6,7 @@ export default function CourseThumbnail({ name, image, classRounded }) {
   return (
     <div
       className={`relative w-full overflow-hidden ${classRounded}
-      h-56 lg:h-25 xl:h-45 2xl:h-60 bg-primary group`}
+      h-56 lg:h-40 xl:h-45 2xl:h-60 bg-primary group`}
     >
       <img
         src={hasCustomImage ? image : defaultCourse}

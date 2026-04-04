@@ -24,29 +24,36 @@ export const TRAINEE_SECTIONS = [
   {
     key: "lessons",
     title: "Lessons",
-    durationKey: "module_duration",
-    metaKey: "module_count",
-    metaLabel: "Modules",
+    getMeta: (data) => {
+      const moduleCount = data?.modules?.length || 0;
+      const lessonCount =
+        data?.modules?.reduce(
+          (t, m) => t + (m.lessons?.length || 0),
+          0
+        ) || 0;
+
+      return `${moduleCount} Modules · ${lessonCount} Lessons`;
+    }
   },
   {
     key: "assignments",
     title: "Assignment",
     durationKey: "assignment_duration",
   },
-  {
-    key: "quizzes",
-    title: "Quiz",
-    durationKey: "quiz_duration",
-  },
+  // {
+  //   key: "quizzes",
+  //   title: "Quiz",
+  //   durationKey: "quiz_duration",
+  // },
 
-  {
-    key: "labs",
-    title: "Lab Credentials",
-    durationKey: "lab_duration",
-  },
-  {
-    key: "feedback",
-    title: "Feedback",
-    durationKey: "feedback_duration",
-  },
+  // {
+  //   key: "labs",
+  //   title: "Lab Credentials",
+  //   durationKey: "lab_duration",
+  // },
+  // {
+  //   key: "feedback",
+  //   title: "Feedback",
+  //   durationKey: "feedback_duration",
+  // },
 ];

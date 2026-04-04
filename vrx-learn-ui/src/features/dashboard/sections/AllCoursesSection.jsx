@@ -9,9 +9,10 @@ export default function AllCoursesSection() {
 
     return (
         <CourseCardViewer
+            loading={loading}
             title="All Courses"
             courses={courses}
-            maxCourses={3}       
+            maxCourses={3}
         />
     );
 }

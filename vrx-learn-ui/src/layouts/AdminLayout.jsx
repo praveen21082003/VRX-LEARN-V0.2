@@ -26,7 +26,7 @@ export default function AdminLayout() {
 
 
     return (
-        <div className="h-screen w-screen flex flex-col overflow-hidden">
+        <div className="h-screen w-screen bg-background flex flex-col overflow-hidden">
 
             <Header
                 menu={false}
@@ -35,7 +35,7 @@ export default function AdminLayout() {
 
 
 
-            <main className="flex-1 overflow-y-auto bg-background">
+            <main className="flex-1 overflow-y-auto">
                 <div className="block lg:hidden p-2 w-full border-b border-default">
                     <BackButton to={backPath} iconName="material-symbols:arrow-back-rounded" label={isOverviewPage ? "Back to Dashboard" : "Back to Overview"} />
                 </div>

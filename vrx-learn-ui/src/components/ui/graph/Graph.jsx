@@ -14,8 +14,8 @@ function Graph({ data }) {
   const textColor = useMemo(() => {
     if (typeof window === "undefined" || !isClient) return "#888";
     const style = getComputedStyle(document.documentElement);
-    return darkMode 
-      ? style.getPropertyValue("--color-text-main-dark").trim() 
+    return darkMode
+      ? style.getPropertyValue("--color-text-main-dark").trim()
       : style.getPropertyValue("--color-text-main").trim();
   }, [darkMode, isClient]);
 
@@ -25,9 +25,10 @@ function Graph({ data }) {
     return <div className="w-full h-[160px] md:h-[180px] bg-transparent" />;
   }
 
+
   return (
     <div className="w-full h-full min-h-[160px]">
-      <ResponsiveContainer width="99%" height={160}> 
+      <ResponsiveContainer width="99%" height={160}>
         {/* Using 99% and a fixed height number often solves the -1 error */}
         <BarChart data={data.weeklyStats} margin={{ top: 5, right: 5, left: 5, bottom: 0 }}>
           <Bar

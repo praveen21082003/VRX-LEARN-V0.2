@@ -26,11 +26,11 @@ function Header({ menu, breadcrumbs = [] }) {
     }
 
     const handleSwitchAccount = () => {
-        if (viewRole === "TRAINEE") {
+        if (viewRole === "trainee") {
             setViewRole(role);
             navigate("/dashboard");
         } else {
-            setViewRole("TRAINEE");
+            setViewRole("trainee");
             navigate("/dashboard");
         }
     };

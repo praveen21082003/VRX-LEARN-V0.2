@@ -57,11 +57,11 @@ function App() {
           <Route path="/" element={<Layout />} />
 
           {/* Trainee */}
-          <Route element={<ProtectedRoute allowedRoles={["TRAINEE"]} />}>
+          <Route element={<ProtectedRoute allowedRoles={["trainee"]} />}>
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<DashboardRouter />} />
               <Route path="/courses" element={<CoursesRouter />} />
-              <Route path="/learning" element={<MyLearning/>} />
+              <Route path="/learning" element={<MyLearning />} />
             </Route>
 
             <Route path="/course/:courseSlug" element={<LearningLayout />}>
@@ -78,11 +78,11 @@ function App() {
           </Route>
 
           {/* ADMIN / TRAINER / SUBADMIN */}
-          <Route element={<ProtectedRoute allowedRoles={["ADMIN", "SUBADMIN", "TRAINER"]} />}>
+          <Route element={<ProtectedRoute allowedRoles={["admin", "subadmin", "trainer"]} />}>
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<DashboardRouter />} />
-              <Route path="/users" element={< UsersManagement/>} />
-              <Route path="/enrollments" element={<EnrollmentMangement/>} />
+              <Route path="/users" element={< UsersManagement />} />
+              <Route path="/enrollments" element={<EnrollmentMangement />} />
               <Route path="/courses" element={<CoursesRouter />} />
             </Route>
 
@@ -119,11 +119,12 @@ function App() {
               </Route>
               <Route path="roster" element={<TraineeRoster />} />
             </Route>
-
-
-
           </Route>
+          <Route path="/unauthorized" element={<div>Unauthorized</div>} />
+
+
         </Routes>
+
       </BrowserRouter >
     </ToastProvider>
   );

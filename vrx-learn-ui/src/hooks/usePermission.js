@@ -8,12 +8,14 @@ export function usePermission() {
     const can = (permission) => {
 
         const activeRole =
-            role === "TRAINER" && viewRole
+            role === "trainer" && viewRole
                 ? viewRole
                 : role;
 
-        console.log(activeRole);
+        
 
+        console.log(activeRole)
+        
         if (!activeRole) return false;
 
         return ROLE_PERMISSION[activeRole]?.includes(permission);

@@ -1,19 +1,20 @@
 import axiosInstance from "./apiClient";
 
-/* My Courses */
-export const getMyCourses = () => {
-  return axiosInstance.get("/my_courses");
-};
 
-/* All Courses */
+// All Courses
 export const getAllCourses = () => {
   return axiosInstance.get(`/api/v1/dashboard/trainee/top-new-courses/${3}`);
 };
 
-/* Course Overview */
-export const getCourseContent = (courseId) => {
-  return axiosInstance.get(`/course_details/${courseId}`);
-};
+
+// Update Base course info
+
+export const updateCourseInfo = (course_id,payload) => {
+  return axiosInstance.patch(`/api/v1/courses/update-basic-info/${course_id}`,payload)
+}
+
+
+
 
 export const updateCourseContent = (courseId, payload) => {
   return axiosInstance.patch(`/course_details/${courseId}`, payload);
@@ -28,9 +29,7 @@ export const getModuleById = (moduleId) => {
   return axiosInstance.get(`/modules/${moduleId}`)
 }
 
-export const createModule = (playload) => {
-  return axiosInstance.post('/modules', playload);
-}
+
 
 export const updateModule = (moduleId, playload) => {
   return axiosInstance.patch(`/modules/${moduleId}`, playload)
@@ -68,8 +67,8 @@ export const getAssignmentId = (assignmentId) => {
 };
 
 /* Update assignemnt by id*/
-export const updateAssignment = (assignmentId,playload) => {
-  return axiosInstance.patch(`/assignments/${assignmentId}`,playload)
+export const updateAssignment = (assignmentId, playload) => {
+  return axiosInstance.patch(`/assignments/${assignmentId}`, playload)
 }
 
 export const DeleteAssignment = (assignmentId) => {

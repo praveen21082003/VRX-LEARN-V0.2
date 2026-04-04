@@ -12,7 +12,7 @@ export default function BackButton({
   return (
     <button
       onClick={() => navigate(to, replace)}
-      className="flex items-center gap-2 text-sm font-medium text-main hover:underline cursor-pointer"
+      className="flex items-center gap-2 text-sm font-medium text-blue-900 hover:underline cursor-pointer"
     >
       {iconName &&
         <Icon

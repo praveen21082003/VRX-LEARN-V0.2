@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateCourseContent } from "@/services/courses.service";
+import { updateCourseInfo } from "@/services/courses.service";
 
 export default function useUpdateCourseDetails() {
     const [loading, setLoading] = useState(false);
@@ -8,7 +8,7 @@ export default function useUpdateCourseDetails() {
     const updateCourse = async (id, payload) => {
         try {
             setLoading(true);
-            const response = await updateCourseContent(id, payload);
+            const response = await updateCourseInfo(id, payload);
             return response.data;
             
         } catch (err) {

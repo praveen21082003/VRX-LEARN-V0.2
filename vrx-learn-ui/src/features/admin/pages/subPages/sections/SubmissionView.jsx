@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Button, Avatar, StatusPill, Icon, Input } from "@/components/ui";
-import useAssignment from "../../../hooks/useAssignment";
+// import useAssignment from "../../../hooks/useAssignments";
 import DocumentControls from "@/components/content/document/DocumentControls";
 
 function SubmissionView({ setActiveTab, activeAssignmentId }) {
-    const { assignment, loading, fetchAssignment } = useAssignment();
+    // const { assignment, loading, fetchAssignment } = useAssignment();
 
 
 

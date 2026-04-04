@@ -7,7 +7,7 @@ import AssignmentFormSection from '../../../sections/AssignmentFormSection';
 function EditAssignment() {
 
     const { assignmentId } = useParams();
-    const { assignments } = useOutletContext();
+    const { assignment, assignmentLoading, assignmentError, } = useOutletContext();
 
 
 
@@ -18,12 +18,7 @@ function EditAssignment() {
     };
 
 
-    if (!assignments) return <p>Assignment not found</p>;
-
-
-    const assignment = assignments.find(
-        (a) => a.id === assignmentId
-    );
+    if (!assignment) return <p>Assignment not found</p>;
 
 
     const [formData, setFormData] = useState(

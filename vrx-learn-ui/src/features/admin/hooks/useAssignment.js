@@ -1,27 +1,123 @@
-import { useState } from "react";
-import { getAssignmentSubmission } from "../../../services/assignments.service";
+import { useState, useCallback } from 'react';
+import { uploadToS3 } from "@/services/upload.service";
+import { updateMediaStatus } from '@/services/media.service';
+import { createAssignment as createAssignmentService, getAssignment, updateAssignmentById } from '@/services/assignments.service';
 
-export default function useAssignment() {
-  const [assignment, setAssignment] = useState(null);
-  const [loading, setLoading] = useState(false);
+export const useAssignments = () => {
+  const [isCreating, setIsCreating] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState(null);
+  const [loadedData, setLoadedData] = useState(0);
 
-  const fetchAssignment = async (submissionId) => {
+  const [assignment, setAssignment] = useState(null);
+  const [assignmentLoading, setAssignmentloading] = useState(false);
+  const [assignmentError, setAssignmentError] = useState(null);
+
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [updateError, setUpdateError] = useState(null);
+
+  const [mediaStatus, setMediaStatus] = useState(null);
+
+
+  const createAssignment = useCallback(async (payload, file) => {
+    setIsCreating(true);
+    setUploadProgress(0);
+    setError(null);
+
     try {
-      setLoading(true);
-      const res = await getAssignmentSubmission(submissionId);
-      setAssignment(res[0]);
+
+      const response = await createAssignmentService(payload);
+
+      const uploadUrl = response?.uploadUrl;
+      const mediaId = response?.mediaId;
+
+      console.log(response)
+
+
+      if (file && uploadUrl) {
+        const uploadRes = await uploadToS3(uploadUrl, file, (percent, loaded) => {
+          setUploadProgress(percent);
+          setLoadedData(loaded);
+        });
+
+        console.log(uploadRes);
+
+        if (uploadRes.status !== 200) {
+          throw new Error("File upload failed");
+        }
+
+
+        if (mediaId) {
+          const mediaRes = await updateMediaStatus(mediaId);
+          console.log(mediaRes);
+          const mediaData = mediaRes?.data || mediaRes;
+          setMediaStatus(mediaData?.status);
+        }
+
+
+      }
+
+      return response;
     } catch (err) {
-      setError(err);
+      const msg = err.response?.data?.message || err.message || "Failed to create assignment";
+      setError(msg);
+      throw err;
     } finally {
-      setLoading(false);
+      setIsCreating(false);
     }
-  };
+  }, []);
+
+
+  const fetchAssignment = useCallback(async (assignmentId) => {
+    setAssignmentloading(true);
+    setAssignmentError(null);
+
+    try {
+      const response = await getAssignment(assignmentId);
+      setAssignment(response);
+    } catch (error) {
+      setAssignmentError(
+        error.response?.data?.message || error.message || "Failed to get assignment"
+      );
+      setAssignment(null);
+    } finally {
+      setAssignmentloading(false);
+    }
+  }, []);
+
+  const updateAssignment = useCallback(async (assignmentId, payload) => {
+    setIsUpdating(true);
+    setUpdateError(null);
+
+    try {
+      const res = await updateAssignmentById(assignmentId, payload);
+      return res;
+    } catch (error) {
+      const msg = error.response?.data?.message || error.message || "Update failed";
+      setUpdateError(msg);
+      throw error;
+    } finally {
+      setIsUpdating(false);
+    }
+  }, []);
 
   return {
-    assignment,
-    loading,
+    createAssignment,
+    isCreating,
+    uploadProgress,
     error,
-    fetchAssignment
+    loadedData,
+
+    assignment,
+    assignmentLoading,
+    assignmentError,
+    fetchAssignment,
+
+    updateAssignment,
+    isUpdating,
+    updateError,
+
+    mediaStatus
   };
-}
+
+};

@@ -1,20 +1,43 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Select, Input, DataTable, Avatar, StatusPill, EnrollmentCard } from '@/components/ui';
 import formatDateTime from '@/utils/formatDateTime';
-import CreateUser from '../../dialogs/CreateUser';
+import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter';
 import Modal from '../../../../components/ui/Modal/Modal';
 import NewEnrollment from '../../dialogs/NewEnrollment';
+import { useEnrollmentData } from '../../hooks/useEnrollmentData';
 
 function EnrollmentMangement() {
 
     const isMobile = window.innerWidth < 768;
 
+    const { enrollments, fetchEnrollments, error, loading, total } = useEnrollmentData();
+
+    console.log(enrollments);
+
     const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(10);
     const [open, setOpen] = useState(false);
     const [editingUser, setEditingUser] = useState(null); // null means "Add Mode"
 
     const [selectedRows, setSelectedRows] = useState([]);
+
+
+
+    const [search, setSearch] = useState("");
+    const [role, setRole] = useState("all");
+    const [status, setStatus] = useState("all");
+    const [sort, setSort] = useState("newest");
+
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 400);
+
+        return () => clearTimeout(timer);
+    }, [search]);
+
 
     const handleSelectRow = (id, checked) => {
         if (checked) {
@@ -26,7 +49,7 @@ function EnrollmentMangement() {
 
     const handleSelectAll = (checked) => {
         if (checked) {
-            setSelectedRows(data.map((row) => row.id));
+            setSelectedRows(enrollments.map((row) => row.id));
         } else {
             setSelectedRows([]);
         }
@@ -37,41 +60,34 @@ function EnrollmentMangement() {
         setOpen(true);
     };
 
-    const data = [
-        {
-            "id": 21,
-            "name": "Heaven Kane",
-            "email": "heavenkane@gmail.com",
-            "role": "ADMIN",
-            "course_name": "A Complete Guide: React - Javascript",
-            "enrolled_at": "2026-02-14T09:15:00",
-            "status": "ACTIVE",
-        },
-        {
-            "id": 22,
-            "name": "Arul S",
-            "email": "arul@gmail.com",
-            "role": "SUB_ADMIN",
-            "course_name": "Advance Full Stack Web Development",
-            "enrolled_at": "2026-02-14T09:15:00",
-            "status": "PENDING",
-        },
-        {
-            "id": 23,
-            "name": "Praveen kumar",
-            "email": "praveen@gmail.com",
-            "role": "TRAINEE",
-            "course_name": "Advance Full Stack Web Development",
-            "enrolled_at": "2026-02-14T09:15:00",
-            "status": "INACTIVE",
-        },
-    ]
+    useEffect(() => {
+        const sortMapping = {
+            create_asc: { sortByEnrollmentDate: "asc" },
+            create_desc: { sortByEnrollmentDate: "desc" },
+            course_asc: { sortByCourseName: "asc" },
+            course_desc: { sortByCourseName: "desc" },
+        };
+
+        fetchEnrollments({
+            page,
+            limit: pageSize,
+            nameOrEmail: debouncedSearch || undefined,
+            role: role !== "all" ? role : undefined,
+            status: status !== "all" ? status : undefined,
+            ...(sortMapping[sort] || {}),
+        });
+    }, [page, pageSize, debouncedSearch, role, status, sort]);
+    useEffect(() => {
+        setPage(1);
+    }, [debouncedSearch, role, status, sort]);
+
+
 
     // Derive unique Courses list from data
-    const allCourses = [...new Set(data.flatMap((course) => course.course_name))];
+    const allCourses = [...new Set(enrollments.flatMap((course) => course.course_name))];
 
-    const allNames = [...new Set(data.flatMap((course) => course.name))];
-    const allStatus = [...new Set(data.flatMap((course) => course.status))];
+    const allNames = [...new Set(enrollments.flatMap((course) => course.name))];
+    const allStatus = [...new Set(enrollments.flatMap((course) => course.status))];
 
     const enrollmentsManagementColumns = [
 
@@ -135,9 +151,12 @@ function EnrollmentMangement() {
             )
         },
         {
-            key: "course_name",
+            key: "courseName",
             label: "Course Name",
             width: "35%",
+            render: (row) => (
+                <span>{capitalizeFirstLetter(row.courseName)}</span>
+            )
         },
         {
             key: "date",
@@ -145,7 +164,7 @@ function EnrollmentMangement() {
             width: "20%",
             render: (row) => (
                 <span className="text-caption text-muted">
-                    {formatDateTime(row.enrolled_at)}
+                    {formatDateTime(row.enrollmentDate)}
                 </span>
             )
         },
@@ -174,7 +193,7 @@ function EnrollmentMangement() {
             //     )
             // }
             render: (row) => {
-                const actions = ["mingcute:pencil-line", "ic:baseline-delete"];
+                const actions = ["mingcute:pencil-line", "mdi:delete-outline"];
                 return (
                     <div className="flex items-center justify-center gap-3">
                         {actions.map((icon, index) => (
@@ -197,7 +216,7 @@ function EnrollmentMangement() {
 
     ]
     return (
-        <div className="w-full p-4 bg-white border-b border-gray-200">
+        <div className="w-full p-4 bg-transparent text-main border-b border-gray-200">
             <div className="flex items-center justify-between mb-6">
                 <h3 className="text-h3 font-semibold">Enrollment Management</h3>
                 {selectedRows.length === 0 &&
@@ -239,45 +258,75 @@ function EnrollmentMangement() {
                     ? (
                         <div className="flex flex-col md:flex-row gap-4 mb-4 ">
                             <div className="w-full md:w-96">
-                                <Input icon="ic:twotone-search" border="border-default" paddingClass="py-2" widthClass="w-full md:w-96" placeholder="Search by name or email..." />
+                                <Input
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    icon="ic:twotone-search"
+                                    border="border-default"
+                                    paddingClass="py-2"
+                                    widthClass="w-full md:w-96"
+                                    placeholder="Search by name or email..."
+                                />
                             </div>
 
                             <div className="grid grid-cols-2 md:flex md:items-center gap-3">
                                 <div className="col-span-1">
                                     <Select
-                                        label="Users:"
+                                        label="Sort by:"
+                                        value={sort}
+                                        onChange={(e) => setSort(e.target.value)}
                                         options={[
-                                            { label: "All Users", value: "all" },
-                                            { label: "Admin", value: "admin" },
-                                            { label: "Sub Admin", value: "sub_admin" },
-                                            { label: "Trainer", value: "trainer" },
-                                            { label: "Trainee", value: "trainee" }
+                                            { label: "None", value: null },
+                                            { label: "Newest First", value: "create_desc" },
+                                            { label: "Oldest First", value: "create_asc" },
+                                            { label: "Course Name (A - Z)", value: "course_asc" },
+                                            { label: "Course Name (Z - A)", value: "course_desc" },
                                         ]}
                                     />
                                 </div>
                                 <div className="col-span-1">
                                     <Select
-                                        label="Status:"
+                                        label="Role:"
+                                        value={role}
+                                        onChange={(e) => setRole(e.target.value)}
                                         options={[
-                                            { label: "All", value: "all" },
+                                            { label: "All Users", value: null },
+                                            { label: "Admin", value: "admin" },
+                                            { label: "Sub Admin", value: "subadmin" },
+                                            { label: "Trainer", value: "trainer" },
+                                            { label: "Trainee", value: "trainee" },
+                                        ]}
+                                    />
+                                </div>
+                                <div className="col-span-1">
+                                    <Select
+
+                                        label="Status:"
+                                        value={status}
+                                        onChange={(e) => setStatus(e.target.value)}
+                                        options={[
+                                            { label: "All", value: null },
+                                            { label: "Pending", value: "pending" },
+                                            { label: "In Progress", value: "in-progress" },
+                                            { label: "Suspended", value: "suspended" },
+                                            { label: "Dropout", value: "dropped" },
                                             { label: "Active", value: "active" },
-                                            { label: "Dropout", value: "dropout" },
-                                            { label: "Pending", value: "pending" }
                                         ]}
                                     />
                                 </div>
 
-                                <div className="col-span-1">
+                                {/* <div className="col-span-1">
                                     <Select
                                         label="Filter by Course:"
+                                        onChange={(e) => set}
                                         options={[
-                                            { label: "Newest First", value: "newest" },
-                                            { label: "Oldest First", value: "oldest" },
-                                            { label: "Name (A - Z)", value: "name_asc" },
-                                            { label: "Name (Z - A)", value: "name_desc" },
+                                            { label: "Name (A - Z)", value: null },
+                                            { label: "Newest First", value: "asc" },
+                                            { label: "Oldest First", value: "desc" },
+                                            // { label: "Name (Z - A)", value: "desc" },
                                         ]}
                                     />
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     ) : (
@@ -310,14 +359,15 @@ function EnrollmentMangement() {
             }
             <div>
                 <DataTable
+                    loading={loading}
                     selectedRows={selectedRows}
                     columns={enrollmentsManagementColumns}
-                    data={data}
+                    data={enrollments}
                     page={page}
                     setPage={setPage}
                     pageSize={pageSize}
                     setPageSize={setPageSize}
-                    total={data.length}
+                    total={total}
                     renderMobileCard={(row) => (
                         <EnrollmentCard
                             row={row}

@@ -2,7 +2,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import {Icon} from '@/components/ui'
 
-function SortableItem({ id, title }) {
+function SortableItem({ id, title, isUpdating }) {
     const {
         attributes,
         listeners,
@@ -25,7 +25,7 @@ function SortableItem({ id, title }) {
             {...listeners}
             className={`
         bg-primary/16 dark:bg-white/10 px-5 py-2 rounded hover:bg-active hover:text-primary hover:dark:text-white/60 font-semibold
-        ${isDragging ? "shadow-2xl scale-105 z-50 cursor-grabbing" : "cursor-grab"}
+        ${isDragging ? "shadow-2xl scale-105 z-50 cursor-grabbing" : isUpdating ? "cursor-progress" : "cursor-grab"}
       `}
         >
             <Icon name="lsicon:drag-filled" className="text-dark-gray" height="35px"   width="35px" />{title}

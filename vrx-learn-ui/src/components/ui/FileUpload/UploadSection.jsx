@@ -1,18 +1,31 @@
-import { Icon } from '@/components/ui'
+import { Icon, ProgressBar } from '@/components/ui'
 import DropZone from "./DropZone";
-import UploadButton from "./UploadButton";
-import { motion } from "motion/react";
+// import UploadButton from "./UploadButton";
+import { motion, warning } from "motion/react";
 
 export default function UploadSection({
     files,
     setFiles,
-    onUpload,
+    uploadProgress = 0,
+    isUploading = false,
+    mediaStatus,
     label = "Your Work",
-    showButton = true
+    optional,
+    loadedData,
+    inputWarning
 }) {
 
     const handleRemoveFile = (indexToRemove) => {
         setFiles(files.filter((_, index) => index !== indexToRemove));
+    };
+
+    const formatBytes = (bytes) => {
+        if (!bytes) return "0 B";
+
+        const sizes = ["B", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+
+        return (bytes / Math.pow(1024, i)).toFixed(1) + " " + sizes[i];
     };
 
 
@@ -30,7 +43,7 @@ export default function UploadSection({
                             key={`${file.name}-${index}`}
                             className="group flex items-center bg-background justify-between p-3  border border-gray-200 rounded shadow-sm hover:border-primary/40 dark:hover:border-text-main-dark transition-colors"
                         >
-                            <div className="flex items-center gap-3 min-w-0">
+                            <div className="flex items-center gap-3 w-full">
                                 <div className="shrink-0 w-10 h-10 flex items-center justify-center bg-primary/10 text-primary dark:text-text-main-dark rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
                                     <Icon
                                         name="bi:file-earmark-text"
@@ -39,13 +52,49 @@ export default function UploadSection({
                                     />
                                 </div>
 
-                                <div className="flex flex-col min-w-0">
+                                <div className="flex flex-col min-w-0 w-full">
                                     <span className="text-h5 font-medium text-muted truncate">
                                         {file.name}
                                     </span>
-                                    <span className="text-body text-dark-gray">
-                                        {fileSize}
-                                    </span>
+
+
+                                    {isUploading && uploadProgress > 0 && uploadProgress < 100 && (
+                                        <ProgressBar
+                                            percent={uploadProgress}
+                                            hClass="h-1.5"
+                                            bgClass="bg-primary"
+                                        />
+                                    )}
+
+                                    <div className="text-xs text-muted mt-1 flex items-center gap-2">
+                                        <span className="text-dark-gray">
+                                            {isUploading && loadedData
+                                                ? `${formatBytes(loadedData)} of `
+                                                : ""}
+                                            {fileSize}
+                                        </span>
+
+
+                                        {isUploading && uploadProgress > 0 && uploadProgress < 100 && (
+                                            <>
+                                                <Icon name="ph:dot-bold" />
+                                                <span>Uploading...</span>
+                                            </>
+                                        )}
+
+                                        {!isUploading && mediaStatus === "processing" && (
+                                            <span>Creating Lesson...</span>
+                                        )}
+
+
+                                        {mediaStatus === "uploaded" && (
+                                            <div className="flex items-center gap-1 text-primary text-body">
+                                                <Icon name="mdi:checkbox-marked-circle" height="18" width="18" />
+                                                <span>Upload Complete</span>
+                                            </div>
+                                        )}
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -72,21 +121,23 @@ export default function UploadSection({
             <div className="hidden lg:block">
                 <DropZone
                     label={label}
+                    optional={optional}
                     files={files}
                     multipleFiles={false}
                     onFilesChange={setFiles}
                     heightClass="h-74"
                     handleRemoveFile
                     UploadedFiles={<UploadedFiles />}
+                    inputWarning={inputWarning}
                 />
 
-                <UploadButton files={files} onUpload={onUpload} />
+
             </div>
 
 
             <motion.div
                 initial={{ y: 0 }}
-                animate={{ y: showButton ? 0 : "100%" }}
+                // animate={{ y: showButton ? 0 : "100%" }}
                 transition={{ duration: 0.25 }}
                 className="lg:hidden fixed bottom-0 left-0 right-0
                 bg-background overflow-hidden  rounded-t-2xl shadow-lg z-40"
@@ -109,8 +160,6 @@ export default function UploadSection({
                             <UploadedFiles />
                         </>
                     )}
-
-                    <UploadButton files={files} onUpload={onUpload} />
                 </div>
             </motion.div>
 

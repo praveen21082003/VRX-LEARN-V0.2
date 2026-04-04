@@ -1,12 +1,34 @@
 import { Icon } from "@/components/ui";
+import clsx from "clsx";
 
 export default function StatCard({
   icon,
   label,
-  value
+  value,
+  loading
 }) {
+
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center gap-3 p-3 sm:p-4 border border-default rounded-xs shadow-sm w-full overflow-hidden animate-pulse">
+        {/* Skeleton Icon */}
+        <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-lg shrink-0" />
+
+        {/* Skeleton Content */}
+        <div className="flex flex-col justify-center items-center w-full gap-2">
+          <div className="h-7 bg-gray-200 dark:bg-gray-700 rounded w-[80%]" />
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-8" />
+        </div>
+      </div>
+    );
+  }
+
+
   return (
-    <div className="flex items-center justify-center gap-3 p-3 sm:p-4 border border-default rounded-xs shadow-sm w-full overflow-hidden">
+    <div className={clsx("flex items-center justify-center gap-3 p-3 sm:p-4 border border-default rounded-xs shadow-sm w-full overflow-hidden",
+      !value && "opacity-70"
+    )}>
 
       {/* Icon */}
       <div className="flex  w-10 h-10 text-primary dark:text-white shrink-0">
@@ -16,8 +38,10 @@ export default function StatCard({
       {/* Content */}
       <div className="flex flex-col justify-center items-center w-full">
         <p className="text-h4 sm:text-h4 text-muted text-center break-words">{label}</p>
-        <span className="text-xl sm:text-h2 font-semibold text-primary text-center ">
-          {value}
+        <span className={clsx("font-semibold text-primary text-center",
+          value ? 'text-h2' : 'text-xs'
+        )}>
+          {value ? value : "Available soon"}
         </span>
       </div>
 

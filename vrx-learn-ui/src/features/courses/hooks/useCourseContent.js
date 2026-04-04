@@ -1,26 +1,34 @@
-import { useEffect, useState } from "react";
-import { getCourseContent } from "@/services/courses.service";
+import { useCallback, useEffect, useState } from "react";
+import { getCourseContent } from "@/services/courseContent.service";
 
 export default function useCourseContent(courseId) {
-    const [courseContent, setCourseContent] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [courseContent, setCourseContent] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchCourseContent = useCallback(async () => {
+    if (!courseId) return;
+    setLoading(true);
+    try {
+      const data = await getCourseContent(courseId);
+      setCourseContent(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [courseId]);
 
 
-    useEffect(() => {
-        async function fetchCourseContent() {
-            try {
-                const courseDeatails = await getCourseContent(courseId)
-                setCourseContent(courseDeatails);
-            } catch (error) {
-                console.warn(error)
-                setError(err);
-            } finally{
-                setLoading(false);
-            }
-        }
-        fetchCourseContent();
-    }, [])
+  useEffect(() => {
+    fetchCourseContent();
+  }, [fetchCourseContent]);
 
-    return { courseContent };
+
+  return {
+    courseContent,
+    loading,
+    error,
+    fetchCourseContent
+  };
 }

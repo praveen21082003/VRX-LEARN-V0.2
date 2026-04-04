@@ -17,7 +17,7 @@ export default function ProtectedRoute() {
         return <Navigate to='/' replace />
     }
 
-    if (ROLE_PERMISSION && !Object.keys(ROLE_PERMISSION).includes("ADMIN")) {
+    if (ROLE_PERMISSION && !Object.keys(ROLE_PERMISSION).includes("admin")) {
         return <Navigate to="/unauthorized" replace />
     }
 

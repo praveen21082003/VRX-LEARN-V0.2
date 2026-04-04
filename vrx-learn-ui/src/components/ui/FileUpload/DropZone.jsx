@@ -1,10 +1,10 @@
 import { useDropzone } from "react-dropzone";
-import { Icon } from "@/components/ui";
+import { Icon, InputWarnMessage } from "@/components/ui";
 // import { useToast } from "@/context/ToastProvider";
 
 
 
-export default function DropZone({ label, files, multipleFiles, maxFilesAllowed, onFilesChange, heightClass, UploadedFiles }) {
+export default function DropZone({ label, optional, files, multipleFiles, maxFilesAllowed, onFilesChange, heightClass, UploadedFiles, inputWarning }) {
 
   //  const { addToast } = useToast();
 
@@ -13,7 +13,7 @@ export default function DropZone({ label, files, multipleFiles, maxFilesAllowed,
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     accept: {
       "application/pdf": [],
-      "application/zip": [],
+      "video/mp4": [],
     },
     maxSize: 50 * 1024 * 1024,
     multiple: multipleFiles,
@@ -29,9 +29,13 @@ export default function DropZone({ label, files, multipleFiles, maxFilesAllowed,
   return (
     <div className={`flex flex-col gap-2 w-full`}>
       {label && (
-        <label className="text-h5">
-          {label}
-        </label>
+        <div className="relative">
+          <label className="text-h5">
+            {label} 
+            {optional && <span className="text-caption text-muted"> (optional)</span>}
+          </label>
+          {inputWarning && <InputWarnMessage message={inputWarning} />}
+        </div>
       )}
 
       {files.length === 0 && (

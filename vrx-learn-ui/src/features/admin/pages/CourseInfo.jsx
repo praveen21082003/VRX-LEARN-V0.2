@@ -24,9 +24,9 @@ function CourseInfo() {
 
   useEffect(() => {
     setFormData({
-      name: courseContent?.name || "",
-      author: courseContent?.author || "",
-      shortDescription: courseContent?.short_description || "",
+      name: courseContent?.course?.title || "",
+      author: courseContent?.course?.author || "",
+      shortDescription: courseContent?.course?.shortDescription || "",
       description: courseContent?.description || "",
       thumbnail: courseContent?.thumbnail || "",
     })

@@ -3,10 +3,11 @@ import { Icon, Button, Input, Dropdown, MarkdownContent } from '@/components/ui'
 import { useOutletContext, NavLink, useNavigate, } from 'react-router-dom'
 import ReorderList from '@/components/dnd/ReorderList';
 import clsx from 'clsx';
-import useUpdateMoudule from '../hooks/useUpdateModule';
+import useModules from '../../courses/hooks/useModules';
 import useDeleteMoudule from '../hooks/useDeleteModule';
 import { getModuleButtons } from '@/config/DropdownButtons';
 import { useToast } from '@/context/ToastProvider';
+import { useReorderModules } from '../hooks/useReorderModules'
 
 
 function ModulesEditor() {
@@ -16,10 +17,10 @@ function ModulesEditor() {
     const navigate = useNavigate();
 
     const [isReorderMode, setIsReorderMode] = useState(false);
-    const [isUpdating, setIsUpdating] = useState(false);
     const [isOpenDropdown, setIsOpenDropdown] = useState(null);
     const [renameModuleId, setRenameModuleId] = useState(null);
     const [renameValue, setRenameValue] = useState("");
+    const [isRename, setIsRename] = useState(false);
 
     const inputRef = useRef(null);
     const rowRefs = useRef({});
@@ -28,29 +29,37 @@ function ModulesEditor() {
     const { addToast } = useToast();
 
 
-    const { modules, moduleloading, moduleError, courseContent, courseSlug } = useOutletContext();
-    const [orderedModules, setOrderedModules] = useState(modules || [])
-    const { updateModule, loading, error } = useUpdateMoudule();
+    const { courseContent, fetchCourseContent, courseSlug } = useOutletContext();
+    const [orderedModules, setOrderedModules] = useState([]);
+
+    const { updateModule, moduleError } = useModules();
     const { deleteModule } = useDeleteMoudule();
+
+
+    const { reorder, isUpdating } = useReorderModules();
 
 
 
     useEffect(() => {
-        if (!modules) return null
-        setOrderedModules(modules);
-    }, [modules])
+        if (courseContent?.modules) {
+            setOrderedModules(courseContent.modules);
+        }
+    }, [courseContent]);
 
     useEffect(() => {
         if (renameModuleId && inputRef.current) {
             inputRef.current.focus();
-            inputRef.current.select(); // optional → selects text
+            inputRef.current.select();
         }
     }, [renameModuleId]);
 
 
+
+
+
     const handleReorder = () => {
         setIsReorderMode(prev => !prev);
-    }
+    };
 
     const handleRename = (moduleId) => {
         const module = orderedModules.find(m => m.id === moduleId);
@@ -60,29 +69,24 @@ function ModulesEditor() {
     }
 
 
-
-
-
-
     async function renameModuleHandler(moduleId) {
         const newTitle = renameValue.trim();
 
         if (!newTitle) return;
 
         try {
+            setIsRename(true);
             await updateModule(moduleId, { title: newTitle });
-
-            setOrderedModules(prev =>
-                prev.map(m =>
-                    m.id === moduleId ? { ...m, title: newTitle } : m
-                )
-            );
             addToast("Module Renamed", "success")
+            fetchCourseContent();
 
             setRenameModuleId(null);
         } catch (error) {
             console.error(error);
             addToast("Error Occured", "error")
+        }
+        finally{
+            setIsRename(false);
         }
     }
 
@@ -156,6 +160,10 @@ function ModulesEditor() {
 
                         <ReorderList
                             items={orderedModules}
+                            reorder={reorder}
+                            isUpdating={isUpdating}
+                            addToast={addToast}
+                            fetchCourseContent={fetchCourseContent}
                         />
 
                         :
@@ -177,74 +185,86 @@ function ModulesEditor() {
                                                 }
                                             }}
                                             className={clsx(
-                                                'flex justify-between items-center p-2 lg:px-5 py-3 rounded text-h45 hover:bg-primary/16 dark:hover:bg-primary cursor-pointer',
-                                                isOpenDropdown === module.id || renameModuleId === module.id && 'bg-active'
+                                                'flex justify-between items-center p-2 lg:px-5 py-3 rounded text-h45 hover:bg-primary/16 dark:hover:bg-primary', isRename ? "cursor-progress" : "cursor-pointer",
+                                                (isOpenDropdown === module.id || renameModuleId === module.id) && 'bg-primary/16'
                                             )}
                                         >
-                                            <li className="flex items-center gap-2 w-full min-w-0">
+                                        <li className="flex items-center gap-2 w-full min-w-0">
 
-                                                <span className="hidden md:block shrink-0 text-muted-foreground">
-                                                    Module {index + 1} -
-                                                </span>
+                                            <span className="hidden md:block shrink-0 text-muted-foreground">
+                                                Module {index + 1} -
+                                            </span>
 
-                                                {renameModuleId === module.id ? (
-                                                    <span className='flex-1' onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
-                                                        <Input
-                                                            ref={inputRef}
-                                                            value={renameValue}
-                                                            autoFocus
-                                                            className="text-sm"
-                                                            bgClass="bg-primary-border"
-                                                            onChange={(e) => setRenameValue(e.target.value)}
-                                                            onBlur={() => setRenameModuleId(null)}
-                                                            onKeyDown={(e) => {
-                                                                if (e.key === "Enter") {
-                                                                    e.preventDefault();
-                                                                    renameModuleHandler(module.id);
-                                                                }
-
-                                                                if (e.key === "Escape") {
+                                            {renameModuleId === module.id ? (
+                                                <span className={`flex w-full gap-4`} onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+                                                    <Input
+                                                        ref={inputRef}
+                                                        value={renameValue}
+                                                        disabled={isRename}
+                                                        autoFocus
+                                                        className="text-sm"
+                                                        bgClass="bg-primary-border"
+                                                        onChange={(e) => setRenameValue(e.target.value)}
+                                                        onBlur={() => setRenameModuleId(null)}
+                                                        onKeyDown={(e) => {
+                                                            if (e.key === "Enter") {
+                                                                setRenameModuleId(null);
+                                                                e.preventDefault();
+                                                                if (isRename) return;
+                                                                const trimmed = renameValue.trim();
+                                                                const original = module.title.trim();
+                                                                if (trimmed === original) {
                                                                     setRenameModuleId(null);
+                                                                    return;
                                                                 }
-                                                            }}
-                                                        />
 
-                                                    </span>
-                                                ) : (
-                                                    <span className="truncate flex-1">
-                                                        {module.title}
-                                                    </span>
-                                                )}
+                                                                if (!trimmed) return;
 
-                                            </li>
+                                                                renameModuleHandler(module.id);
+                                                            }
 
-                                            <div
-                                                className='relative h-auto flex justify-center'
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    e.stopPropagation();
-                                                    setIsOpenDropdown(prev =>
-                                                        prev === module.id ? null : module.id
-                                                    );
-                                                }}
-                                            >
-                                                <Icon name="iconamoon:menu-kebab-horizontal" height="32px" width="32px" className="cursor-help" />
-
-                                                {isOpen && (
-                                                    <Dropdown
-                                                        buttons={getModuleButtons(courseSlug,module.id, handleRename, handleDeleteModule, navigate)}
-                                                        closeDropdown={() => setIsOpenDropdown(null)}
+                                                            if (e.key === "Escape") {
+                                                                setRenameModuleId(null);
+                                                                setRenameValue(module.title);
+                                                            }
+                                                        }}
                                                     />
-                                                )}
-                                            </div>
-                                        </NavLink>
+                                                </span>
+                                            ) : (
+                                                <span className="truncate flex-1">
+                                                    {module.title}
+                                                </span>
+                                            )}
+
+                                        </li>
+
+                                        <div
+                                            className='relative h-auto flex justify-center'
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                setIsOpenDropdown(prev =>
+                                                    prev === module.id ? null : module.id
+                                                );
+                                            }}
+                                        >
+                                            <Icon name="iconamoon:menu-kebab-horizontal" height="32px" width="32px" className="cursor-help" />
+
+                                            {isOpen && (
+                                                <Dropdown
+                                                    buttons={getModuleButtons(courseSlug, module.id, handleRename, handleDeleteModule, navigate)}
+                                                    closeDropdown={() => setIsOpenDropdown(null)}
+                                                />
+                                            )}
+                                        </div>
+                                    </NavLink>
                                     </div>
-                                )
+                )
                             })}
-                        </>
+            </>
                 }
-            </ul>
-        </div>
+        </ul>
+        </div >
     )
 }
 

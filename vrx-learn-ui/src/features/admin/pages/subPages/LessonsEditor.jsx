@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useParams, NavLink, useNavigate } from 'react-router-dom';
+import { useParams, NavLink, useNavigate, useOutletContext } from 'react-router-dom';
 import clsx from 'clsx'
 
 
@@ -9,7 +9,7 @@ import { useToast } from '@/context/ToastProvider';
 
 
 
-import useModule from '../../hooks/useModule';
+import { useLessons } from '../../hooks/useLessons';
 import useUpdateLesson from '../../hooks/useUpdateLesson';
 import { editButtons, buttons } from '@/config/DropdownButtons.js'
 
@@ -25,8 +25,9 @@ function LessonsEditor() {
     const { addToast } = useToast();
 
 
-    const { moduleId, courseSlug } = useParams();
-    const { module, loading, error } = useModule(moduleId);
+    const { moduleId, courseSlug, modules, fetchModules } = useOutletContext();
+    const { lessons, lessonLoading, lessonsError, fecthLesssons } = useLessons();
+
     const [isReorderMode, setIsReorderMode] = useState(false);
     const [orderedLessons, setOrderedLessons] = useState([]);
     const [openDropDown, setOpenDropDown] = useState(false);
@@ -34,18 +35,33 @@ function LessonsEditor() {
     const [renameLessonId, setRenameLessonId] = useState(null);
     const [renameValue, setRenameValue] = useState("");
 
+    console.log(orderedLessons)
+
+    useEffect(() => {
+        if (moduleId) {
+            fetchModules(moduleId);
+        }
+    }, [moduleId, fetchModules]);
 
 
     useEffect(() => {
-        if (module?.lessons) {
-            setOrderedLessons(module.lessons);
+        if (moduleId) {
+            setOrderedLessons([]);
+            fecthLesssons(moduleId);
         }
-    }, [module]);
+    }, [moduleId, fecthLesssons]);
+
+
+    useEffect(() => {
+        if (lessons) {
+            setOrderedLessons(lessons);
+        }
+    }, [lessons]);
 
     useEffect(() => {
         if (renameLessonId && inputRef.current) {
             inputRef.current.focus();
-            inputRef.current.select(); // optional → selects text
+            inputRef.current.select();
         }
     }, [renameLessonId]);
 
@@ -76,7 +92,8 @@ function LessonsEditor() {
         };
     }, [isOpenDropdown]);
 
-    if (loading) return <p>Loading...</p>
+    if (lessonLoading) return <div className="p-10 text-center">Loading lessons...</div>;
+    if (lessonsError) return <div className="p-10 text-red-500">Error loading lessons.</div>;
 
     const handleRename = (lessonId) => {
         const lesson = orderedLessons.find(l => l.id === lessonId);
@@ -115,7 +132,7 @@ function LessonsEditor() {
     return (
         <div className="space-y-4">
             <div className='flex justify-between'>
-                <h2 className="text-h4 md:text-h3 truncate">{module?.title}</h2>
+                <h2 className="text-h4 md:text-h3 truncate">{modules?.title}</h2>
                 <div className='flex gap-px'>
                     <span className=' flex gap-3'>
 
@@ -131,7 +148,7 @@ function LessonsEditor() {
                                     bgClass=""
                                     textClass=""
                                     isMobile={isMobile}
-                                    onClick={()=> navigate(`/course/${courseSlug}/content/modules/${moduleId}/edit`)}
+                                    onClick={() => navigate(`/course/${courseSlug}/content/modules/${moduleId}/edit`)}
                                 />
                                 <Button
                                     frontIconName="subway:down-2"
@@ -158,7 +175,7 @@ function LessonsEditor() {
                     </span>
                 </div>
             </div>
-            <MarkdownContent content={module?.description} />
+            <MarkdownContent content={modules?.description} />
             {isReorderMode
                 ? <ReorderList items={orderedLessons} />
                 : <div>
@@ -225,7 +242,7 @@ function LessonsEditor() {
                                             <Icon name="iconamoon:menu-kebab-horizontal" height="32px" width="32px" className="cursor-help" />
                                             {isOpen && (
                                                 <Dropdown
-                                                    buttons={buttons(courseSlug, moduleId,handleRename,lesson.id, navigate)} 
+                                                    buttons={buttons(courseSlug, moduleId, handleRename, lesson.id, navigate)}
                                                     closeDropdown={() => {
                                                         setIsOpenDropdown(null);
                                                     }}

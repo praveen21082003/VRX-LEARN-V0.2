@@ -4,14 +4,14 @@ import { useParams } from "react-router-dom";
 import LessonsAsideSection from '../sections/LessonsAsideSection'
 import LessonsMainSection from "../sections/LessonsMainSection";
 import { useOutletContext } from "react-router-dom";
-import useModules from "../hooks/useModules";
+import useModule from "../hooks/useModules";
 import useLessons from "../hooks/useLessons";
 
 function LessonsPage() {
   const { courseSlug } = useParams();
 
 
-  const { modules, moduleLoading, moduleError } = useModules(courseSlug);
+  const { modules, moduleLoading, moduleError } = useModule(courseSlug);
 
 
   const [activeLesson, setActiveLesson] = useState(null);

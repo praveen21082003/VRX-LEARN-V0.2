@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createModule as createModuleService } from '@/services/courses.service';
+import { createModule as createModuleService } from '@/services/modules.service';
 
 export default function useCreateModule() {
     const [loading, setLoading] = useState(false);

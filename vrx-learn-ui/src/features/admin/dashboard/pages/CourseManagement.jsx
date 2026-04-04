@@ -1,16 +1,34 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Select, Input, DataTable, Avatar, StatusPill, CourseCard } from '@/components/ui';
 import formatDateTime from '@/utils/formatDateTime';
 import Modal from '../../../../components/ui/Modal/Modal';
 import NewCourses from '../../dialogs/NewCourses';
+import { useCoursesData } from '../../hooks/useCousesData';
+import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter';
 
 function CourseManagement() {
   const isMobile = window.innerWidth < 768;
 
+  const { courses, loading, error, fetchCourses, total } = useCoursesData();
+
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [open, setOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("");
+
+
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [search]);
 
 
   const handleSelectRow = (id, checked) => {
@@ -23,64 +41,42 @@ function CourseManagement() {
 
   const handleSelectAll = (checked) => {
     if (checked) {
-      setSelectedRows(data.map((row) => row.id));
+      setSelectedRows(courses.map((row) => row.id));
     } else {
       setSelectedRows([]);
     }
   };
 
 
+  useEffect(() => {
 
-  const data = [
-    {
-      "id": 1,
-      "title": "Advanced Web Development",
-      "description": "The z/OS System Programming course provides an in-depth understanding of IBM mainframe operating systems.",
-      "trainers": ["Jhon Doe", "Virat Kohli", "Lilith Vishwa"],
-      "students": 130,
-      "date": "2026-01-02"
-    },
-    {
-      "id": 2,
-      "title": "Advanced UI/UX Design: Prototyping in Figma",
-      "description": "Master the principles of user-centric design, from initial wireframing to high-fidelity prototyping.",
-      "trainers": ["Jhon Doe", "Virat Kohli"],
-      "students": 78,
-      "date": "2026-01-02"
-    },
-    {
-      "id": 3,
-      "title": "Modern React: Component Architecture and State Management",
-      "description": "Build dynamic, scalable web applications from the ground up using advanced React concepts.",
-      "trainers": ["Jhon Doe", "Virat Kohli"],
-      "students": 12,
-      "date": "2026-01-02"
-    },
-    {
-      "id": 4,
-      "title": "Modern React: Component Architecture and State Management",
-      "description": "Build dynamic, scalable web applications from the ground up. Explore advanced React patterns and state management.",
-      "trainers": ["Jhon Doe", "Virat Kohli"],
-      "students": 56,
-      "date": "2026-01-02"
-    },
-    {
-      "id": 5,
-      "title": "Applied Large Language Models (LLMs) in Python",
-      "description": "Dive into practical applications of open-source and commercial LLMs. Learn how to leverage models like GPT in Python.",
-      "trainers": ["Jhon Doe", "Virat Kohli"],
-      "students": 80,
-      "date": "2026-01-02"
-    }
-  ]
+    const sortMapping = {
+      create_asc: { sortByCreatedAt: "asc" },
+      create_desc: { sortByCreatedAt: "desc" },
+      course_asc: { sortByCourseName: "asc" },
+      course_desc: { sortByCourseName: "desc" },
+    };
+
+    fetchCourses({
+      page,
+      limit: pageSize,
+      courseNameOrTrainerName: debouncedSearch || undefined,
+      ...sortMapping[sort] || {}
+    });
+  }, [page, pageSize, debouncedSearch, sort]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, sort]);
+
 
   // Derive unique trainers list from data
-  const allTrainers = [...new Set(data.flatMap((course) => course.trainers))];
+  const allTrainers = [...new Set(courses.flatMap((course) => course.trainers))];
 
   // Derive unique course titles from data
-  const allTitles = [...new Set(data.map((course) => course.title))];
+  const allTitles = [...new Set(courses.map((course) => course.title))];
 
-  const allDescription = [...new Set(data.map((course) => course.description))];
+  const allDescription = [...new Set(courses.map((course) => course.description))];
 
   const coursesManagementColumns = [
     {
@@ -111,39 +107,42 @@ function CourseManagement() {
       key: "title",
       label: "Course Title",
       align: "left",
-      width: "20%"
+      width: "20%",
+      render: (row) => (
+        <span>{capitalizeFirstLetter(row.title)}</span>
+      )
     },
     {
-      key: "description",
-      label: "Overview",
+      key: "shortDescription",
+      label: "Short Description",
       align: "left",
       width: "30%"
     },
     {
       key: "trainers",
       label: "Trainers",
-      align: "left",
+      align: "center",
       width: "15%",
       render: (row) => (
-        <span className='text-emphasis text-main'>
-          {row.trainers?.join(", ")}
+        <span className='text-main'>
+          {row.trainerName}
         </span>
       )
     },
     {
-      key: "students",
+      key: "noOfTrainees",
       label: "No.of Trainee",
-      align: "left",
+      align: "center",
       width: "10%"
     },
     {
       key: "created_at",
       label: "Created At",
-      align: "left",
+      align: "center",
       width: "10%",
       render: (row) => (
         <span className="text-caption">
-          {formatDateTime(row.date)}
+          {formatDateTime(row.createdAt)}
         </span>
       )
     },
@@ -152,7 +151,7 @@ function CourseManagement() {
       label: "Actions",
       width: "10%",
       render: (row) => {
-        const actions = ["mingcute:pencil-line", "ic:baseline-delete"]
+        const actions = ["iconamoon:eye-light","mingcute:pencil-line", "mdi:delete-outline"]
 
         return (
           <div className="flex items-center justify-center gap-3">
@@ -169,7 +168,7 @@ function CourseManagement() {
   ]
 
   return (
-    <div className="w-full p-4 bg-white border-b border-gray-200">
+    <div className="w-full p-4 bg-transparent text-main border-b border-gray-200">
       <div className="flex items-center justify-between">
         <h3 className="text-h3 font-semibold">Course Management</h3>
         {selectedRows.length === 0 && (
@@ -202,6 +201,8 @@ function CourseManagement() {
       {selectedRows.length === 0 ? (
         <div className="flex flex-col lg:flex-row justify-start items-start lg:items-center py-5 gap-3">
           <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             icon="ic:twotone-search"
             border="border-default"
             paddingClass="py-2"
@@ -209,12 +210,15 @@ function CourseManagement() {
             placeholder="Search by name or email..."
           />
           <Select
-            label="Filter by Course:"
+            label="Sort by:"
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
             options={[
-              { label: "Newest First", value: "newest" },
-              { label: "Oldest First", value: "oldest" },
-              { label: "Name (A - Z)", value: "name_asc" },
-              { label: "Name (Z - A)", value: "name_desc" },
+              { label: "None", value: null },
+              { label: "Newest First", value: "create_desc" },
+              { label: "Oldest First", value: "create_asc" },
+              { label: "Name (A - Z)", value: "course_asc" },
+              { label: "Name (Z - A)", value: "course_desc" },
             ]}
           />
         </div>
@@ -247,16 +251,18 @@ function CourseManagement() {
       )}
       <div>
         <DataTable
+          loading={loading}
           selectedRows={selectedRows}
           columns={coursesManagementColumns}
-          data={data}
+          data={courses}
           page={page}
           setPage={setPage}
           pageSize={pageSize}
           setPageSize={setPageSize}
-          total={data.length}
-          renderMobileCard={(row) => (
+          total={total}
+          renderMobileCard={(row, key) => (
             <CourseCard
+              key={key}
               row={row}
               columns={coursesManagementColumns}
             />

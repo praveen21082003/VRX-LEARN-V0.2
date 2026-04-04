@@ -8,6 +8,8 @@ export default function MyCoursesSection() {
 
     return (
         <CourseCardViewer
+            myCourses={true}
+            loading={loading}
             title="My Courses"
             courses={courses}
             maxCourses={3}

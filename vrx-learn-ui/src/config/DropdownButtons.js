@@ -50,7 +50,7 @@ export const getModuleButtons = (courseSlug, moduleId, handleRename, handleDelet
     key: "rename",
     title: "Rename",
     icon: "ix:rename",
-    onClick: () => alert("rename"),
+    onClick: () => handleRename(moduleId),
     permission: "UPDATE_MODULES"
   },
   { key: "delete", title: "Delete", icon: "ic:baseline-delete", onClick: () => alert("deleted"), permission: "DELETE_MODULES" }
@@ -84,13 +84,13 @@ export const getProfileDropdown = ({
   ];
 
 
-  if (role === "TRAINER") {
+  if (role === "trainer") {
     buttons.push({
       key: "switch",
-      title: viewRole === "TRAINER"
+      title: viewRole === "trainer"
         ? "Switch to Trainee"
         : "Switch to Trainer",
-      icon: viewRole === "TRAINER"
+      icon: viewRole === "trainer"
         ? "mdi:account-tie"
         : "mdi:account-school",
       onClick: onSwitch,

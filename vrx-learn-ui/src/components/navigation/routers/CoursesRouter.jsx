@@ -8,11 +8,11 @@ export default function CoursesRouter() {
     const { role,viewRole } = useAuth();
 
 
-    if (role === "ADMIN" || role === "SUBADMIN") {
+    if (role === "admin") {
         return <CourseManagement />;
     }
 
-    if (viewRole === "TRAINEE") {
+    if (viewRole === "trainee") {
         return <CoursesPage />;
     }
 
