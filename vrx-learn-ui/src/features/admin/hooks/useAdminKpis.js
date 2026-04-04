@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAdminKpis } from "@/services/courses.service";
+import { getAdminKpis } from "@/services/dashboard.service";
 
 export default function useAdminKpis() {
   const [kpis, setKpis] = useState([]);

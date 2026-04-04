@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAdminTopCourses } from "@/services/courses.service";
+import { getAdminTopCourses } from "@/services/dashboard.service";
 
 export default function useAdminTopCourses() {
   const [topCourses, setTopCourses] = useState([]);

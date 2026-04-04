@@ -4,24 +4,52 @@ import CreateUser from '../../dialogs/CreateUser';
 import NewCourses from '../../dialogs/NewCourses';
 import NewEnrollment from '../../dialogs/NewEnrollment';
 import { StatCard } from '@/components/ui';
-import useAdminKpis from "@/features/courses/hooks/useAdminKpis";
-import useAdminTopCourses from "@/features/courses/hooks/useAdminTopCourses";
+import useAdminKpis from "../../hooks/useAdminKpis"
+import useAdminTopCourses from "../../hooks/useAdminTopCourses";
 
 
 
 function AdminDashboard() {
 
-    const { kpis, isLoading, error } = useAdminKpis();  
-    const { topCourses, loading, error: topCoursesError } = useAdminTopCourses();
-    console.log("KPIS:", kpis);
-    console.log("Top Courses:", topCourses);
+  const { kpis, isLoading, error } = useAdminKpis();
+  const { topCourses, loading, error: topCoursesError } = useAdminTopCourses();
+  console.log("KPIS:", kpis);
+  console.log("Top Courses:", topCourses);
   const [open, setOpen] = useState(false);
   const [activeAction, setActiveAction] = useState();
 
   const [editingUser, setEditingUser] = useState(null);
 
-  const allRoles = ["ADMIN", "SUB_ADMIN", "TRAINER", "TRAINEE"];
+  const allRoles = ["admin", "subadmin", "trainer", "trainee"];
   // const allStatuses = ["ACTIVE", "INACTIVE", "PENDING"];
+
+
+  const statcardData = [
+    {
+      key: "totalUsers",
+      label: "Total Users",
+      Icon: "mdi:users",
+      value: kpis.totalUsers
+    },
+    {
+      key: "totalCourses",
+      label: "Total Courses",
+      Icon: "mdi:book-education-outline",
+      value: kpis.totalCourses
+    },
+    {
+      key: "totalEnrollments",
+      label: "Total Enrollments",
+      Icon: "mdi:book-account",
+      value: kpis.totalEnrollments
+    },
+    {
+      key: "averageCompletion",
+      label: "Average Completion",
+      Icon: "nrk:media-completed",
+      value: kpis.averageCompletion
+    }
+  ]
 
 
   const quickAction = [
@@ -48,113 +76,33 @@ function AdminDashboard() {
 
 
 
-
-
-  const data = [
-    {
-      "id": 1,
-      "title": "Advanced Web Development",
-      "description": "The z/OS System Programming course provides an in-depth understanding of IBM mainframe operating systems.",
-      "trainers": ["Jhon Doe", "Virat Kohli"],
-      "students": 130,
-      "date": "2026-01-02"
-    },
-    {
-      "id": 2,
-      "title": "Advanced UI/UX Design: Prototyping in Figma",
-      "description": "Master the principles of user-centric design, from initial wireframing to high-fidelity prototyping.",
-      "trainers": ["Jhon Doe", "Virat Kohli"],
-      "students": 78,
-      "date": "2026-01-02"
-    },
-    {
-      "id": 3,
-      "title": "Modern React: Component Architecture and State Management",
-      "description": "Build dynamic, scalable web applications from the ground up using advanced React concepts.",
-      "trainers": ["Jhon Doe", "Virat Kohli"],
-      "students": 12,
-      "date": "2026-01-02"
-    },
-    {
-      "id": 4,
-      "title": "Modern React: Component Architecture and State Management",
-      "description": "Build dynamic, scalable web applications from the ground up. Explore advanced React patterns and state management.",
-      "trainers": ["Jhon Doe", "Virat Kohli"],
-      "students": 56,
-      "date": "2026-01-02"
-    },
-    {
-      "id": 5,
-      "title": "Applied Large Language Models (LLMs) in Python",
-      "description": "Dive into practical applications of open-source and commercial LLMs. Learn how to leverage models like GPT in Python.",
-      "trainers": ["Jhon Doe", "Virat Kohli"],
-      "students": 80,
-      "date": "2026-01-02"
-    }
-  ]
-
-
-  const allTrainers = [...new Set(data.flatMap((course) => course.trainers))];
-
-  const allTitles = [...new Set(data.map((course) => course.title))];
-
-  const allDescription = [...new Set(data.map((course) => course.description))];
-
-
   const handleOnClick = (actionKey) => {
     setActiveAction(actionKey);
     setOpen(true);
   };
 
   const avgTrainees =
-  kpis?.totalCourses
-    ? Math.round(kpis.totalEnrollments / kpis.totalCourses)
-    : 0;
+    kpis?.totalCourses
+      ? Math.round(kpis.totalEnrollments / kpis.totalCourses)
+      : 0;
 
 
   return (
     <div className="space-y-4 text-main py-4 px-6">
 
-                  <h2 className='text-h2 mb-1'>Welcome Admin!</h2>
-                  <p className='mb-1 '>Here's what's happening across your learning platform.</p>
-                  <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4 gap-4 py-4'>
-                      <StatCard
-                          icon="mdi:users"
-                          label="Total Users"
-                          value={kpis.totalUsers}
-                      />
-      
-                      <StatCard
-                          icon="mdi:book-education-outline"
-                          label="Total Courses"
-                          value={kpis.totalCourses}
-                      />
-      
-                      <StatCard
-                          icon="mdi:book-account"
-                          label="Total Enrollments"
-                          value={kpis.totalEnrollments}
-                      />
-      
-                      {/* <StatCard
-                          icon="nrk:media-completed"
-                          label="Average Completion"
-                          // value="78%"
-                            value={kpis?.avgCompletion ? `${kpis.avgCompletion}%` : "78%"}
-
-                      /> */}
-{/* {
-  "totalTrainees": 100,
-  "completedTrainees": 78
-} */}
-{/* const completion = (course.completedTrainees / course.totalTrainees) * 100; */}
-
-                  <StatCard
-                  icon="mdi:account-group"
-                  label="Avg Trainees / Course"
-                  value={avgTrainees}
-                  />
-                  </div>
+      <h2 className='text-h2 mb-1'>Welcome Admin!</h2>
+      <p className='mb-1 '>Here's what's happening across your learning platform.</p>
+      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4 gap-4 py-4'>
+        {statcardData.map((kpi) => (
+          <StatCard
+            key={kpi.key}
+            icon={kpi.Icon}
+            label={kpi.label}
+            value={kpi.value}
+            loading={isLoading}
+          />
+        ))}
+      </div>
 
       <div className='space-y-4'>
         <h4 className="text-h4">Quick Actions</h4>
