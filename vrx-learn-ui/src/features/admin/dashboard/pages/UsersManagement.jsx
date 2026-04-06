@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useUsersData } from "../../hooks/useUsersData";
+import { useUser } from "../../hooks/useUser";
+import { useToast } from '@/context/ToastProvider'
 
 import {
   Icon,
@@ -11,6 +13,7 @@ import {
   Select,
   Modal,
   UserCard,
+  DeleteConfirmContent
 } from "@/components/ui";
 
 import formatDateTime from "@/utils/formatDateTime";
@@ -20,6 +23,8 @@ function UsersManagement() {
   const isMobile = window.innerWidth < 768;
 
   const { users, fetchUsers, loading, total } = useUsersData();
+  const { deleteUser, deleting, error } = useUser();
+  const { addToast } = useToast();
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -29,6 +34,9 @@ function UsersManagement() {
   const [open, setOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
 
+  const [isDelete, setIsDelete] = useState(false);
+
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("all");
@@ -70,6 +78,11 @@ function UsersManagement() {
     setOpen(true);
   };
 
+  const handleOpenDelete = (user) => {
+    setSelectedUser(user);
+    setIsDelete(true);
+  };
+
 
   useEffect(() => {
 
@@ -93,6 +106,18 @@ function UsersManagement() {
   useEffect(() => {
     setPage(1);
   }, [debouncedSearch, role, status, sort]);
+
+  const handleDelete = async (userId) => {
+    try {
+      // console.log(selectedUser.id)
+      await deleteUser(userId);
+      fetchUsers();
+      addToast("User deleted successfully", "success");
+      setIsDelete(false);
+    } catch (err) {
+      addToast("Failed to delete user", "error");
+    }
+  }
 
 
   const usersManagementColumns = [
@@ -190,6 +215,7 @@ function UsersManagement() {
                 textClass=""
                 onClick={() => {
                   if (icon === "mingcute:pencil-line") handleOpenEdit(row);
+                  if (icon === "mdi:delete-outline") handleOpenDelete(row);
                 }}
               />
             ))}
@@ -226,7 +252,7 @@ function UsersManagement() {
               textClass="lg:text-white"
               onClick={() => {
                 setOpen(true);
-                setEditingUser(null); // 1. Clear any previous edit data
+                setEditingUser(null);
                 setOpen(true);
               }}
               isMobile={isMobile}
@@ -254,7 +280,7 @@ function UsersManagement() {
               <Select
                 label="Users:"
                 value={role}
-                onChange={(e) => setRole(e.target.value)}
+                onChange={(value) => setRole(value)}
                 options={[
                   { label: "All Users", value: null },
                   { label: "Admin", value: "admin" },
@@ -268,7 +294,7 @@ function UsersManagement() {
               <Select
                 label="Sort by:"
                 value={sort}
-                onChange={(e) => setSort(e.target.value)}
+                onChange={(value) => setSort(value)}
                 options={[
                   { label: "None", value: null },
                   { label: "Newest First", value: "create_desc" },
@@ -282,7 +308,7 @@ function UsersManagement() {
               <Select
                 label="Status:"
                 value={status}
-                onChange={(e) => setStatus(e.target.value)}
+                onChange={(value) => setStatus(value)}
                 options={[
                   { label: "All", value: "" },
                   { label: "Active", value: "active" },
@@ -363,6 +389,24 @@ function UsersManagement() {
           />
         </Modal>
       )}
+
+      {isDelete && (
+        <Modal
+          isOpen={isDelete}
+          onClose={() => setIsDelete(false)}
+          title="Are you absolutely sure?"
+        >
+          <DeleteConfirmContent
+            confirmText={selectedUser?.name || ""}
+            entityName="user"
+            message={`You are about to permanently delete the ${selectedUser?.name} user.`}
+            loading={deleting}
+            onClose={() => setIsDelete(false)}
+            onConfirm={() => handleDelete(selectedUser.id)}
+          />
+        </Modal>
+      )}
+
     </div>
   );
 }

@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Select, Input, DataTable, Avatar, StatusPill, EnrollmentCard } from '@/components/ui';
+import { Button, Select, Input, DataTable, Avatar, StatusPill, EnrollmentCard, DeleteConfirmContent } from '@/components/ui';
 import formatDateTime from '@/utils/formatDateTime';
 import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter';
 import Modal from '../../../../components/ui/Modal/Modal';
 import NewEnrollment from '../../dialogs/NewEnrollment';
 import { useEnrollmentData } from '../../hooks/useEnrollmentData';
+import { useEnrollments } from '../../hooks/useEnrollments';
+import { useToast } from '@/context/ToastProvider'
 
 function EnrollmentMangement() {
 
     const isMobile = window.innerWidth < 768;
 
     const { enrollments, fetchEnrollments, error, loading, total } = useEnrollmentData();
+    const { DeleteEnrollment, isDeleting, deleteError } = useEnrollments();
+    const { addToast } = useToast();
 
-    console.log(enrollments);
+
+    // console.log(enrollments);
 
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
+
     const [open, setOpen] = useState(false);
-    const [editingUser, setEditingUser] = useState(null); // null means "Add Mode"
+    const [editingUser, setEditingUser] = useState(null);
+
+    const [isDelete, setIsDelete] = useState(false);
+    const [selectedEnrollment, setSelectedEnrollment] = useState(null);
 
     const [selectedRows, setSelectedRows] = useState([]);
 
@@ -60,6 +69,14 @@ function EnrollmentMangement() {
         setOpen(true);
     };
 
+    const handleOpenDelete = (row) => {
+        setSelectedEnrollment(row);
+        setIsDelete(true);
+    };
+
+
+
+
     useEffect(() => {
         const sortMapping = {
             create_asc: { sortByEnrollmentDate: "asc" },
@@ -77,9 +94,32 @@ function EnrollmentMangement() {
             ...(sortMapping[sort] || {}),
         });
     }, [page, pageSize, debouncedSearch, role, status, sort]);
+
+
     useEffect(() => {
         setPage(1);
     }, [debouncedSearch, role, status, sort]);
+
+
+    const handleDelete = async (enrollmentId) => {
+
+        console.log(enrollmentId)
+        try {
+            await DeleteEnrollment(enrollmentId);
+            
+            fetchEnrollments();
+            setIsDelete(false);
+
+            addToast("Enrollment deleted successfully", "success");
+        } catch (err) {
+            const msg =
+                err.response?.data?.message ||
+                err.response?.data?.detail ||
+                "Failed to delete enrollment";
+
+            addToast(msg, "error");
+        }
+    };
 
 
 
@@ -145,7 +185,7 @@ function EnrollmentMangement() {
         {
             key: "role",
             label: "Role",
-            width: "12%",
+            width: "8%",
             render: (row) => (
                 <StatusPill status={row.role} />
             )
@@ -153,15 +193,25 @@ function EnrollmentMangement() {
         {
             key: "courseName",
             label: "Course Name",
-            width: "35%",
+            width: "30%",
             render: (row) => (
                 <span>{capitalizeFirstLetter(row.courseName)}</span>
             )
         },
         {
+            key: "enrolled_at",
+            label: "Enrollment At",
+            width: "18%",
+            render: (row) => (
+                <span className="text-caption text-muted">
+                    {formatDateTime(row.expireAt)}
+                </span>
+            )
+        },
+        {
             key: "date",
             label: "Enrollment Date",
-            width: "20%",
+            width: "18%",
             render: (row) => (
                 <span className="text-caption text-muted">
                     {formatDateTime(row.enrollmentDate)}
@@ -203,6 +253,7 @@ function EnrollmentMangement() {
                                 frontIconHeight="18" frontIconWidth="18" bgClass="" textClass=""
                                 onClick={() => {
                                     if (icon === "mingcute:pencil-line") handleOpenEdit(row);
+                                    if (icon === "mdi:delete-outline") handleOpenDelete(row);
                                 }}
 
                             />
@@ -274,7 +325,7 @@ function EnrollmentMangement() {
                                     <Select
                                         label="Sort by:"
                                         value={sort}
-                                        onChange={(e) => setSort(e.target.value)}
+                                        onChange={(value) => setSort(value)}
                                         options={[
                                             { label: "None", value: null },
                                             { label: "Newest First", value: "create_desc" },
@@ -288,7 +339,7 @@ function EnrollmentMangement() {
                                     <Select
                                         label="Role:"
                                         value={role}
-                                        onChange={(e) => setRole(e.target.value)}
+                                        onChange={(value) => setRole(value)}
                                         options={[
                                             { label: "All Users", value: null },
                                             { label: "Admin", value: "admin" },
@@ -303,7 +354,7 @@ function EnrollmentMangement() {
 
                                         label="Status:"
                                         value={status}
-                                        onChange={(e) => setStatus(e.target.value)}
+                                        onChange={(value) => setStatus(value)}
                                         options={[
                                             { label: "All", value: null },
                                             { label: "Pending", value: "pending" },
@@ -314,19 +365,6 @@ function EnrollmentMangement() {
                                         ]}
                                     />
                                 </div>
-
-                                {/* <div className="col-span-1">
-                                    <Select
-                                        label="Filter by Course:"
-                                        onChange={(e) => set}
-                                        options={[
-                                            { label: "Name (A - Z)", value: null },
-                                            { label: "Newest First", value: "asc" },
-                                            { label: "Oldest First", value: "desc" },
-                                            // { label: "Name (Z - A)", value: "desc" },
-                                        ]}
-                                    />
-                                </div> */}
                             </div>
                         </div>
                     ) : (
@@ -389,6 +427,23 @@ function EnrollmentMangement() {
                         courses={allCourses}
                         Names={allNames}
                         Status={allStatus}
+                    />
+                </Modal>
+            )}
+
+            {isDelete && (
+                <Modal
+                    isOpen={isDelete}
+                    onClose={() => setIsDelete(false)}
+                    title="Are you absolutely sure?"
+                >
+                    <DeleteConfirmContent
+                        confirmText={selectedEnrollment?.courseName || ""}
+                        entityName="enrollment"
+                        message={`You are about to permanently delete ${selectedEnrollment?.courseName} enrollment.`}
+                        loading={isDeleting}
+                        onClose={() => setIsDelete(false)}
+                        onConfirm={() => handleDelete(selectedEnrollment.id)}
                     />
                 </Modal>
             )}

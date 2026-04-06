@@ -9,6 +9,7 @@ function Layout() {
   const [authMode, setAuthMode] = useState("login");
   const { darkMode, toggleTheme } = useTheme();
   const [warnMsg, setWarnMsg] = useState("");
+  console.log(warnMsg);
 
   return (
     <div className="flex min-h-screen w-full justify-center items-center text-main bg-background px-4">

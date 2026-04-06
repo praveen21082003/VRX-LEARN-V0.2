@@ -1,6 +1,11 @@
 import axiosInstance from "./apiClient";
 
 
+export const createCourseService = (payload) => {
+  return axiosInstance.post('/api/v1/courses/', payload)
+}
+
+
 // All Courses
 export const getAllCourses = () => {
   return axiosInstance.get(`/api/v1/dashboard/trainee/top-new-courses/${3}`);
@@ -8,10 +13,14 @@ export const getAllCourses = () => {
 
 
 // Update Base course info
-
-export const updateCourseInfo = (course_id,payload) => {
-  return axiosInstance.patch(`/api/v1/courses/update-basic-info/${course_id}`,payload)
+export const updateCourseInfo = (course_id, payload) => {
+  return axiosInstance.patch(`/api/v1/courses/update-basic-info/${course_id}`, payload)
 }
+
+export const deleteCourse = (courseId) => {
+  return axiosInstance.delete(`/api/v1/courses/${courseId}`)
+}
+
 
 
 

@@ -8,7 +8,8 @@ export default function FilterSelect({
   value,
   onChange,
   options,
-  borderClass = "border-default"
+  borderClass = "border-default",
+  inputWarning
 }) {
   // const [open, setOpen] = useState(false);
   const [open, ref, setOpen, toggle] = useClickOutside(false);
@@ -46,7 +47,7 @@ export default function FilterSelect({
             <div
               key={opt.value}
               onClick={() => {
-                onChange({ target: { value: opt.value } });
+                onChange(opt.value);
                 setOpen(false);
               }}
               className={`px-3 py-2 text-body hover:bg-gray-100 cursor-pointer ${value === opt.value ? "bg-gray-50 font-semibold" : ""

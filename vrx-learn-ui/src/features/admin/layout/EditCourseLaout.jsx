@@ -9,7 +9,7 @@ import { COURSE_EDIT_SECTIONS } from "@/config/courseEditConfig";
 import clsx from "clsx";
 import { useEffect, useState, useRef } from "react";
 import useModules from "@/features/courses/hooks/useModules";
-import useAssignments from "../hooks/useAssignment"
+import useAssignment from '../hooks/useAssignment'
 
 import { getCreateButtons } from "@/config/DropdownButtons";
 import { useToast } from '@/context/ToastProvider'
@@ -41,7 +41,7 @@ function EditCourseLayout() {
     assignmentLoading,
     assignmentError,
     fetchAssignment,
-  } = useAssignments();
+  } = useAssignment();
 
 
   const [asideWidth, setAsideWidth] = useState(() => {

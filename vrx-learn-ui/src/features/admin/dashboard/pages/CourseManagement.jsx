@@ -13,11 +13,16 @@ function CourseManagement() {
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+
   const [open, setOpen] = useState(false);
+  const [editingCourse, setEditingCourse] = useState(null);
+
+
   const [selectedRows, setSelectedRows] = useState([]);
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
+
 
 
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -68,6 +73,17 @@ function CourseManagement() {
   useEffect(() => {
     setPage(1);
   }, [debouncedSearch, sort]);
+
+
+  const handleOpenEdit = (course) => {
+    setEditingCourse(course);
+    setOpen(true);
+  };
+
+  const handleOpenDelete = (row) => {
+    // setSelectedEnrollment(row);
+    // setIsDelete(true);
+  };
 
 
   // Derive unique trainers list from data
@@ -151,13 +167,17 @@ function CourseManagement() {
       label: "Actions",
       width: "10%",
       render: (row) => {
-        const actions = ["iconamoon:eye-light","mingcute:pencil-line", "mdi:delete-outline"]
+        const actions = ["iconamoon:eye-light", "mingcute:pencil-line", "mdi:delete-outline"]
 
         return (
           <div className="flex items-center justify-center gap-3">
             {actions.map((icon, index) => (
-              <Button key={index} frontIconName={icon} frontIconHeight="18" frontIconWidth="18" bgClass="" textClass="" />
-              // onClick={() => { setActiveTab("view_submission"); setActiveAssignmentId(row.id) }}
+              <Button key={index} frontIconName={icon} frontIconHeight="18" frontIconWidth="18" bgClass="" textClass=""
+                onClick={() => {
+                  if (icon === "mingcute:pencil-line") handleOpenEdit(row);
+                  if (icon === "mdi:delete-outline") handleOpenDelete(row);
+                }}
+              />
             ))}
           </div>
         )
@@ -192,7 +212,10 @@ function CourseManagement() {
               className="lg:p-3 lg:py-1.5 text-sm rounded-md"
               bgClass="lg:bg-primary"
               textClass="lg:text-white"
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                setEditingCourse(null);
+                setOpen(true);
+              }}
               isMobile={isMobile}
             />
           </div>
@@ -275,10 +298,13 @@ function CourseManagement() {
         <Modal
           isOpen={open}
           onClose={() => setOpen(false)}
-          title="Add New Course"
+          title={editingCourse ? "Edit Course" : "Create New Course"}
         >
-          {/* Pass trainers and titles derived from data as props */}
-          <NewCourses trainers={allTrainers} courseTitles={allTitles} description={allDescription} />
+          <NewCourses
+            isEdit={!!editingCourse}
+            courseData={editingCourse}
+            onClose={() => setOpen(false)}
+          />
         </Modal>
       )}
     </div>

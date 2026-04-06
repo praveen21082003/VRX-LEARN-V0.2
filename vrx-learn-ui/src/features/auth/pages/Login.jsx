@@ -7,7 +7,9 @@ import { hover } from "motion/react";
 
 function Login({ onForgot, setWarnMsg }) {
     const navigate = useNavigate();
-    const { setUser, setLoading } = useAuth();
+    const { setUser } = useAuth();
+
+    const [loading, setLoading] = useState(false);
     const [warning, setWarning] = useState({ email: "", password: "" });
     const [credentials, setCredentials] = useState({ email: "", password: "" });
 
@@ -18,9 +20,9 @@ function Login({ onForgot, setWarnMsg }) {
 
     const icons = [
         { key: "web", name: "mdi:web", navlink: "https://vrnexgen1.com/", hover: "hover:text-blue-500" },
-        { key: "linkedin", name: "mdi:linkedin", navlink: "", hover: "hover:text-blue-600" },
-        { key: "youtube", name: "mdi:youtube", navlink: "", hover: "hover:text-red-500" },
-        { key: "github", name: "mdi:github", navlink: "", hover: "hover:text-black" },
+        { key: "linkedin", name: "mdi:linkedin", navlink: "#", hover: "hover:text-blue-600" },
+        { key: "youtube", name: "mdi:youtube", navlink: "#", hover: "hover:text-red-500" },
+        { key: "github", name: "mdi:github", navlink: "#", hover: "hover:text-black" },
     ]
 
     async function fetchProfile() {
@@ -40,14 +42,20 @@ function Login({ onForgot, setWarnMsg }) {
 
 
         } catch (err) {
-            if (err.response?.status === 401) {
+            console.log("login error", err);
+
+            const status = err.response?.status;
+
+            if (status === 401) {
                 setWarnMsg("Invalid email or password.");
-            } else if (err.response?.status === 500) {
+            } else if (status === 500) {
                 setWarnMsg("Server error. Please try again later.");
             } else {
                 setWarnMsg("Something went wrong. Check your connection.");
             }
+
             console.error("Login Error:", err.response?.data || err.message);
+
         } finally {
             setLoading(false);
         }
@@ -61,6 +69,8 @@ function Login({ onForgot, setWarnMsg }) {
         if (!credentials.password) {
             setWarning((prev) => ({ ...prev, password: "Password can't be empty" }));
         }
+
+        // if (hasError) return;
 
         fetchProfile();
     };
@@ -105,7 +115,7 @@ function Login({ onForgot, setWarnMsg }) {
                     type="submit"
                     bgClass="bg-primary"
                     className="p-2 rounded-lg"
-                    buttonName="Login"
+                    buttonName={loading ? "loging in..." : "Login"}
                 />
             </form>
             <div className="flex gap-3 py-10">

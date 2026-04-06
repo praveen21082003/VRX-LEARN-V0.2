@@ -13,8 +13,7 @@ function AdminDashboard() {
 
   const { kpis, isLoading, error } = useAdminKpis();
   const { topCourses, loading, error: topCoursesError } = useAdminTopCourses();
-  console.log("KPIS:", kpis);
-  console.log("Top Courses:", topCourses);
+
   const [open, setOpen] = useState(false);
   const [activeAction, setActiveAction] = useState();
 
@@ -92,7 +91,7 @@ function AdminDashboard() {
 
       <h2 className='text-h2 mb-1'>Welcome Admin!</h2>
       <p className='mb-1 '>Here's what's happening across your learning platform.</p>
-      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4 gap-4 py-4'>
+      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4'>
         {statcardData.map((kpi) => (
           <StatCard
             key={kpi.key}
@@ -210,9 +209,9 @@ function AdminDashboard() {
 
           {activeAction === "course" && (
             <NewCourses
-              trainers={allTrainers}
-              courseTitles={allTitles}
-              description={allDescription}
+            // trainers={allTrainers}
+            // courseTitles={allTitles}
+            // description={allDescription}
             />
           )}
 
@@ -221,9 +220,6 @@ function AdminDashboard() {
               isEdit={!!editingUser}
               userData={editingUser}
               onClose={() => setOpen(false)}
-              courses={allCourses}
-              Names={allNames}
-              Status={allStatus}
             />
           )}
 

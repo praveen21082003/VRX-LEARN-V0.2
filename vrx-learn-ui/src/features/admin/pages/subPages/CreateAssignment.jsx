@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AssignmentFormSection from '../../sections/AssignmentFormSection';
 import { useParams } from 'react-router-dom';
-import { useAssignments } from '../../hooks/useAssignment';
+import useAssignment from '../../hooks/useAssignment';
 import { useToast } from '@/context/ToastProvider';
 
 function CreateAssignment() {
@@ -9,7 +9,7 @@ function CreateAssignment() {
     const { addToast } = useToast();
 
     const [files, setFiles] = useState([]);
-    const { createAssignment, isCreating, uploadProgress, error } = useAssignments();
+    const { createAssignment, isCreating, uploadProgress, error } = useAssignment();
 
     const [formData, setFormData] = useState({
         courseId: courseSlug,

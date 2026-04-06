@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@/context/ToastProvider";
-import { Input, Select, SearchDropdown, Button } from "@/components/ui";
-import { useCreateEnrollments } from "../hooks/useCreateEnrollments";
-import { useSearchUsers } from "../hooks/useSearchUsers";
-import { useSearchCourses } from "../hooks/useSearchCourse";
+import { Input, SearchSelect, Select, Button } from "@/components/ui";
+import { useEnrollments } from '../hooks/useEnrollments';
+import useSearch from '../hooks/useSearch'
+import { useEnrollmentData } from '../hooks/useEnrollmentData';
+
 
 function NewEnrollment({
   isEdit = false,
@@ -14,125 +15,213 @@ function NewEnrollment({
 
   const [userSearch, setUserSearch] = useState("");
   const [courseSearch, setCourseSearch] = useState("");
+  const [trainer, setTrainer] = useState("trainer");
+  const [trainee, setTrainee] = useState("trainee");
 
-  const [userResults, setUserResults] = useState([]);
-  const [courseResults, setCourseResults] = useState([]);
+  const { results, searchLoading, courseResult, handleSearch } = useSearch();
+  const { createEnrollment, updateEnrollment, isCreating, isUpdating } = useEnrollments();
+  const { fetchEnrollments } = useEnrollmentData();
 
-  const { createEnrollment, loading } = useCreateEnrollments();
-  const { users, fetchUsers, loading: userLoading } = useSearchUsers();
-  const { courses, fetchCourses, loading: courseLoading } = useSearchCourses();
   const { addToast } = useToast();
 
   const [formData, setFormData] = useState({
     userId: "",
     courseId: "",
-    status: "IN_PROGRESS", // Match API Casing (Usually Uppercase)
+    status: "in-progress",
     expireAt: "",
   });
+
+
+  const [warnings, setWarning] = useState({
+    userId: "",
+    courseId: "",
+    expireAt: "",
+  })
+
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      const roles = [trainer, trainee].filter(Boolean);
+
+      const params = {
+        username_or_email: userSearch,
+        ...(roles.length > 0 && { role: roles }),
+      };
+
+      handleSearch("users", params);
+    }, 500);
+
+    return () => clearTimeout(delay);
+  }, [userSearch, trainer, trainee]);
+
+
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      handleSearch("courses", courseSearch);
+    }, 500);
+
+    return () => clearTimeout(delay);
+  }, [courseSearch]);
+
 
   useEffect(() => {
     if (isEdit && userData) {
       setFormData({
-        userId: userData.userId || userData.user?.id || "",
-        courseId: userData.courseId || userData.course?.id || "",
-        status: userData.status || "IN_PROGRESS",
-        // Format date for datetime-local input (YYYY-MM-DDTHH:mm)
-        expireAt: userData.expireAt ? new Date(userData.expireAt).toISOString().slice(0, 16) : "",
+        status: userData.status || "in-progress",
+        expireAt: userData.expireAt
+          ? new Date(userData.expireAt).toISOString().slice(0, 16)
+          : "",
       });
     }
   }, [isEdit, userData]);
 
-  // // Search Effects (Keep these as they were)
-  // useEffect(() => {
-  //   if (userSearch.length < 2) return;
-  //   const timer = setTimeout(() => fetchUsers(userSearch), 400);
-  //   return () => clearTimeout(timer);
-  // }, [userSearch]);
 
-  // useEffect(() => {
-  //   if (courseSearch.length < 2) return;
-  //   const timer = setTimeout(() => fetchCourses(courseSearch), 400);
-  //   return () => clearTimeout(timer);
-  // }, [courseSearch]);
-
-  const userOptions = (users || []).map((u) => ({
-    label: `${u.name} (${u.email})`,
-    value: u.id,
-  }));
-
-  const courseOptions = (courses || []).map((course) => ({
-    label: course.title,
-    value: course.id,
-  }));
-
-  const statusOptions = (Status || []).map((s) => ({
-    label: s,
-    value: s.toUpperCase(),
-  }));
-
-
-  const handleSelectChange = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleChange = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  const handleAction = async () => {
-    if (!formData.userId || !formData.courseId || !formData.expireAt) {
-      addToast("Please fill all required fields", "warning");
-      return;
+
+
+  const validateEnrollment = () => {
+    let errors = {};
+
+    // User
+    if (!formData.userId) {
+      errors.userId = "User is required";
+    }
+
+    // Course
+    if (!formData.courseId) {
+      errors.courseId = "Course is required";
+    }
+
+    // Expiry Date
+
+    const isValidDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+
+    if (formData.expireAt) {
+      if (!isValidDateTime.test(formData.expireAt)) {
+        errors.expireAt = "Please enter a valid date and time";
+      } else {
+        const date = new Date(formData.expireAt);
+        if (date < new Date()) {
+          errors.expireAt = "Expiry date must be in the future";
+        }
+      }
+    }
+
+    setWarning(errors);
+
+    return Object.keys(errors).length === 0;
+  };
+
+
+
+
+  const handleSubmit = async () => {
+
+    if (!isEdit) {
+      const isValid = validateEnrollment();
+      if (!isValid) return;
     }
 
     try {
-      const payload = {
-        ...formData,
-        // Convert back to ISO for the database
-        expireAt: new Date(formData.expireAt).toISOString(),
-      };
 
       if (isEdit) {
-        // await updateEnrollment(userData.id, payload);
+        const payload = {
+          ...(formData.status && { status: formData.status }),
+          ...(formData.expireAt && {
+            expireAt: new Date(formData.expireAt).toISOString()
+          })
+        };
+
+        await updateEnrollment(userData.id, payload);
+
         addToast("Enrollment updated!", "success");
       } else {
+        const payload = {
+          userId: formData.userId,
+          courseId: formData.courseId,
+          status: formData.status,
+          ...(formData.expireAt && {
+            expireAt: new Date(formData.expireAt).toISOString()
+          })
+        };
+
         await createEnrollment(payload);
+
         addToast("Enrollment created!", "success");
       }
 
+      fetchEnrollments();
       onClose?.();
+
     } catch (err) {
-      addToast(err.response?.data?.message || "Operation failed", "error");
+      let msg = isEdit
+        ? "Failed to update enrollment"
+        : "Failed to create enrollment";
+
+      if (err.response?.status === 409) {
+        msg = "User is already enrolled in this course";
+      } else {
+        msg = err.response?.data?.message || msg;
+      }
+
+      addToast(msg, "error");
     }
   };
 
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-8 py-3">
 
-      <SearchDropdown
-        value={userSearch}
-        onChange={setUserSearch}
-        results={userResults}
-        onSelect={(user) => {
-          setFormData((prev) => ({
-            ...prev,
-            userId: user.id,
-          }));
-          setUserSearch(user.label); // show selected
-        }}
-        placeholder="Search user"
-      />
+      {!isEdit && (
+        <>
+          <SearchSelect
+            label="User"
+            value={userSearch}
+            onChange={setUserSearch}
+            results={results}
+            loading={searchLoading}
+            getLabel={(item) => item.username}
+            getSubLabel={(item) => item.email}
+            onSelect={(item) => {
+              handleChange("userId", item.id);
+              setUserSearch(item.username);
+            }}
+            inputWarning={warnings.userId}
+          />
 
-      <SearchDropdown
-        value={courseSearch}
-        onChange={setCourseSearch}
-        results={courseResults}
-        onSelect={(course) => {
-          setFormData((prev) => ({
-            ...prev,
-            courseId: course.id,
-          }));
-          setCourseSearch(course.label);
-        }}
-        placeholder="Search course"
-        loading={true}
-      />
+          <SearchSelect
+            label="Course"
+            value={courseSearch}
+            onChange={setCourseSearch}
+            loading={searchLoading}
+            results={courseResult}
+            renderItem={(item) => item.title}
+            onSelect={(item) => {
+              handleChange("courseId", item.id);
+              setCourseSearch(item.title);
+            }}
+            inputWarning={warnings.courseId}
+          />
+        </>
+      )}
+      {isEdit && (
+        <Select
+          inputLabel="Status"
+          options={[
+            { label: "In Progress", value: "in-progress" },
+            { label: "Completed", value: "completed" }
+          ]}
+          value={formData.status}
+          onChange={(value) => handleChange("status", value)}
+        />
+      )}
 
 
       <div className="flex flex-col gap-2">
@@ -141,20 +230,14 @@ function NewEnrollment({
           name="expireAt"
           type="datetime-local"
           value={formData.expireAt}
-          onChange={(e) => handleSelectChange("expireAt", e.target.value)}
+          onChange={(e) => handleChange("expireAt", e.target.value)}
           min={new Date().toISOString().slice(0, 16)}
           className="w-full border-default"
+          inputWarning={warnings.expireAt}
         />
       </div>
 
-      {isEdit && (
-        <Select
-          inputLabel="Status"
-          options={statusOptions}
-          value={formData.status}
-          onChange={(val) => handleSelectChange("status", val)}
-        />
-      )}
+
 
       <div className="flex w-full gap-3 pt-4">
         <Button
@@ -166,12 +249,12 @@ function NewEnrollment({
         />
 
         <Button
-          disabled={loading}
-          buttonName={loading ? "Processing..." : isEdit ? "Save Changes" : "Add Enrollment"}
+          disabled={isCreating || isUpdating}
+          buttonName={isCreating ? "Processing..." : isEdit ? isUpdating ? "Updating..." : "Save Changes" : "Add Enrollment"}
           className="px-4 py-2 rounded-lg w-full"
           bgClass="bg-primary"
           textClass="text-white"
-          onClick={handleAction}
+          onClick={handleSubmit}
         />
       </div>
     </div>

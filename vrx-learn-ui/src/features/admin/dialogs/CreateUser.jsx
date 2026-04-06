@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Input, Select, Button } from '@/components/ui'
 import { useToast } from '@/context/ToastProvider';
-import { useCreateUser } from '../hooks/useCreateUser';
+import { useUser } from '../hooks/useUser';
 
 
 function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onSuccess }) {
@@ -21,13 +21,18 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
         confirmPassword: "",
         role: "trainee",
     });
+    const [warnings, setWarning] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        role: "trainee",
+    })
 
-    const handleOnChange = (e) => {
-        const { name, value } = e.target;
-
+    const handleOnChange = (field, value) => {
         setFormData((prev) => ({
             ...prev,
-            [name]: value,
+            [field]: value,
         }));
     }
 
@@ -43,11 +48,57 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
         }
     }, [isEdit, userData]);
 
-    const { createNewUser, loading, error, } = useCreateUser();
+    const { createNewUser, loading, error, } = useUser();
     const { addToast } = useToast();
+
+    const validateUser = () => {
+        let errors = {};
+
+        // Username
+        if (!formData.username.trim()) {
+            errors.username = "Username is required";
+        } else if (formData.username.trim().length < 5) {
+            errors.username = "Username must be at least 5 characters";
+        }
+
+        // Email
+        if (!formData.email.trim()) {
+            errors.email = "Email is required";
+        } else if (
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+        ) {
+            errors.email = "Enter a valid email address";
+        }
+
+        // Password
+        if (!formData.password) {
+            errors.password = "Password is required";
+        }
+
+        // Confirm Password
+        if (!formData.confirmPassword) {
+            errors.confirmPassword = "Confirm password is required";
+        } else if (formData.password !== formData.confirmPassword) {
+            errors.confirmPassword = "Passwords do not match";
+        }
+
+        // Role (optional but safe check)
+        if (!formData.role) {
+            errors.role = "Role is required";
+        }
+
+        setWarning(errors);
+
+        return Object.keys(errors).length === 0;
+    };
 
 
     const handleAction = async () => {
+        const isValid = validateUser();
+
+        if (!isValid) return;
+
+
         if (isEdit) {
             // update logic
         } else {
@@ -55,12 +106,34 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
                 await createNewUser(formData);
                 addToast("User created!", "success");
                 onSuccess?.();
-                onClose?.(); // optional close
+                onClose?.();
+                setWarning({});
             } catch (err) {
                 addToast("Create failed", "error");
             }
         }
     };
+
+
+    if (isEdit) {
+        return (
+            <div className="flex flex-col items-center justify-center py-10 text-center space-y-3">
+                <div className="text-lg font-semibold text-main">
+                    Edit User
+                </div>
+
+                <p className="text-sm text-muted">
+                    Edit functionality is coming soon 🚧
+                </p>
+
+                <Button
+                    buttonName="Close"
+                    onClick={onClose}
+                    className="mt-4 px-4 py-2"
+                />
+            </div>
+        );
+    }
 
 
 
@@ -74,7 +147,8 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
                 // defaultValue={userData?.name || ""}
                 paddingClass="p-2"
                 value={formData.username}
-                onChange={handleOnChange}
+                onChange={(e) => handleOnChange("username", e.target.value)}
+                inputWarning={warnings.username}
             />
             <Input
                 name="email"
@@ -84,7 +158,8 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
                 paddingClass="p-2"
                 icon="ic:outline-email"
                 value={formData.email}
-                onChange={handleOnChange}
+                onChange={(e) => handleOnChange("email", e.target.vale)}
+                inputWarning={warnings.email}
             />
             <Select
                 name="role"
@@ -93,7 +168,8 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
                 options={roleOptions}
                 borderClass="border-input-border"
                 value={formData.role}
-                onChange={handleOnChange}
+                onChange={(val) => handleOnChange("role", val)}
+                inputWarning={warnings.role}
             />
             {isEdit && (
                 <Select
@@ -102,6 +178,7 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
                     options={statusOptions}
                     value={formData.status}
                     onChange={handleOnChange}
+                    inputWarning={warnings.status}
                 />
             )}
 
@@ -114,7 +191,8 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
                         icon="material-symbols:lock"
                         paddingClass="p-2"
                         value={formData.password}
-                        onChange={handleOnChange}
+                        onChange={(e) => handleOnChange("password", e.target.value)}
+                        inputWarning={warnings.password}
                     />
                     <Input
                         name="confirmPassword"
@@ -123,12 +201,13 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
                         icon="material-symbols:lock"
                         paddingClass="p-2"
                         value={formData.confirmPassword}
-                        onChange={handleOnChange}
+                        onChange={(e) => handleOnChange("confirmPassword", e.target.value)}
+                        inputWarning={warnings.confirmPassword}
                     />
                 </>
             ) : (
                 <p
-                    className="text-blue-500 font-semibold text-sm cursor-pointer underline font-medium"
+                    className="text-blue-500 text-sm cursor-pointer underline font-medium"
                     onClick={() => setShowResetFields(true)}
                 >
                     Reset Password

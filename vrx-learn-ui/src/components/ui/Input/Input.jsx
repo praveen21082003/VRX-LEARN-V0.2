@@ -21,7 +21,8 @@ function Input({
     onKeyDown,
     paddingClass,
     border,
-    widthClass = "w-full"
+    widthClass = "w-full",
+    onFocus
 
 
 }) {
@@ -64,6 +65,7 @@ function Input({
                     maxLength={maxLength}
                     disabled={disabled}
                     placeholder={placeholder}
+                    onFocus={onFocus}
                     className={`
                         w-full
                         rounded border

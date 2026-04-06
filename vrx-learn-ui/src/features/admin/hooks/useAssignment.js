@@ -3,7 +3,7 @@ import { uploadToS3 } from "@/services/upload.service";
 import { updateMediaStatus } from '@/services/media.service';
 import { createAssignment as createAssignmentService, getAssignment, updateAssignmentById } from '@/services/assignments.service';
 
-export const useAssignments = () => {
+export default function useAssignment() {
   const [isCreating, setIsCreating] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState(null);

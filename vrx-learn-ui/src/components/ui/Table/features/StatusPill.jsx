@@ -2,6 +2,7 @@ export default function StatusPill({ status='' }) {
 
   const colors = {
     SUBMITTED: "bg-[#D1E7DD] text-[#0F5132]",
+    "in-progress": "bg-[#D1E7DD] text-[#0F5132]",
     GRADED: "bg-[#FEEBC8] text-[#7C2D12]",
     DONE_LATE: "bg-[#F8D7DA] text-[#842029]",
     admin: "bg-[#F3E8FF] text-[#3730A3]",
