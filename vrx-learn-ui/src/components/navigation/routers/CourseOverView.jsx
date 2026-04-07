@@ -11,10 +11,13 @@ import { TRAINEE_SECTIONS } from "@/config/courseOverview";
 import { TRAINER_SECTIONS } from "@/config/courseOverview";
 
 import CourseContentPlaceholder from "@/features/courses/components/CourseContentPlaceholder";
+import useTotalAssignments from "@/features/courses/hooks/useTotalAssignment";
 
 
 function CourseOverView() {
     // const {role, viewRole} =useAuth();
+    const { totalAssignments, isloading } = useTotalAssignments();
+    console.log("totalAssignments", totalAssignments)
     const { courseSlug } = useParams();
     const { courseContent, loading, error } = useCourseContent(courseSlug);
 
@@ -47,12 +50,28 @@ function CourseOverView() {
     const moduleCount = courseContent?.modules?.length || 0;
 
 
-    const sections =
-        can("UPDATE_COURSE")
-            ? TRAINER_SECTIONS
-            : TRAINEE_SECTIONS;
+    // const sections =
+    //     can("UPDATE_COURSE")
+    //         ? TRAINER_SECTIONS
+    //         : TRAINEE_SECTIONS;
 
+const baseSections =
+    can("UPDATE_COURSE")
+        ? TRAINER_SECTIONS
+        : TRAINEE_SECTIONS;
 
+const sections = baseSections.map((section) => {
+    if (section.key === "assignments") {
+        return {
+            ...section,
+            getMeta: () =>
+                isloading
+                    ? "Loading..."
+                    : `${totalAssignments || 0} Assignments`,
+        };
+    }
+    return section;
+});
 
     console.log(can("UPDATE_COURSE"))
 
