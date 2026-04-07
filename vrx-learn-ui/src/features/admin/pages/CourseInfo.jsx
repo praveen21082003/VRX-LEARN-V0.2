@@ -8,6 +8,7 @@ function CourseInfo() {
   const { courseSlug } = useParams();
 
   const {courseContent} = useOutletContext();
+  console.log(courseContent)
   
   const { updateCourse, loading } = useUpdateCourseDetails();
 
@@ -59,6 +60,8 @@ function CourseInfo() {
     await updateCourse(courseSlug, formData);
     alert("Course updated successfully");
   };
+
+
 
 
 

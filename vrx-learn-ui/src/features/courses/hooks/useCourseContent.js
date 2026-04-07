@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
-import { getCourseContent } from "@/services/courseContent.service";
+import { getCourseContent, getCourseOverview } from "@/services/courseContent.service";
 
-export default function useCourseContent(courseId) {
+export default function useCourseContent() {
   const [courseContent, setCourseContent] = useState(null);
+  const [courseOverview, setCourseOverview] = useState(null);
+
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchCourseContent = useCallback(async () => {
+  const fetchCourseContent = useCallback(async (courseId) => {
+    setError(null);
     if (!courseId) return;
     setLoading(true);
     try {
@@ -17,18 +21,33 @@ export default function useCourseContent(courseId) {
     } finally {
       setLoading(false);
     }
-  }, [courseId]);
+  }, []);
 
 
-  useEffect(() => {
-    fetchCourseContent();
-  }, [fetchCourseContent]);
+  const fetchCourseOverview = useCallback(async (courseId, type) => {
+    setError(null);
+    if (!courseId) return;
+    setLoading(true);
+    try {
+      const data = await getCourseOverview(courseId, type);
+      setCourseOverview(data);
+    } catch (err) {
+      setCourseOverview(null);
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
 
   return {
     courseContent,
+    courseOverview,
+
     loading,
     error,
-    fetchCourseContent
+
+    fetchCourseContent,
+    fetchCourseOverview
   };
 }

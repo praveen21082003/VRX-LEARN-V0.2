@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getMe } from "../services/profile.service";
+import { FillPageLoading } from '@/components/ui'
 
 
 const AuthContext = createContext(null);
@@ -46,7 +47,7 @@ export function AuthProvider({ children }) {
   }, [viewRole]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <FillPageLoading />;
   }
 
   return (

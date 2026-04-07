@@ -37,3 +37,4 @@ export { default as UserCard } from './Cards/tableCards/UserCard'
 export { default as EnrollmentCard } from './Cards/tableCards/EnrollmentCard'
 export { default as CourseCard } from './Cards/tableCards/CourseCard'
 
+export { default as FillPageLoading } from './Loading/FullPageLoading'
