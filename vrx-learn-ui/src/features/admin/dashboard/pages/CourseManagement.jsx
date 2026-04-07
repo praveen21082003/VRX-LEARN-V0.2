@@ -203,6 +203,21 @@ function CourseManagement() {
               textClass="lg:text-body"
               isMobile={isMobile}
             />
+    return (
+<div className="p-5 bg-background text-main">
+        <div className="flex items-center justify-between h-5">
+          <h3 className="text-h3 font-semibold">Course Management</h3>
+          {selectedRows.length === 0 && (
+            <div className="flex items-center gap-3">
+              <Button
+                buttonName="Export as CSV"
+                frontIconName="material-symbols:download"
+                frontIconWidth="26"
+                frontIconHeght="26"
+                className="px-3 py-1.5 text-sm rounded-md"
+                bgClass=""
+                textClass="text-body"
+              />
 
             <Button
               buttonName="Add New Course"
