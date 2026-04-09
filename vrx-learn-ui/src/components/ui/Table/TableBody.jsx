@@ -10,24 +10,37 @@ function TableBody({ columns, loading, data, selectedRows, pageSize, emptyRows =
   return (
 
     <tbody className="">
-      {data.map((row) => (
-        <tr
-          key={row.id}
-          className={`border-b border-default ${selectedRows?.includes(row.id) ? "bg-primary-16" : ""
-            }`}
-        >
-          {columns.map((col) => (
-            <td
-              key={col.key}
-              style={{ width: col.width }}
-              className={`p-2 text-body ${col.align === "left" ? "text-left" : "text-center"
-                } ${col.className || ""}`}
-            >
-              {col.render ? col.render(row) : row[col.key]}
-            </td>
-          ))}
+      {Array.isArray(data) && data?.length > 0 ? (
+        data.map((row) => (
+          <tr
+            key={row.id}
+            className={`border-b border-default ${selectedRows?.includes(row.id) ? "bg-primary-16" : ""
+              }`}
+          >
+            {columns.map((col) => (
+              <td
+                key={col.key}
+                style={{ width: col.width }}
+                className={`p-2 text-body ${col.align === "left" ? "text-left" : "text-center"
+                  } ${col.className || ""}`}
+              >
+                {col.render ? col.render(row) : row[col.key]}
+              </td>
+            ))}
+          </tr>
+        ))
+      ) : (
+        <tr>
+          <td colSpan={columns.length}>
+            <div className="flex flex-col items-center justify-center py-10 text-muted">
+              <p className="text-sm font-medium">No records found</p>
+              <p className="text-xs mt-1">
+                Try adjusting filters or add new data
+              </p>
+            </div>
+          </td>
         </tr>
-      ))}
+      )}
 
       {emptyRows > 0 && Array.from({ length: emptyRows }).map((_, index) => (
         <tr key={`empty-${index}`} className="h-12 border-b border-transparent">

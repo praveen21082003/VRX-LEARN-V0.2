@@ -9,11 +9,15 @@ import { useTheme } from "../../../context/ThemeProvider";
 import { getProfileDropdown } from "@/config/DropdownButtons";
 import { useNavigate } from "react-router-dom";
 
+import LogOut from '@/features/auth/pages/LogOut'
+
 function Header({ menu, breadcrumbs = [] }) {
 
     const navigate = useNavigate();
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [showLogout, setShowLogout] = useState(false);
+
     const { user, role, viewRole, setViewRole, loading } = useAuth();
 
     const { darkMode, toggleTheme } = useTheme();
@@ -35,6 +39,10 @@ function Header({ menu, breadcrumbs = [] }) {
         }
     };
 
+    const onLogoutClick = () => {
+        setShowLogout(true);
+    };
+
 
     const buttons = getProfileDropdown({
         mode: darkMode,
@@ -42,7 +50,7 @@ function Header({ menu, breadcrumbs = [] }) {
         role,
         viewRole,
         onSwitch: handleSwitchAccount,
-        navigate,
+        onLogoutClick
     });
 
     return (
@@ -95,6 +103,11 @@ function Header({ menu, breadcrumbs = [] }) {
                 )}
                 <HeaderProfile role={role} viewRole={viewRole} user={user} setViewRole={setViewRole} loading={loading} buttons={buttons} />
             </div>
+
+            <LogOut
+                isOpen={showLogout}
+                onClose={() => setShowLogout(false)}
+            />
 
         </header>
     );

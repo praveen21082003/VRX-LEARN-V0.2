@@ -21,6 +21,7 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
         confirmPassword: "",
         role: "trainee",
     });
+
     const [warnings, setWarning] = useState({
         username: "",
         email: "",
@@ -102,14 +103,41 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
         if (isEdit) {
             // update logic
         } else {
+
             try {
                 await createNewUser(formData);
-                addToast("User created!", "success");
+
+                addToast("User created successfully.", "success");
+
                 onSuccess?.();
                 onClose?.();
                 setWarning({});
+
             } catch (err) {
-                addToast("Create failed", "error");
+                console.error("Create User Error:", err);
+
+                const status = err?.response?.status;
+                const backendMessage = err?.response?.data?.message;
+
+                let message = "Failed to create user. Please try again.";
+
+                if (status === 400) {
+                    message = "Invalid input. Please check the entered details.";
+                } else if (status === 401) {
+                    message = "Session expired. Please login again.";
+                } else if (status === 403) {
+                    message = "You are not authorized to create users.";
+                } else if (status === 409) {
+                    message = "User already exists with this email or username.";
+                } else if (status === 422) {
+                    message = "Please provide valid user information.";
+                } else if (status >= 500) {
+                    message = "Server error. Please try again later.";
+                } else {
+                    message = backendMessage
+                }
+
+                addToast(message, "error");
             }
         }
     };
@@ -144,7 +172,6 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
                 name="username"
                 label="Full Name"
                 placeholder="John"
-                // defaultValue={userData?.name || ""}
                 paddingClass="p-2"
                 value={formData.username}
                 onChange={(e) => handleOnChange("username", e.target.value)}
@@ -154,17 +181,15 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onS
                 name="email"
                 label="Email ID"
                 placeholder="example@gmail.com"
-                // defaultValue={userData?.email || ""}
                 paddingClass="p-2"
                 icon="ic:outline-email"
                 value={formData.email}
-                onChange={(e) => handleOnChange("email", e.target.vale)}
+                onChange={(e) => handleOnChange("email", e.target.value)}
                 inputWarning={warnings.email}
             />
             <Select
                 name="role"
                 inputLabel="Role"
-                // defaultValue={userData?.role?.toLowerCase() || ""}
                 options={roleOptions}
                 borderClass="border-input-border"
                 value={formData.role}

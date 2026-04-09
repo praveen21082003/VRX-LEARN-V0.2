@@ -7,7 +7,7 @@ import { useOutletContext } from 'react-router-dom';
 
 function EditModule() {
 
-  const { moduleId, fetchCourseContent, addToast,modules, fetchModules, updateModule, isUpdating, moduleLoading, moduleError } = useOutletContext();
+  const { moduleId, courseSlug, fetchCourseContent, addToast, updateModule, isUpdating, courseContent } = useOutletContext();
 
 
   const [formData, setFormData] = useState({
@@ -15,22 +15,20 @@ function EditModule() {
     description: '',
   });
 
+  const selectedModule = courseContent?.modules?.find(
+    (m) => m.id === moduleId
+  );
+
+
 
   useEffect(() => {
-    if (moduleId) {
-      fetchModules(moduleId);
-    }
-  }, [moduleId, fetchModules]);
-
-
-  useEffect(() => {
-    if (modules) {
+    if (selectedModule) {
       setFormData({
-        title: modules.title || '',
-        description: modules.description || '',
+        title: selectedModule.title || '',
+        description: selectedModule.description || '',
       });
     }
-  }, [modules]);
+  }, [selectedModule]);
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({
@@ -42,23 +40,58 @@ function EditModule() {
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
 
+    const payload = {};
+
+    if (formData.title.trim() !== (selectedModule?.title || "")) {
+      payload.title = formData.title.trim();
+    }
+
+    if (formData.description.trim() !== (selectedModule?.description || "")) {
+      payload.description = formData.description.trim();
+    }
+
+    if (Object.keys(payload).length === 0) {
+      addToast("No changes are Done to update", "warning");
+      return;
+    }
+
     try {
-      await updateModule(moduleId, {
-        title: formData.title,
-        description: formData.description
-      });
-      fetchCourseContent();
-      addToast("Module updated successfully!", "success");
-      
+      await updateModule(moduleId, payload);
+      addToast("Module updated successfully.", "success");
+
+      await fetchCourseContent(courseSlug);
     } catch (err) {
-      // The error is already caught in moduleError via the hook
-      addToast("Update failed", "error");
+      const status = err?.response?.status;
+
+      let message = "Failed to update module. Please try again.";
+
+      if (status === 400) {
+        message = "Invalid input. Please check your changes.";
+      } else if (status === 401) {
+        message = "Session expired. Please log in again.";
+      } else if (status === 403) {
+        message = "You do not have permission to update this module.";
+      } else if (status === 404) {
+        message = "Module not found. It may have been removed.";
+      } else if (status === 409) {
+        message = "Conflict detected. Module may already exist with this name.";
+      } else if (status === 500) {
+        message = "Server error. Please try again later.";
+      } else {
+        message = err?.response?.data?.message || message;
+      }
+
+      addToast(message, "error");
     }
   };
 
 
-  if (moduleLoading) return <div className="p-6">Loading module data...</div>;
-  if (moduleError) return <div className="p-6 text-red-500">Error loading module.</div>;
+
+
+
+  if (!courseContent?.modules) {
+    return <div className="p-6">Loading module data...</div>;
+  }
 
   return (
     <>

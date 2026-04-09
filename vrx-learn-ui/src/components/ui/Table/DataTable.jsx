@@ -19,7 +19,8 @@ function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize,
 
   const pages = getPagination(page, totalPages);
 
-  const emptyRows = Math.max(0, pageSize - data.length);
+  const safeData = Array.isArray(data) ? data : [];
+  const emptyRows = Math.max(0, pageSize - safeData.length);
 
   return (
     <div className="w-full md:border-2 border-default flex flex-col">

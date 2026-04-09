@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteModuleById } from "@/services/courses.service";
+import { deleteModuleById } from "@/services/modules.service";
 
 export default function useDeleteMoudule() {
     const [loading, setLoading] = useState(false);

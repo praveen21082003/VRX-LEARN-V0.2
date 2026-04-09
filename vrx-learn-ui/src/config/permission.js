@@ -31,7 +31,9 @@ export const ROLE_PERMISSION = {
         "UPDATE_COURSE",
         "DELETE_MODULES",
         "GRADE_ASSIGNMENT",
-        "SWITCH_TO_TRAINEE"
+        "SWITCH_TO_TRAINEE",
+        "CREATE_ASSIGNMENTS",
+        "UPDATE_ASSIGNMENT"
     ],
 
     trainee: [

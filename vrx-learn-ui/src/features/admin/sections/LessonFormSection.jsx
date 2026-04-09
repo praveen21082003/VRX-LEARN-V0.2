@@ -11,29 +11,28 @@ function LessonFormSection({
     handleChange,
     files,
     setFiles,
-    currentModule,
-    handleSubmit,
+    handleUpdate,
     isCreating,
     uploadProgress,
     mediaStatus,
     loadedData,
-    warning
+    warning,
+    isUpdating
 }) {
 
     const isEdit = mode === "edit";
 
-    const { courseContent, courseSlug, moduleId } = useOutletContext();
+    const { courseContent, courseSlug, addToast, moduleId } = useOutletContext();
 
-
-    const moduleTitle = courseContent?.modules?.find(
-        m => String(m.id) === String(moduleId)
-    )?.title || "Loading...";
+    const currentModule = courseContent?.modules?.find(
+        (m) => String(m.id) === String(moduleId)
+    );
 
     const isLoading = isEdit ? isUpdating : isCreating;
 
 
     const renderFileContent = () => {
-        if (!isEdit) {
+        if (mode === "create") {
             return (
                 <UploadSection
                     files={files}
@@ -56,28 +55,34 @@ function LessonFormSection({
 
 
     const getButtonText = () => {
-        if (isCreating && uploadProgress === 0) {
-            return "Preparing for Upload...";
+        // CREATE MODE
+        if (!isEdit) {
+            if (isCreating && uploadProgress === 0) {
+                return "Preparing...";
+            }
+
+            if (isCreating && uploadProgress > 0 && uploadProgress < 100) {
+                return `Uploading... ${uploadProgress}%`;
+            }
+
+            if (mediaStatus === "uploaded") {
+                return "Finalizing...";
+            }
+
+            return files.length > 0 ? "Upload & Create" : "Create Lesson";
         }
 
-        if (isCreating && uploadProgress > 0 && uploadProgress < 100) {
-            return `Uploading... ${uploadProgress}%`;
+        if (isUpdating) {
+            return "Updating...";
         }
 
-
-        if (mediaStatus === "uploaded") {
-            return "Done";
-        }
-
-        if (isEdit) return "Save Changes";
-
-        return files.length > 0 ? "Upload & Create" : "Create Lesson";
+        return "Save Changes";
     };
 
 
     return (
         <>
-            <BackButton to={`/course/${courseSlug}/content/modules/${moduleId}`} label={`Module - ${moduleTitle}`} />
+            <BackButton to={`/course/${courseSlug}/content/modules/${moduleId}`} label={`Module - ${currentModule.title}`} />
             <h2 className="text-h3">
                 {isEdit ? "Edit Lesson" : "New Lesson"}
             </h2>
@@ -103,7 +108,7 @@ function LessonFormSection({
 
                 <div className='flex justify-center'>
                     <Button
-                        onClick={handleSubmit}
+                        onClick={handleUpdate}
                         disabled={isLoading}
                         buttonName={getButtonText()}
                         className="mt-5 px-5 py-2 rounded" />

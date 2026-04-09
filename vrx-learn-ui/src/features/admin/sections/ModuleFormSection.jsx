@@ -49,9 +49,17 @@ function ModuleFormSection({
                 <div className='flex justify-center'>
                     <Button
                         disabled={loading}
-                        buttonName={!isEdit ? loading ? "Adding..." : "Add Module" : isUpdating ? "Saving..." : "Save Changes"}
-                    onClick={handleSubmit}
-                    className="mt-5 px-5 py-2 rounded"
+                        buttonName={
+                            !isEdit
+                                ? loading
+                                    ? "Creating..."
+                                    : "Add Module"
+                                : isUpdating
+                                    ? "Updating..."
+                                    : "Save Changes"
+                        }
+                        onClick={handleSubmit}
+                        className="mt-5 px-5 py-2 rounded"
                     />
                 </div>
             </div>

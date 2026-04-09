@@ -27,6 +27,3 @@ export default function getPagination(currentPage, totalPages, siblingCount = 1)
 
   return pages;
 }
-
-
-console.log(getPagination(5, 6))

@@ -14,18 +14,19 @@ function CreateLesson() {
         file: ""
     });
 
-    const { modules,addToast } = useOutletContext();
-    console.log(moduleId);
-    
+    const { modules, addToast, courseContent } = useOutletContext();
+
 
     const { lessons, isCreating, uploadProgress, loadedData, mediaStatus, lessonsError, createLesson } = useLessons();
 
-    
 
 
-    const currentModule = modules?.find(
+
+    const currentModule = courseContent.modules?.find(
         (m) => String(m.id) === String(moduleId)
     );
+
+    console.log(currentModule);
 
     const [formData, setFormData] = useState({
         title: "",
@@ -34,6 +35,7 @@ function CreateLesson() {
         contentType: "",
         fileSize: 1,
     });
+    console.log(formData);
 
 
 
@@ -105,7 +107,27 @@ function CreateLesson() {
             addToast("Lesson created successfully", "success");
             navigate(`/course/${courseSlug}/content/modules/${moduleId}`);
         } catch (err) {
-            addToast(err.response?.data?.message || "Failed to create lesson", "error");
+            const status = err?.response?.status;
+
+            let message = "Something went wrong. Please try again.";
+
+            if (status === 400) {
+                message = "Invalid input. Please check the details.";
+            } else if (status === 401) {
+                message = "Session expired. Please login again.";
+            } else if (status === 403) {
+                message = "You are not authorized to perform this action.";
+            } else if (status === 404) {
+                message = "Resource not found.";
+            } else if (status === 409) {
+                message = "A lesson with this title already exists. Please use a different name.";
+            } else if (status === 422) {
+                message = "Validation failed. Please check required fields.";
+            } else if (status >= 500) {
+                message = "Server error. Please try again later.";
+            }
+
+            addToast(message, "error");
         }
     };
 

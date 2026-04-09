@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom';
 
-
-
 import { Icon, Input, Button, DataTable, Avatar, StatusPill,Select } from '@/components/ui'
 import BackButton from '@/components/navigation/BackButton'
 import formatDateTime from '@/utils/formatDateTime';
+
+import useTraineeRoster from '../hooks/useListView'
 
 
 
 function TraineeRoster() {
 
   const { courseSlug } = useParams();
+
+  const { loading, rosterData, error } = useTraineeRoster(courseSlug);
+
+  console.log(rosterData);
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -42,7 +46,7 @@ function TraineeRoster() {
       width: "20%",
       render: (row) => (
         <span className="text-body">
-          {formatDateTime(row.enrollment_date)}
+          {formatDateTime(row.enrollmentDate)}
         </span>
       )
     },
@@ -54,137 +58,7 @@ function TraineeRoster() {
         <StatusPill status = {row.role} />
       )
     },
-    {
-      key: "last_active",
-      label: "Last Active",
-      width: "15%"
-    }
   ];
-
-
-  const data = [
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINEE",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINEE",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINER",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINEE",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINEE",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINER",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINEE",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINEE",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINER",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINEE",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINEE",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINER",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINEE",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINEE",
-      "last_active": "10 min ago",
-    },
-    {
-      "id": 26,
-      "name": "Heaven Kane",
-      "email": "heavenkane@gmail.com",
-      "enrollment_date": "2026-02-14T09:15:00",
-      "role" :"TRAINER",
-      "last_active": "10 min ago",
-    },
-  ]
-
 
   return (
     <div className='p-6 bg-background text-main'>
@@ -250,12 +124,13 @@ function TraineeRoster() {
         <div>
           <DataTable
             columns={traineeRosterColumns}
-            data={data}
+            data={rosterData?.data}
+            loading={loading}
             page={page}
             setPage={setPage}
             pageSize={pageSize}
             setPageSize={setPageSize}
-            total={data.length}
+            total={rosterData.length}
           />
         </div>
       </div>

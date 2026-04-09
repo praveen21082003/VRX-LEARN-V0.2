@@ -29,11 +29,11 @@ export default function useModules() {
   }, []);
 
 
-  const updateModule = useCallback(async (id, data) => {
+  const updateModule = useCallback(async (id, payload) => {
     setIsUpdating(true);
     setModuleError(null); 
     try {
-      const response = await updateModuleById(id, data);
+      const response = await updateModuleById(id, payload);
       setModules(response.data);
       return response.data;
     } catch (err) {

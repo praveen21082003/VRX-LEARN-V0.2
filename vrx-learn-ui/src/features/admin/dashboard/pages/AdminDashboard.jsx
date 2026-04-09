@@ -148,42 +148,67 @@ function AdminDashboard() {
           </button>
         </div>
 
-        <div className="space-y-3">
-          {topCourses.map((course, index) => (
-            <div
-              key={course.id}
-              className="flex justify-between items-center border-b border-default pb-3 last:border-none"
-            >
+        {loading ? (
+          <div className="space-y-3">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="flex justify-between items-center border-b border-default pb-3 animate-pulse"
+              >
+                <div className="flex gap-3 items-center">
+                  <div className="w-6 h-4 bg-gray-600 rounded" />
 
-              <div className="flex gap-3 items-center">
-                <span className="text-caption text-muted w-6">
-                  #{index + 1}
-                </span>
+                  <div className="space-y-2">
+                    <div className="w-32 h-4 bg-gray-600 rounded" />
+                    <div className="w-20 h-3 bg-gray-500 rounded" />
+                  </div>
+                </div>
 
-                <div>
-                  <p className="text-body font-medium">
-                    {course.courseName}
+                <div className="text-right space-y-2">
+                  <div className="w-10 h-4 bg-gray-600 rounded ml-auto" />
+                  <div className="w-16 h-3 bg-gray-500 rounded ml-auto" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-3">
+
+            {topCourses.map((course, index) => (
+              <div
+                key={course.id}
+                className="flex justify-between items-center border-b border-default pb-3 last:border-none"
+              >
+
+                <div className="flex gap-3 items-center">
+                  <span className="text-caption text-muted w-6">
+                    #{index + 1}
+                  </span>
+
+                  <div>
+                    <p className="text-body font-medium">
+                      {course.courseName}
+                    </p>
+
+                    <p className="text-caption text-muted">
+                      {course.trainerName}
+                    </p>
+                  </div>
+                </div>
+
+
+                <div className="text-right">
+                  <p className="text-primary dark:text-white font-semibold">
+                    {course.totalTrainees}
                   </p>
-
                   <p className="text-caption text-muted">
-                    {course.trainerName}
+                    Trainees
                   </p>
                 </div>
               </div>
-
-
-              <div className="text-right">
-                <p className="text-primary dark:text-white font-semibold">
-                  {course.totalTrainees}
-                </p>
-                <p className="text-caption text-muted">
-                  Trainees
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
+            ))}
+          </div>
+        )}
       </div>
       {open && (
         <Modal

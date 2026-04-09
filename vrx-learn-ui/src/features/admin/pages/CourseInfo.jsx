@@ -1,16 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Icon, Input, CourseTumbnail, Button, TextEditor } from "@/components/ui";
 import useUpdateCourseDetails from "../hooks/useUpdateCourseDetails";
-import { useParams,useOutletContext } from "react-router-dom";
+import { useParams, useOutletContext } from "react-router-dom";
 
 
 function CourseInfo() {
   const { courseSlug } = useParams();
 
-  const {courseContent} = useOutletContext();
-  console.log(courseContent)
-  
-  const { updateCourse, loading } = useUpdateCourseDetails();
+  const { courseContent, loading, addToast } = useOutletContext();
+
+  const { updateCourse, isUpdating } = useUpdateCourseDetails();
 
 
   const fileInputRef = useRef(null);
@@ -19,17 +18,16 @@ function CourseInfo() {
     name: "",
     author: "",
     shortDescription: "",
-    description: "",
-    thumbnail: "",
+    longDescription: "",
   });
 
   useEffect(() => {
     setFormData({
       name: courseContent?.course?.title || "",
-      author: courseContent?.course?.author || "",
+      author: courseContent?.course?.trainerName || "",
       shortDescription: courseContent?.course?.shortDescription || "",
-      description: courseContent?.description || "",
-      thumbnail: courseContent?.thumbnail || "",
+      longDescription: courseContent?.course?.longDescription || "",
+      thumbnail: courseContent?.course?.thumbnail || null,
     })
   }, [courseContent])
 
@@ -55,10 +53,56 @@ function CourseInfo() {
     }));
   };
 
+  const isFormChanged = () => {
+    const original = {
+      name: courseContent?.course?.title || "",
+      author: courseContent?.course?.trainerName || "",
+      shortDescription: courseContent?.course?.shortDescription || "",
+      longDescription: courseContent?.course?.longDescription || "",
+      thumbnail: courseContent?.course?.thumbnail || null,
+    };
+
+    return JSON.stringify(original) !== JSON.stringify(formData);
+  };
+
+  const getCustomErrorMessage = (status) => {
+    const map = {
+      400: "Invalid course data. Please check inputs.",
+      401: "Session expired. Please login again.",
+      403: "You don’t have permission to update this course.",
+      404: "Course not found.",
+      409: "Conflict detected. Try refreshing.",
+      500: "Server error. Please try again later."
+    };
+
+    return map[status] || "Something went wrong while updating course.";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await updateCourse(courseSlug, formData);
-    alert("Course updated successfully");
+
+    if (!isFormChanged()) {
+      addToast("No changes detected", "warning");
+      return;
+    }
+
+    try {
+
+      await updateCourse(courseSlug, formData);
+
+      addToast("Course updated successfully", "success");
+
+      // navigate(`/courses/${courseSlug}`);
+
+    } catch (err) {
+      const status = err?.response?.status;
+      const message = getCustomErrorMessage(status);
+
+      addToast(
+        `${message} ${status ? `(Code: ${status})` : ""}`,
+        "error"
+      );
+    }
   };
 
 
@@ -73,7 +117,7 @@ function CourseInfo() {
         Edit Course Information
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className={`space-y-8 ${loading && 'cursor-progress'}`}>
 
 
         <div className="flex flex-col-reverse md:flex-row gap-4 md:h-49">
@@ -139,9 +183,9 @@ function CourseInfo() {
         <div>
           <label className="text-h5">Description</label>
           <TextEditor
-            value={formData.description}
+            value={formData.longDescription}
             onChange={(value) =>
-              handleChange("description", value)
+              handleChange("longDescription", value)
             }
           />
 
@@ -151,9 +195,9 @@ function CourseInfo() {
         <div className="flex justify-center">
           <Button
             type="submit"
-            buttonName={loading ? "Saving..." : "Save Changes"}
+            buttonName={isUpdating ? "Saving..." : "Save Changes"}
             className="p-3 rounded"
-            disabled={loading}
+            disabled={isUpdating}
           />
         </div>
 

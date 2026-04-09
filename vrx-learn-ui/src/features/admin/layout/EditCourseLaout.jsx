@@ -16,15 +16,23 @@ import { useToast } from '@/context/ToastProvider'
 
 
 
+import { useLessons } from '../hooks/useLessons';
+
+import useAssignmentContent from '../hooks/useAssignmentContent'
+
+
+
 
 function EditCourseLayout() {
 
   const { addToast } = useToast();
-  const { moduleId, courseSlug, assignmnetId } = useParams();
+  const { moduleId, courseSlug, assignmentId } = useParams();
   const location = useLocation();
   const ref = useRef(null);
 
   const { courseContent, fetchCourseContent, loading, error } = useCourseContent(courseSlug);
+  const { lessons, lessonLoading, lessonsError, fecthLesssons } = useLessons();
+  const { assignment, detailsLoading, fetchAssignmentDetails } = useAssignmentContent();
 
   const { setCourseBreadcrumb } = useOutletContext();
 
@@ -35,13 +43,20 @@ function EditCourseLayout() {
   const { modules, fetchModules, updateModule, isUpdating, moduleLoading, moduleError } = useModules();
 
 
+  useEffect(() => {
+    if (moduleId) {
+      fecthLesssons(moduleId);
+    }
+  }, [moduleId]);
 
-  const {
-    assignment,
-    assignmentLoading,
-    assignmentError,
-    fetchAssignment,
-  } = useAssignment();
+
+
+  // const {
+  //   assignment,
+  //   assignmentLoading,
+  //   assignmentError,
+  //   fetchAssignment,
+  // } = useAssignment();
 
 
   const [asideWidth, setAsideWidth] = useState(() => {
@@ -66,12 +81,23 @@ function EditCourseLayout() {
     fetchCourseContent(courseSlug);
   }, [courseSlug])
 
-  useEffect(()=>{
-    fetchAssignment(assignmnetId)
-  },[assignmnetId])
+  // useEffect(() => {
+  //   console.log(assignmentId)
+  //   fetchAssignment(assignmentId)
+  // }, [assignmentId])
+
+
+  useEffect(() => {
+    // console.log("assignmentId:", assignmentId);
+
+    if (!assignmentId) return;
+
+    fetchAssignmentDetails(assignmentId);
+  }, [assignmentId, fetchAssignmentDetails]);
 
 
   const courseEditData = {
+
     modules: courseContent?.modules,
     moduleId,
     updateModule,
@@ -81,14 +107,18 @@ function EditCourseLayout() {
     moduleError,
     courseSlug,
     assignments: courseContent?.assignments,
+
+    lessons,
+    lessonLoading,
+    lessonsError,
+
     courseContent,
+    loading,
     fetchCourseContent,
+
     fetchModules,
 
-    assignment,
-    assignmentLoading,
-    assignmentError,
-    fetchAssignment,
+    assignment, detailsLoading, fetchAssignmentDetails
 
   };
 
@@ -97,9 +127,9 @@ function EditCourseLayout() {
   const sectionChildrenMap = {
     modules: courseContent?.modules,
     assignments: courseContent?.assignments,
-    lab: [],
-    quiz: [],
-    feedback: [],
+    // lab: [],
+    // quiz: [],
+    // feedback: [],
   };
 
   const toggleSection = (key) => {
@@ -283,7 +313,6 @@ function EditCourseLayout() {
                     )}
                   </NavLink>
 
-                  {/* Dynamic Children */}
                   {hasChildren && isOpen && (
                     <AnimatePresence>
                       <motion.ul

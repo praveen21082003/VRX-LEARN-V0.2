@@ -4,23 +4,23 @@ import TrainerDashboard from "@/features/admin/dashboard/pages/TrainerDashboard"
 import AdminDashboard from "@/features/admin/dashboard/pages/AdminDashboard";
 
 export default function DashboardRouter() {
-    const { role, viewRole } = useAuth();
+    const { role, viewRole, loading } = useAuth();
 
-    console.log(role);
-    console.log(viewRole);
+    if (loading) return null;
 
+    const effectiveRole = viewRole || role;
 
     if (role === "admin" || role === "subadmin") {
         return <AdminDashboard />;
     }
 
-    if (viewRole === "trainer" && role === "trainer") {
+    if (effectiveRole === "trainer") {
         return <TrainerDashboard />;
     }
 
-    if (viewRole === "trainee" || role === "trainee" ){
-        return <DashboardPage />; 
+    if (effectiveRole === "trainee") {
+        return <DashboardPage />;
     }
 
-    return <p>role not there</p>; 
+    return <p>No dashboard available</p>;
 }

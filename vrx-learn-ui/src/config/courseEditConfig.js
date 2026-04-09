@@ -19,22 +19,22 @@ export const COURSE_EDIT_SECTIONS = [
         path: "assignments",
 
     },
-    {
-        key: "lab",
-        label: "Lab Credentials",
-        path: "lab",
+    // {
+    //     key: "lab",
+    //     label: "Lab Credentials",
+    //     path: "lab",
 
-    },
-    {
-        key: "quiz",
-        label: "Quiz",
-        path: "quiz",
+    // },
+    // {
+    //     key: "quiz",
+    //     label: "Quiz",
+    //     path: "quiz",
 
-    },
-    {
-        key: "feedback",
-        label: "Feedback",
-        path: "feedback",
+    // },
+    // {
+    //     key: "feedback",
+    //     label: "Feedback",
+    //     path: "feedback",
 
-    }
+    // }
 ]

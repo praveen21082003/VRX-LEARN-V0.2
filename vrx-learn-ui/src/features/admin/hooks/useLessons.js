@@ -73,10 +73,13 @@ export const useLessons = () => {
     }, []);
 
 
+
+
+
     const fecthLesssons = useCallback(async (moduleId) => {
         if (!moduleId) return;
 
-        setLessonLoading(false);
+        setLessonLoading(true);
 
         
         try {
@@ -93,6 +96,9 @@ export const useLessons = () => {
             setLessonLoading(false);
         }
     }, []);
+
+
+
 
     return {
         lessons,

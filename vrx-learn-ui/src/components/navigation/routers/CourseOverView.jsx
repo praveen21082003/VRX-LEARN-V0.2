@@ -4,7 +4,7 @@ import { useParams, useOutletContext, NavLink } from "react-router-dom";
 import useCourseContent from "@/features/courses/hooks/useCourseContent";
 import { usePermission } from "@/hooks/usePermission"
 import { CourseTumbnail, Icon, FloatingMenu, FillPageLoading } from "@/components/ui";
-import { formatMinutes } from "@/utils/duration";
+import { formatTime } from "@/utils/duration";
 import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter'
 
 import { TRAINEE_SECTIONS } from "@/config/courseOverview";
@@ -168,7 +168,7 @@ function CourseOverView() {
                         <div className="flex flex-wrap items-center gap-1 text-body text-muted">
                             <span>Course</span>
                             <Icon name="ph:dot-bold" />
-                            <span>{totalLessonMinutes ? formatMinutes(totalLessonMinutes) : "Duration TBD"}</span>
+                            <span>{totalLessonMinutes ? formatTime(totalLessonMinutes) : "Duration TBD"}</span>
                             <Icon name="ph:dot-bold" />
                             <span>{courseOverview?.progess_status || "Not Started"}</span>
                         </div>

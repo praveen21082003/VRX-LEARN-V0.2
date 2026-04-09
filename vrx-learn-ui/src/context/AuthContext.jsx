@@ -11,7 +11,10 @@ export function AuthProvider({ children }) {
 
   const [viewRole, setViewRole] = useState(() => {
     const saved = localStorage.getItem("viewRole");
-    return (saved === "null" || saved === "undefined") ? null : saved;
+
+    return saved && saved !== "null" && saved !== "undefined"
+      ? saved
+      : null;
   });
 
   const isAuthenticated = !!user;

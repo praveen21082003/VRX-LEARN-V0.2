@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { uploadToS3 } from "@/services/upload.service";
 import { updateMediaStatus } from '@/services/media.service';
-import { createAssignment as createAssignmentService, getAssignment, updateAssignmentById } from '@/services/assignments.service';
+import { createAssignment as createAssignmentService, getAssignment, updateAssignmentById, deleteAssignment as deleteAssignmentService } from '@/services/assignments.service';
 
 export default function useAssignment() {
   const [isCreating, setIsCreating] = useState(false);
@@ -17,6 +17,8 @@ export default function useAssignment() {
   const [updateError, setUpdateError] = useState(null);
 
   const [mediaStatus, setMediaStatus] = useState(null);
+
+  const [isDeleting, setIsDeleting] = useState(false);
 
 
   const createAssignment = useCallback(async (payload, file) => {
@@ -71,9 +73,11 @@ export default function useAssignment() {
   const fetchAssignment = useCallback(async (assignmentId) => {
     setAssignmentloading(true);
     setAssignmentError(null);
+    // console.log(assignmentId)
 
     try {
       const response = await getAssignment(assignmentId);
+      console.log(response)
       setAssignment(response);
     } catch (error) {
       setAssignmentError(
@@ -101,6 +105,20 @@ export default function useAssignment() {
     }
   }, []);
 
+  const deleteAssignment = useCallback(async (id) => {
+    setIsDeleting(true);
+    try {
+      const response = await deleteAssignmentService(id);
+      return response;
+
+    } catch (err) {
+      throw err;
+    } finally {
+      setIsDeleting(false);
+    }
+
+  })
+
   return {
     createAssignment,
     isCreating,
@@ -116,6 +134,9 @@ export default function useAssignment() {
     updateAssignment,
     isUpdating,
     updateError,
+
+    deleteAssignment,
+    isDeleting,
 
     mediaStatus
   };

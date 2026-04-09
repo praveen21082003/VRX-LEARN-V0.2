@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import useCreateModule from '../../hooks/useCreateModule';
 import { useToast } from '@/context/ToastProvider';
 import ModuleFormSection from '../../sections/ModuleFormSection';
 
 
 function CreateModule() {
-    const { courseSlug } = useParams();
+    // const { courseSlug } = useParams();
 
     const { createModule, loading, error } = useCreateModule();
+    const { fetchCourseContent, courseSlug } = useOutletContext();
     const { addToast } = useToast();
 
     const [warning, setWarning] = useState({
@@ -58,7 +59,7 @@ function CreateModule() {
         const trimmedDesc = formData.description.trim();
         if (trimmedDesc.length > 0 && trimmedDesc.length < 20) {
             setWarning((prev) => ({ ...prev, description: "Description must be at least 20 characters long" }));
-            addToast("Description is too short", "error");
+            addToast("Description is too short", "warning");
             hasError = true;
         }
 
@@ -73,12 +74,32 @@ function CreateModule() {
 
         try {
             await createModule(payload);
+            await fetchCourseContent(courseSlug);
+
             addToast("Module created successfully", "success");
             setFormData(prev => ({ ...prev, title: "", description: "" }));
             setWarning(prev => ({ ...prev, title: "", description: "" }));
 
         } catch (err) {
-            const errorMessage = err?.response?.data?.message || "Something went wrong. Please try again.";
+            const status = err?.response?.status;
+
+            let errorMessage = "Something went wrong. Please try again.";
+
+            if (status === 400) {
+                errorMessage = "Invalid input. Please check your data.";
+            } else if (status === 401) {
+                errorMessage = "Session expired. Please login again.";
+            } else if (status === 403) {
+                errorMessage = "You are not allowed to perform this action.";
+            } else if (status === 404) {
+                errorMessage = "Resource not found.";
+            } else if (status === 409) {
+                errorMessage = "Module already exists.";
+            } else if (status === 500) {
+                errorMessage = "Server error. Please try again later.";
+            } else {
+                errorMessage = err?.response?.data?.message || errorMessage;
+            }
             addToast(errorMessage, "error");
         }
     }

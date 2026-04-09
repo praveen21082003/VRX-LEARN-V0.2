@@ -189,7 +189,7 @@ function DocumentControls({
 
 
     return (
-        <div ref={containerRef} className={`relative flex flex-col h-[80dvh] w-dvh overflow-hidden rounded-md ${isFullscreen ? "bg-black" : "bg-[#525659]"}`}>
+        <div ref={containerRef} className={`relative flex flex-col h-dvh w-full overflow-hidden rounded-md ${isFullscreen ? "bg-black" : "bg-[#525659]"}`}>
             {/* <header className="flex-shrink-0 flex items-center justify-between px-4 h-12 bg-[#323639] text-white shadow-md shrink-0 z-20"> */}
             {/* //Updated */}
             <header className="flex-shrink-0 sticky top-0 z-30 flex items-center justify-between px-4 h-12 bg-[#323639] text-white shadow-md">

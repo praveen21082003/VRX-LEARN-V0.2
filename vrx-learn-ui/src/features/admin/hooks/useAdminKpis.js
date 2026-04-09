@@ -3,7 +3,7 @@ import { getAdminKpis } from "@/services/dashboard.service";
 
 export default function useAdminKpis() {
   const [kpis, setKpis] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -22,5 +22,5 @@ export default function useAdminKpis() {
     fetchKpis();
   }, []);
 
-  return { kpis, loading, error };
+  return { kpis, isLoading, error };
 }

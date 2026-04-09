@@ -1,6 +1,8 @@
-import { Input, Button, TextEditor, UploadSection, AttachmentCard} from '@/components/ui'
+import { Input, Button, TextEditor, UploadSection, AttachmentCard } from '@/components/ui'
 import BackButton from '@/components/navigation/BackButton';
 import { useParams, useOutletContext } from 'react-router-dom';
+import useMedia from '@/features/courses/hooks/useMedia';
+import formatDateTimeLocal from '@/utils/formatDateTimeLocal'
 
 
 function AssignmentFormSection({
@@ -11,21 +13,28 @@ function AssignmentFormSection({
     handleSubmit,
     files,
     setFiles,
-    loading
+    loading,
+    attachment
 }) {
-    // console.log(formData)
+    console.log(attachment)
 
     const { courseSlug } = useParams();
     const { courseContent } = useOutletContext();
 
+
+
     const isEdit = mode === "edit";
+
+    const mediaId = attachment?.mediaId;
+
+    const { url, loading: mediaLoading } = useMedia(mediaId);
+
 
     if (!formData) return <p>Loading...</p>;
 
-
     return (
         <>
-            <BackButton to={`/course/${courseSlug}/content/assignments`} label={`${courseContent?.name || "Loading..."} - Assignments`} />
+            <BackButton to={`/course/${courseSlug}/content/assignments`} label={`${courseContent?.course?.title || "Loading..."} - Assignments`} />
             <h2 className="text-h3">
                 {isEdit ? "Edit Assignment" : "New Assignment"}
             </h2>
@@ -49,9 +58,7 @@ function AssignmentFormSection({
                         label="Due Date & Time"
                         type="datetime-local"
                         min={new Date().toISOString().slice(0, 16)}
-                        value={
-                            formData?.dueDate
-                        }
+                        value={formatDateTimeLocal(formData?.dueDate)}
                         onChange={(e) => {
                             const value = e.target.value;
                             handleChange("dueDate", value);
@@ -71,34 +78,52 @@ function AssignmentFormSection({
                         min="1"
                         max="3"
                         // inputWarning={formDataErrors.max_attempts}
-                        value={formData?.numberOfAttempts}
-                        onChange={(e) => handleChange("numberOfAttempts", Number(e.target.value))}
+                        value={formData?.noOfAttempts}
+                        onChange={(e) => handleChange("maxAttempts", Number(e.target.value))}
                     />
                 </div>
 
                 {!isEdit && (
-                    <UploadSection files={files} setFiles={setFiles} label="Attachments" optional={true}/>
+                    <UploadSection files={files} setFiles={setFiles} label="Attachments" optional={true} />
                 )}
 
                 {isEdit && (
                     <div className="text-sm text-gray-500">
-                        <ul className="flex gap-2">
-                            {formData?.attachments.map((file, index) => (
-                                <li key={index}>
-                                    <AttachmentCard file={file} />
-                                </li>
-                            ))}
-                        </ul>
+                        {attachment && (
+                            <>
+                                <h1 className="text-h45 mt-6">Attachments</h1>
+                                <p className="text-sm text-gray-500 mt-2">
+                                    Existing attachments are read-only and cannot be modified.
+                                </p>
+                                <div className="flex flex-wrap gap-3 mt-2">
+                                    <AttachmentCard
+                                        fileName={attachment.filename}
+                                        url={url}
+                                        loading={mediaLoading}
+                                    />
+                                </div>
+                            </>
+                        )}
                     </div>
                 )}
             </div>
 
             <div className="flex justify-center">
                 <Button
-                    buttonName={isEdit ? "Save Changes" : "Submit"}
+                    buttonName={
+                        loading
+                            ? isEdit
+                                ? "Updating..."
+                                : "Submitting..."
+                            : isEdit
+                                ? "Save Changes"
+                                : "Submit"
+                    }
                     onClick={handleSubmit}
                     disabled={loading}
                     className="mt-5 px-5 py-2 rounded"
+                    frontIconName={loading ? "mingcute:loading-3-fill" : ""}
+                    frontIconClass={loading ? "animate-spin" : ""}
                 />
             </div>
         </>

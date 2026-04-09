@@ -54,7 +54,7 @@ export function ToastProvider({ children }) {
                             <div className="items-center flex gap-2.5">
                                 {toast.type === "success"
                                     ? <Icon name="mdi:checkbox-marked-circle" height="25" width="25" />
-                                    : <Icon name="mdi:checkbox-marked-circle" height="25" width="25" />
+                                    : <Icon name="bxs:error" height="25" width="25" />
                                 }
 
                                 <span>

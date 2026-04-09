@@ -5,8 +5,8 @@ export const createModule = (payload) => {
 }
 
 
-export const reorderModules = (module_id, params) => {
-    return axiosInstance.patch(`/api/v1/modules/${module_id}/update-position`, params,)
+export const reorderModules = (moduleId, params) => {
+    return axiosInstance.patch(`/api/v1/modules/${moduleId}/update-position`, params,)
 }
 
 export const getModuleById = (module_id) => {
@@ -15,4 +15,8 @@ export const getModuleById = (module_id) => {
 
 export const updateModuleById = (module_id, payload) => {
     return axiosInstance.patch(`/api/v1/modules/${module_id}`, payload)
+}
+
+export const deleteModuleById = (moduleId) => {
+    return axiosInstance.delete(`/api/v1/modules/${moduleId}`)
 }

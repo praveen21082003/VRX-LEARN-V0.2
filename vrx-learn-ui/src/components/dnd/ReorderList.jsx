@@ -5,10 +5,14 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSo
 import { Icon } from '@/components/ui'
 import SortableItem from './SortableItem'
 import clsx from 'clsx';
+import { useParams } from 'react-router-dom';
 
 
 
-function ReorderList({ items, reorder, fetchCourseContent, isUpdating }) {
+function ReorderList({ items, reorder, fetchCourseContent, isUpdating, addToast }) {
+
+    const { courseSlug } = useParams();
+    // console.log(courseSlug);
     const [data, setData] = useState(items);
     // console.log(data)
     // console.log(items)
@@ -45,23 +49,42 @@ function ReorderList({ items, reorder, fetchCourseContent, isUpdating }) {
         const precedingId = newArray[movedIndex - 1]?.id || null;
         const succeedingId = newArray[movedIndex + 1]?.id || null;
 
-        try {
+        const getCustomErrorMessage = (status) => {
+            const map = {
+                400: "Invalid move. Please try again.",
+                401: "Session expired. Please login again.",
+                403: "You don’t have permission.",
+                404: "Item not found.",
+                409: "Conflict detected. Refresh and retry.",
+                500: "Server error. Try again later."
+            };
 
+            return map[status] || "Unexpected error occurred.";
+        };
+
+        try {
             await reorder(active.id, {
                 precedingId,
                 succeedingId
             });
 
+            console.log(active.id, {
+                precedingId,
+                succeedingId
+            })
+
 
             if (fetchCourseContent) {
-                await fetchCourseContent();
+                await fetchCourseContent(courseSlug);
             }
 
-
         } catch (err) {
-
             setData(previousData);
-            addToast("Failed to move item. Restoring order...", "error");
+
+            const status = err?.response?.status;
+            const message = getCustomErrorMessage(status);
+
+            addToast(`${message} ${status ? `(Code: ${status})` : ""}`, "error");
         }
     };
 

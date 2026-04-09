@@ -1,28 +1,33 @@
-import { MarkdownContent, AttachmentCard } from "@/components/ui"
-export default function InstructionsTab({ instructions, attachments }) {
-    if (!attachments || attachments.length === 0) {
-        return (
-            <>
-                <MarkdownContent content={instructions} />
-            </>
-        );
-    }
+import { MarkdownContent, AttachmentCard } from "@/components/ui";
+import useMedia from '@/features/courses/hooks/useMedia';
+
+export default function InstructionsTab({ instructions, attachment }) {
+
+    const mediaId = attachment?.mediaId;
+
+    const { url, loading: mediaLoading } = useMedia(mediaId);
 
     return (
         <>
-            <MarkdownContent content={instructions} />
-            <h1 className="text-h45 mt-6">Attachments</h1>
+            <MarkdownContent content={instructions || ""} />
 
-            <div className="flex flex-wrap gap-3 mt-2">
-                <ul className="flex gap-2">
-                    {/* After change to url */}
-                    {attachments.map((file, index) => (
-                        <li key={index}>    
-                            <AttachmentCard file={file} />
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            {/* No attachment */}
+            {!attachment && null}
+
+            {/* With attachment */}
+            {attachment && (
+                <>
+                    <h1 className="text-h45 mt-6">Attachments</h1>
+
+                    <div className="flex flex-wrap gap-3 mt-2">
+                        <AttachmentCard
+                            fileName={attachment.filename}
+                            url={url}
+                            loading={mediaLoading}
+                        />
+                    </div>
+                </>
+            )}
         </>
     );
 }

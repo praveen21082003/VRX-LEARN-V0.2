@@ -8,3 +8,8 @@ export const createUsers = (payload) => {
 export const deleteUserService = (userId) => {
     return axiosInstance.delete(`/api/v1/users/${userId}`)
 }
+
+
+export const userLogout = () =>{
+    return axiosInstance.post('/api/v1/users/logout')
+}

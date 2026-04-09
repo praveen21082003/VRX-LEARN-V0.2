@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useToast } from "@/context/ToastProvider";
 import { Input, SearchSelect, Select, Button } from "@/components/ui";
 import { useEnrollments } from '../hooks/useEnrollments';
-import useSearch from '../hooks/useSearch'
+
+import useDebouncedSearch from "../hooks/useDebouncedSearch";
+
 import { useEnrollmentData } from '../hooks/useEnrollmentData';
+import { searchUser, searchCourse } from '@/services/adminSearch.service';
 
 
 function NewEnrollment({
@@ -13,12 +16,45 @@ function NewEnrollment({
   Status = [],
 }) {
 
-  const [userSearch, setUserSearch] = useState("");
-  const [courseSearch, setCourseSearch] = useState("");
-  const [trainer, setTrainer] = useState("trainer");
-  const [trainee, setTrainee] = useState("trainee");
+  const memoizedParams = useMemo(() => ({
+    role: ["trainee", "trainer"]
+  }), []);
 
-  const { results, searchLoading, courseResult, handleSearch } = useSearch();
+
+  const handleSearchUser = useCallback(async ({ query, role }) => {
+    return await searchUser({
+      username_or_email: query,
+      role: role
+    });
+  }, []);
+
+  const handleSearchCourse = useCallback(async ({ query }) => {
+    return await searchCourse({ query });
+  }, []);
+
+
+  const {
+    search: userSearch,
+    setSearch: setUserSearch,
+    results: userResult,
+    searching: searchingUser
+  } = useDebouncedSearch({
+    searchFn: handleSearchUser,
+    extraParams: memoizedParams
+  });
+
+  const {
+    search: courseSearch,
+    setSearch: setCourseSearch,
+    results: courseResults,
+    searching: courseLoading
+  } = useDebouncedSearch({
+    searchFn: handleSearchCourse,
+    delay: 500
+  });
+
+
+
   const { createEnrollment, updateEnrollment, isCreating, isUpdating } = useEnrollments();
   const { fetchEnrollments } = useEnrollmentData();
 
@@ -37,32 +73,6 @@ function NewEnrollment({
     courseId: "",
     expireAt: "",
   })
-
-
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      const roles = [trainer, trainee].filter(Boolean);
-
-      const params = {
-        username_or_email: userSearch,
-        ...(roles.length > 0 && { role: roles }),
-      };
-
-      handleSearch("users", params);
-    }, 500);
-
-    return () => clearTimeout(delay);
-  }, [userSearch, trainer, trainee]);
-
-
-
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      handleSearch("courses", courseSearch);
-    }, 500);
-
-    return () => clearTimeout(delay);
-  }, [courseSearch]);
 
 
   useEffect(() => {
@@ -120,6 +130,21 @@ function NewEnrollment({
   };
 
 
+  const getErrorMessage = (status, type = "create") => {
+    if (status === 400) return "Invalid input. Please check the details.";
+    if (status === 401) return "Session expired. Please login again.";
+    if (status === 403) return "You are not authorized to perform this action.";
+    if (status === 404) return "Requested resource not found.";
+    if (status === 409) return "User is already enrolled in this course.";
+    if (status === 422) return "Please provide valid enrollment data.";
+    if (status >= 500) return "Server error. Please try again later.";
+
+    return type === "update"
+      ? "Failed to update enrollment. Please try again."
+      : "Failed to create enrollment. Please try again.";
+  };
+
+
 
 
   const handleSubmit = async () => {
@@ -141,7 +166,8 @@ function NewEnrollment({
 
         await updateEnrollment(userData.id, payload);
 
-        addToast("Enrollment updated!", "success");
+        addToast("Enrollment updated successfully.", "success");
+
       } else {
         const payload = {
           userId: formData.userId,
@@ -154,26 +180,17 @@ function NewEnrollment({
 
         await createEnrollment(payload);
 
-        addToast("Enrollment created!", "success");
+        addToast("Enrollment created successfully.", "success");
       }
 
       fetchEnrollments();
       onClose?.();
 
     } catch (err) {
-      let msg = isEdit
-        ? "Failed to update enrollment"
-        : "Failed to create enrollment";
-
-      if (err.response?.status === 409) {
-        msg = "User is already enrolled in this course";
-      } else {
-        msg = err.response?.data?.message || msg;
-      }
-
-      addToast(msg, "error");
+      const status = err?.response?.status;
+      addToast(getErrorMessage(status, isEdit ? "update" : "create"), "error");
     }
-  };
+  }
 
 
   return (
@@ -185,8 +202,8 @@ function NewEnrollment({
             label="User"
             value={userSearch}
             onChange={setUserSearch}
-            results={results}
-            loading={searchLoading}
+            results={userResult}
+            loading={searchingUser}
             getLabel={(item) => item.username}
             getSubLabel={(item) => item.email}
             onSelect={(item) => {
@@ -200,8 +217,8 @@ function NewEnrollment({
             label="Course"
             value={courseSearch}
             onChange={setCourseSearch}
-            loading={searchLoading}
-            results={courseResult}
+            loading={courseLoading}
+            results={courseResults}
             renderItem={(item) => item.title}
             onSelect={(item) => {
               handleChange("courseId", item.id);

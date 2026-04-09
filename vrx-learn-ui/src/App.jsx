@@ -45,6 +45,8 @@ import CreateLesson from "@/features/admin/pages/subPages/CreateLesson";
 
 import Assignment from "@/features/admin/pages/subPages/Assignment";
 
+import LessonView from "@/features/admin/pages/subPages/sections/LessonView";
+
 function App() {
   return (
     <ToastProvider>
@@ -102,6 +104,7 @@ function App() {
                   <Route path=":moduleId/edit" element={<EditModule />} />
                   <Route path=":moduleId/lesson/create" element={<CreateLesson />} />
                   <Route path=":moduleId/lesson/:lessonId/edit" element={<EditLesson />} />
+                  <Route path=":moduleId/lesson/:lessonId/view" element={<LessonView />}/>
                 </Route>
 
                 <Route path="assignments">

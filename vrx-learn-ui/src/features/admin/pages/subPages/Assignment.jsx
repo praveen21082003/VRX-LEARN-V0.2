@@ -1,38 +1,46 @@
-import React, { useState } from 'react'
-import { Icon, Tabs, Button } from '@/components/ui'
-import { useParams, useOutletContext } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import { Icon, Tabs, Button, EmptyStateUI, FillPageLoading } from '@/components/ui'
+import { useParams, useOutletContext, useNavigate } from "react-router-dom";
 
 import formatDateTime from '@/utils/formatDateTime';
 import { InstructionsTab, SubmissionsTab, SubmissionView } from "./sections";
 
+
+
 import useAssignmentSubmissions from '../../hooks/useAssignmentSubmissions';
 
+
 function Assignment() {
-    const { assignmentId } = useParams();
-    const { assignments } = useOutletContext();
+    const { courseSlug, assignmentId } = useParams();
+    const navigate = useNavigate();
+
+
+    const today = new Date().toISOString().split("T")[0];
     const [activeTab, setActiveTab] = useState("instructions");
-    const [activeAssignmentId, setActiveAssignmentId] = useState(null);
 
 
-
+    const { assignment, detailsLoading, fetchAssignmentDetails } = useOutletContext();
     const { submissions, loading, error, refetch } =
-        useAssignmentSubmissions(assignmentId);
+        useAssignmentSubmissions(assignmentId, { date: today });
+
+    const { assignment: assignmentData, attachment } = assignment || {};
+
 
     const tabs = [
         { label: "Instructions", value: "instructions" },
-        { label: "Submissions", value: ["submissions", "view_submission"]},
-    ]
-
-    
-    if (!assignments) return <p>Assignment not found</p>;
-
-    const assignment = assignments.find(
-        (a) => a.id === assignmentId
-    );
+        { label: "Submissions", value: ["submissions", "view_submission"] },
+    ];
 
 
-    if (loading) return <p>Loading submissions...</p>;
-    if (error) return <p>Error loading submissions</p>;
+    if (detailsLoading) {
+        return <FillPageLoading message="Loading, Assignment...." />;
+    }
+
+    if (!assignmentData) {
+        return <EmptyStateUI message="Assignment not found" />;
+    }
+
+
 
 
 
@@ -41,9 +49,18 @@ function Assignment() {
     return (
         <div>
             <div className='flex justify-between'>
-                <h2 className="text-h3">{assignment.title}</h2>
+                <h2 className="text-h3">{assignmentData?.title}</h2>
                 {activeTab === "instructions" &&
-                    <Button buttonName="Edit Details" frontIconName='mingcute:pencil-line' frontIconWidth="24px" frontIconHeght="24px" className="p-1 rounded font-semibold text-md" bgClass="" textClass="text-primary dark:text-background" />
+                    <Button
+                        buttonName="Edit Details"
+                        frontIconName='mingcute:pencil-line'
+                        frontIconWidth="24px"
+                        frontIconHeght="24px"
+                        className="p-1 rounded font-semibold text-md"
+                        bgClass=""
+                        textClass="text-primary dark:text-background"
+                        onClick={() => navigate(`/course/${courseSlug}/content/assignments/${assignmentId}/edit`)}
+                    />
                 }
             </div>
 
@@ -51,14 +68,16 @@ function Assignment() {
                 <div className="flex gap-2 items-center">
                     <Icon icon="mdi:clock-outline" width="16px" height="16px" />
                     <p className="text-muted-foreground">
-                        Due: {formatDateTime(assignment.submission_date)}
+                        Due: {assignmentData?.dueDate
+                            ? formatDateTime(assignmentData.dueDate)
+                            : "-"}
                     </p>
                 </div>
                 <Icon name="bi:dot" />
                 <div className="flex gap-2 items-center">
                     <Icon name="streamline:star-badge-remix" width="16px" height="16px" />
                     <p className="text-muted-foreground">
-                        Max: {assignment.marks} Marks
+                        Max: {assignmentData?.maxScore} Marks
                     </p>
                 </div>
             </div>
@@ -70,9 +89,9 @@ function Assignment() {
                 />
 
                 <div className="py-5">
-                    {activeTab === "instructions" && <InstructionsTab instructions={assignment.instructions} attachments={assignment.attachments} />}
-                    {activeTab === "submissions" && <SubmissionsTab submissions={submissions} setActiveTab={setActiveTab} setActiveAssignmentId={setActiveAssignmentId}/>}
-                    {activeTab === "view_submission" && <SubmissionView submissions={submissions} setActiveTab={setActiveTab} assignmentId={assignmentId} activeAssignmentId={activeAssignmentId}/>}
+                    {activeTab === "instructions" && <InstructionsTab instructions={assignmentData?.instructions} attachment={attachment} />}
+                    {activeTab === "submissions" && <SubmissionsTab submissions={submissions} setActiveTab={setActiveTab} />}
+                    {/* {activeTab === "view_submission" && <SubmissionView submissions={submissions} setActiveTab={setActiveTab} assignmentId={assignmentId} activeAssignmentId={activeAssignmentId}/>} */}
                 </div>
 
             </div>

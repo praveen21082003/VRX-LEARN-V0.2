@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getAssignmentSubmissions } from "@/services/courses.service";
+import { getAssignmentSubmission } from "@/services/assignmentContent.service";
 
-export default function useAssignmentSubmissions(assignmentId) {
+export default function useAssignmentSubmissions(assignmentId, params) {
     const [submissions, setSubmissions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ export default function useAssignmentSubmissions(assignmentId) {
             setLoading(true);
             setError(null);
 
-            const res = await getAssignmentSubmissions(assignmentId);
+            const res = await getAssignmentSubmission(assignmentId, params);
             setSubmissions(res);
         } catch (err) {
             console.error("Failed to fetch submissions", err);
@@ -25,7 +25,7 @@ export default function useAssignmentSubmissions(assignmentId) {
 
     useEffect(() => {
         fetchSubmissions();
-    }, [assignmentId]);
+    }, [assignmentId, params]);
 
     return {
         submissions,

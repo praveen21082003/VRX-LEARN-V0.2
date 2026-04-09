@@ -5,7 +5,7 @@ import LessonsAsideSection from '../sections/LessonsAsideSection'
 import LessonsMainSection from "../sections/LessonsMainSection";
 import { useOutletContext } from "react-router-dom";
 import useModule from "../hooks/useModules";
-import useLessons from "../hooks/useLessons";
+import useLesson from "../hooks/useLesson";
 
 function LessonsPage() {
   const { courseSlug } = useParams();
@@ -19,7 +19,7 @@ function LessonsPage() {
   const [openPlaylist, setOpenPlaylist] = useState(false);
 
   const lessonId = activeLesson?.lessonId;
-  const { lesson, loading: lessonLoading, error: lessonError } = useLessons(lessonId);
+  const { lesson, loading: lessonLoading, error: lessonError } = useLesson(lessonId);
 
 
 

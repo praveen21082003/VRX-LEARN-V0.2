@@ -17,7 +17,7 @@ function Button({
   backIconHeight,
   fontClass = 'text-h5',
   isMobile,
-  border
+  title
 }) {
   const isWhiteBg =
     bgClass.includes('');
@@ -50,6 +50,8 @@ function Button({
           ? "opacity-50 cursor-not-allowed"
           : "hover:opacity-90 active:scale-[0.98]"
       )}
+
+      title={title}
     >
       {frontIconName && (
         <Icon

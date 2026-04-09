@@ -1,5 +1,4 @@
 function Avatar({ name = "" }) {
-    console.log("avatar")
 
     function getColor(name = "") {
         let hash = 0;

@@ -1,9 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { Input, Button, Icon, TextEditor, SearchSelect, InputWarnMessage } from "@/components/ui";
 // import { useClickOutside } from "@/hooks/useClickOutside";
-import useSearch from '../hooks/useSearch'
 import useCourses from "../hooks/useCourses";
 import { useToast } from '@/context/ToastProvider'
+
+import { searchUser } from '@/services/adminSearch.service'
+import useDebouncedSearch from "../hooks/useDebouncedSearch";
 
 
 function NewCourses({
@@ -13,8 +15,27 @@ function NewCourses({
   Status = [],
 }) {
 
-  const { results, searchLoading, handleSearch } = useSearch();
-  console.log(results)
+
+  const memoizedParams = useMemo(() => ({
+    role: "trainer"
+  }), []);
+
+  const { search,
+    setSearch,
+    results,
+    searching
+  } = useDebouncedSearch({
+    searchFn: async ({ query, role }) => {
+      return await searchUser({
+        username_or_email: query,
+        role
+      });
+    },
+    extraParams: memoizedParams
+  });
+
+
+
   const {
     createCourse,
     updateCourse,
@@ -38,6 +59,8 @@ function NewCourses({
     trainerId: ""
   })
 
+  // console.log(formData)
+
   const [warnings, setWarning] = useState({
     title: "",
     shortDescription: "",
@@ -46,24 +69,6 @@ function NewCourses({
   })
 
   const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [trainer, setTrainer] = useState("trainer");
-
-
-
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      const params = {
-        username_or_email: search,
-        ...(trainer && { role: trainer })
-      };
-
-      handleSearch("users", params);
-    }, 500);
-
-    return () => clearTimeout(delay);
-  }, [search, trainer]);
-
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({
@@ -71,30 +76,6 @@ function NewCourses({
       [field]: value,
     }));
   };
-
-
-  useEffect(() => {
-    if (isEdit && courseData) {
-      setFormData({
-        title: courseData.title || "",
-        shortDescription: courseData.shortDescription || "",
-        longDescription: courseData.longDescription || "",
-        trainerId: courseData.trainerId || "",
-      });
-
-      setSearch(courseData.trainerName || "");
-    } else {
-
-      setFormData({
-        title: "",
-        shortDescription: "",
-        longDescription: "",
-        trainerId: "",
-      });
-
-      setSearch("");
-    }
-  }, [isEdit, courseData]);
 
   // form validation
   const validation = () => {
@@ -136,6 +117,19 @@ function NewCourses({
   };
 
 
+  const getErrorMessage = (status) => {
+    if (status === 400) return "Invalid input. Please check the details.";
+    if (status === 401) return "Session expired. Please login again.";
+    if (status === 403) return "You are not authorized to perform this action.";
+    if (status === 404) return "Requested resource not found.";
+    if (status === 409) return "A course with similar title already exists.";
+    if (status === 422) return "Please provide valid information.";
+    if (status >= 500) return "Server error. Please try again later.";
+
+    return "Something went wrong. Please try again.";
+  };
+
+
   const handleSubmit = async () => {
 
     if (!isEdit) {
@@ -143,28 +137,28 @@ function NewCourses({
       if (!isValid) return;
     }
 
-    const payload = {
+    const createPayload = {
       title: formData.title,
-      shortDescription: formData.shortDescription,
-      trainerId: formData.trainerId,
+      shortDescription: formData.shortDescription || null,
+      longDescription: formData.longDescription || null,
       thumbnail: null,
+      trainerId: formData.trainerId,
+
       details: {
         type: "live",
-        totalHours: 1,
-        price: 1001,
-      },
-      ...(formData.longDescription?.trim() && {
-        longDescription: formData.longDescription
-      }),
+      }
     };
+
 
     try {
       if (isEdit) {
-        await updateCourse(courseData.id, payload);
 
+        await updateCourse(courseData.id, payload);
         addToast("Course updated successfully!", "success");
+
       } else {
-        await createCourse(payload);
+
+        await createCourse(createPayload);
 
         addToast("Course created successfully!", "success");
 
@@ -181,10 +175,11 @@ function NewCourses({
       onClose?.();
 
     } catch (err) {
-      const msg = err.response?.data?.message || "Operation failed";
-      addToast(msg, "error");
+      const status = err?.response?.status;
+      addToast(getErrorMessage(status), "error");
     }
   };
+
 
   return (
     <div className="space-y-4">
@@ -209,7 +204,7 @@ function NewCourses({
             }
           }}
           results={results}
-          loading={searchLoading}
+          loading={searching}
           getLabel={(item) => item.username}
           getSubLabel={(item) => item.email}
           onSelect={(item) => {

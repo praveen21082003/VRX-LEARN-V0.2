@@ -13,8 +13,8 @@ export const updateAssignmentById = (assignmentId, payload) => {
     return axiosInstance.patch(`/api/v1/assignments/${assignmentId}/update-details`, payload)
 }
 
-export const getAssignmentSubmission = (submissionId) => {
-    return axiosInstance.get(
-        `/assignment_submissions?id=${submissionId}`
-    );
-};
+export const deleteAssignment = (assignmentId) => {
+    return axiosInstance.delete(`/api/v1/assignments/${assignmentId}`)
+}
+
+

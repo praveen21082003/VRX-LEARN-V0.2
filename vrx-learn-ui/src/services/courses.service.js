@@ -44,9 +44,6 @@ export const updateModule = (moduleId, playload) => {
   return axiosInstance.patch(`/modules/${moduleId}`, playload)
 }
 
-export const deleteModuleById = (moduleId) => {
-  return axiosInstance.delete(`/modules/${moduleId}`)
-}
 
 /* Single Lesson Content */
 export const getLessonById = (lessonId) => {

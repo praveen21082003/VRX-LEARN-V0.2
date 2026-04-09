@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import AssignmentFormSection from '../../sections/AssignmentFormSection';
-import { useParams } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import useAssignment from '../../hooks/useAssignment';
 import { useToast } from '@/context/ToastProvider';
 
 function CreateAssignment() {
-    const { courseSlug } = useParams();
     const { addToast } = useToast();
+
+    const { fetchCourseContent, courseSlug } = useOutletContext();
 
     const [files, setFiles] = useState([]);
     const { createAssignment, isCreating, uploadProgress, error } = useAssignment();
@@ -82,6 +83,7 @@ function CreateAssignment() {
         try {
             await createAssignment(payload, file);
             addToast("Assignment created successfully", "success");
+            await fetchCourseContent(courseSlug);
         } catch (err) {
             addToast("Something went wrong", "error");
         }

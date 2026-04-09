@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Button, Input, Icon, Dropdown } from '@/components/ui'
+import { Button, Input, Icon, Dropdown, ContentLoading, EmptyStateUI } from '@/components/ui'
 import { useOutletContext, NavLink, useNavigate } from 'react-router-dom'
 import formatDateTime from '@/utils/formatDateTime';
 // import formatDate from "@/utils/formatDate";
@@ -7,15 +7,30 @@ import { getButtons } from '@/config/DropdownButtons';
 import useUpdateAssignment from '../hooks/useUpdateAssignment';
 import useDeleteAssignment from '../hooks/useDeleteAssignment';
 import { useToast } from '@/context/ToastProvider';
+import useAssignmentContent from '../hooks/useAssignmentContent'
 
 
 function AssignmentsEditor() {
     const isMobile = window.innerWidth < 768;
 
-    const { assignments, courseSlug } = useOutletContext();
+    const { courseSlug } = useOutletContext();
     const navigate = useNavigate();
 
     const { updateAssignemt, loading, error } = useUpdateAssignment();
+    
+    const {
+        assignments,
+        loading: fetchLoading,
+        error: fetchError,
+        fetchAssignments
+    } = useAssignmentContent();
+
+
+
+    useEffect(() => {
+        fetchAssignments(courseSlug);
+    }, [fetchAssignments, courseSlug]);
+
     const { deleteAssignment } = useDeleteAssignment();
     const { addToast } = useToast();
     const inputRef = useRef(null);
@@ -90,12 +105,6 @@ function AssignmentsEditor() {
     }, [isOpenDropdown]);
 
 
-    useEffect(() => {
-        if (assignments) {
-            setUpdatedAssignments(assignments);
-        }
-    }, [assignments]);
-
     return (
         <div className="space-y-6">
             <div className='flex justify-between'>
@@ -116,7 +125,17 @@ function AssignmentsEditor() {
 
             <ul className="flex flex-col">
 
-                {updatedAssignments?.map((assignment) => {
+                {fetchLoading ? (
+                    <div className="h-full w-full">
+                        <ContentLoading count={7} />
+                    </div>
+
+                ) : fetchError ? (
+                    <div className="text-center py-6 text-red-500">
+                        Failed to load assignments
+                    </div>
+
+                ) : assignments?.length > 0 ? (assignments?.map((assignment) => {
                     const isOpen = isOpenDropdown === assignment.id;
 
                     return (
@@ -170,7 +189,7 @@ function AssignmentsEditor() {
                                             </span>
                                         }
                                         <span className='text-caption text-dark-gray text-muted-foreground'>
-                                            Due:{formatDateTime(assignment.submission_date)}
+                                            Due:{formatDateTime(assignment.dueDate)}
                                         </span>
                                     </div>
 
@@ -198,7 +217,19 @@ function AssignmentsEditor() {
 
                         </li>
                     )
-                })}
+                })
+                ) : (
+                    <div className="py-10">
+                        <EmptyStateUI
+                            title="No Assignments Found"
+                            description="You have not added any assignments yet. Start by creating one."
+                            buttonText="Add New Assignment"
+                            onButtonClick={() =>
+                                navigate(`/course/${courseSlug}/content/assignments/create`)
+                            }
+                        />
+                    </div>
+                )}
             </ul>
         </div >
     )

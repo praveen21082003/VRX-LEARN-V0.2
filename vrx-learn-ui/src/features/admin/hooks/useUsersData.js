@@ -12,9 +12,7 @@ export const useUsersData = () => {
       setLoading(true);
       setError(null);
 
-      const res = await getUsers(params);
-
-      console.log(res);
+      const res = await getUsers(params); 
 
       setUsers(res.data || []);
       setTotal(res.totalItems || 0);
