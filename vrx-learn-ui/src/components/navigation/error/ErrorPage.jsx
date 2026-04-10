@@ -44,8 +44,8 @@ export default function ErrorPage({ statusCode }) {
       </div>
 
       <div className="flex flex-row justify-evenly ">
-        {/* <img src={error.image} className="w-1/4 ml-15 mt-8" /> */}
-        <a href="https://storyset.com/web">Web illustrations by Storyset</a>
+        <img src={error.image} className="w-1/4 ml-15 mt-8" />
+        {/* <a href="https://storyset.com/web">Web illustrations by Storyset</a> */}
         <div className="flex flex-col gap-4 w-1/2 my-auto">
           <h1 className="text-h1 font-bold mx-auto">{error.title}</h1>
 

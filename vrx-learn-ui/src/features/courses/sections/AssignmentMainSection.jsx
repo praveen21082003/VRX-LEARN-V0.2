@@ -10,6 +10,14 @@ import BackButton from "@/components/navigation/BackButton";
 export default function AssignmentMainSection({ assignment, courseId }) {
 
     console.log(courseId)
+    console.log("assignment", assignment)
+
+    const assignmentData = {
+    ...assignment?.assignment,
+    attachment: assignment?.attachment,
+    submissions: assignment?.submissions,
+};
+
 
     const [files, setFiles] = useState([]);
     const [showButton, setShowButton] = useState(true);
@@ -47,7 +55,7 @@ export default function AssignmentMainSection({ assignment, courseId }) {
 
     useEffect(() => {
         setFiles([]);
-    }, [assignment?.id]);
+    }, [assignmentData?.id]);
 
     if (!assignment) {
         return (
@@ -68,31 +76,33 @@ export default function AssignmentMainSection({ assignment, courseId }) {
                 ref={scrollRef}
                 className="flex-1 min-h-0 px-2 lg:p-3 pb-32"
             >
-                <h1 className="flex gap-2 items-center text-h3">{assignment.title}</h1>
+                <h1 className="flex gap-2 items-center text-h3">{assignmentData.title}</h1>
                 <div className="flex items-center gap-2 text-caption text-muted-foreground text-dark-gray">
                     <div className="flex gap-2 items-center">
                         <Icon icon="mdi:clock-outline" width="16" height="16" />
                         <p className="text-muted-foreground">
-                            Due: {formatDateTime(assignment.submission_date)}
+                            Due: {formatDateTime(assignmentData.dueDate)}
                         </p>
                     </div>
                     <Icon name="bi:dot" height="16" width="16" />
                     <div className="flex gap-2 items-center">
                         <Icon name="streamline:star-badge-remix" width="16" height="16" />
                         <p className="text-muted-foreground">
-                            Max: {assignment.marks} Marks
+                            Max: {assignmentData.maxScore} Marks
                         </p>
                     </div>
                 </div>
                 <div>
-                    <MarkdownContent content={assignment.instructions} />
+                    <MarkdownContent content={assignmentData.instructions} />
                 </div>
                 <h1 className="text-h5">Attachments</h1>
                 <div className="flex flex-wrap gap-3 py-4">
-                    {assignment.attachments.map((file, index) => (
-                        <AttachmentCard key={index} file={file} />
-                    ))}
-                </div>
+                    {assignmentData?.attachment ? (
+                    <AttachmentCard file={assignmentData.attachment} />
+                    ) : (
+                    <p className="text-sm text-gray-400">No attachments</p>
+                     )}
+                    </div>
 
 
 
