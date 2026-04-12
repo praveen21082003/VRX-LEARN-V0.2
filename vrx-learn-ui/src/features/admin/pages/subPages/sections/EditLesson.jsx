@@ -106,7 +106,7 @@ function EditLesson() {
                 handleChange={handleChange}
                 currentModule={currentModule}
                 warning={warning}
-                handleUpdate={handleUpdate}
+                handleSubmit={handleUpdate}
                 isUpdating={isUpdating}
             />
         </div>

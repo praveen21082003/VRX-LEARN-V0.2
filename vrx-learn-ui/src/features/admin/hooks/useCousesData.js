@@ -30,6 +30,7 @@ export const useCoursesData = () => {
 
     return {
         courses,
+        setCourses,
         loading,
         error,
         fetchCourses,

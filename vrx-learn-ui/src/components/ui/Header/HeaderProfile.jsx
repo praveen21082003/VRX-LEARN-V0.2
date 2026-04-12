@@ -58,7 +58,7 @@ export default function HeaderProfile({ user, role, viewRole, loading, buttons  
 
                 <span className="hidden md:block text-h5 max-w-28 truncate">{user?.username}</span>
                 {role === "trainer" && (
-                    <Pill viewRole={viewRole} />
+                    <Pill viewRole={viewRole || role} />
                 )}
                 <span className="hidden md:block">
                     <Icon name="iconamoon:arrow-down-2" width="16px" height="16px" />

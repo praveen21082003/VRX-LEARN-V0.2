@@ -4,7 +4,7 @@ function UserCardLayout({ row, columns }) {
   const getCol = (key) => columns.find((c) => c.key === key);
 
   return (
-    <div className="relative p-3 mt-2 border border-default rounded-sm shadow-sm bg-white">
+    <div className="relative p-3 mt-2 border border-default rounded-sm shadow-sm">
 
       <div className="absolute top-3 right-3 flex gap-1 flex-wrap justify-end">
         {getCol("role")?.render?.(row)}

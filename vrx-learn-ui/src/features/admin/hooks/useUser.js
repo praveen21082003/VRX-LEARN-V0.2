@@ -13,7 +13,7 @@ export const useUser = () => {
 
             const res = await createUsers(payload);
 
-            return res.data;
+            return res;
         } catch (err) {
             const message =
                 err.response?.data?.message || "Failed to create user";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAssignmentId } from "../../../services/courses.service";
+import { getAssignmentById } from "../../../services/assignmentContent.service";
 
 export default function useAssignment(assignmentId){
     const [assignment, setAssignment] = useState(null);
@@ -10,7 +10,7 @@ export default function useAssignment(assignmentId){
         async function fetchAssignment(){
             try{
                 setAssignmentLoading(true);
-                const response = await getAssignmentId(assignmentId);
+                const response = await getAssignmentById(assignmentId);
                 setAssignment(response);
             }
             catch (error){

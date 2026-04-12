@@ -5,6 +5,8 @@ import useAssignment from '../../hooks/useAssignment';
 import { useToast } from '@/context/ToastProvider';
 
 function CreateAssignment() {
+
+    console.log("create assignment");
     const { addToast } = useToast();
 
     const { fetchCourseContent, courseSlug } = useOutletContext();
@@ -20,6 +22,7 @@ function CreateAssignment() {
         maxScore: 0,
         numberOfAttempts: 1,
     });
+    console.log(formData);
 
     const [formDataErrors, setFormDataErrors] = useState({});
 
@@ -61,6 +64,7 @@ function CreateAssignment() {
 
 
         const file = files?.[0];
+        console.log(file);
 
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
@@ -77,8 +81,8 @@ function CreateAssignment() {
                 size: files[0].size
             } : null
         };
-
         console.log(payload);
+
 
         try {
             await createAssignment(payload, file);
@@ -86,6 +90,7 @@ function CreateAssignment() {
             await fetchCourseContent(courseSlug);
         } catch (err) {
             addToast("Something went wrong", "error");
+            console.warn(err);
         }
     };
 

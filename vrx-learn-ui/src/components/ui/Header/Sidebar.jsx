@@ -1,12 +1,13 @@
 import { Button, Icon } from '@/components/ui'
 import { roleNavigation } from "@/config/headerMenu";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import clsx from 'clsx';
 
 function Sidebar({ open, toggleSidebar, role, buttons, darkMode }) {
 
     const navigationLinks = roleNavigation[role] || [];
+    const location = useLocation()
 
 
     return (

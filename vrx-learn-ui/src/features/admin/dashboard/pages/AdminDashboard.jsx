@@ -6,12 +6,15 @@ import NewEnrollment from '../../dialogs/NewEnrollment';
 import { StatCard } from '@/components/ui';
 import useAdminKpis from "../../hooks/useAdminKpis"
 import useAdminTopCourses from "../../hooks/useAdminTopCourses";
+import { useNavigate } from 'react-router-dom';
 
 
 
 function AdminDashboard() {
 
-  const { kpis, isLoading, error } = useAdminKpis();
+  const navigate = useNavigate();
+
+  const { kpis, setKpis, isLoading, error } = useAdminKpis();
   const { topCourses, loading, error: topCoursesError } = useAdminTopCourses();
 
   const [open, setOpen] = useState(false);
@@ -143,7 +146,9 @@ function AdminDashboard() {
             <span className="text-caption text-muted">By Enrollment</span>
           </div>
 
-          <button className="text-muted text-body hover:underline">
+          <button className="text-muted text-body hover:underline cursor-pointer"
+            onClick={() => navigate('/courses')}
+          >
             View All →
           </button>
         </div>
@@ -225,25 +230,26 @@ function AdminDashboard() {
 
           {activeAction === "user" && (
             <CreateUser
-              isEdit={!!editingUser}
-              userData={editingUser}
               onClose={() => setOpen(false)}
               roles={allRoles}
+              setKpis={setKpis}
             />
           )}
 
           {activeAction === "course" && (
             <NewCourses
-            // trainers={allTrainers}
-            // courseTitles={allTitles}
-            // description={allDescription}
+              setKpis={setKpis}
+              onClose={() => setOpen(false)}
             />
           )}
 
           {activeAction === "enroll" && (
             <NewEnrollment
-              isEdit={!!editingUser}
-              userData={editingUser}
+              onSuccess={
+                setKpis((prev) => ({
+                  ...prev,
+                  totalEnrollments: (prev.totalEnrollments || 0) + 1
+                }))}
               onClose={() => setOpen(false)}
             />
           )}

@@ -11,9 +11,9 @@ export default function AppLayout() {
 
 
   return (
-    <div ref={scrollRef} className="h-screen w-screen flex flex-col overflow-hidden">
+    <div ref={scrollRef} className="h-screen bg-background w-screen flex flex-col overflow-hidden">
       <Header menu={true} />
-      <main className="bg-background flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto">
         <Outlet />
       </main>
     </div>

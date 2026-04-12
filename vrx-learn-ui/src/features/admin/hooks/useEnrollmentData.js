@@ -8,6 +8,7 @@ export const useEnrollmentData = () => {
   const [total, setTotal] = useState(0);
 
   const fetchEnrollments = useCallback(async (params = {}) => {
+    console.log("create enrollment start");
     try {
       setLoading(true);
       setError(null);
@@ -30,6 +31,7 @@ export const useEnrollmentData = () => {
 
   return {
     enrollments,
+    setEnrollments,
     loading,
     error,
     fetchEnrollments,

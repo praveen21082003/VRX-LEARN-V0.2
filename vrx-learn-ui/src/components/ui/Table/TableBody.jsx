@@ -11,15 +11,15 @@ function TableBody({ columns, loading, data, selectedRows, pageSize, emptyRows =
 
     <tbody className="">
       {Array.isArray(data) && data?.length > 0 ? (
-        data.map((row) => (
+        data.map((row,index) => (
           <tr
-            key={row.id}
+            key={row.id || index}
             className={`border-b border-default ${selectedRows?.includes(row.id) ? "bg-primary-16" : ""
               }`}
           >
-            {columns.map((col) => (
+            {columns.map((col, index) => (
               <td
-                key={col.key}
+                key={col.key || index}
                 style={{ width: col.width }}
                 className={`p-2 text-body ${col.align === "left" ? "text-left" : "text-center"
                   } ${col.className || ""}`}
@@ -33,7 +33,7 @@ function TableBody({ columns, loading, data, selectedRows, pageSize, emptyRows =
         <tr>
           <td colSpan={columns.length}>
             <div className="flex flex-col items-center justify-center py-10 text-muted">
-              <p className="text-sm font-medium">No records found</p>
+              <span className="text-sm font-medium">No records found</span>
               <p className="text-xs mt-1">
                 Try adjusting filters or add new data
               </p>
@@ -44,8 +44,8 @@ function TableBody({ columns, loading, data, selectedRows, pageSize, emptyRows =
 
       {emptyRows > 0 && Array.from({ length: emptyRows }).map((_, index) => (
         <tr key={`empty-${index}`} className="h-12 border-b border-transparent">
-          {columns.map((col) => (
-            <td key={`empty-td-${col.key}`} className="px-4 py-2">&nbsp;</td>
+          {columns.map((col,index) => (
+            <td key={`empty-td-${col.key || index}`} className="px-4 py-2">&nbsp;</td>
           ))}
         </tr>
       ))}

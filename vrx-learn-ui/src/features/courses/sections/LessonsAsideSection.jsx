@@ -91,7 +91,7 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson, openPlayl
                                         >
                                             <div className="flex items-center gap-4 min-w-0">
 
-                                                <Icon name={lesson.type === "video" ? "ep:video-play" : "basil:document-outline"} height="26" width="26" />
+                                                <Icon name={lesson?.mimeType?.startsWith("video") ? "ep:video-play" : "basil:document-outline"} height="26" width="26" />
 
                                                 <p className="text-h5 truncate">
                                                     {moduleIndex + 1}.{lessonIndex + 1} {lesson.title}

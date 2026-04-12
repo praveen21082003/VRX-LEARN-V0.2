@@ -25,7 +25,7 @@ export default function FilterSelect({
       }
 
       <div
-        className={`flex items-center ${borderClass ? "border" : "border-2"} ${borderClass} rounded px-3 py-2 gap-2 min-w-44 cursor-pointer`}
+        className={`flex items-center ${borderClass ? "border" : "border-2"} ${inputLabel==="" && "mt-2"} ${borderClass} rounded px-3 py-2 gap-2 min-w-44 cursor-pointer`}
         onClick={toggle}
       >
         <span className="text-body text-muted whitespace-nowrap">
@@ -50,7 +50,7 @@ export default function FilterSelect({
                 onChange(opt.value);
                 setOpen(false);
               }}
-              className={`px-3 py-2 text-body hover:bg-gray-100 cursor-pointer ${value === opt.value ? "bg-gray-50 font-semibold" : ""
+              className={`px-3 py-2 text-body hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer ${value === opt.value ? "bg-gray-50 dark:bg-gray-500 font-semibold" : ""
                 }`}
             >
               {opt.label}

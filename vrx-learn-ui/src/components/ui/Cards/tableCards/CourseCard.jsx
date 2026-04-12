@@ -1,12 +1,46 @@
 import React from "react";
-import {Icon} from '@/components/ui'
-import {capitalizeFirstLetter} from '@/utils/capitalizeFirstLetter'
+import { Icon } from '@/components/ui'
+import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter'
 
-function CourseCard({ row, columns }) {
+function CourseCard({ row, columns, loading }) {
   const getCol = (key) => columns.find((c) => c.key === key);
 
+
+  if (loading) {
+    return (
+      <div className="relative p-3 mt-2 border border-default rounded-lg shadow-sm animate-pulse">
+
+ 
+        <div className="absolute top-3 right-3 w-20 h-5 bg-gray-200 rounded" />
+
+       
+        <div className="absolute bottom-3 right-3 flex gap-2">
+          <div className="w-5 h-5 bg-gray-200 rounded" />
+          <div className="w-5 h-5 bg-gray-200 rounded" />
+          <div className="w-5 h-5 bg-gray-200 rounded" />
+        </div>
+
+        <div className="flex flex-col gap-2 pr-20">
+
+
+          <div className="w-40 h-4 bg-gray-300 rounded" />
+
+
+          <div className="w-32 h-3 bg-gray-200 rounded" />
+
+          <div className="w-full h-3 bg-gray-200 rounded" />
+          <div className="w-3/4 h-3 bg-gray-200 rounded" />
+
+          <div className="w-28 h-3 bg-gray-200 rounded mt-2" />
+
+        </div>
+      </div>
+    );
+  }
+
+
   return (
-    <div className="relative p-3 mt-2 border border-default rounded-lg bg-white shadow-sm">
+    <div className="relative p-3 mt-2 border border-default rounded-lg shadow-sm">
 
 
       <div className="absolute top-3 right-3">

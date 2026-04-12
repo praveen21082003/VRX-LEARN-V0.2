@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { Input, Button, Icon, TextEditor, SearchSelect, InputWarnMessage } from "@/components/ui";
 // import { useClickOutside } from "@/hooks/useClickOutside";
 import useCourses from "../hooks/useCourses";
@@ -13,24 +13,27 @@ function NewCourses({
   courseData = {},
   onClose,
   Status = [],
+  setKpis
 }) {
+
+  const [isOpen, setIsOpen] = useState(false);
+
+
+  const handleSearchUser = useCallback(async ({ query, role }) => {
+    return await searchUser({
+      username_or_email: query,
+      role
+    });
+  }, []);
+
 
 
   const memoizedParams = useMemo(() => ({
     role: "trainer"
   }), []);
 
-  const { search,
-    setSearch,
-    results,
-    searching
-  } = useDebouncedSearch({
-    searchFn: async ({ query, role }) => {
-      return await searchUser({
-        username_or_email: query,
-        role
-      });
-    },
+  const { search, setSearch, results, searching } = useDebouncedSearch({
+    searchFn: handleSearchUser,
     extraParams: memoizedParams
   });
 
@@ -59,8 +62,6 @@ function NewCourses({
     trainerId: ""
   })
 
-  // console.log(formData)
-
   const [warnings, setWarning] = useState({
     title: "",
     shortDescription: "",
@@ -68,7 +69,23 @@ function NewCourses({
     trainerId: ""
   })
 
-  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (isEdit && courseData && Object.keys(courseData).length > 0) {
+      setFormData({
+        title: courseData.title || "",
+        shortDescription: courseData.shortDescription || "",
+        longDescription: courseData.longDescription || "",
+        trainerId: courseData.trainerId || courseData.trainerName || ""
+      });
+
+
+      if (courseData.trainerName) {
+        setSearch(courseData.trainerName);
+      }
+    }
+  }, [isEdit, courseData, setSearch]);
+
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({
@@ -137,28 +154,55 @@ function NewCourses({
       if (!isValid) return;
     }
 
-    const createPayload = {
-      title: formData.title,
-      shortDescription: formData.shortDescription || null,
-      longDescription: formData.longDescription || null,
-      thumbnail: null,
-      trainerId: formData.trainerId,
-
-      details: {
-        type: "live",
-      }
-    };
-
 
     try {
       if (isEdit) {
+        const formKeys = ["title", "shortDescription", "longDescription", "trainerId"];
 
-        await updateCourse(courseData.id, payload);
+
+        const updatedPayload = formKeys.reduce((acc, key) => {
+
+          const originalValue = courseData[key] ?? "";
+          const newValue = formData[key] ?? "";
+
+          if (newValue !== originalValue) {
+            acc[key] = newValue;
+          }
+
+          return acc;
+        }, {});
+
+        if (Object.keys(updatedPayload).length === 0) {
+          addToast("No changes detected.", "warning");
+          return;
+        }
+
+
+        await updateCourse(courseData.id, updatedPayload);
         addToast("Course updated successfully!", "success");
 
       } else {
 
+        const createPayload = {
+          title: formData.title,
+          shortDescription: formData.shortDescription || null,
+          longDescription: formData.longDescription || null,
+          thumbnail: null,
+          trainerId: formData.trainerId,
+
+          details: {
+            type: "live",
+          }
+        };
+        
         await createCourse(createPayload);
+        {
+          setKpis &&
+            setKpis((prev) => ({
+              ...prev,
+              totalCourses: (prev.totalCourses || 0) + 1
+            }));
+        }
 
         addToast("Course created successfully!", "success");
 

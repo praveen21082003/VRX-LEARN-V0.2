@@ -13,6 +13,7 @@ import useAssignment from '../hooks/useAssignment'
 
 import { getCreateButtons } from "@/config/DropdownButtons";
 import { useToast } from '@/context/ToastProvider'
+import { useAuth } from "@/context/AuthContext";
 
 
 
@@ -24,6 +25,8 @@ import useAssignmentContent from '../hooks/useAssignmentContent'
 
 
 function EditCourseLayout() {
+
+  const { role } = useAuth();
 
   const { addToast } = useToast();
   const { moduleId, courseSlug, assignmentId } = useParams();
@@ -78,8 +81,10 @@ function EditCourseLayout() {
 
 
   useEffect(() => {
-    fetchCourseContent(courseSlug);
-  }, [courseSlug])
+    if (courseSlug && role) {
+      fetchCourseContent(courseSlug, role);
+    }
+  }, [courseSlug, role, fetchCourseContent]);
 
   // useEffect(() => {
   //   console.log(assignmentId)

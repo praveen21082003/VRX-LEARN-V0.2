@@ -5,6 +5,6 @@ export const getCourseOverview = (courseId, type) => {
 };
 
 
-export const getCourseContent = (courseId) =>{
-    return axiosInstance.get(`/api/v1/course-contents/trainer/${courseId}`)
+export const getCourseContent = (courseId, type) =>{
+    return axiosInstance.get(`/api/v1/course-contents/${type}/${courseId}`)
 }

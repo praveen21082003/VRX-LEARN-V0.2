@@ -15,18 +15,21 @@ function ContentRenderer({ lesson, error, setVideoDuration }) {
   const mediaId = lesson?.mediaId;
   const { url, loading: mediaLoading } = useMedia(mediaId);
 
+
+
   useEffect(() => {
     setCurrentPage(1);
     setTotalPages(1);
   }, [lesson?.mediaId]);
 
-  if (mediaLoading) {
+  if (mediaLoading || !url) {
     return (
       <div className="flex justify-center items-center h-64">
         <Icon name="mingcute:loading-3-fill" className="animate-spin" />
       </div>
     );
   }
+
 
   if (!lesson) {
     return (

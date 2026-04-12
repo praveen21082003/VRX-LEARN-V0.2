@@ -26,7 +26,7 @@ function TablePagination({
             setPageSize(Number(e.target.value));
             setPage(1);
           }}
-          className="border-2 border-default rounded-sm px-3 py-0.5"
+          className="border-2 bg-background border-default rounded-sm px-3 py-0.5"
         >
           <option value={10}>10</option>
           <option value={15}>15</option>
@@ -43,7 +43,7 @@ function TablePagination({
           buttonName="Previous"
           disabled={page === 1}
           bgClass="bg-pagenation-bg dark:bg-transparent"
-          textClass="text-black"
+          textClass="text-black  dark:text-white"
           fontClass="text-small"
           className="px-2 py-1 text-body rounded-sm border border-default"
           onClick={() => setPage(page - 1)}
@@ -62,7 +62,7 @@ function TablePagination({
                key={`${p}-${index}`}
               onClick={() => setPage(p)}
               bgClass={`${page === p? "bg-primary": "bg-pagenation-bg dark:bg-transparent"}`}
-              textClass={`${page === p? "text-white" : "text-black"}`}
+              textClass={`${page === p? "text-white" : "text-black dark:text-white"}`}
               fontClass="text-small"
               className="px-2 py-1 text-body  rounded-sm border border-default"
             />
@@ -73,7 +73,7 @@ function TablePagination({
           buttonName="Next"
           disabled={page === totalPages}
           bgClass="bg-pagenation-bg dark:bg-transparent"
-          textClass="text-black"
+          textClass="text-black dark:text-white"
           fontClass="text-small"
           className="px-2 py-1 text-body rounded-sm border border-default"
           onClick={() => setPage(page + 1)}

@@ -66,6 +66,9 @@
 
   --color-pagenation-bg: #EDEEEF;
 
+  --color-submission: #F8F9FA;
+  --color-submission-dark: #1E293B;
+
   /* Fonts */
 
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
@@ -212,6 +215,15 @@
 
   .dark .bg-table-Header-bg {
     background-color: var(--color-surface-primary-dark);
+  }
+
+
+  .bg-submission {
+    background-color: var(--color-submission);
+  }
+
+  .dark .bg-submission {
+    background-color: var(--color-submission-dark);
   }
 
 

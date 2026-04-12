@@ -16,7 +16,7 @@ function AssignmentFormSection({
     loading,
     attachment
 }) {
-    console.log(attachment)
+    console.log(formData)
 
     const { courseSlug } = useParams();
     const { courseContent } = useOutletContext();
@@ -78,8 +78,8 @@ function AssignmentFormSection({
                         min="1"
                         max="3"
                         // inputWarning={formDataErrors.max_attempts}
-                        value={formData?.noOfAttempts}
-                        onChange={(e) => handleChange("maxAttempts", Number(e.target.value))}
+                        value={formData?.numberOfAttempts}
+                        onChange={(e) => handleChange("numberOfAttempts", Number(e.target.value))}
                     />
                 </div>
 

@@ -11,7 +11,7 @@ function LessonFormSection({
     handleChange,
     files,
     setFiles,
-    handleUpdate,
+    handleSubmit,
     isCreating,
     uploadProgress,
     mediaStatus,
@@ -108,7 +108,7 @@ function LessonFormSection({
 
                 <div className='flex justify-center'>
                     <Button
-                        onClick={handleUpdate}
+                        onClick={handleSubmit}
                         disabled={isLoading}
                         buttonName={getButtonText()}
                         className="mt-5 px-5 py-2 rounded" />

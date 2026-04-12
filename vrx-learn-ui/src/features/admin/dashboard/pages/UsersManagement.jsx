@@ -22,7 +22,7 @@ import CreateUser from "../../dialogs/CreateUser";
 function UsersManagement() {
   const isMobile = window.innerWidth < 768;
 
-  const { users, fetchUsers, loading, total } = useUsersData();
+  const { users, setUsers, fetchUsers, loading, total } = useUsersData();
   const { deleteUser, deleting, error } = useUser();
   const { addToast } = useToast();
 
@@ -111,7 +111,7 @@ function UsersManagement() {
     try {
       // console.log(selectedUser.id)
       await deleteUser(userId);
-      fetchUsers();
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
       addToast("User deleted successfully", "success");
       setIsDelete(false);
     } catch (err) {
@@ -382,10 +382,11 @@ function UsersManagement() {
           title={editingUser ? "Edit User" : "Create New User"}
         >
           <CreateUser
-            onSuccess={fetchUsers}
+            // onSuccess={fetchUsers}
             isEdit={!!editingUser}
             userData={editingUser}
             onClose={() => setOpen(false)}
+            setUsers={setUsers}
           />
         </Modal>
       )}

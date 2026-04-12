@@ -11,19 +11,44 @@ import useAssignmentSubmissions from '../../hooks/useAssignmentSubmissions';
 
 
 function Assignment() {
+    const [activeAssignmentId, setActiveAssignmentId] = useState(null);
+    console.log("ActiveAssignmentId", activeAssignmentId);
+
     const { courseSlug, assignmentId } = useParams();
     const navigate = useNavigate();
 
-
     const today = new Date().toISOString().split("T")[0];
+
+    const [parms, setParms] = useState({
+        fromDate: null,
+        toDate: today,
+        status: null,
+        sortByGrade: null,
+        page: 1,
+        limit: 10
+    })
+
+    const resetFilters = () => {
+        setParms({
+            fromDate: "",
+            toDate: today,
+            status: "",
+            sortByGrade: ""
+        });
+    };
+
+
     const [activeTab, setActiveTab] = useState("instructions");
 
 
     const { assignment, detailsLoading, fetchAssignmentDetails } = useOutletContext();
-    const { submissions, loading, error, refetch } =
-        useAssignmentSubmissions(assignmentId, { date: today });
-
+    const { submissions, loading, error, refetch } = useAssignmentSubmissions(assignmentId, parms);
     const { assignment: assignmentData, attachment } = assignment || {};
+
+    useEffect(() => {
+        refetch();
+    }, [parms])
+
 
 
     const tabs = [
@@ -89,9 +114,25 @@ function Assignment() {
                 />
 
                 <div className="py-5">
-                    {activeTab === "instructions" && <InstructionsTab instructions={assignmentData?.instructions} attachment={attachment} />}
-                    {activeTab === "submissions" && <SubmissionsTab submissions={submissions} setActiveTab={setActiveTab} />}
-                    {/* {activeTab === "view_submission" && <SubmissionView submissions={submissions} setActiveTab={setActiveTab} assignmentId={assignmentId} activeAssignmentId={activeAssignmentId}/>} */}
+
+                    {activeTab === "instructions" &&
+                        <InstructionsTab
+                            instructions={assignmentData?.instructions}
+                            attachment={attachment}
+                        />
+                    }
+
+                    {activeTab === "submissions" &&
+                        <SubmissionsTab
+                            submissions={submissions}
+                            setActiveTab={setActiveTab}
+                            setParms={setParms} parms={parms}
+                            loading={loading}
+                            setActiveAssignmentId={setActiveAssignmentId}
+                        />
+                    }
+
+                    {activeTab === "view_submission" && <SubmissionView submissions={submissions} setActiveTab={setActiveTab} assignmentId={assignmentId} activeAssignmentId={activeAssignmentId} />}
                 </div>
 
             </div>

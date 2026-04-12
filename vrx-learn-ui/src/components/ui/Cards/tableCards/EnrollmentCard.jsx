@@ -4,7 +4,7 @@ function EnrollmentCard({ row, columns }) {
     const getCol = (key) => columns.find((c) => c.key === key);
 
     return (
-        <div className="relative p-3 mt-2 border border-default items-center rounded-sm bg-white shadow-sm">
+        <div className="relative p-3 mt-2 border border-default items-center rounded-sm shadow-sm">
 
             <div className="flex items-center gap-3 min-w-0">
 

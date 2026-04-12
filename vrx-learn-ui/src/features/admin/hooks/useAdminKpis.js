@@ -22,5 +22,5 @@ export default function useAdminKpis() {
     fetchKpis();
   }, []);
 
-  return { kpis, isLoading, error };
+  return { kpis,setKpis, isLoading, error };
 }

@@ -61,7 +61,7 @@ function SearchSelect({
                                 onSelect(item);
                                 setOpen(false);
                             }}
-                            className="p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-3"
+                            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3"
                         >
 
                             {/* Custom render (priority) */}

@@ -9,12 +9,16 @@ import { formatTime } from "@/utils/duration";
 import Overview from "./tabs/OverView";
 import QuestionAnswers from './tabs/QuestionAnswers';
 
-function LessonViewer({ prevLesson, nextLesson, onNavigate, moduleIndex, currentIndex }) {
+function LessonViewer({ activeLesson, prevLesson, nextLesson, onNavigate, moduleIndex, currentIndex }) {
     const [activeTab, setActiveTab] = useState("overview");
     const [videoDuration, setVideoDuration] = useState(0);
 
     const { courseSlug, lessonId } = useParams();
-    const { lesson, loading, error } = useLesson(lessonId);
+
+
+    const id = lessonId || activeLesson?.lessonId
+    
+    const { lesson, loading, error } = useLesson(id);
 
 
 
@@ -52,7 +56,8 @@ function LessonViewer({ prevLesson, nextLesson, onNavigate, moduleIndex, current
 
 
             <h1 className="text-h3">
-                {moduleIndex + 1}.{currentIndex + 1} {lesson?.title}
+                {/* {activeLesson.moduleIndex + 1}.{activeLesson.lessonIndex + 1}  */}
+                {lesson?.title}
             </h1>
 
             <div className="flex items-center text-caption -mt-1.5 text-muted-foreground">

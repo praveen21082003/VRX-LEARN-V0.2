@@ -74,6 +74,10 @@ function EnrollmentMangement() {
         setIsDelete(true);
     };
 
+    const handleEnrollmentCreated = async () => {
+        await fetchEnrollments();
+    };
+
 
 
 
@@ -106,8 +110,7 @@ function EnrollmentMangement() {
         console.log(enrollmentId)
         try {
             await DeleteEnrollment(enrollmentId);
-            
-            fetchEnrollments();
+
             setIsDelete(false);
 
             addToast("Enrollment deleted successfully", "success");
@@ -173,7 +176,7 @@ function EnrollmentMangement() {
             width: "15%",
             align: "left",
             render: (row) => (
-                <p className="text-h5">{row.name}</p>
+                <span className="text-h5">{row.name}</span>
             )
         },
         {
@@ -204,17 +207,17 @@ function EnrollmentMangement() {
             width: "18%",
             render: (row) => (
                 <span className="text-caption text-muted">
-                    {formatDateTime(row.expireAt)}
+                    {formatDateTime(row.enrollmentDate)}
                 </span>
             )
         },
         {
             key: "date",
-            label: "Enrollment Date",
+            label: "Expiry Date",
             width: "18%",
             render: (row) => (
                 <span className="text-caption text-muted">
-                    {formatDateTime(row.enrollmentDate)}
+                    {formatDateTime(row.expireAt)}
                 </span>
             )
         },
@@ -427,6 +430,7 @@ function EnrollmentMangement() {
                         courses={allCourses}
                         Names={allNames}
                         Status={allStatus}
+                        onSuccess={handleEnrollmentCreated}
                     />
                 </Modal>
             )}

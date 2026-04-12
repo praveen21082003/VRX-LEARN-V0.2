@@ -50,7 +50,14 @@ function DataTable({ columns, data, page, setPage, pageSize, total, setPageSize,
 
       <div className="block md:hidden flex-1 overflow-y-auto p-2">
         {renderMobileCard
-          ? data.map((row) => renderMobileCard(row, row.id))
+          ? data?.map((row, index) => {
+            if (!row) return null;
+            return (
+              <div key={row.id || index}>
+                {renderMobileCard(row)}
+              </div>
+            )
+          })
           : null}
       </div>
 

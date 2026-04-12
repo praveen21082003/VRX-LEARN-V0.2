@@ -1,3 +1,4 @@
+import { FillPageLoading } from '@/components/ui'
 import { useAuth } from "../context/AuthContext"
 import { Navigate, Outlet } from "react-router-dom";
 import { ROLE_PERMISSION } from '@/config/permission';
@@ -6,11 +7,7 @@ export default function ProtectedRoute() {
     const { user, role, loading } = useAuth();
 
     if (loading) {
-        return (
-            <div>
-                Loading...
-            </div>
-        )
+        return <FillPageLoading />;
     }
 
     if (!user) {

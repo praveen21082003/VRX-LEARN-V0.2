@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./layouts/ProtectedRoute";
-import { ToastProvider } from "./context/ToastProvider";
+
 
 import AppLayout from "@/layouts/AppLayout";
 import LearningLayout from "@/layouts/LearningLayout";
@@ -49,7 +49,7 @@ import LessonView from "@/features/admin/pages/subPages/sections/LessonView";
 
 function App() {
   return (
-    <ToastProvider>
+    
 
 
       <BrowserRouter>
@@ -129,7 +129,6 @@ function App() {
         </Routes>
 
       </BrowserRouter >
-    </ToastProvider>
   );
 }
 

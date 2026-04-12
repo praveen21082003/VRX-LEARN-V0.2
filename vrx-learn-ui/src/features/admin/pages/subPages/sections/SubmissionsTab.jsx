@@ -1,6 +1,6 @@
 
 
-import { DataTable, Input, Avatar, StatusPill, Button } from '@/components/ui';
+import { DataTable, Input, Select, Avatar, StatusPill, Button } from '@/components/ui';
 import formatDateTime from '@/utils/formatDateTime';
 import { useState } from 'react';
 
@@ -8,24 +8,48 @@ import { useState } from 'react';
 
 
 
-export default function Submissions({ setActiveTab, submissions, setActiveAssignmentId }) {
+export default function Submissions({ setActiveTab, submissions, setActiveAssignmentId, loading, setParms, parms }) {
 
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
+    const page = parms.page;
+    const pageSize = parms.limit;
 
+    console.log(parms);
+
+
+    const handleFilterChange = (field, value) => {
+        setParms((prev) => ({
+            ...prev,
+            [field]: value
+        }));
+    };
+
+    const handlePageChange = (newPage) => {
+        setParms((prev) => ({
+            ...prev,
+            page: newPage
+        }));
+    };
+
+    const handlePageSizeChange = (newSize) => {
+        setParms((prev) => ({
+            ...prev,
+            limit: newSize,
+            page: 1
+        }));
+    };
 
 
     const columns = [
         {
             key: "student",
             label: "Student Name",
-            width: "35%",
+            width: "25%",
             align: "left",
             render: (row) => (
                 <div className="flex items-center text-main gap-2">
-                    <Avatar name={row.name} />
+                    <Avatar name={row.username} />
                     <div>
-                        <p className='text-body'>{row.name}</p>
+                        <p className='text-body'>{row.username}</p>
                         <p className="text-caption">{row.email}</p>
                     </div>
                 </div>
@@ -37,11 +61,11 @@ export default function Submissions({ setActiveTab, submissions, setActiveAssign
             width: "10%",
         },
         {
-            key: "date",
+            key: "submittedAt",
             label: "Submission Date",
             width: "20%",
             render: (row) => (
-                <span className='text-body'>{formatDateTime(row.submission_date)}</span>
+                <span className='text-caption'>{formatDateTime(row.submittedAt)}</span>
             )
         },
         {
@@ -53,15 +77,15 @@ export default function Submissions({ setActiveTab, submissions, setActiveAssign
             ),
         },
         {
-            key: "grade",
+            key: "score",
             label: "Grade",
             width: "10%",
             render: (row) => (
                 <div className="flex text-body items-center gap-1">
                     <div className="border border-default w-12 h-7 flex items-center justify-center">
-                        {row.status === "GRADED" ? row.grade : ""}
+                        {row.status === "graded" ? row.score : ""}
                     </div>
-                    <span>/100</span>
+                    <span>{row.maxScore}</span>
                 </div>
             )
         },
@@ -80,17 +104,53 @@ export default function Submissions({ setActiveTab, submissions, setActiveAssign
     return (
         <div className='space-y-2'>
             <div className='flex justify-between gap-5 items-end w-full'>
-                <div className='flex gap-2'>
-                    <Input label="From Date" paddingClass="py-1 px-2" placeholder="DD/MM/YYYY" type="datetime-local" />
-                    <Input label="To Date" paddingClass="py-1 px-2" placeholder="DD/MM/YYYY" type="datetime-local" />
-                    <Input label="Status" paddingClass="py-1 px-2" placeholder="All" />
-                    <div className='flex flex-col gap-2 w-full'>
-                        <label className='text-h5 text-main dark:text-white'>Grade</label>
-                        <div className='flex gap-3 items-center w-40'>
-                            <Input paddingClass="py-1 px-2"  placeholder="min" />
-                            <span>to</span>
-                            <Input paddingClass="py-1 px-2"  placeholder="max" />
-                        </div>
+                <div className='grid grid-cols-2 md:grid-cols-4 gap-2'>
+                    <Input
+                        label="From Date"
+                        value={parms.fromDate || ""}
+                        onChange={(e) => handleFilterChange("fromDate", e.target.value)}
+                        border="border border-default"
+                        paddingClass="py-2 px-2"
+                        placeholder="DD/MM/YYYY"
+                        type="date"
+                    />
+
+                    <Input
+                        label="To Date"
+                        value={parms.toDate}
+                        onChange={(e) => handleFilterChange("toDate", e.target.value)}
+                        border="border-default"
+                        paddingClass="py-2 px-2"
+                        placeholder="DD/MM/YYYY"
+                        type="date"
+                    />
+
+                    <div className="col-span-1 md:col-span-1">
+                        <Select
+                            inputLabel="Status"
+                            label="Status:"
+                            value={parms.status}
+                            onChange={(value) => handleFilterChange("status", value)}
+                            options={[
+                                { label: "All", value: null },
+                                { label: "Submitted", value: "submitted" },
+                                { label: "Graded", value: "graded" },
+                                { label: "Done Late", value: "done-late" },
+                            ]}
+                        />
+                    </div>
+                    <div className="col-span-1 md:col-span-1">
+                        <Select
+                            inputLabel="Sort by"
+                            label="Sort by Grade:"
+                            value={parms.sortByGrade}
+                            onChange={(value) => handleFilterChange("sortByGrade", value)}
+                            options={[
+                                { label: "None", value: null },
+                                { label: "Ascending", value: "asc" },
+                                { label: "Descending", value: "desc" },
+                            ]}
+                        />
                     </div>
                 </div>
                 <div className='flex w-40'>
@@ -100,12 +160,13 @@ export default function Submissions({ setActiveTab, submissions, setActiveAssign
 
             <DataTable
                 columns={columns}
-                data={submissions}
+                data={submissions?.data}
                 page={page}
-                setPage={setPage}
+                setPage={handlePageChange}
                 pageSize={pageSize}
-                setPageSize={setPageSize}
-                total={submissions.length}
+                setPageSize={handlePageSizeChange}
+                total={submissions?.totalItems || 0} 
+                loading={loading}
             />
         </div>
     );

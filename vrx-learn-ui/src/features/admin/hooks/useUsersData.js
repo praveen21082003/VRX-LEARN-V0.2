@@ -28,6 +28,7 @@ export const useUsersData = () => {
 
   return {
     users,
+    setUsers,
     loading,
     error,
     fetchUsers,

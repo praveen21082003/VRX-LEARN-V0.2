@@ -15,14 +15,16 @@ import CourseContentPlaceholder from "@/features/courses/components/CourseConten
 
 
 function CourseOverView() {
-    const { viewRole } = useAuth();
+    const { viewRole, role } = useAuth();
     const { courseSlug } = useParams();
     const { fetchCourseOverview, courseOverview, loading, error } = useCourseContent();
-    // console.log(courseOverview);
+    console.log(courseOverview);
+
+    const effectiveRole = viewRole || role
 
     useEffect(() => {
-        fetchCourseOverview(courseSlug, viewRole);
-    }, [courseSlug, viewRole, fetchCourseOverview]);
+        fetchCourseOverview(courseSlug, effectiveRole);
+    }, [courseSlug, effectiveRole, fetchCourseOverview]);
 
     const title = capitalizeFirstLetter(courseOverview?.title)
 
@@ -32,10 +34,10 @@ function CourseOverView() {
     const { can } = usePermission();
 
     useEffect(() => {
-        if (!courseOverview?.course?.title) return;
+        if (!courseOverview?.title) return;
 
         setCourseBreadcrumb(title);
-    }, [courseOverview?.course?.title]);
+    }, [courseOverview?.title]);
 
 
     if (loading) {
@@ -79,13 +81,15 @@ function CourseOverView() {
 
     const renderCourseOverview = () => {
 
-        if (!courseOverview?.modules?.length && !can("UPDATE_COURSE")) {
+        const hasContent = (courseOverview?.noOfModules || 0) > 0 || (courseOverview?.noOfAssignments || 0) > 0;
+
+        if (!hasContent && !can("UPDATE_COURSE")) {
             return (
                 <div className="w-full flex justify-center">
                     <CourseContentPlaceholder />
                 </div>
             );
-        }
+        }   
 
         return (
             <div className="space-y-1 py-4 px-4 lg:px-6 lg:py-2 text-main">

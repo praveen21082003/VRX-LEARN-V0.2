@@ -26,7 +26,6 @@ function CreateLesson() {
         (m) => String(m.id) === String(moduleId)
     );
 
-    console.log(currentModule);
 
     const [formData, setFormData] = useState({
         title: "",
@@ -35,7 +34,6 @@ function CreateLesson() {
         contentType: "",
         fileSize: 1,
     });
-    console.log(formData);
 
 
 

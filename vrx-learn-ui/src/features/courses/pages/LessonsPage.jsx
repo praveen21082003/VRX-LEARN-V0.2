@@ -1,166 +1,94 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-
-import LessonsAsideSection from '../sections/LessonsAsideSection'
+import React, { useState, useEffect, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import LessonsAsideSection from '../sections/LessonsAsideSection';
 import LessonsMainSection from "../sections/LessonsMainSection";
-import { useOutletContext } from "react-router-dom";
-import useModule from "../hooks/useModules";
-import useLesson from "../hooks/useLesson";
+import useCourseContent from "../hooks/useCourseContent";
+import { useAuth } from "@/context/AuthContext";
 
 function LessonsPage() {
   const { courseSlug } = useParams();
+  const { role } = useAuth();
+  const navigate = useNavigate();
 
-
-  const { modules, moduleLoading, moduleError } = useModule(courseSlug);
-
-
+  const { fetchCourseContent, courseContent, loading } = useCourseContent();
   const [activeLesson, setActiveLesson] = useState(null);
-  const [buttonAction, setButtonAction] = useState("");
   const [openPlaylist, setOpenPlaylist] = useState(false);
 
-  const lessonId = activeLesson?.lessonId;
-  const { lesson, loading: lessonLoading, error: lessonError } = useLesson(lessonId);
-
-
-
-  // console.log(lesson);
-
-
   useEffect(() => {
-    if (!modules?.length) return;
-
-    const firstModule = modules[0];
-    if (!firstModule?.lessons?.length) return;
-
-    setActiveLesson({
-      moduleIndex: 0,
-      lessonIndex: 0,
-      lessonId: firstModule.lessons[0].id,
-    });
-
-  }, [modules]);
-
-
-  const { setSectionBreadcrumb } = useOutletContext();
-  useEffect(() => {
-    if (lesson?.title) {
-      setSectionBreadcrumb(lesson.title);
+    if (courseSlug && role) {
+      fetchCourseContent(courseSlug, role);
     }
-  }, [lesson, setSectionBreadcrumb]);
+  }, [courseSlug, role, fetchCourseContent]);
 
-
+  // Set the first lesson as active once data loads
   useEffect(() => {
-    if (!buttonAction || !activeLesson || !modules?.length) return;
-
-    const { moduleIndex, lessonIndex } = activeLesson;
-
-    if (buttonAction === "previous") {
-      // Case 1: previous lesson in same module
-      if (lessonIndex > 0) {
-        const prevLesson = modules[moduleIndex].lessons[lessonIndex - 1];
-
+    if (courseContent?.modules?.length > 0 && !activeLesson) {
+      const firstModule = courseContent.modules[0];
+      if (firstModule.lessons?.length > 0) {
         setActiveLesson({
-          moduleIndex,
-          lessonIndex: lessonIndex - 1,
-          lessonId: prevLesson.id,
-        });
-      }
-      // Case 2: go to last lesson of previous module
-      else if (moduleIndex > 0) {
-        const prevModule = modules[moduleIndex - 1];
-        const lastLessonIndex = prevModule.lessons.length - 1;
-        const prevLesson = prevModule.lessons[lastLessonIndex];
-
-        setActiveLesson({
-          moduleIndex: moduleIndex - 1,
-          lessonIndex: lastLessonIndex,
-          lessonId: prevLesson.id,
-        });
-      }
-    }
-
-    if (buttonAction === "next") {
-      const currentModule = modules[moduleIndex];
-
-      // Case 1: next lesson in same module
-      if (lessonIndex < currentModule.lessons.length - 1) {
-        const nextLesson = currentModule.lessons[lessonIndex + 1];
-
-        setActiveLesson({
-          moduleIndex,
-          lessonIndex: lessonIndex + 1,
-          lessonId: nextLesson.id,
-        });
-      }
-      // Case 2: first lesson of next module
-      else if (moduleIndex < modules.length - 1) {
-        const nextModule = modules[moduleIndex + 1];
-        const nextLesson = nextModule.lessons[0];
-
-        setActiveLesson({
-          moduleIndex: moduleIndex + 1,
+          moduleIndex: 0,
           lessonIndex: 0,
-          lessonId: nextLesson.id,
+          lessonId: firstModule.lessons[0].id,
         });
       }
     }
+  }, [courseContent, activeLesson]);
 
-    setButtonAction("");
-
-  }, [buttonAction, activeLesson, modules]);
-
-
-  const getNextLesson = () => {
-    if (!activeLesson || !modules?.length) return null;
+  // Logic to calculate Prev/Next lessons
+  const navigationData = useMemo(() => {
+    if (!activeLesson || !courseContent?.modules) return { prev: null, next: null };
 
     const { moduleIndex, lessonIndex } = activeLesson;
+    const modules = courseContent.modules;
     const currentModule = modules[moduleIndex];
 
-    // Case 1: next lesson in same module
+    let prev = null;
+    let next = null;
+
+    // Next Logic
     if (lessonIndex < currentModule.lessons.length - 1) {
-      return {
-        lesson: currentModule.lessons[lessonIndex + 1],
-        moduleIndex,
-        lessonIndex: lessonIndex + 1,
-      };
+      next = { moduleIndex, lessonIndex: lessonIndex + 1, lessonId: currentModule.lessons[lessonIndex + 1].id };
+    } else if (moduleIndex < modules.length - 1) {
+      next = { moduleIndex: moduleIndex + 1, lessonIndex: 0, lessonId: modules[moduleIndex + 1].lessons[0].id };
     }
 
-    // Case 2: first lesson of next module
-    if (moduleIndex < modules.length - 1) {
-      return {
-        lesson: modules[moduleIndex + 1].lessons[0],
-        moduleIndex: moduleIndex + 1,
-        lessonIndex: 0,
-      };
+    // Prev Logic
+    if (lessonIndex > 0) {
+      prev = { moduleIndex, lessonIndex: lessonIndex - 1, lessonId: currentModule.lessons[lessonIndex - 1].id };
+    } else if (moduleIndex > 0) {
+      const prevModule = modules[moduleIndex - 1];
+      prev = { moduleIndex: moduleIndex - 1, lessonIndex: prevModule.lessons.length - 1, lessonId: prevModule.lessons[prevModule.lessons.length - 1].id };
     }
 
-    return null; // no next lesson
-  };
-
-  const nextLessonData = getNextLesson();
+    return { prev, next };
+  }, [activeLesson, courseContent]);
 
 
+  if (!activeLesson) {
+    return (
+      <main className="flex-1 flex items-center justify-center">
+        <p className="text-muted-foreground">Initializing lesson...</p>
+      </main>
+    );
+  }
+
+  if (loading || !courseContent) return <div className="p-10 text-center">Loading Course...</div>;
 
   return (
     <div className="flex h-[calc(100vh-56px)] bg-background text-main">
-
-
       <LessonsAsideSection
-        modules={modules}
+        modules={courseContent.modules}
         activeLesson={activeLesson}
         setActiveLesson={setActiveLesson}
         openPlaylist={openPlaylist}
         setOpenPlaylist={setOpenPlaylist}
-        />
-
+      />
 
       <LessonsMainSection
-        lesson={lesson}
         activeLesson={activeLesson}
-        setButtonAction={setButtonAction}
-        setOpenPlaylist={setOpenPlaylist}
-        setActiveLesson={setActiveLesson}
-        nextLessonData={nextLessonData}
+        prevLesson={navigationData.prev}
+        nextLesson={navigationData.next}
+        onNavigate={setActiveLesson}
       />
     </div>
   );

@@ -8,37 +8,57 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
   const [viewRole, setViewRole] = useState(() => {
     const saved = localStorage.getItem("viewRole");
-
-    return saved && saved !== "null" && saved !== "undefined"
-      ? saved
-      : null;
+    return saved && saved !== "null" && saved !== "undefined" ? saved : null;
   });
 
-  const isAuthenticated = !!user;
-  const role = user?.role?.toLowerCase();
+
 
   useEffect(() => {
+    let isMounted = true;
     const initAuth = async () => {
       try {
         const res = await getMe();
-        setUser(res);
+        if (isMounted) {
+          setUser(res);
+          const userRole = res?.role?.toLowerCase();
 
-        if (res?.role === "trainer" && !viewRole) {
-          setViewRole("trainer");
+
+          if (userRole === "trainee") {
+            setViewRole(null);
+            localStorage.removeItem("viewRole");
+          }
+
+
+          else if (userRole === "trainer" && !viewRole) {
+            setViewRole("trainer");
+          }
         }
       } catch (err) {
-        console.error("GET ME ERROR:", err);
-        setUser(null);
-        setViewRole(null);
+        if (isMounted) {
+          setUser(null);
+          setViewRole(null);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
     initAuth();
+    return () => { isMounted = false; };
   }, []);
+
+
+  useEffect(() => {
+    if (user) {
+      const userRole = user?.role?.toLowerCase();
+
+      if (userRole === "trainee") {
+        setViewRole(null);
+      }
+    }
+  }, [user]);
+
 
 
   useEffect(() => {
@@ -49,22 +69,43 @@ export function AuthProvider({ children }) {
     }
   }, [viewRole]);
 
-  if (loading) {
-    return <FillPageLoading />;
-  }
+
+  const logout = () => {
+    setUser(null);
+    setRole(null);
+    localStorage.clear();
+    localStorage.removeItem("viewRole");
+  };
+
 
   return (
     <AuthContext.Provider value={{
-      user, role, viewRole, setViewRole,
-      loading, isAuthenticated, setUser, setLoading
+      user,
+      role: user?.role?.toLowerCase(),
+      viewRole,
+      setViewRole,
+      logout,
+      loading,
+      isAuthenticated: !!user,
+      setUser,
+      setLoading
     }}>
-      {children}
+      {loading ? <FillPageLoading /> : children}
     </AuthContext.Provider>
   );
 }
 
 
-
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (context === null || context === undefined) {
+    return {
+      user: null,
+      loading: true, // Default to loading state
+      isAuthenticated: false,
+      role: null
+    };
+  }
+
+  return context;
 }

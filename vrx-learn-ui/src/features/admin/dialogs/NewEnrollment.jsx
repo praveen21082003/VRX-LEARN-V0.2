@@ -14,6 +14,7 @@ function NewEnrollment({
   userData = {},
   onClose,
   Status = [],
+  onSuccess
 }) {
 
   const memoizedParams = useMemo(() => ({
@@ -56,7 +57,6 @@ function NewEnrollment({
 
 
   const { createEnrollment, updateEnrollment, isCreating, isUpdating } = useEnrollments();
-  const { fetchEnrollments } = useEnrollmentData();
 
   const { addToast } = useToast();
 
@@ -80,7 +80,7 @@ function NewEnrollment({
       setFormData({
         status: userData.status || "in-progress",
         expireAt: userData.expireAt
-          ? new Date(userData.expireAt).toISOString().slice(0, 16)
+          ? new Date(userData.expireAt).toISOString().slice(0, 10)
           : "",
       });
     }
@@ -111,15 +111,17 @@ function NewEnrollment({
 
     // Expiry Date
 
-    const isValidDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+    const isValidDateTime = /^\d{4}-\d{2}-\d{2}$/;
 
     if (formData.expireAt) {
       if (!isValidDateTime.test(formData.expireAt)) {
         errors.expireAt = "Please enter a valid date and time";
       } else {
-        const date = new Date(formData.expireAt);
-        if (date < new Date()) {
-          errors.expireAt = "Expiry date must be in the future";
+        const selectedDate = new Date(formData.expireAt);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selectedDate < today) {
+          errors.expireAt = "Expiry date must be today or in the future";
         }
       }
     }
@@ -157,15 +159,29 @@ function NewEnrollment({
     try {
 
       if (isEdit) {
-        const payload = {
-          ...(formData.status && { status: formData.status }),
-          ...(formData.expireAt && {
-            expireAt: new Date(formData.expireAt).toISOString()
-          })
-        };
 
-        await updateEnrollment(userData.id, payload);
+        const formKeys = ["status", "expireAt"];
 
+
+        const updatePayload = formKeys.reduce((acc, key) => {
+
+          const originalValue = userData[key] ?? "";
+          const newValue = formData[key] ?? "";
+
+          if (newValue !== originalValue) {
+            acc[key] = newValue;
+          }
+
+          return acc;
+        }, {});
+
+        if (Object.keys(updatePayload).length === 0) {
+          addToast("No changes detected.", "warning");
+          return;
+        }
+
+
+        await updateEnrollment(userData.id, updatePayload);
         addToast("Enrollment updated successfully.", "success");
 
       } else {
@@ -178,15 +194,17 @@ function NewEnrollment({
           })
         };
 
-        await createEnrollment(payload);
+
+        const newRecord = await createEnrollment(payload);
 
         addToast("Enrollment created successfully.", "success");
       }
 
-      fetchEnrollments();
+      onSuccess?.();
       onClose?.();
 
     } catch (err) {
+      console.log(err);
       const status = err?.response?.status;
       addToast(getErrorMessage(status, isEdit ? "update" : "create"), "error");
     }
@@ -233,7 +251,8 @@ function NewEnrollment({
           inputLabel="Status"
           options={[
             { label: "In Progress", value: "in-progress" },
-            { label: "Completed", value: "completed" }
+            { label: "Completed", value: "completed" },
+            { label: "Suspended", value: "suspended" },
           ]}
           value={formData.status}
           onChange={(value) => handleChange("status", value)}
@@ -245,10 +264,10 @@ function NewEnrollment({
         <label className="text-h5 text-main">Expiry Date</label>
         <Input
           name="expireAt"
-          type="datetime-local"
+          type="date"
           value={formData.expireAt}
           onChange={(e) => handleChange("expireAt", e.target.value)}
-          min={new Date().toISOString().slice(0, 16)}
+          min={new Date().toISOString().slice(0, 10)}
           className="w-full border-default"
           inputWarning={warnings.expireAt}
         />

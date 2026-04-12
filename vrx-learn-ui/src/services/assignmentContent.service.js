@@ -15,3 +15,11 @@ export const getAssignmentSubmission = (assignmentId, params) => {
         { params }
     );
 };
+
+export const getTraineeAssignmentContent = (courseId) => {
+    return axiosInstance.get(`/api/v1/assignment-contents/trainee/assignments/${courseId}`)
+}
+
+export const getAssignmentById = (assignmentId) => {
+    return axiosInstance.get(`/api/v1/assignment-contents/trainee/contents/${assignmentId}`)
+}

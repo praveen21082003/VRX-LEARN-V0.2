@@ -75,7 +75,7 @@ function Input({
                         outline-none
                         transition
                         
-                        ${! border ? " border border-input-border" : `border-2 ${border}` }
+                        ${! border ? " border border-input-border" : `${border}` }
                         dark:border-default
                         ${bgClass}
                         focus:ring-1 focus:ring-brand

@@ -24,14 +24,14 @@ export const TRAINEE_SECTIONS = [
   {
     key: "lessons",
     title: "Lessons",
-    MetaData: (course) => `${course.noOfLessons} Trainees Enrolled`,
-    icon: "mdi:users",
+    MetaData: (course) => `${course.noOfModules} Modules • ${course.noOfLessons} Lessons`,
+    // icon: "mdi:users",
   },
   {
     key: "assignments",
     title: "Assignment",
-    MetaData: (course) => `${course.noOfAssignments} Trainees Enrolled`,
-    icon: "mdi:users",
+    MetaData: (course) => `${course.noOfAssignments} Assignments`,
+    // icon: "mdi:users",
   },
   // {
   //   key: "quizzes",

@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Select, Input, DataTable, Avatar, StatusPill, CourseCard } from '@/components/ui';
+import { Button, Select, Input, DataTable, Modal, DeleteConfirmContent, CourseCard } from '@/components/ui';
 import formatDateTime from '@/utils/formatDateTime';
-import Modal from '../../../../components/ui/Modal/Modal';
+
 import NewCourses from '../../dialogs/NewCourses';
 import { useCoursesData } from '../../hooks/useCousesData';
 import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter';
+import useCourses from '../../hooks/useCourses';
+import { useToast } from '@/context/ToastProvider'
 
 function CourseManagement() {
   const isMobile = window.innerWidth < 768;
 
-  const { courses, loading, error, fetchCourses, total } = useCoursesData();
+  const { courses, setCourses, loading, error, fetchCourses, total } = useCoursesData();
+  const { isDeleting, deleteCourseById } = useCourses();
+  const { addToast } = useToast();
+
+  const [isDelete, setIsDelete] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -81,8 +88,9 @@ function CourseManagement() {
   };
 
   const handleOpenDelete = (row) => {
-    // setSelectedEnrollment(row);
-    // setIsDelete(true);
+    setSelectedCourse(row);
+    console.log(row);
+    setIsDelete(true);
   };
 
 
@@ -93,6 +101,42 @@ function CourseManagement() {
   const allTitles = [...new Set(courses.map((course) => course.title))];
 
   const allDescription = [...new Set(courses.map((course) => course.description))];
+
+
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteCourseById(id);
+
+      addToast("Course deleted successfully.", "success");
+
+      setCourses(prev => prev.filter(course => course.id !== id));
+      setIsDelete(false);
+
+    } catch (error) {
+      console.error("Delete Course Error:", error);
+
+      const status = error?.response?.status;
+
+      let message = "Failed to delete course. Please try again.";
+
+      if (status === 400) {
+        message = "Invalid request. Unable to delete course.";
+      } else if (status === 401) {
+        message = "Session expired. Please login again.";
+      } else if (status === 403) {
+        message = "You are not authorized to delete this course.";
+      } else if (status === 404) {
+        message = "Course not found or already deleted.";
+      } else if (status === 409) {
+        message = "Course cannot be deleted as it is currently in use.";
+      } else if (status >= 500) {
+        message = "Server error. Please try again later.";
+      }
+
+      addToast(message, "error");
+    }
+  };
 
   const coursesManagementColumns = [
     {
@@ -132,11 +176,20 @@ function CourseManagement() {
       key: "shortDescription",
       label: "Short Description",
       align: "left",
-      width: "30%"
+      width: "30%",
+      render: (row) => (
+        <p
+          title={row.shortDescription}
+          className={`h-10 overflow-hidden leading-5 line-clamp-2 ${!row.shortDescription ? "text-muted italic" : ""
+            }`}
+        >
+          {row.shortDescription || "No description provided"}
+        </p>
+      )
     },
     {
-      key: "trainers",
-      label: "Trainers",
+      key: "trainer",
+      label: "Trainer",
       align: "center",
       width: "15%",
       render: (row) => (
@@ -147,7 +200,7 @@ function CourseManagement() {
     },
     {
       key: "noOfTrainees",
-      label: "No.of Trainee",
+      label: "No.of Trainees",
       align: "center",
       width: "10%"
     },
@@ -201,6 +254,7 @@ function CourseManagement() {
               className="px-3 py-1.5 text-sm rounded-md"
               bgClass=""
               textClass="text-body"
+              isMobile={isMobile}
             />
 
             <Button
@@ -287,6 +341,7 @@ function CourseManagement() {
               key={key}
               row={row}
               columns={coursesManagementColumns}
+              loading={loading}
             />
           )}
         />
@@ -305,6 +360,24 @@ function CourseManagement() {
             onClose={() => setOpen(false)}
           />
         </Modal>
+      )}
+
+      {isDelete && (
+        <Modal
+          isOpen={isDelete}
+          onClose={() => setIsDelete(false)}
+          title="Are you absolutely sure?"
+        >
+          <DeleteConfirmContent
+            confirmText={selectedCourse?.title || ""}
+            entityName="enrollment"
+            message={`You are about to permanently delete ${selectedCourse?.title} enrollment.`}
+            onClose={() => setIsDelete(false)}
+            loading={isDeleting}
+            onConfirm={() => selectedCourse && handleDelete(selectedCourse.id)}
+          />
+        </Modal>
+
       )}
     </div>
   );

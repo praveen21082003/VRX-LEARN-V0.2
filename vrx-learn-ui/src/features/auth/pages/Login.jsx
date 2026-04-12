@@ -32,10 +32,9 @@ function Login({ onForgot, setWarnMsg }) {
                 credentials.email,
                 credentials.password,
             );
-            console.log(data);
+
             if (data.message === "Logged in successfully") {
                 const userData = await getMe();
-                console.log(userData)
                 setUser(userData);
                 navigate("/dashboard", { replace: true });
             }
