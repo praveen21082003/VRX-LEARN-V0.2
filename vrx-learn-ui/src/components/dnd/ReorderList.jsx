@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 
 
 
-function ReorderList({ items, reorder, fetchCourseContent, isUpdating, addToast }) {
+function ReorderList({ items, reorder, isUpdating, addToast, onReorderUI }) {
 
     const { courseSlug } = useParams();
     // console.log(courseSlug);
@@ -43,6 +43,7 @@ function ReorderList({ items, reorder, fetchCourseContent, isUpdating, addToast 
         // 2. Optimistic UI Update (Snappy feel)
         const previousData = [...data];
         setData(newArray);
+        onReorderUI?.(newArray);
 
         // 3. Prepare Payload
         const movedIndex = newIndex;
@@ -74,12 +75,9 @@ function ReorderList({ items, reorder, fetchCourseContent, isUpdating, addToast 
             })
 
 
-            if (fetchCourseContent) {
-                await fetchCourseContent(courseSlug);
-            }
-
         } catch (err) {
             setData(previousData);
+            onReorderUI?.(previousData);
 
             const status = err?.response?.status;
             const message = getCustomErrorMessage(status);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import useCreateModule from '../../hooks/useCreateModule';
 import { useToast } from '@/context/ToastProvider';
 import ModuleFormSection from '../../sections/ModuleFormSection';
@@ -8,8 +8,10 @@ import ModuleFormSection from '../../sections/ModuleFormSection';
 function CreateModule() {
     // const { courseSlug } = useParams();
 
+    const navigate = useNavigate()
+
     const { createModule, loading, error } = useCreateModule();
-    const { fetchCourseContent, courseSlug } = useOutletContext();
+    const { fetchCourseContent, setCourseContent, courseSlug } = useOutletContext();
     const { addToast } = useToast();
 
     const [warning, setWarning] = useState({
@@ -31,10 +33,6 @@ function CreateModule() {
             }));
         }
     }, [courseSlug]);
-
-
-    console.log(formData);
-
 
 
     const handleChange = (field, value) => {
@@ -73,12 +71,20 @@ function CreateModule() {
 
 
         try {
-            await createModule(payload);
-            await fetchCourseContent(courseSlug);
+            const newModule = await createModule(payload);
+
+            setCourseContent((prev) => ({
+                ...prev,
+                modules: [newModule, ...(prev.modules || [])]
+            }));
 
             addToast("Module created successfully", "success");
             setFormData(prev => ({ ...prev, title: "", description: "" }));
             setWarning(prev => ({ ...prev, title: "", description: "" }));
+
+
+            navigate(`/course/${courseSlug}/content/modules`)
+
 
         } catch (err) {
             const status = err?.response?.status;

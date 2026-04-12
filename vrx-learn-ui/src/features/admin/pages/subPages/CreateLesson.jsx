@@ -17,8 +17,9 @@ function CreateLesson() {
     const { modules, addToast, courseContent } = useOutletContext();
 
 
-    const { lessons, isCreating, uploadProgress, loadedData, mediaStatus, lessonsError, createLesson } = useLessons();
+    const { lessons, setLessons, isCreating, uploadProgress, loadedData, mediaStatus, lessonsError, createLesson } = useLessons();
 
+            console.log(lessons)
 
 
 
@@ -101,7 +102,8 @@ function CreateLesson() {
 
 
         try {
-            await createLesson(payload, file);
+            const newLesson = await createLesson(payload, file);
+            setLessons(prev => [newLesson, ...(prev || [])]);
             addToast("Lesson created successfully", "success");
             navigate(`/course/${courseSlug}/content/modules/${moduleId}`);
         } catch (err) {

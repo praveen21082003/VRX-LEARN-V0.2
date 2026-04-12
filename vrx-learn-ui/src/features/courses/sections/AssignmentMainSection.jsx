@@ -12,7 +12,7 @@ import { useSubmission } from "../hooks/useSubmission";
 
 export default function AssignmentMainSection({ assignment, courseId }) {
 
-    const [isOpen, setOpen] = useState(false);
+    const [openAttempt, setOpenAttempt] = useState(null);
 
     const [files, setFiles] = useState([]);
     // console.log(files);
@@ -26,6 +26,7 @@ export default function AssignmentMainSection({ assignment, courseId }) {
     const maxAttempts = assignmentData?.numberOfAttempts || 1;
     const canSubmit = !hasSubmissions || submissions.length < maxAttempts;
     const attemptsArray = Array.from({ length: maxAttempts }, (_, i) => i + 1);
+    const nextAttempt = submissions?.length + 1;
 
 
     const mediaId = attachment?.mediaId;
@@ -207,7 +208,7 @@ export default function AssignmentMainSection({ assignment, courseId }) {
                                     <div className="flex bg-submission border-b border-default justify-between p-3 h-15 items-center">
                                         <div className="flex justify-center items-center gap-5">
                                             Attempt {attemptNumber} of {maxAttempts}
-                                            {!isOpen && (
+                                            {openAttempt != attemptNumber && (
                                                 <span>
                                                     <p className="text-body">{submission.filename}</p>
                                                     <p className="text-caption text-muted">
@@ -224,15 +225,19 @@ export default function AssignmentMainSection({ assignment, courseId }) {
                                                 frontIconHeight="26"
                                                 frontIconWidth="26"
                                                 bgClass=""
-                                                className={isOpen && "rotate-180"}
+                                                className={openAttempt === attemptNumber ? "rotate-180" : ""}
                                                 textClass=""
-                                                onClick={() => setOpen((prev) => !prev)}
+                                                onClick={() =>
+                                                    setOpenAttempt(prev =>
+                                                        prev === attemptNumber ? null : attemptNumber
+                                                    )
+                                                }
                                             />
                                         </div>
                                     </div>
 
                                     {
-                                        isOpen && (
+                                        openAttempt === attemptNumber && (
                                             <>
                                                 {submission ? (
                                                     <div className="p-4">
@@ -265,9 +270,24 @@ export default function AssignmentMainSection({ assignment, courseId }) {
                                                         }
                                                     </div>
                                                 ) : (
-                                                    <p className="text-sm text-gray-400 mt-2">
-                                                        No submission yet
-                                                    </p>
+
+                                                    <>
+                                                        <p className="text-sm text-gray-400 mt-2">
+                                                            No submission yet
+                                                        </p>
+
+                                                        {attemptNumber === nextAttempt && (
+                                                            <UploadSection
+                                                                files={files}
+                                                                setFiles={setFiles}
+                                                                uploadProgress={uploadProgress}
+                                                                isUploading={submitting}
+                                                                mediaStatus={mediaStatus}
+                                                                loadedData={loadedData}
+                                                            />
+                                                        )}
+                                                    </>
+
                                                 )}
 
                                             </>

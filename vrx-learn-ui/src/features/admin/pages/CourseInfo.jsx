@@ -1,11 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Icon, Input, CourseTumbnail, Button, TextEditor } from "@/components/ui";
 import useUpdateCourseDetails from "../hooks/useUpdateCourseDetails";
-import { useParams, useOutletContext } from "react-router-dom";
+import { useParams, useOutletContext, useNavigate } from "react-router-dom";
 
 
 function CourseInfo() {
   const { courseSlug } = useParams();
+  const navigate = useNavigate();
 
   const { courseContent, loading, addToast } = useOutletContext();
 
@@ -15,21 +16,22 @@ function CourseInfo() {
   const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
-    name: "",
-    author: "",
+    title: "",
+    trainerName: "",
     shortDescription: "",
     longDescription: "",
+    thumbnail: null
   });
 
   useEffect(() => {
     setFormData({
-      name: courseContent?.course?.title || "",
-      author: courseContent?.course?.trainerName || "",
+      title: courseContent?.course?.title || "",
+      trainerName: courseContent?.course?.trainerName || "",
       shortDescription: courseContent?.course?.shortDescription || "",
       longDescription: courseContent?.course?.longDescription || "",
       thumbnail: courseContent?.course?.thumbnail || null,
-    })
-  }, [courseContent])
+    });
+  }, [courseContent]);
 
 
   // Handle text input
@@ -53,17 +55,6 @@ function CourseInfo() {
     }));
   };
 
-  const isFormChanged = () => {
-    const original = {
-      name: courseContent?.course?.title || "",
-      author: courseContent?.course?.trainerName || "",
-      shortDescription: courseContent?.course?.shortDescription || "",
-      longDescription: courseContent?.course?.longDescription || "",
-      thumbnail: courseContent?.course?.thumbnail || null,
-    };
-
-    return JSON.stringify(original) !== JSON.stringify(formData);
-  };
 
   const getCustomErrorMessage = (status) => {
     const map = {
@@ -78,23 +69,53 @@ function CourseInfo() {
     return map[status] || "Something went wrong while updating course.";
   };
 
+
+  const buildUpdatePayload = () => {
+    const original = {
+      title: courseContent?.course?.title || "",
+      shortDescription: courseContent?.course?.shortDescription || "",
+      longDescription: courseContent?.course?.longDescription || "",
+      thumbnail: courseContent?.course?.thumbnail || null,
+    };
+
+    const payload = {};
+
+    const editableFields = [
+      "title",
+      "shortDescription",
+      "longDescription",
+      "thumbnail"
+    ];
+
+    editableFields.forEach((key) => {
+      if (formData[key] !== original[key]) {
+        payload[key] = formData[key];
+      }
+    });
+
+    return payload;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isFormChanged()) {
+    const payload = buildUpdatePayload();
+
+    if (Object.keys(payload).length === 0) {
       addToast("No changes detected", "warning");
       return;
     }
 
     try {
 
-      await updateCourse(courseSlug, formData);
+      console.log(payload);
 
+      await updateCourse(courseSlug, payload);
       addToast("Course updated successfully", "success");
-
-      // navigate(`/courses/${courseSlug}`);
+      navigate(`/course/${courseSlug}/overview`);
 
     } catch (err) {
+      console.log(err)
       const status = err?.response?.status;
       const message = getCustomErrorMessage(status);
 
@@ -126,14 +147,15 @@ function CourseInfo() {
           <div className="flex flex-col gap-8 md:w-[65%] xl:w-[70%] justify-end">
             <Input
               label="Title"
-              value={formData.name}
-              onChange={(e) => handleChange("name", e.target.value)}
+              value={formData.title}
+              onChange={(e) => handleChange("title", e.target.value)}
               bgClass="bg-input-bg"
             />
             <Input
               label="Author"
-              value={formData.author}
-              onChange={(e) => handleChange("author", e.target.value)}
+              value={formData.trainerName}
+              disabled
+              title="Cant edit author"
               bgClass="bg-input-bg"
             />
           </div>
@@ -141,7 +163,7 @@ function CourseInfo() {
 
           <div className="relative noise-overlay flex flex-col md:w-[35%]  xl:w-[30%]">
             <CourseTumbnail
-              name={formData.name}
+              name={formData.title}
               image={formData.thumbnail}
               classRounded="rounded-t-sm"
             />
@@ -152,6 +174,7 @@ function CourseInfo() {
               accept="image/*"
               className="hidden"
               onChange={handleFileChange}
+              disabled
             />
 
             <Button
@@ -164,6 +187,7 @@ function CourseInfo() {
               textClass="text-h5"
               bgClass="bg-primary/16 dark:bg-surface-primary-dark"
               onClick={() => fileInputRef.current.click()}
+              title="You can't upload tumbnail"
             />
           </div>
         </div>

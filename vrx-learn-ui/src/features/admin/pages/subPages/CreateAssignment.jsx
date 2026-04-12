@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AssignmentFormSection from '../../sections/AssignmentFormSection';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import useAssignment from '../../hooks/useAssignment';
 import { useToast } from '@/context/ToastProvider';
 
@@ -8,8 +8,9 @@ function CreateAssignment() {
 
     console.log("create assignment");
     const { addToast } = useToast();
+    const navigate = useNavigate();
 
-    const { fetchCourseContent, courseSlug } = useOutletContext();
+    const { setCourseContent, courseSlug } = useOutletContext();
 
     const [files, setFiles] = useState([]);
     const { createAssignment, isCreating, uploadProgress, error } = useAssignment();
@@ -22,7 +23,7 @@ function CreateAssignment() {
         maxScore: 0,
         numberOfAttempts: 1,
     });
-    console.log(formData);
+
 
     const [formDataErrors, setFormDataErrors] = useState({});
 
@@ -40,16 +41,30 @@ function CreateAssignment() {
         }
     };
 
+
     const validate = () => {
         const newErrors = {};
 
         if (!formData.title.trim()) {
             newErrors.title = "Title is required";
         }
-        if (!formData.instructions.trim()) {
-            newErrors.instructions = "Instructions is required";
+
+        const instructions = formData.instructions?.trim();
+        const file = files?.[0];
+
+        if (!instructions && !file) {
+            newErrors.instructions = "Enter instructions or upload a file";
+            newErrors.file = "Upload a file or enter instructions";
         }
-        // Fixed: Use numberOfAttempts instead of max_attempts
+
+        if (!formData.maxScore || formData.maxScore < 5 || formData.maxScore > 100) {
+            newErrors.maxScore = "Max score must be between 5 and 100";
+        }
+
+        if (formData.numberOfAttempts < 1 || formData.numberOfAttempts > 3) {
+            newErrors.numberOfAttempts = "Attempts must be between 1 and 3";
+        }
+
         if (formData.numberOfAttempts > 3) {
             newErrors.numberOfAttempts = "You cannot set more than 3 attempts";
         } else if (formData.numberOfAttempts <= 0) {
@@ -85,9 +100,16 @@ function CreateAssignment() {
 
 
         try {
-            await createAssignment(payload, file);
+            console.log(payload);
+            // const newAssignment = await createAssignment(payload, file);
+
+            // setCourseContent(prev => ({
+            //     ...prev,
+            //     assignments: [newAssignment, ...(prev.assignments || [])]
+            // }));
             addToast("Assignment created successfully", "success");
-            await fetchCourseContent(courseSlug);
+            navigate(`/course/${courseSlug}/content/assignments`)
+
         } catch (err) {
             addToast("Something went wrong", "error");
             console.warn(err);

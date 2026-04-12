@@ -16,7 +16,6 @@ function AssignmentFormSection({
     loading,
     attachment
 }) {
-    console.log(formData)
 
     const { courseSlug } = useParams();
     const { courseContent } = useOutletContext();
@@ -43,7 +42,7 @@ function AssignmentFormSection({
                 <Input
                     label="Title"
                     value={formData?.title || ""}
-                    // inputWarning={formDataErrors.title}
+                    inputWarning={formDataErrors.title}
                     onChange={(e) => handleChange("title", e.target.value)}
                 />
 
@@ -51,6 +50,7 @@ function AssignmentFormSection({
                     label="Instructions"
                     value={formData?.instructions}
                     onChange={(value) => handleChange("instructions", value)}
+                    inputWarning={formDataErrors.instructions}
                 />
 
                 <div className='grid grid-cols-1 lg:grid-cols-3 gap-2'>
@@ -69,7 +69,7 @@ function AssignmentFormSection({
                         type="number"
                         min='0'
                         value={formData?.maxScore}
-                        // inputWarning={formDataErrors.marks}
+                        inputWarning={formDataErrors.maxScore}
                         onChange={(e) => handleChange("maxScore", Number(e.target.value))}
                     />
                     <Input
@@ -77,14 +77,14 @@ function AssignmentFormSection({
                         type="number"
                         min="1"
                         max="3"
-                        // inputWarning={formDataErrors.max_attempts}
+                        inputWarning={formDataErrors.max_attempts}
                         value={formData?.numberOfAttempts}
                         onChange={(e) => handleChange("numberOfAttempts", Number(e.target.value))}
                     />
                 </div>
 
                 {!isEdit && (
-                    <UploadSection files={files} setFiles={setFiles} label="Attachments" optional={true} />
+                    <UploadSection files={files} setFiles={setFiles} label="Attachments" optional={true} inputWarning={formDataErrors.file}/>
                 )}
 
                 {isEdit && (

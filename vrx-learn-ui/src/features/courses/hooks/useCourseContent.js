@@ -45,6 +45,7 @@ export default function useCourseContent() {
 
   return {
     courseContent,
+    setCourseContent,
     courseOverview,
 
     loading,

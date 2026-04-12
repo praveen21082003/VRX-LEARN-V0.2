@@ -32,7 +32,7 @@ function ModulesEditor() {
     const { addToast } = useToast();
 
 
-    const { courseContent, fetchCourseContent, loading, courseSlug } = useOutletContext();
+    const { courseContent, fetchCourseContent, setCourseContent, loading, courseSlug } = useOutletContext();
 
 
     const [orderedModules, setOrderedModules] = useState([]);
@@ -82,10 +82,17 @@ function ModulesEditor() {
         try {
             setIsRename(true);
             await updateModule(moduleId, { title: newTitle });
-            await fetchCourseContent(courseSlug);
-            addToast("Module Renamed", "success")
 
+            setCourseContent(prev => ({
+                ...prev,
+                modules: prev.modules.map(m =>
+                    m.id === moduleId
+                        ? { ...m, title: newTitle }
+                        : m
+                )
+            }));
 
+            addToast("Module Renamed", "success");
             setRenameModuleId(null);
         } catch (error) {
             console.error(error);
@@ -194,9 +201,15 @@ function ModulesEditor() {
                         reorder={reorderModules}
                         isUpdating={isUpdating}
                         addToast={addToast}
-                        fetchCourseContent={fetchCourseContent}
-                    />
+                        onReorderUI={(newOrder) => {
+                            setOrderedModules(newOrder);
 
+                            setCourseContent(prev => ({
+                                ...prev,
+                                modules: newOrder
+                            }));
+                        }}
+                    />
                     : loading ? (
                         <div className="h-full w-full">
                             <ContentLoading count={7} />

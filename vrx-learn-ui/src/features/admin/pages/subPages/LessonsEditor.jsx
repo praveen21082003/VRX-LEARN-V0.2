@@ -140,8 +140,15 @@ function LessonsEditor() {
 
     async function renameLessonHandler(lessonId) {
         const newTitle = renameValue.trim();
-
         if (!newTitle) return;
+
+        const original = orderedLessons.find(l => l.id === lessonId)?.title?.trim();
+
+        if (newTitle === original) {
+            setRenameLessonId(null);
+            return;
+        }
+
 
         try {
             await updateLesson(lessonId, { title: newTitle });
@@ -237,6 +244,9 @@ function LessonsEditor() {
                     reorder={reorderLessons}
                     isUpdating={isUpdating}
                     addToast={addToast}
+                    onReorderUI={(newOrder) => {
+                        setOrderedLessons(newOrder);
+                    }}
                 />
                 : lessonLoading ? (
                     <div className="h-full w-full">

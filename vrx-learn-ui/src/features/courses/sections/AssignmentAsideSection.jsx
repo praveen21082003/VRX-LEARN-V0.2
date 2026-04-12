@@ -13,7 +13,7 @@ export default function AssignmentAsideSection({ assignments }) {
     const navigate = useNavigate();
 
     return (
-        <aside className="w-full h-full lg:sidebar-sm 2xl:sidebar-lg border-r-2 border-default bg-muted/40">
+        <aside className="w-full h-full md:w-89 border-r-2 border-default bg-muted/40">
             <div className="hidden lg:block p-4 border-b-2 border-default w-full">
                 <BackButton to={`/course/${courseSlug}/overview`} iconName="material-symbols:arrow-back-rounded" label="Back to Overview" />
             </div>

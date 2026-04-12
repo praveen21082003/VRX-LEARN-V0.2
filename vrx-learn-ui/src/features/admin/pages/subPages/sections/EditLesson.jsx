@@ -4,13 +4,16 @@ import { useState } from 'react'
 import { useParams, useOutletContext, useNavigate } from 'react-router-dom';
 import useLesson from '../../../../courses/hooks/useLesson';
 import useUpdateLesson from '../../../hooks/useUpdateLesson';
+import { useLessons } from '../../../hooks/useLessons';
+
 
 function EditLesson() {
+    const navigate = useNavigate();
     const { moduleId, lessonId } = useParams();
-    const { addToast } = useOutletContext();
+    const { addToast, courseSlug, setLessons } = useOutletContext();
     const { updateLesson, loading: isUpdating } = useUpdateLesson();
+    // const { fecthLesssons } = useLessons();
 
-    console.log("lessonId:", lessonId);
 
 
     const { modules } = useOutletContext();
@@ -75,7 +78,20 @@ function EditLesson() {
 
         try {
             await updateLesson(lessonId, payload);
+
+            setLessons(prev =>
+                prev.map(l =>
+                    l.id === lessonId
+                        ? { ...l, ...payload }
+                        : l
+                )
+            );
+
             addToast("Lesson updated successfully.", "success");
+            
+            navigate(`/course/${courseSlug}/content/modules/${moduleId}`)
+
+
         } catch (err) {
             const status = err?.response?.status;
 

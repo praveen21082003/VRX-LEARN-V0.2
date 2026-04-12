@@ -102,6 +102,7 @@ export const useLessons = () => {
 
     return {
         lessons,
+        setLessons,
         isCreating,
         uploadProgress,
         lessonsError,

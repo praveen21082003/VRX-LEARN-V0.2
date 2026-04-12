@@ -33,8 +33,8 @@ function EditCourseLayout() {
   const location = useLocation();
   const ref = useRef(null);
 
-  const { courseContent, fetchCourseContent, loading, error } = useCourseContent(courseSlug);
-  const { lessons, lessonLoading, lessonsError, fecthLesssons } = useLessons();
+  const { courseContent,setCourseContent, fetchCourseContent, loading, error } = useCourseContent(courseSlug);
+  const { lessons,setLessons, lessonLoading, lessonsError, fecthLesssons } = useLessons();
   const { assignment, detailsLoading, fetchAssignmentDetails } = useAssignmentContent();
 
   const { setCourseBreadcrumb } = useOutletContext();
@@ -86,14 +86,9 @@ function EditCourseLayout() {
     }
   }, [courseSlug, role, fetchCourseContent]);
 
-  // useEffect(() => {
-  //   console.log(assignmentId)
-  //   fetchAssignment(assignmentId)
-  // }, [assignmentId])
 
 
   useEffect(() => {
-    // console.log("assignmentId:", assignmentId);
 
     if (!assignmentId) return;
 
@@ -114,10 +109,12 @@ function EditCourseLayout() {
     assignments: courseContent?.assignments,
 
     lessons,
+    setLessons,
     lessonLoading,
     lessonsError,
 
     courseContent,
+    setCourseContent,
     loading,
     fetchCourseContent,
 

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import ModuleFormSection from '../../../sections/ModuleFormSection'
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 
 
 
 function EditModule() {
 
-  const { moduleId, courseSlug, fetchCourseContent, addToast, updateModule, isUpdating, courseContent } = useOutletContext();
+  const navigate = useNavigate();
+
+  const { moduleId, courseSlug, fetchCourseContent, addToast, updateModule, isUpdating, setCourseContent, courseContent } = useOutletContext();
 
 
   const [formData, setFormData] = useState({
@@ -57,9 +59,20 @@ function EditModule() {
 
     try {
       await updateModule(moduleId, payload);
-      addToast("Module updated successfully.", "success");
 
-      await fetchCourseContent(courseSlug);
+      setCourseContent((prev) => ({
+        ...prev,
+        modules: prev.modules.map((module) =>
+          module.id === moduleId
+            ? { ...module, ...payload }
+            : module
+        )
+      }));
+
+      addToast("Module updated successfully.", "success");
+      navigate(`/course/${courseSlug}/content/modules`)
+
+
     } catch (err) {
       const status = err?.response?.status;
 

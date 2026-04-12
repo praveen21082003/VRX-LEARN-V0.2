@@ -283,11 +283,11 @@
 @layer utilities {
 
   .sidebar-sm {
-    width: 22.25rem;
+    width: 20.25rem;
   }
 
   .sidebar-lg {
-    width: 37.5rem;
+    width: 30.5rem;
   }
 
 }
