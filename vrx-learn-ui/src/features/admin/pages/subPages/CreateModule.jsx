@@ -72,10 +72,11 @@ function CreateModule() {
 
         try {
             const newModule = await createModule(payload);
+            console.log(newModule);
 
             setCourseContent((prev) => ({
                 ...prev,
-                modules: [newModule, ...(prev.modules || [])]
+                modules: [...(prev.modules || []), newModule]
             }));
 
             addToast("Module created successfully", "success");

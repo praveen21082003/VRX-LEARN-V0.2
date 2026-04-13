@@ -9,7 +9,7 @@ export default function useCreateAssignment() {
         try {
             setLoading(true);
             const response = await createAssignmentService(payload);
-            return response.data;
+            return response;
         }
         catch (error) {
             setError(error);

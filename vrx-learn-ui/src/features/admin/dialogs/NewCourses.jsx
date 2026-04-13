@@ -13,7 +13,8 @@ function NewCourses({
   courseData = {},
   onClose,
   Status = [],
-  setKpis
+  setKpis,
+  onSuccess,
 }) {
 
   const [isOpen, setIsOpen] = useState(false);
@@ -180,6 +181,7 @@ function NewCourses({
 
         await updateCourse(courseData.id, updatedPayload);
         addToast("Course updated successfully!", "success");
+        onSuccess?.();
 
       } else {
 
@@ -194,15 +196,9 @@ function NewCourses({
             type: "live",
           }
         };
-        
+
         await createCourse(createPayload);
-        {
-          setKpis &&
-            setKpis((prev) => ({
-              ...prev,
-              totalCourses: (prev.totalCourses || 0) + 1
-            }));
-        }
+
 
         addToast("Course created successfully!", "success");
 
@@ -212,11 +208,12 @@ function NewCourses({
           longDescription: "",
           trainerId: "",
         });
-
         setSearch("");
+        onSuccess?.();
       }
 
       onClose?.();
+
 
     } catch (err) {
       const status = err?.response?.status;

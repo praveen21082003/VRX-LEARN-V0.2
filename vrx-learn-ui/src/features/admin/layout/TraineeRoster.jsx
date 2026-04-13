@@ -18,7 +18,7 @@ function TraineeRoster() {
   console.log(rosterData);
 
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
 
 
   const traineeRosterColumns = [
@@ -130,7 +130,7 @@ function TraineeRoster() {
             setPage={setPage}
             pageSize={pageSize}
             setPageSize={setPageSize}
-            total={rosterData.length}
+            total={rosterData?.totalPages}
           />
         </div>
       </div>

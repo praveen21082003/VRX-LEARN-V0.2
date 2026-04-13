@@ -88,6 +88,20 @@ function AdminDashboard() {
       ? Math.round(kpis.totalEnrollments / kpis.totalCourses)
       : 0;
 
+  const handleCourseCreate = () => {
+    setKpis((prev) => ({
+      ...prev,
+      totalCourses: (prev.totalCourses || 0) + 1
+    }));
+  }
+
+  const handleAddKips = () => {
+    setKpis((prev) => ({
+      ...prev,
+      totalUsers: (prev.totalUsers || 0) + 1
+    }));
+  }
+
 
   return (
     <div className="space-y-4 text-main py-4 px-6">
@@ -232,7 +246,7 @@ function AdminDashboard() {
             <CreateUser
               onClose={() => setOpen(false)}
               roles={allRoles}
-              setKpis={setKpis}
+              onSuccess={handleAddKips}
             />
           )}
 
@@ -240,6 +254,7 @@ function AdminDashboard() {
             <NewCourses
               setKpis={setKpis}
               onClose={() => setOpen(false)}
+              onSuccess={handleCourseCreate}
             />
           )}
 

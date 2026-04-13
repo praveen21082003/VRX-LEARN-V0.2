@@ -9,7 +9,7 @@ export default function useCreateModule() {
         try {
             setLoading(true);
             const response = await createModuleService(payload);
-            return response.data;
+            return response;
         }
         catch (error) {
             setError(error);

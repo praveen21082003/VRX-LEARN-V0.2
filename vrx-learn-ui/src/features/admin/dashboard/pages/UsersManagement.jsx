@@ -119,6 +119,13 @@ function UsersManagement() {
     }
   }
 
+  const handleCreateUser = (newUser) => {
+    setUsers(prev => [
+      { ...newUser, name: newUser.username },
+      ...prev
+    ]);
+  }
+
 
   const usersManagementColumns = [
     {
@@ -382,11 +389,10 @@ function UsersManagement() {
           title={editingUser ? "Edit User" : "Create New User"}
         >
           <CreateUser
-            // onSuccess={fetchUsers}
             isEdit={!!editingUser}
             userData={editingUser}
             onClose={() => setOpen(false)}
-            setUsers={setUsers}
+            onSuccess={handleCreateUser}
           />
         </Modal>
       )}

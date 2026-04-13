@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateAssignment as updateAssignmentDeatails } from "@/services/courses.service";
+import { updateAssignmentById } from '@/services/assignments.service'
 
 export default function useUpdateAssignment() {
     const [loading, setLoading] = useState(false);
@@ -8,9 +8,9 @@ export default function useUpdateAssignment() {
     const updateAssignemt = async (id, playload) => {
         try {
             setLoading(true);
-            const response = await updateAssignmentDeatails(id, playload);
+            const response = await updateAssignmentById(id, playload);
             return response.data;
-            
+
         } catch (err) {
             setError(err);
             throw err;

@@ -4,7 +4,7 @@ import { useToast } from '@/context/ToastProvider';
 import { useUser } from '../hooks/useUser';
 
 
-function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], setKpis, setUsers }) {
+function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], onSuccess }) {
     const [showResetFields, setShowResetFields] = useState(false);
 
     const roleOptions = [
@@ -107,26 +107,9 @@ function CreateUser({ isEdit = false, userData = {}, onClose, statuses = [], set
             try {
                 const newUser = await createNewUser(formData);
 
-
-                setKpis &&
-                    setKpis((prev) => ({
-                        ...prev,
-                        totalUsers: (prev.totalUsers || 0) + 1
-                    }));
-
-
-                setUsers &&
-                    setUsers((prevUsers) => [
-                        { name: newUser.username, ...newUser, username: undefined },
-                        ...prevUsers.map(user => ({
-                            ...user,
-                            name: user.name ?? user.username
-                        }))
-                    ]);
-
-
                 addToast("User created successfully.", "success");
 
+                onSuccess?.(newUser);
                 onClose?.();
                 setWarning({});
 

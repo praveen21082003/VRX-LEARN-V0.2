@@ -62,6 +62,7 @@ export default function useAssignmentContent() {
 
     return {
         assignments,
+        setAssignments,
         assignment,
 
         loading,

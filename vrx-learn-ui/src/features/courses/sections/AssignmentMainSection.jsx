@@ -24,9 +24,8 @@ export default function AssignmentMainSection({ assignment, courseId }) {
 
     const hasSubmissions = submissions?.length > 0;
     const maxAttempts = assignmentData?.numberOfAttempts || 1;
-    const canSubmit = !hasSubmissions || submissions.length < maxAttempts;
     const attemptsArray = Array.from({ length: maxAttempts }, (_, i) => i + 1);
-    const nextAttempt = submissions?.length + 1;
+    const nextAttempt = (submissions?.length || 0) + 1;
 
 
     const mediaId = attachment?.mediaId;
@@ -186,61 +185,52 @@ export default function AssignmentMainSection({ assignment, courseId }) {
                         </div>
                     </>
                 )}
+                <div className="space-y-3 mt-4">
+                    {attemptsArray.map((attemptNumber) => {
+                        const submission = submissionsMap[attemptNumber];
 
-                {canSubmit ? (
-                    <UploadSection
-                        files={files}
-                        setFiles={setFiles}
-                        uploadProgress={uploadProgress}
-                        isUploading={submitting}
-                        mediaStatus={mediaStatus}
-                        loadedData={loadedData}
-                    />
-                ) : (
-                    <div className="space-y-3 mt-4">
-                        {attemptsArray.map((attemptNumber) => {
-                            const submission = submissionsMap[attemptNumber];
-
-                            return (
-                                <div key={attemptNumber} className="border rounded border-default bg-background overflow-hidden">
+                        return (
+                            <div key={attemptNumber} className="border rounded border-default bg-background overflow-hidden">
 
 
-                                    <div className="flex bg-submission border-b border-default justify-between p-3 h-15 items-center">
-                                        <div className="flex justify-center items-center gap-5">
-                                            Attempt {attemptNumber} of {maxAttempts}
-                                            {openAttempt != attemptNumber && (
-                                                <span>
-                                                    <p className="text-body">{submission.filename}</p>
-                                                    <p className="text-caption text-muted">
-                                                        Submitted on {new Date(submission.submittedAt).toLocaleString()}
-                                                    </p>
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        <div className="flex gap-2 items-center">
-                                            <StatusPill status={submission?.status || "Not Submitted"} />
-                                            <Button
-                                                frontIconName="iconamoon:arrow-down-2"
-                                                frontIconHeight="26"
-                                                frontIconWidth="26"
-                                                bgClass=""
-                                                className={openAttempt === attemptNumber ? "rotate-180" : ""}
-                                                textClass=""
-                                                onClick={() =>
-                                                    setOpenAttempt(prev =>
-                                                        prev === attemptNumber ? null : attemptNumber
-                                                    )
-                                                }
-                                            />
-                                        </div>
+                                <div className="flex bg-submission border-b border-default justify-between p-3 h-15 items-center">
+                                    <div className="flex justify-center items-center gap-5">
+                                        Attempt {attemptNumber} of {maxAttempts}
+                                        {openAttempt !== attemptNumber && submission && (
+                                            <span>
+                                                <p className="text-body">{submission.filename}</p>
+                                                <p className="text-caption text-muted">
+                                                    Submitted on {new Date(submission.submittedAt).toLocaleString()}
+                                                </p>
+                                            </span>
+                                        )}
                                     </div>
 
-                                    {
-                                        openAttempt === attemptNumber && (
-                                            <>
-                                                {submission ? (
-                                                    <div className="p-4">
+                                    <div className="flex gap-2 items-center">
+                                        <StatusPill status={submission?.status || "Not Submitted"} />
+                                        <Button
+                                            frontIconName="iconamoon:arrow-down-2"
+                                            frontIconHeight="26"
+                                            frontIconWidth="26"
+                                            bgClass=""
+                                            className={openAttempt === attemptNumber ? "rotate-180" : ""}
+                                            textClass=""
+                                            onClick={() =>
+                                                setOpenAttempt(prev =>
+                                                    prev === attemptNumber ? null : attemptNumber
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                </div>
+
+                                {
+                                    openAttempt === attemptNumber && (
+                                        <>
+                                            {submission ? (
+                                                <div className="space-y-3 p-4">
+                                                    <div className="flex justify-between items-center">
+
                                                         <div className="flex gap-2">
                                                             <Icon name="fluent:document-pdf-24-filled" height="36" width="36" />
                                                             <span>
@@ -253,51 +243,54 @@ export default function AssignmentMainSection({ assignment, courseId }) {
 
 
                                                         {submission.score !== null && (
-                                                            <p className="text-sm mt-2 font-semibold text-primary">
-                                                                {submission.score} / {assignmentData.maxScore}
-                                                            </p>
+                                                            <span className="flex items-center font-semibold text-primary">
+                                                                <p className="text-h3">{submission.score}</p>
+                                                                / <p className="text-h5">{assignmentData.maxScore}</p>
+                                                            </span>
                                                         )}
 
-                                                        {submission.score !== null &&
-                                                            (
-                                                                <div className="">
-                                                                    <label>Trainer feedback:</label>
-                                                                    <p>
-                                                                        {submission?.feedback || "No feedback provided"}
-                                                                    </p>
-                                                                </div>
-                                                            )
-                                                        }
                                                     </div>
-                                                ) : (
 
-                                                    <>
-                                                        <p className="text-sm text-gray-400 mt-2">
-                                                            No submission yet
-                                                        </p>
+                                                    {submission.score !== null &&
+                                                        (
+                                                            <div className="flex gap-2 text-emphasis">
+                                                                <label className="font-bold">Trainer Feedback: </label>
+                                                                <p>
+                                                                    {submission?.feedback || "No feedback provided"}
+                                                                </p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                            ) : (
 
-                                                        {attemptNumber === nextAttempt && (
-                                                            <UploadSection
-                                                                files={files}
-                                                                setFiles={setFiles}
-                                                                uploadProgress={uploadProgress}
-                                                                isUploading={submitting}
-                                                                mediaStatus={mediaStatus}
-                                                                loadedData={loadedData}
-                                                            />
-                                                        )}
-                                                    </>
+                                                <div className="p-3">
+                                                    <p className="text-sm text-gray-400 mt-2">
+                                                        No submission yet
+                                                    </p>
 
-                                                )}
+                                                    {attemptNumber === nextAttempt && (
+                                                        <UploadSection
+                                                            files={files}
+                                                            setFiles={setFiles}
+                                                            uploadProgress={uploadProgress}
+                                                            isUploading={submitting}
+                                                            mediaStatus={mediaStatus}
+                                                            loadedData={loadedData}
+                                                        />
+                                                    )}
+                                                </div>
 
-                                            </>
-                                        )
-                                    }
-                                </div>
-                            );
-                        })}
-                    </div>
-                )}
+                                            )}
+
+                                        </>
+                                    )
+                                }
+                            </div>
+                        );
+                    })}
+                </div>
+
 
                 <div className="flex w-full items-center justify-center mt-6">
                     {files.length > 0 && (

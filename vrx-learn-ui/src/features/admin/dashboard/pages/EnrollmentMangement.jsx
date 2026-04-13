@@ -12,7 +12,7 @@ function EnrollmentMangement() {
 
     const isMobile = window.innerWidth < 768;
 
-    const { enrollments, fetchEnrollments, error, loading, total } = useEnrollmentData();
+    const { enrollments, setEnrollments, fetchEnrollments, error, loading, total } = useEnrollmentData();
     const { DeleteEnrollment, isDeleting, deleteError } = useEnrollments();
     const { addToast } = useToast();
 
@@ -107,13 +107,14 @@ function EnrollmentMangement() {
 
     const handleDelete = async (enrollmentId) => {
 
-        console.log(enrollmentId)
+
         try {
             await DeleteEnrollment(enrollmentId);
-
             setIsDelete(false);
-
             addToast("Enrollment deleted successfully", "success");
+            setEnrollments(prev => prev.filter(enrollment =>
+                enrollment.id !== enrollmentId
+            ));
         } catch (err) {
             const msg =
                 err.response?.data?.message ||
@@ -364,7 +365,7 @@ function EnrollmentMangement() {
                                             { label: "In Progress", value: "in-progress" },
                                             { label: "Suspended", value: "suspended" },
                                             { label: "Dropout", value: "dropped" },
-                                            { label: "Active", value: "active" },
+                                            { label: "Completed", value: "completed" },
                                         ]}
                                     />
                                 </div>

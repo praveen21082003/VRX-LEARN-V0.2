@@ -19,7 +19,7 @@ function CreateAssignment() {
         courseId: courseSlug,
         title: "",
         instructions: "",
-        dueDate: "",
+        dueDate: null,
         maxScore: 0,
         numberOfAttempts: 1,
     });
@@ -101,12 +101,13 @@ function CreateAssignment() {
 
         try {
             console.log(payload);
-            // const newAssignment = await createAssignment(payload, file);
+            const newAssignment = await createAssignment(payload, file);
+            console.log(newAssignment);
 
-            // setCourseContent(prev => ({
-            //     ...prev,
-            //     assignments: [newAssignment, ...(prev.assignments || [])]
-            // }));
+            setCourseContent(prev => ({
+                ...prev,
+                assignments: [newAssignment, ...(prev.assignments || [])]
+            }));
             addToast("Assignment created successfully", "success");
             navigate(`/course/${courseSlug}/content/assignments`)
 

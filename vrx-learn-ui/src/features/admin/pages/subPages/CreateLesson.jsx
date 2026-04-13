@@ -14,12 +14,10 @@ function CreateLesson() {
         file: ""
     });
 
-    const { modules, addToast, courseContent } = useOutletContext();
+    const { addToast, courseContent } = useOutletContext();
 
 
-    const { lessons, setLessons, isCreating, uploadProgress, loadedData, mediaStatus, lessonsError, createLesson } = useLessons();
-
-            console.log(lessons)
+    const { isCreating, uploadProgress, loadedData, mediaStatus, lessonsError, createLesson } = useLessons();
 
 
 
@@ -102,10 +100,11 @@ function CreateLesson() {
 
 
         try {
-            const newLesson = await createLesson(payload, file);
-            setLessons(prev => [newLesson, ...(prev || [])]);
+            await createLesson(payload, file);
             addToast("Lesson created successfully", "success");
-            navigate(`/course/${courseSlug}/content/modules/${moduleId}`);
+            navigate(`/course/${courseSlug}/content/modules/${moduleId}`, {
+                state: { refresh: true }
+            });
         } catch (err) {
             const status = err?.response?.status;
 

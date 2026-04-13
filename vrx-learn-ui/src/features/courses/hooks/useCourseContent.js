@@ -10,7 +10,7 @@ export default function useCourseContent() {
   const [error, setError] = useState(null);
 
   const fetchCourseContent = useCallback(async (courseId, type) => {
-    console.log("HOOK START: ID:", courseId, "TYPE:", type);
+
     setError(null);
     if (!courseId) return;
     setLoading(true);
@@ -26,13 +26,13 @@ export default function useCourseContent() {
 
 
   const fetchCourseOverview = useCallback(async (courseId, type) => {
-
-    console.log("courseId", courseId, "type", type)
+    console.log("HOOK START: ID:", courseId, "TYPE:", type);
     setError(null);
     if (!courseId) return;
     setLoading(true);
     try {
       const data = await getCourseOverview(courseId, type);
+      console.log(data);
       setCourseOverview(data);
     } catch (err) {
       setCourseOverview(null);

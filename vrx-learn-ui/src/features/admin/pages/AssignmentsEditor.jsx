@@ -13,13 +13,14 @@ import useAssignmentContent from '../hooks/useAssignmentContent'
 function AssignmentsEditor() {
     const isMobile = window.innerWidth < 768;
 
-    const { courseSlug } = useOutletContext();
+    const { courseSlug, setCourseContent} = useOutletContext();
     const navigate = useNavigate();
 
     const { updateAssignemt, loading, error } = useUpdateAssignment();
-    
+
     const {
         assignments,
+        setAssignments,
         loading: fetchLoading,
         error: fetchError,
         fetchAssignments
@@ -39,7 +40,7 @@ function AssignmentsEditor() {
     const [isOpenDropdown, setIsOpenDropdown] = useState(null);
     const [renameAssignmentId, setRenameAssignmentId] = useState(null);
     const [renameValue, setRenameValue] = useState("");
-    const [updatedAssignments, setUpdatedAssignments] = useState(assignments || [])
+ 
 
 
 
@@ -53,17 +54,21 @@ function AssignmentsEditor() {
     async function renameAssignmentHandler(assignmentId) {
         const newTitle = renameValue.trim();
 
-        if (!newTitle) return;
+        if (!newTitle.trim()) {
+            setRenameAssignmentId(null);
+            return;
+        }
+
 
         try {
             await updateAssignemt(assignmentId, { title: newTitle });
 
-            setUpdatedAssignments(prev =>
+            setAssignments(prev =>
                 prev.map(a =>
                     a.id === assignmentId ? { ...a, title: newTitle } : a
                 )
             );
-            addToast("Module Renamed", "success")
+            addToast("Assignment Renamed", "success")
 
             setRenameAssignmentId(null);
         } catch (error) {
@@ -76,11 +81,14 @@ function AssignmentsEditor() {
         try {
             await deleteAssignment(assignmentId);
 
-            setUpdatedAssignments(prev =>
+            setAssignments(prev =>
                 prev.filter(a => a.id !== assignmentId)
             );
+            // setCourseContent(prev => 
+            //     prev
+            // )
 
-            addToast("Module Deleted", "success");
+            addToast("Assignment Deleted", "success");
         } catch (error) {
             addToast("Error Occured", "error");
         }

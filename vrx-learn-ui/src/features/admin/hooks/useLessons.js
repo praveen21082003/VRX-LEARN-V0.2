@@ -58,6 +58,7 @@ export const useLessons = () => {
             }
 
             return {
+                newLesson : response,
                 success: true,
                 lessonId: response?.lessonId,
                 mediaId: response?.mediaId,

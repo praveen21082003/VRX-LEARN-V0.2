@@ -33,8 +33,8 @@ function EditCourseLayout() {
   const location = useLocation();
   const ref = useRef(null);
 
-  const { courseContent,setCourseContent, fetchCourseContent, loading, error } = useCourseContent(courseSlug);
-  const { lessons,setLessons, lessonLoading, lessonsError, fecthLesssons } = useLessons();
+  const { courseContent, setCourseContent, fetchCourseContent, loading, error } = useCourseContent(courseSlug);
+  const { lessons, setLessons, lessonLoading, lessonsError, fecthLesssons } = useLessons();
   const { assignment, detailsLoading, fetchAssignmentDetails } = useAssignmentContent();
 
   const { setCourseBreadcrumb } = useOutletContext();
@@ -50,7 +50,7 @@ function EditCourseLayout() {
     if (moduleId) {
       fecthLesssons(moduleId);
     }
-  }, [moduleId]);
+  }, [moduleId, location.state?.refresh]);
 
 
 
@@ -110,6 +110,7 @@ function EditCourseLayout() {
 
     lessons,
     setLessons,
+    fecthLesssons,
     lessonLoading,
     lessonsError,
 

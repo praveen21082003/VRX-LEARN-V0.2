@@ -35,6 +35,7 @@ function LessonFormSection({
         if (mode === "create") {
             return (
                 <UploadSection
+                    label="Lesson attachment"
                     files={files}
                     setFiles={setFiles}
                     uploadProgress={uploadProgress}

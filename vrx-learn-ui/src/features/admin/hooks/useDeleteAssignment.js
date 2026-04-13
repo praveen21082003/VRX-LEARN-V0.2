@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DeleteAssignment} from "@/services/courses.service";
+import { deleteAssignment as deleteAssignmentService} from "@/services/assignments.service";
 
 export default function useDeleteAssignment() {
     const [loading, setLoading] = useState(false);
@@ -8,7 +8,7 @@ export default function useDeleteAssignment() {
     const deleteAssignment = async (id) => {
         try {
             setLoading(true);
-            const response = await DeleteAssignment(id);
+            const response = await deleteAssignmentService(id);
             return response.data;
             
         } catch (err) {

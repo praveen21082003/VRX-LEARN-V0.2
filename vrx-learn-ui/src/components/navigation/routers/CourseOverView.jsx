@@ -18,7 +18,6 @@ function CourseOverView() {
     const { viewRole, role } = useAuth();
     const { courseSlug } = useParams();
     const { fetchCourseOverview, courseOverview, loading, error } = useCourseContent();
-    console.log(courseOverview);
 
     const effectiveRole = viewRole || role
 
@@ -75,8 +74,6 @@ function CourseOverView() {
         }
         return section;
     });
-
-    console.log(can("UPDATE_COURSE"))
 
 
     const renderCourseOverview = () => {

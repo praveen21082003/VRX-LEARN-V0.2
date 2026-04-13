@@ -7,8 +7,11 @@ import { useCoursesData } from '../../hooks/useCousesData';
 import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter';
 import useCourses from '../../hooks/useCourses';
 import { useToast } from '@/context/ToastProvider'
+import { useNavigate } from 'react-router-dom';
 
 function CourseManagement() {
+  const navigate = useNavigate();
+
   const isMobile = window.innerWidth < 768;
 
   const { courses, setCourses, loading, error, fetchCourses, total } = useCoursesData();
@@ -28,7 +31,8 @@ function CourseManagement() {
   const [selectedRows, setSelectedRows] = useState([]);
 
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("");
+  const [sort, setSort] = useState("none");
+  console.log(sort)
 
 
 
@@ -67,6 +71,8 @@ function CourseManagement() {
       create_desc: { sortByCreatedAt: "desc" },
       course_asc: { sortByCourseName: "asc" },
       course_desc: { sortByCourseName: "desc" },
+      trainees_asc: { sortByNoOfTrainees: "asc" },
+      trainees_desc: { sortByNoOfTrainees: "desc" },
     };
 
     fetchCourses({
@@ -94,13 +100,9 @@ function CourseManagement() {
   };
 
 
-  // Derive unique trainers list from data
-  const allTrainers = [...new Set(courses.flatMap((course) => course.trainers))];
-
-  // Derive unique course titles from data
-  const allTitles = [...new Set(courses.map((course) => course.title))];
-
-  const allDescription = [...new Set(courses.map((course) => course.description))];
+  const handleCourseCreated = async () => {
+    await fetchCourses();
+  }
 
 
 
@@ -169,7 +171,10 @@ function CourseManagement() {
       align: "left",
       width: "20%",
       render: (row) => (
-        <span>{capitalizeFirstLetter(row.title)}</span>
+        <div
+          className='hover:text-primary dark:hover:text-white/70 hover:cursor-pointer'
+          // onClick={() => navigate(`/course/${row.id}/overview`)}
+        >{row.title}</div>
       )
     },
     {
@@ -288,13 +293,15 @@ function CourseManagement() {
           <Select
             label="Sort by:"
             value={sort}
-            onChange={(e) => setSort(e.target.value)}
+            onChange={(value) => setSort(value)}
             options={[
               { label: "None", value: null },
               { label: "Newest First", value: "create_desc" },
               { label: "Oldest First", value: "create_asc" },
               { label: "Name (A - Z)", value: "course_asc" },
               { label: "Name (Z - A)", value: "course_desc" },
+              { label: "No.of Trainees (Asc)", value: "trainees_asc" },
+              { label: "No.of Trainees (Desc)", value: "trainees_desc" },
             ]}
           />
         </div>
@@ -358,6 +365,7 @@ function CourseManagement() {
             isEdit={!!editingCourse}
             courseData={editingCourse}
             onClose={() => setOpen(false)}
+            onSuccess={handleCourseCreated}
           />
         </Modal>
       )}
