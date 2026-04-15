@@ -40,7 +40,7 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson, openPlayl
                     <button
                         onClick={() => toggleModule(module.id)}
                         className={clsx(
-                            "flex h-16 w-full border-primary items-center justify-between text-dark-gray text-h45",
+                            "flex h-14 w-full border-primary items-center justify-between text-dark-gray text-h45 truncate",
                             isOpen ? "bg-primary/16 dark:bg-primary text-primary dark:text-background border-x-8 p-2" : "hover:bg-primary/16 p-4"
                         )}
                     >
@@ -120,7 +120,7 @@ function LessonsAsideSection({ modules, activeLesson, setActiveLesson, openPlayl
     return (
         <>
 
-            <aside className="hidden sidebar-sm 2xl:sidebar-lg border-r-2 border-default bg-muted/40 lg:block">
+            <aside className="hidden sidebar-sm 2xl:sidebar-lg border-r-2 border-default bg-muted/40 lg:block overflow-y-hide overflow-scroll-hide">
                 <div className="p-4 border-b-2 border-default ">
                     <BackButton
                         to={`/course/${courseSlug}/overview`}

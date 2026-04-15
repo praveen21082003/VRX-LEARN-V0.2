@@ -78,7 +78,7 @@ const FileItem = React.memo(({ file, index, isUploading, uploadProgress, loadedD
 
             <button
                 onClick={() => handleRemoveFile(index)}
-                className="hover:bg-primary/80 p-1 rounded-full text-primary dark:text-text-main-dark transition-colors"
+                className="hover:bg-primary/80 hover:text-white p-1 rounded-full text-primary dark:text-text-main-dark transition-colors"
             >
                 <Icon
                     name="material-symbols:close-rounded"

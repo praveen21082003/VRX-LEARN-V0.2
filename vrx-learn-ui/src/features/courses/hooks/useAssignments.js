@@ -1,27 +1,25 @@
-import { useEffect, useState } from "react"
+import { useEffect, useCallback, useState } from "react"
 import { getTraineeAssignmentContent } from "@/services/assignmentContent.service";
 
 
-export default function useAssignments(courseId){
+export default function useAssignments(courseId) {
     const [assignments, setAssignment] = useState(null);
-    const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
 
-    useEffect(()=>{
-        async function fetchAssignments(){
-            try{
-                const response = await getTraineeAssignmentContent(courseId);
-                setAssignment(response);
-            }
-            catch(error){
-                setError(error);
-            }
-            finally{
-                setLoading(false);
-            }
+    const fetchAssignments = useCallback(async (isSilent = false) => {
+        if (!isSilent) setLoading(true);
+        console.log("hook refetching");
+        try {
+            const response = await getTraineeAssignmentContent(courseId);
+            setAssignment(response);
+        } finally {
+            setLoading(false);
         }
-        if (courseId) fetchAssignments();
-    },[courseId])
+    }, [courseId]);
 
-    return{ assignments, error, loading}
+    useEffect(() => {
+        if (courseId) fetchAssignments();
+    }, [fetchAssignments]);
+
+    return { assignments, refresh: () => fetchAssignments(true), loading };
 }

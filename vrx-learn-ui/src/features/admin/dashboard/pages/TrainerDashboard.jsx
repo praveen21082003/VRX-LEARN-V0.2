@@ -26,7 +26,7 @@ function TrainerDashboard() {
         {
             key: "active_learners",
             label: "Active Learners",
-            Icon: "mdi:certificate-outline",
+            Icon: "mdi:users",
             value: kpisData?.totalLearners
         },
         {

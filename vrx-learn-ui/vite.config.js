@@ -22,7 +22,7 @@ export default defineConfig({
     }
   },
   server: {
-    allowedHosts: ["tequila-unwrenched-joane.ngrok-free.dev","convolutional-celibatic-shu.ngrok-free.dev", "8853-183-82-28-0.ngrok-free.app", "https://8853-183-82-28-0.ngrok-free.app"],
+    allowedHosts: ["tequila-unwrenched-joane.ngrok-free.dev","convolutional-celibatic-shu.ngrok-free.dev", "e610-2406-7400-bb-c33f-65a3-4b98-7bca-998d.ngrok-free.app", "https://e610-2406-7400-bb-c33f-65a3-4b98-7bca-998d.ngrok-free.app"],
     port: 5173,
     open: true,
     host: true,

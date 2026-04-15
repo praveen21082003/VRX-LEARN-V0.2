@@ -176,8 +176,8 @@ function CourseOverView() {
                     </div>
 
 
-                    <p className="text-body text-muted-foreground italic line-clamp-3">
-                        {courseOverview?.shortDescription || "No description available."}
+                    <p className="text-body text-muted-foreground line-clamp-3">
+                        {courseOverview?.shortDescription || <span className="italic">No description available.</span>}
                     </p>
 
                 </div>
@@ -194,8 +194,8 @@ function CourseOverView() {
                         actions={[
                             { label: "Module", icon: "codicon:file-submodule", path: "modules" },
                             { label: "Assignments", icon: "material-symbols:assignment-outline", path: "assignments" },
-                            { label: "Lab Credentials", icon: "ooui:lab-flask", path: "lab" },
-                            { label: "Quiz", icon: "hugeicons:quiz-05", path: "quiz" },
+                            // { label: "Lab Credentials", icon: "ooui:lab-flask", path: "lab" },
+                            // { label: "Quiz", icon: "hugeicons:quiz-05", path: "quiz" },
                         ]}
                     />
                 }

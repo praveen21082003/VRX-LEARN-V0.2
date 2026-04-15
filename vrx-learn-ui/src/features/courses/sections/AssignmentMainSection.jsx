@@ -7,25 +7,27 @@ import BackButton from "@/components/navigation/BackButton";
 import useMedia from '@/features/courses/hooks/useMedia';
 
 import { useSubmission } from "../hooks/useSubmission";
+import { useToast } from '@/context/ToastProvider'
 
 
 
-export default function AssignmentMainSection({ assignment, courseId }) {
+export default function AssignmentMainSection({ assignment, loading, onRefresh, courseId }) {
 
+    const { addToast } = useToast()
     const [openAttempt, setOpenAttempt] = useState(null);
 
     const [files, setFiles] = useState([]);
-    // console.log(files);
     const [showButton, setShowButton] = useState(true);
+
+
+
 
     const { assignment: assignmentData, attachment, submissions } = assignment || {};
     const { submitAssignment, loading: submitting, uploadProgress, mediaStatus, loadedData } = useSubmission();
-    console.log(submissions);
 
-    const hasSubmissions = submissions?.length > 0;
+
     const maxAttempts = assignmentData?.numberOfAttempts || 1;
     const attemptsArray = Array.from({ length: maxAttempts }, (_, i) => i + 1);
-    const nextAttempt = (submissions?.length || 0) + 1;
 
 
     const mediaId = attachment?.mediaId;
@@ -41,6 +43,11 @@ export default function AssignmentMainSection({ assignment, courseId }) {
     submissions?.forEach((sub) => {
         submissionsMap[sub.attempt] = sub;
     });
+
+    const [retake, setRetake] = useState(submissions?.length === 0);
+    useEffect(() => {
+        setRetake(submissions?.length === 0);
+    }, [submissions?.length]);
 
 
     useEffect(() => {
@@ -94,8 +101,16 @@ export default function AssignmentMainSection({ assignment, courseId }) {
 
     const handleSubmit = async () => {
 
+        if (mediaStatus === "uploaded") {
+
+            onRefresh?.();
+            setRetake(false);
+
+            return;
+        }
+
         if (files.length === 0) {
-            toast.error("Please upload a file first.");
+            addToast("Please upload a file first.", "warning");
             return;
         }
 
@@ -123,7 +138,9 @@ export default function AssignmentMainSection({ assignment, courseId }) {
         }
     }
 
-    if (!assignment) {
+    if (!assignment) return null;
+
+    if (loading) {
         return (
             <div className="flex-1 flex items-center justify-center">
                 <p>Loading assignment...</p>
@@ -140,38 +157,55 @@ export default function AssignmentMainSection({ assignment, courseId }) {
 
             <main
                 ref={scrollRef}
-                className="flex-1 min-h-0 px-2 lg:p-3 pb-32"
+                className="flex-1 min-h-0 px-2 lg:p-3 lg:pt-5 pb-32"
             >
-                <h1 className="flex gap-2 items-center text-h3">{assignmentData?.title}</h1>
-                <div className="flex items-center gap-2 text-caption text-muted-foreground text-dark-gray">
-                    <div className="flex gap-2 items-center">
-                        <Icon icon="mdi:clock-outline" width="16" height="16" />
-                        <p className="text-muted-foreground">
-                            Due: {formatDateTime(assignmentData?.dueDate)}
-                        </p>
+                <div className=" flex justify-between">
+                    <div>
+                        <h1 className="flex gap-2 items-center text-h3">{assignmentData?.title}</h1>
+                        <div className="flex items-center gap-2 text-caption text-muted-foreground text-dark-gray">
+                            <div className="flex gap-2 items-center">
+                                <Icon icon="mdi:clock-outline" width="16" height="16" />
+                                <p className="text-muted-foreground">
+                                    Due: {formatDateTime(assignmentData?.dueDate)}
+                                </p>
+                            </div>
+                            <Icon name="bi:dot" height="16" width="16" />
+                            <div className="flex gap-2 items-center">
+                                <Icon name="streamline:star-badge-remix" width="16" height="16" />
+                                <p className="text-muted-foreground">
+                                    Max: {assignmentData.maxScore} Marks
+                                </p>
+                            </div>
+                            <Icon name="bi:dot" height="16" width="16" />
+                            <div className="flex gap-2 items-center">
+                                <Icon name="ic:baseline-loop" width="16" height="16" />
+                                <p className="text-muted-foreground">
+                                    Max Attempts: {assignmentData.numberOfAttempts}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <Icon name="bi:dot" height="16" width="16" />
-                    <div className="flex gap-2 items-center">
-                        <Icon name="streamline:star-badge-remix" width="16" height="16" />
-                        <p className="text-muted-foreground">
-                            Max: {assignmentData.maxScore} Marks
-                        </p>
-                    </div>
-                    <Icon name="bi:dot" height="16" width="16" />
-                    <div className="flex gap-2 items-center">
-                        <Icon name="ic:baseline-loop" width="16" height="16" />
-                        <p className="text-muted-foreground">
-                            Max Attempts: {assignmentData.numberOfAttempts}
-                        </p>
-                    </div>
+                    {submissions?.length > 0 && submissions?.length < maxAttempts && (
+                        <Button
+                            buttonName={retake ? "Cancel" : "Retake"}
+                            frontIconName={retake ? "radix-icons:cross-2" : "ic:baseline-loop"}
+                            frontIconHeight="26"
+                            frontIconWidth="26"
+                            bgClass=""
+                            textClass=""
+                            className="p-1 h-9 rounded"
+                            onClick={() => setRetake((prev) => !prev)}
+                        />
+                    )}
+
                 </div>
+
                 <div>
                     <MarkdownContent content={assignmentData?.instructions} />
                 </div>
 
                 {!attachment && null}
 
-                {/* With attachment */}
                 {attachment && (
                     <>
                         <h1 className="text-h45 mt-6">Attachments</h1>
@@ -185,111 +219,99 @@ export default function AssignmentMainSection({ assignment, courseId }) {
                         </div>
                     </>
                 )}
-                <div className="space-y-3 mt-4">
-                    {attemptsArray.map((attemptNumber) => {
-                        const submission = submissionsMap[attemptNumber];
 
-                        return (
-                            <div key={attemptNumber} className="border rounded border-default bg-background overflow-hidden">
+                {retake && (
+                    <div className="mt-6 space-y-4">
+                        <h2 className="text-caption font-semibold text-primary mb-2 uppercase tracking-wide">
+                            {submissions?.length === 0
+                                ? ""
+                                : `New Submission: Attempt ${submissions.length + 1} of ${maxAttempts}`
+                            }
+                        </h2>
+                        <UploadSection
+                            files={files}
+                            setFiles={setFiles}
+                            uploadProgress={uploadProgress}
+                            isUploading={submitting}
+                            mediaStatus={mediaStatus}
+                            loadedData={loadedData}
+                        />
+                    </div>
+                )}
 
+                {!retake && (
+                    <div className="space-y-3 mt-4">
+                        {attemptsArray.map((attemptNumber) => {
+                            const submission = submissionsMap[attemptNumber];
 
-                                <div className="flex bg-submission border-b border-default justify-between p-3 h-15 items-center">
-                                    <div className="flex justify-center items-center gap-5">
-                                        Attempt {attemptNumber} of {maxAttempts}
-                                        {openAttempt !== attemptNumber && submission && (
-                                            <span>
-                                                <p className="text-body">{submission.filename}</p>
-                                                <p className="text-caption text-muted">
-                                                    Submitted on {new Date(submission.submittedAt).toLocaleString()}
-                                                </p>
-                                            </span>
-                                        )}
-                                    </div>
+                            if (!submission) return null;
 
-                                    <div className="flex gap-2 items-center">
-                                        <StatusPill status={submission?.status || "Not Submitted"} />
-                                        <Button
-                                            frontIconName="iconamoon:arrow-down-2"
-                                            frontIconHeight="26"
-                                            frontIconWidth="26"
-                                            bgClass=""
-                                            className={openAttempt === attemptNumber ? "rotate-180" : ""}
-                                            textClass=""
-                                            onClick={() =>
-                                                setOpenAttempt(prev =>
-                                                    prev === attemptNumber ? null : attemptNumber
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                </div>
-
-                                {
-                                    openAttempt === attemptNumber && (
-                                        <>
-                                            {submission ? (
-                                                <div className="space-y-3 p-4">
-                                                    <div className="flex justify-between items-center">
-
-                                                        <div className="flex gap-2">
-                                                            <Icon name="fluent:document-pdf-24-filled" height="36" width="36" />
-                                                            <span>
-                                                                <p className="text-sm font-medium">{submission.filename}</p>
-                                                                <p className="text-xs text-gray-500">
-                                                                    Submitted on {new Date(submission.submittedAt).toLocaleString()}
-                                                                </p>
-                                                            </span>
-                                                        </div>
-
-
-                                                        {submission.score !== null && (
-                                                            <span className="flex items-center font-semibold text-primary">
-                                                                <p className="text-h3">{submission.score}</p>
-                                                                / <p className="text-h5">{assignmentData.maxScore}</p>
-                                                            </span>
-                                                        )}
-
-                                                    </div>
-
-                                                    {submission.score !== null &&
-                                                        (
-                                                            <div className="flex gap-2 text-emphasis">
-                                                                <label className="font-bold">Trainer Feedback: </label>
-                                                                <p>
-                                                                    {submission?.feedback || "No feedback provided"}
-                                                                </p>
-                                                            </div>
-                                                        )
-                                                    }
-                                                </div>
-                                            ) : (
-
-                                                <div className="p-3">
-                                                    <p className="text-sm text-gray-400 mt-2">
-                                                        No submission yet
+                            return (
+                                <div key={attemptNumber} className="border rounded border-default bg-background overflow-hidden">
+                                    <div className="flex bg-submission border-b border-default justify-between p-3 h-15 items-center">
+                                        <div className="flex justify-center items-center gap-5">
+                                            Attempt {attemptNumber} of {maxAttempts}
+                                            {openAttempt !== attemptNumber && (
+                                                <span>
+                                                    <p className="text-body">{submission.filename}</p>
+                                                    <p className="text-caption text-muted">
+                                                        Submitted on {new Date(submission.submittedAt).toLocaleString()}
                                                     </p>
-
-                                                    {attemptNumber === nextAttempt && (
-                                                        <UploadSection
-                                                            files={files}
-                                                            setFiles={setFiles}
-                                                            uploadProgress={uploadProgress}
-                                                            isUploading={submitting}
-                                                            mediaStatus={mediaStatus}
-                                                            loadedData={loadedData}
-                                                        />
-                                                    )}
-                                                </div>
-
+                                                </span>
                                             )}
+                                        </div>
 
-                                        </>
-                                    )
-                                }
-                            </div>
-                        );
-                    })}
-                </div>
+                                        <div className="flex gap-2 items-center">
+                                            {/* Since we filtered above, status will now only be 'Graded' or 'Submitted' */}
+                                            <StatusPill status={submission.status} />
+                                            <Button
+                                                frontIconName="iconamoon:arrow-down-2"
+                                                frontIconHeight="26"
+                                                frontIconWidth="26"
+                                                bgClass=""
+                                                textClass=""
+                                                className={openAttempt === attemptNumber ? "rotate-180" : ""}
+                                                onClick={() =>
+                                                    setOpenAttempt(prev =>
+                                                        prev === attemptNumber ? null : attemptNumber
+                                                    )
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {openAttempt === attemptNumber && (
+                                        <div className="space-y-3 p-4">
+                                            <div className="flex justify-between items-center">
+                                                <div className="flex gap-2">
+                                                    <Icon name="fluent:document-pdf-24-filled" height="36" width="36" />
+                                                    <span>
+                                                        <p className="text-sm font-medium">{submission.filename}</p>
+                                                        <p className="text-xs text-gray-500">
+                                                            Submitted on {new Date(submission.submittedAt).toLocaleString()}
+                                                        </p>
+                                                    </span>
+                                                </div>
+                                                {submission.score !== null && (
+                                                    <span className="flex items-center font-semibold text-primary">
+                                                        <p className="text-h3">{submission.score}</p>
+                                                        / <p className="text-h5">{assignmentData.maxScore}</p>
+                                                    </span>
+                                                )}
+                                            </div>
+                                            {submission.score !== null && (
+                                                <div className="flex gap-2 text-emphasis">
+                                                    <label className="font-bold">Trainer Feedback: </label>
+                                                    <p>{submission?.feedback || "No feedback provided"}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
 
 
                 <div className="flex w-full items-center justify-center mt-6">

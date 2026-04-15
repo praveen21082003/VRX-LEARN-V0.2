@@ -37,11 +37,11 @@ export default function StatCard({
 
       {/* Content */}
       <div className="flex flex-col justify-center items-center w-full">
-        <p className="text-h4 sm:text-h4 text-muted text-center break-words">{label}</p>
+        <p className="text-h5 sm:text-h4 text-muted text-center break-words">{label}</p>
         <span className={clsx("font-semibold text-primary text-center",
           value ? 'text-h2' : 'text-xs'
         )}>
-          {value ? value : "Available soon"}
+          {value ? value : <span className="text-muted">Available soon</span>}
         </span>
       </div>
 

@@ -65,7 +65,7 @@ function WelcomeSection({ user }) {
 
         <Button
           buttonName="Resume"
-          className="lg:max-w-50 p-3 rounded-lg font-semibold text-sm"
+          className="w-full lg:max-w-50 p-3 rounded-lg font-semibold text-sm"
           bgClass="bg-white"
           textClass="text-primary"
           onClick={() => navigate(`/course/${course?.courseId}`)}

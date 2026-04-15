@@ -26,6 +26,8 @@ function AssignmentsEditor() {
         fetchAssignments
     } = useAssignmentContent();
 
+    console.log(assignments);
+
 
 
     useEffect(() => {

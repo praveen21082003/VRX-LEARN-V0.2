@@ -6,12 +6,14 @@ function LessonsMainSection({ activeLesson, prevLesson, nextLesson, onNavigate }
   console.log(activeLesson)
 
   return (
-    <LessonViewer
-      activeLesson={activeLesson}
-      prevLesson={prevLesson}
-      nextLesson={nextLesson}
-      onNavigate={onNavigate}
-    />
+    <div className="flex-1 overflow-y-auto">
+      <LessonViewer
+        activeLesson={activeLesson}
+        prevLesson={prevLesson}
+        nextLesson={nextLesson}
+        onNavigate={onNavigate}
+      />
+    </div>
   );
 }
 

@@ -15,6 +15,7 @@ const VideoControls = ({ videoRef, setVideoDuration }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [buffered, setBuffered] = useState(0);
+  const [isBuffering, setIsBuffering] = useState(false);
   const [skipValue, setSkipValue] = useState(null);
   const [showControls, setShowControls] = useState(true);
   const controlsTimerRef = React.useRef(null);
@@ -110,16 +111,16 @@ const VideoControls = ({ videoRef, setVideoDuration }) => {
       if (!document.fullscreenElement) {
         await container.requestFullscreen();
 
-        // Auto-rotate logic (Mobile/Tablet specific)
+
         if (window.screen.orientation && window.screen.orientation.lock) {
-          // Lock to landscape when entering fullscreen
+
           await window.screen.orientation.lock('landscape').catch(err => {
             console.warn("Orientation lock ignored: ", err.message);
           });
         }
       } else {
         await document.exitFullscreen();
-        // Unlock orientation when exiting
+
         if (window.screen.orientation && window.screen.orientation.unlock) {
           window.screen.orientation.unlock();
         }
@@ -135,7 +136,7 @@ const VideoControls = ({ videoRef, setVideoDuration }) => {
   const triggerSkipUI = (direction) => {
     setSkipValue(direction);
 
-    setTimeout(() => setSkipValue(null), 600); // clear after 1secomds
+    setTimeout(() => setSkipValue(null), 600);
   }
 
   const handleSeek = (e) => {
@@ -174,6 +175,9 @@ const VideoControls = ({ videoRef, setVideoDuration }) => {
     const video = videoRef.current;
     if (!video) return;
 
+    const handleWaiting = () => setIsBuffering(true);
+    const handlePlaying = () => setIsBuffering(false);
+
     const handleSync = () => {
       setIsPlaying(!video.paused);
       setCurrentTime(video.currentTime);
@@ -191,7 +195,7 @@ const VideoControls = ({ videoRef, setVideoDuration }) => {
 
     const handleFS = () => setIsFullscreen(!!document.fullscreenElement);
 
-    // Auto-pause when tab is hidden (Production standard for UX/Performance)
+
     const handleVisibility = () => {
       if (document.hidden && !video.paused) video.pause();
     };
@@ -202,8 +206,13 @@ const VideoControls = ({ videoRef, setVideoDuration }) => {
     video.addEventListener('loadedmetadata', handleSync);
     video.addEventListener('progress', handleProgress);
     video.addEventListener('volumechange', handleSync);
+    video.addEventListener('waiting', handleWaiting);
+    video.addEventListener('playing', handlePlaying);
+    video.addEventListener('seeking', handleWaiting);
+    video.addEventListener('seeked', handlePlaying);
     document.addEventListener('fullscreenchange', handleFS);
     document.addEventListener('visibilitychange', handleVisibility);
+
 
     return () => {
       video.removeEventListener('play', handleSync);
@@ -212,6 +221,10 @@ const VideoControls = ({ videoRef, setVideoDuration }) => {
       video.removeEventListener('loadedmetadata', handleSync);
       video.removeEventListener('progress', handleProgress);
       video.removeEventListener('volumechange', handleSync);
+      video.removeEventListener('waiting', handleWaiting);
+      video.removeEventListener('playing', handlePlaying);
+      video.removeEventListener('seeking', handleWaiting);
+      video.removeEventListener('seeked', handlePlaying);
       document.removeEventListener('fullscreenchange', handleFS);
       document.removeEventListener('visibilitychange', handleVisibility);
     };
@@ -238,6 +251,22 @@ const VideoControls = ({ videoRef, setVideoDuration }) => {
         onClick={togglePlay}
         className="absolute inset-0 z-0"
       />
+
+
+      {/* Buffering Spinner */}
+
+      {isBuffering && (
+        <div className="absolute inset-0 flex items-center bg-black/20 justify-center pointer-events-none z-40">
+          <div className="flex flex-col items-center gap-3">
+            <Icon
+              name="mingcute:loading-3-fill"
+              className="text-primary animate-spin"
+              height="50"
+              width="50"
+            />
+          </div>
+        </div>
+      )}  
 
 
       {/* skip ui */}
@@ -301,7 +330,7 @@ const VideoControls = ({ videoRef, setVideoDuration }) => {
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-2 md:gap-4">
             <Button
-              frontIconName={isPlaying ? "iconoir:pause-solid" : "iconoir:play-solid"}
+              frontIconName={isPlaying && !isBuffering ? "iconoir:pause-solid" : "iconoir:play-solid"}
               frontIconHeight="18"
               onClick={(e) => {
                 e.stopPropagation();

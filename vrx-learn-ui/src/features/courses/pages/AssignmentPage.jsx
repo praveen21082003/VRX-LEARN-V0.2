@@ -21,11 +21,11 @@ function AssignmentPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const { assignments } = useAssignments(courseSlug);
-  const { assignment } = useAssignment(assignmentId);
+  const { assignments, refresh, loading: listLoading } = useAssignments(courseSlug);
+  const { assignment, loading: assignmentLoading } = useAssignment(assignmentId);
 
 
-  // Auto select first (desktop)
+
   useEffect(() => {
     if (!isMobile && assignments?.length > 0 && !assignmentId) {
       navigate(`/course/${courseSlug}/assignments/${assignments[0].id}`, { replace: true });
@@ -36,12 +36,12 @@ function AssignmentPage() {
   return (
     <div className="flex h-[calc(100vh-56px)] overflow-hidden bg-background text-main">
 
-      {/* desktop always visible */}
+
       <div className="hidden lg:block">
-        <AssignmentAsideSection assignments={assignments} />
+        <AssignmentAsideSection assignments={assignments} loading={listLoading} />
       </div>
 
-      {/* mobile */}
+
       {!assignmentId && isMobile && (
         <AssignmentAsideSection assignments={assignments} />
       )}
@@ -50,6 +50,8 @@ function AssignmentPage() {
         <AssignmentMainSection
           assignment={assignment}
           courseId={courseSlug}
+          loading={assignmentLoading}
+          onRefresh={refresh}
         />
       )}
 

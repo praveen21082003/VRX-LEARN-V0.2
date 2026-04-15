@@ -1,15 +1,19 @@
-import React, { useState } from 'react'
-import { useOutletContext, useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import AssignmentFormSection from '../../../sections/AssignmentFormSection';
 import useAssignment from '../../../hooks/useAssignment';
+import useAssignmentContent from '../../../hooks/useAssignmentContent'
 
 
 
 function EditAssignment() {
+    const navigate = useNavigate();
+    const [formDataErrors, setFormDataErrors] = useState({});
 
-    const { assignmentId } = useParams();
+    const { assignmentId, courseSlug } = useParams();
     const { assignment, assignmentLoading, assignmentError, addToast } = useOutletContext();
     console.log(assignment)
+    const { setAssignments } = useAssignmentContent();
 
     const { updateAssignment, isUpdating, updateError, } = useAssignment();
 
@@ -30,6 +34,13 @@ function EditAssignment() {
         assignment ? normalizeAssignment(assignmentData) : null
     );
     // console.log(formData)
+
+
+    useEffect(() => {
+        if (assignmentData) {
+            setFormData(normalizeAssignment(assignmentData));
+        }
+    }, [assignmentData]);
 
     const handleChange = (field, value) => {
         setFormData((prev) => ({
@@ -78,23 +89,23 @@ function EditAssignment() {
             return;
         }
 
-        console.log(payload);
+        // console.log(payload);
 
-        // try {
-        //     await updateAssignment(assignmentId, payload);
+        try {
+            await updateAssignment(assignmentId, payload);
+            addToast("Assignment updated successfully", "success");
+            navigate(`/course/${courseSlug}/content/assignments`)
 
-        //     addToast("Assignment updated successfully", "success");
+        } catch (error) {
+            const status = error?.response?.status;
 
-        // } catch (error) {
-        //     const status = error?.response?.status;
+            const message = getCustomErrorMessage(status);
 
-        //     const message = getCustomErrorMessage(status);
-
-        //     addToast(
-        //         `${message}`,
-        //         "error"
-        //     );
-        // }
+            addToast(
+                `${message}`,
+                "error"
+            );
+        }
 
     }
 
@@ -107,6 +118,7 @@ function EditAssignment() {
         <div>
             <AssignmentFormSection
                 mode="edit"
+                formDataErrors={formDataErrors}
                 formData={formData}
                 handleChange={handleChange}
                 attachment={attachment}

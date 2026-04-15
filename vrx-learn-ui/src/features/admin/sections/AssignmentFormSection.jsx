@@ -42,7 +42,7 @@ function AssignmentFormSection({
                 <Input
                     label="Title"
                     value={formData?.title || ""}
-                    inputWarning={formDataErrors.title}
+                    inputWarning={formDataErrors?.title}
                     onChange={(e) => handleChange("title", e.target.value)}
                 />
 
@@ -50,7 +50,7 @@ function AssignmentFormSection({
                     label="Instructions"
                     value={formData?.instructions}
                     onChange={(value) => handleChange("instructions", value)}
-                    inputWarning={formDataErrors.instructions}
+                    inputWarning={formDataErrors?.instructions}
                 />
 
                 <div className='grid grid-cols-1 lg:grid-cols-3 gap-2'>
@@ -68,8 +68,9 @@ function AssignmentFormSection({
                         label="Max Points"
                         type="number"
                         min='0'
+                        disabled={isEdit}
                         value={formData?.maxScore}
-                        inputWarning={formDataErrors.maxScore}
+                        inputWarning={formDataErrors?.maxScore}
                         onChange={(e) => handleChange("maxScore", Number(e.target.value))}
                     />
                     <Input
@@ -77,14 +78,20 @@ function AssignmentFormSection({
                         type="number"
                         min="1"
                         max="3"
+                        disabled={isEdit}
                         inputWarning={formDataErrors.max_attempts}
                         value={formData?.numberOfAttempts}
                         onChange={(e) => handleChange("numberOfAttempts", Number(e.target.value))}
                     />
                 </div>
+                {isEdit && (
+                    <p className="text-caption text-muted">
+                        Max score and attempts cannot be changed after creation
+                    </p>
+                )}
 
                 {!isEdit && (
-                    <UploadSection files={files} setFiles={setFiles} label="Attachments" optional={true} inputWarning={formDataErrors.file}/>
+                    <UploadSection files={files} setFiles={setFiles} label="Attachments" optional={true} inputWarning={formDataErrors?.file} />
                 )}
 
                 {isEdit && (
@@ -122,8 +129,7 @@ function AssignmentFormSection({
                     onClick={handleSubmit}
                     disabled={loading}
                     className="mt-5 px-5 py-2 rounded"
-                    frontIconName={loading ? "mingcute:loading-3-fill" : ""}
-                    frontIconClass={loading ? "animate-spin" : ""}
+                    frontIconName={loading ? "eos-icons:loading" : ""}
                 />
             </div>
         </>
